@@ -1,3 +1,416 @@
 @import url("../shared/sial-core.css");
 
-/* Calendario, cintas y monitoreo migrados a shared/sial-core.css. Archivo conservado para excepciones futuras del modulo. */
+.page-header-actions,
+.cut-paste-actions,
+.cut-status-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cut-guidance strong {
+  color: inherit;
+}
+
+.cut-guidance {
+  border-width: 1px 1px 1px 4px;
+}
+
+.cut-sheet-card {
+  overflow: visible;
+}
+
+.cut-filter-toolbar {
+  grid-template-columns: minmax(280px, 1fr) repeat(3, minmax(170px, 220px));
+  margin: 0;
+}
+
+.cut-filter-search {
+  position: relative;
+  display: block;
+}
+
+.cut-filter-search .icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-3);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.cut-filter-search .input {
+  padding-left: 40px;
+}
+
+.cut-paste-panel {
+  grid-template-columns: minmax(220px, .7fr) minmax(360px, 1.6fr) auto;
+  gap: 16px;
+  align-items: end;
+  margin: 16px 0 0;
+}
+
+.cut-paste-input {
+  min-height: 96px;
+}
+
+.cut-sheet-scroll {
+  width: 100%;
+  max-height: min(62vh, 720px);
+  overflow: auto;
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: var(--color-surface);
+}
+
+.cut-sheet-scroll:focus-visible {
+  outline-offset: -2px;
+}
+
+.cut-sheet-table {
+  min-width: 2886px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cut-sheet-table th,
+.cut-sheet-table td {
+  border-right: 1px solid var(--color-border-subtle);
+}
+
+.cut-sheet-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  padding-inline: 12px;
+  background: var(--color-table-head-bg);
+}
+
+.cut-sheet-table thead .cut-group-row th {
+  top: 0;
+  height: 40px;
+  text-align: center;
+}
+
+.cut-sheet-table thead tr:nth-child(2) th {
+  top: 40px;
+}
+
+.cut-sheet-table tbody tr {
+  background: var(--color-surface);
+}
+
+.cut-sheet-table tbody tr:hover {
+  background: var(--color-nav-hover);
+}
+
+.cut-sheet-table tbody tr.state-updated {
+  background: color-mix(in srgb, var(--color-info-bg) 68%, var(--color-surface));
+}
+
+.cut-sheet-table tbody tr.is-locked {
+  background: var(--color-field-readonly-bg);
+  color: var(--color-text-2);
+}
+
+.cut-sheet-table tbody td {
+  height: 56px;
+  padding: 6px;
+  background: inherit;
+}
+
+.cut-sticky-code {
+  position: sticky !important;
+  z-index: 6 !important;
+
+  box-shadow: 1px 0 var(--color-border);
+}
+
+.cut-sticky-code {
+  left: 0;
+}
+
+.cut-sheet-table tbody .cut-sticky-code {
+  z-index: 3 !important;
+}
+
+.cut-col-code { width: 156px; }
+.cut-col-week { width: 140px; }
+.cut-col-date { width: 142px; }
+.cut-col-farm { width: 190px; }
+.cut-col-sector { width: 140px; }
+.cut-col-group { width: 145px; }
+.cut-col-client { width: 190px; }
+.cut-col-reference { width: 155px; }
+.cut-col-class { width: 205px; }
+.cut-col-number { width: 112px; }
+.cut-col-direct { width: 100px; }
+.cut-col-line { width: 140px; }
+.cut-col-version { width: 130px; }
+.cut-col-materials { width: 172px; }
+.cut-col-status { width: 145px; }
+.cut-col-observation { width: 230px; }
+.cut-col-actions { width: 126px; }
+
+.cut-cell-control {
+  width: 100%;
+}
+
+.cut-cell-value {
+  display: block;
+  padding: 0 10px;
+  overflow: hidden;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cut-cell-value.is-calculated {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-field-readonly-bg);
+  color: var(--color-text-2);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.cut-code-cell {
+  font-weight: 600;
+}
+
+.cut-row-actions {
+  justify-content: center;
+}
+
+.cut-row-actions .icon-btn.is-locked {
+  color: var(--color-text-3);
+  cursor: help;
+}
+
+.cut-sheet-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: var(--color-soft-surface);
+  color: var(--color-text-2);
+}
+
+.cut-sheet-statusbar strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.cut-detail-drawer {
+  width: min(480px, 100vw);
+}
+
+.cut-detail-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 20px;
+}
+
+.cut-detail-summary .detail-group {
+  min-width: 0;
+}
+
+.cut-detail-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.cut-detail-section .detail-group:last-child {
+  margin-bottom: 0;
+}
+
+.cut-confirm-dialog {
+  width: min(780px, calc(100vw - 32px));
+}
+
+.cut-diff-wrap {
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+}
+
+.cut-diff-table {
+  min-width: 620px;
+}
+
+.cut-diff-table th,
+.cut-diff-table td {
+  height: auto;
+  padding: 12px;
+}
+
+.cut-diff-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.cut-diff-table td:nth-child(2) {
+  font-weight: 600;
+}
+
+.cut-diff-table td:nth-child(3) {
+  color: var(--color-text-2);
+}
+
+.cut-proposal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-soft-surface);
+}
+
+.cut-proposal-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.cut-proposal-copy strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.cut-proposal-copy span {
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+
+.cut-proposal-links,
+.cut-statusbar-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cut-proposal-links .btn {
+  min-height: 44px;
+  padding: 6px 12px;
+}
+
+.cut-code-stack {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 10px;
+}
+
+.cut-code-stack .cut-cell-value {
+  padding: 0;
+}
+
+.cut-code-stack .status {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cut-statusbar-actions {
+  display: none;
+}
+
+body[data-cut-state-presentation="bar"] .cut-sheet-header [data-cut-save],
+body[data-cut-state-presentation="bar"] .cut-sheet-header [data-cut-discard],
+body[data-cut-state-presentation="bar"] .cut-status-legend {
+  display: none !important;
+}
+
+body[data-cut-state-presentation="bar"] .cut-sheet-statusbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 7;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+body[data-cut-state-presentation="bar"] .cut-sheet-statusbar.has-changes {
+  background: var(--color-info-bg);
+  color: var(--color-info-text);
+}
+
+body[data-cut-state-presentation="bar"] .cut-statusbar-actions {
+  display: flex;
+}
+
+@media (max-width: 1180px) {
+  .cut-filter-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cut-filter-search {
+    grid-column: 1 / -1;
+  }
+
+  .cut-paste-panel {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .cut-paste-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 760px) {
+  .cut-proposal-nav {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cut-proposal-links .btn {
+    flex: 1 1 auto;
+  }
+
+  .page-header-actions {
+    width: 100%;
+  }
+
+  .page-header-actions .btn {
+    flex: 1 1 180px;
+  }
+
+  .cut-filter-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .cut-filter-search {
+    grid-column: auto;
+  }
+
+  .cut-sheet-statusbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cut-status-legend {
+    gap: 8px;
+  }
+
+  .cut-detail-summary {
+    grid-template-columns: 1fr;
+  }
+}

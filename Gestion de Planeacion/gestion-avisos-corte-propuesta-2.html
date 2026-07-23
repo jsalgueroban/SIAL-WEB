@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIAL | Avisos de corte - Maestro detalle</title>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("sial-theme");
+      const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="sial-aviso-corte-alternatives.css" />
+</head>
+<body data-view-family="gestion" data-alt-mode="master">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegacion principal">
+      <div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div>
+      <p class="menu-caption">Planeacion</p>
+      <nav data-nav></nav>
+    </aside>
+    <header class="header">
+      <div class="header-left">
+        <button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></button>
+        <button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path></svg></button>
+        <span class="avatar">QA</span>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="page">
+        <p class="page-eyebrow">Aviso de Corte / Propuesta 2</p>
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Gestion maestro-detalle</h1>
+            <p class="page-subtitle">Consulta una lista compacta y trabaja un solo aviso en un panel lateral, sin convertir la tabla en una hoja editable.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" type="button" data-alt-new>Crear aviso</button>
+          </div>
+        </div>
+
+        <nav class="cut-proposal-nav" aria-label="Comparar propuestas de manejo">
+          <div class="cut-proposal-copy"><strong>Propuesta 2 · Maestro-detalle</strong><span>La lista conserva contexto y el panel lateral concentra la edicion individual.</span></div>
+          <div class="cut-proposal-links">
+            <a class="btn btn-ghost" href="gestion-avisos-corte.html">Propuesta 1</a>
+            <a class="btn btn-primary" href="gestion-avisos-corte-propuesta-2.html" aria-current="page">Propuesta 2</a>
+            <a class="btn btn-ghost" href="gestion-avisos-corte-propuesta-3.html">Propuesta 3</a>
+          </div>
+        </nav>
+
+        <div class="notice notice-info cut-guidance"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg><span><strong>Modelo individual:</strong> la tabla es de consulta. Ver, crear o editar ocurre en un panel lateral y cada aviso se confirma por separado.</span></div>
+
+        <div class="notice notice-success is-hidden" data-alt-feedback role="status"></div>
+
+        <article class="card">
+          <div class="card-header">
+            <div><h2 class="card-title">Avisos registrados</h2><p class="card-subtitle">Los avisos programados o en cargue permanecen disponibles para consulta, pero no para correccion directa.</p></div>
+            <span class="chip" data-master-count>0 avisos</span>
+          </div>
+          <div class="card-body">
+            <div class="alt-toolbar">
+              <div class="alt-toolbar-group">
+                <input class="input" type="search" data-master-search aria-label="Buscar avisos" placeholder="Buscar aviso, finca o cliente" />
+                <select class="select" data-master-status aria-label="Filtrar por estado">
+                  <option value="all">Todos los estados</option>
+                  <option value="CREADO">CREADO</option>
+                  <option value="PROGRAMADO">PROGRAMADO</option>
+                  <option value="EN_CARGUE">EN_CARGUE</option>
+                </select>
+              </div>
+              <button class="btn btn-secondary" type="button" data-alt-new>Nuevo aviso</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="alt-list-table">
+              <thead><tr><th>Aviso y corte</th><th>Finca</th><th>Cliente</th><th>Referencia</th><th>Pallets</th><th>Estado</th><th>Acciones</th></tr></thead>
+              <tbody data-master-body></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="drawer-backdrop" data-alt-drawer-backdrop hidden></div>
+  <aside class="drawer alt-editor-drawer" data-alt-drawer aria-label="Editor de aviso de corte" aria-hidden="true" hidden>
+    <div class="drawer-head">
+      <div><h2 data-alt-editor-title>Detalle del aviso</h2><p data-alt-editor-subtitle>Trabaja un aviso sin perder el contexto del listado.</p></div>
+      <button class="icon-btn" type="button" data-alt-close aria-label="Cerrar panel"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"></path></svg></button>
+    </div>
+    <div class="drawer-body" data-alt-editor-content></div>
+    <div class="alt-drawer-actions">
+      <button class="btn btn-secondary" type="button" data-alt-close>Cancelar</button>
+      <button class="btn btn-primary" type="button" data-alt-save>Guardar aviso</button>
+    </div>
+  </aside>
+
+  <script src="../shared/sial-core.js"></script>
+  <script src="sial-aviso-corte.js"></script>
+  <script src="sial-aviso-corte-alternatives.js"></script>
+  <script>SIAL.applyShell("avisos"); window.SIALCutAlternatives.init();</script>
+</body>
+</html>

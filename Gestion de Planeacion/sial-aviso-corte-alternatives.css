@@ -1,0 +1,255 @@
+@import url("./sial-aviso-corte.css");
+.alt-editor-drawer[hidden],
+.alt-workspace-dialog[hidden],
+[data-alt-drawer-backdrop][hidden],
+[data-alt-dialog-backdrop][hidden] {
+  display: none !important;
+}
+
+.alt-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.alt-toolbar-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.alt-toolbar .input,
+.alt-toolbar .select {
+  min-width: 220px;
+}
+
+.alt-list-table {
+  min-width: 980px;
+}
+
+.alt-list-table th,
+.alt-list-table td {
+  vertical-align: middle;
+}
+
+.alt-list-table tbody tr.is-selected {
+  background: var(--color-info-bg);
+}
+
+.alt-code {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.alt-primary-cell {
+  display: grid;
+  gap: 3px;
+}
+
+.alt-primary-cell span {
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+
+.alt-editor-drawer {
+  width: min(620px, 100vw);
+}
+
+.alt-editor-form,
+.alt-workspace-form {
+  display: grid;
+  gap: 20px;
+}
+
+.alt-form-section {
+  display: grid;
+  gap: 14px;
+}
+
+.alt-form-section + .alt-form-section {
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.alt-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.alt-field {
+  display: grid;
+  gap: 6px;
+}
+
+.alt-field.is-wide {
+  grid-column: 1 / -1;
+}
+
+.alt-field .label {
+  margin: 0;
+}
+
+.alt-readonly-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.alt-drawer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border-subtle);
+  background: var(--color-surface);
+}
+
+.alt-board-toolbar {
+  margin-bottom: 16px;
+}
+
+.alt-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.alt-board-column {
+  min-width: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-soft-surface);
+}
+
+.alt-board-column-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.alt-board-column-head h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.alt-board-list {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.alt-notice-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.alt-notice-card:hover {
+  border-color: var(--color-primary);
+}
+
+.alt-notice-card.is-locked {
+  background: var(--color-field-readonly-bg);
+}
+
+.alt-notice-card-head,
+.alt-notice-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.alt-notice-card h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.alt-notice-card-main {
+  display: grid;
+  gap: 5px;
+}
+
+.alt-notice-card-main strong {
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.alt-notice-card-main span,
+.alt-notice-card-footer span {
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+
+.alt-workspace-dialog {
+  width: min(1040px, calc(100vw - 32px));
+  max-height: min(90vh, 860px);
+}
+
+.alt-workspace-dialog .confirm-dialog-body {
+  overflow: auto;
+}
+
+body[data-alt-mode="board"] .alt-editor-form .alt-form-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.alt-empty-column {
+  padding: 28px 16px;
+  color: var(--color-text-2);
+  text-align: center;
+}
+
+@media (max-width: 1080px) {
+  .alt-board {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-alt-mode="board"] .alt-editor-form .alt-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .alt-toolbar,
+  .alt-toolbar-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .alt-toolbar .input,
+  .alt-toolbar .select,
+  .alt-toolbar .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .alt-form-grid,
+  body[data-alt-mode="board"] .alt-editor-form .alt-form-grid,
+  .alt-readonly-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .alt-field.is-wide {
+    grid-column: auto;
+  }
+
+  .alt-drawer-actions {
+    flex-direction: column-reverse;
+  }
+
+  .alt-drawer-actions .btn {
+    width: 100%;
+  }
+}

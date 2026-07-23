@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Gestion de avisos de corte</title>
+  <title>SIAL | Avisos de corte - Propuesta 1</title>
   <script>
     (function () {
       const savedTheme = localStorage.getItem("sial-theme");
@@ -13,7 +13,7 @@
   </script>
   <link rel="stylesheet" href="sial-aviso-corte.css" />
 </head>
-<body data-view-family="gestion">
+<body data-view-family="gestion" data-cut-state-presentation="column">
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegacion principal">
       <div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div>
@@ -31,259 +31,242 @@
         <span class="avatar">QA</span>
       </div>
     </header>
+
     <main class="main">
       <section class="page">
-        <p class="page-eyebrow">Aviso de Corte / HU290</p>
+        <p class="page-eyebrow">Aviso de Corte / Propuesta 1</p>
         <div class="page-header">
           <div>
-            <h1 class="page-title">Gestion de avisos de corte</h1>
-            <p class="page-subtitle">Vista independiente para registrar y consultar la planificacion semanal de fruta a cosechar por finca, referencia, cliente y estado operativo.</p>
+            <h1 class="page-title">Matriz de avisos de corte</h1>
+            <p class="page-subtitle">Planea, crea y corrige avisos en una hoja operativa. Navega con teclado, pega filas desde Excel y conserva el control de materiales, transporte y trazabilidad.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary" type="button" data-cut-toggle-paste aria-label="Pegar filas desde Excel">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h6"></path><path d="M9 3h6v4H9z"></path><path d="M7 5H5v16h14V5h-2"></path></svg>
+              Pegar desde Excel
+            </button>
+            <button class="btn btn-primary" type="button" data-cut-add-row aria-label="Crear nueva fila de aviso">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              Nueva fila
+            </button>
           </div>
         </div>
 
-        <div class="notice notice-info" data-cut-list-view>
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
-          <span>La propuesta conserva los catalogos de HU290 como selects. La conexion real a Fincas, Referencias, Productos, Clases, Clientes y demas maestros queda pendiente de contrato backend.</span>
+        <nav class="cut-proposal-nav" aria-label="Comparar propuestas para comunicar el estado de edición">
+          <div class="cut-proposal-copy">
+            <strong>Propuesta 1 · Hoja tipo Excel</strong>
+            <span>Edición directa en celdas y guardado por lote para operación masiva.</span>
+          </div>
+          <div class="cut-proposal-links">
+            <a class="btn btn-primary" href="gestion-avisos-corte.html" aria-current="page">Propuesta 1</a>
+            <a class="btn btn-ghost" href="gestion-avisos-corte-propuesta-2.html">Propuesta 2</a>
+            <a class="btn btn-ghost" href="gestion-avisos-corte-propuesta-3.html">Propuesta 3</a>
+          </div>
+        </nav>
+
+        <div class="notice notice-info cut-guidance">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
+          <span><strong>Operacion tipo Excel:</strong> usa Tab para avanzar, Shift + Tab para regresar y Enter para pasar a la siguiente celda. Las columnas con fondo suave se calculan automaticamente.</span>
         </div>
 
-        <div class="stats" data-cut-list-view>
-          <article class="stat"><label>Avisos vigentes</label><strong>3</strong><span>Planificaciones listas para activar procesos logisticos.</span></article>
-          <article class="stat"><label>Pallets proyectados</label><strong>356</strong><span>Suma estimada sobre avisos visibles.</span></article>
-          <article class="stat"><label>Clientes</label><strong>2</strong><span>Catalogo requerido como FK por la HU.</span></article>
-          <article class="stat"><label>Alertas</label><strong>1</strong><span>Registro con validacion pendiente por cupo.</span></article>
+        <div class="stats cut-stats" aria-label="Resumen de avisos">
+          <article class="stat"><label>Avisos visibles</label><strong data-cut-stat-records>0</strong><span>Registros que cumplen los filtros.</span></article>
+          <article class="stat"><label>Pallets</label><strong data-cut-stat-pallets>0</strong><span>Proyeccion sobre la matriz visible.</span></article>
+          <article class="stat"><label>Total cajas</label><strong data-cut-stat-boxes>0</strong><span>Pallets por configuracion de cajas.</span></article>
+          <article class="stat"><label>Requieren atencion</label><strong data-cut-stat-alerts>0</strong><span>Cambios, bloqueos o recalculos pendientes.</span></article>
         </div>
 
-        <article class="card form-card is-hidden" data-cut-create-view>
-          <div class="form-heading">
-            <h2>Crear aviso de corte</h2>
-            <p>Captura los campos de HU290 para proyectar la cosecha y habilitar procesos posteriores de materiales, transporte, contenedores y trazabilidad.</p>
-            <button class="btn btn-secondary mt-24" type="button" data-close-cut-create>Volver al listado</button>
-          </div>
-          <div class="form-body">
-            <form data-cut-notice-form novalidate>
-              <section class="section">
-                <h3 class="section-title">Planificacion base</h3>
-                <div class="grid">
-                  <div class="field span-3">
-                    <label class="label" for="cutWeek">Semana <span class="required">*</span></label>
-                    <select class="select" id="cutWeek" data-cut-required aria-describedby="cutWeekNote">
-                      <option value="">Seleccionar semana</option>
-                      <option value="SEM-2026-18">SEM-2026-18</option>
-                      <option value="SEM-2026-19">SEM-2026-19</option>
-                      <option value="SEM-2026-20">SEM-2026-20</option>
-                    </select>
-                    <div class="field-note" id="cutWeekNote">FK hacia semanas productivas.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutDate">Dia corte <span class="required">*</span></label>
-                    <input class="input" id="cutDate" type="date" data-cut-required aria-describedby="cutDateNote" />
-                    <div class="field-note" id="cutDateNote">Fecha programada del corte.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutVersion">Version AC <span class="required">*</span></label>
-                    <select class="select" id="cutVersion" data-cut-required aria-describedby="cutVersionNote">
-                      <option value="">Seleccionar version</option>
-                      <option value="AC-01">AC-01 Inicial</option>
-                      <option value="AC-02">AC-02 Ajuste comercial</option>
-                      <option value="AC-03">AC-03 Reprogramacion</option>
-                    </select>
-                    <div class="field-note" id="cutVersionNote">Catalogo requerido por la HU.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutStatus">Estado operativo</label>
-                    <select class="select" id="cutStatus">
-                      <option value="borrador">Borrador</option>
-                      <option value="programado">Programado</option>
-                      <option value="en_revision">En revision</option>
-                    </select>
-                    <div class="field-note">Estado inicial del aviso.</div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <h3 class="section-title">Origen y producto</h3>
-                <div class="grid">
-                  <div class="field span-4">
-                    <label class="label" for="cutFarm">Finca <span class="required">*</span></label>
-                    <select class="select" id="cutFarm" data-cut-required aria-describedby="cutFarmNote">
-                      <option value="">Seleccionar finca</option>
-                      <option value="FINCA LA ESPERANZA">FINCA LA ESPERANZA</option>
-                      <option value="FINCA SANTA ISABEL">FINCA SANTA ISABEL</option>
-                      <option value="FINCA LOS ALMENDROS">FINCA LOS ALMENDROS</option>
-                    </select>
-                    <div class="field-note" id="cutFarmNote">FK hacia Fincas.</div>
-                  </div>
-                  <div class="field span-4">
-                    <label class="label" for="cutReference">Referencia <span class="required">*</span></label>
-                    <select class="select" id="cutReference" data-cut-required aria-describedby="cutReferenceNote">
-                      <option value="">Seleccionar referencia</option>
-                      <option value="BANANO PREMIUM 22XU">BANANO PREMIUM 22XU</option>
-                      <option value="BANANO ORG 18XU">BANANO ORG 18XU</option>
-                      <option value="PLATANO EXPORTACION">PLATANO EXPORTACION</option>
-                    </select>
-                    <div class="field-note" id="cutReferenceNote">FK hacia Referencias.</div>
-                  </div>
-                  <div class="field span-4">
-                    <label class="label" for="cutFruitType">Tipo fruta / clase <span class="required">*</span></label>
-                    <select class="select" id="cutFruitType" data-cut-required aria-describedby="cutFruitTypeNote">
-                      <option value="">Seleccionar tipo</option>
-                      <option value="BANANO / CLASE A">BANANO / CLASE A</option>
-                      <option value="BANANO ORGANICO / CLASE A">BANANO ORGANICO / CLASE A</option>
-                      <option value="PLATANO / CLASE B">PLATANO / CLASE B</option>
-                    </select>
-                    <div class="field-note" id="cutFruitTypeNote">Relacion esperada con Productos y Clase.</div>
-                  </div>
-                  <div class="field span-4">
-                    <label class="label" for="cutGroup">Grupo <span class="required">*</span></label>
-                    <select class="select" id="cutGroup" data-cut-required aria-describedby="cutGroupNote">
-                      <option value="">Seleccionar grupo</option>
-                      <option value="GRUPO NORTE">GRUPO NORTE</option>
-                      <option value="GRUPO CENTRO">GRUPO CENTRO</option>
-                      <option value="GRUPO SUR">GRUPO SUR</option>
-                    </select>
-                    <div class="field-note" id="cutGroupNote">FK hacia grupos operativos.</div>
-                  </div>
-                  <div class="field span-4">
-                    <label class="label" for="cutZone">Zona / sector <span class="required">*</span></label>
-                    <select class="select" id="cutZone" data-cut-required aria-describedby="cutZoneNote">
-                      <option value="">Seleccionar zona</option>
-                      <option value="SECTOR 01">SECTOR 01</option>
-                      <option value="SECTOR 04">SECTOR 04</option>
-                      <option value="ZONA EMPAQUE">ZONA EMPAQUE</option>
-                    </select>
-                    <div class="field-note" id="cutZoneNote">FK hacia sectores o zonas.</div>
-                  </div>
-                  <div class="field span-4">
-                    <label class="label" for="cutClient">Cliente <span class="required">*</span></label>
-                    <select class="select" id="cutClient" data-cut-required aria-describedby="cutClientNote">
-                      <option value="">Seleccionar cliente</option>
-                      <option value="GLOBAL FRUIT EXPORT">GLOBAL FRUIT EXPORT</option>
-                      <option value="EUROBAN TRADING">EUROBAN TRADING</option>
-                      <option value="CARIBE FRESH">CARIBE FRESH</option>
-                    </select>
-                    <div class="field-note" id="cutClientNote">FK hacia Gestion de clientes en Empresa.</div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <h3 class="section-title">Proyeccion y logistica</h3>
-                <div class="grid">
-                  <div class="field span-3">
-                    <label class="label" for="cutPallets">Cantidad pallets <span class="required">*</span></label>
-                    <input class="input" id="cutPallets" type="number" min="1" data-cut-required aria-describedby="cutPalletsNote" placeholder="120" />
-                    <div class="field-note" id="cutPalletsNote">Debe ser mayor a cero.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutBunches">Racimos estimados <span class="required">*</span></label>
-                    <input class="input" id="cutBunches" type="number" min="1" data-cut-required aria-describedby="cutBunchesNote" placeholder="5400" />
-                    <div class="field-note" id="cutBunchesNote">Regla de HU: cantidad estimada mayor a cero.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutBoxes">Cajas por pallet <span class="required">*</span></label>
-                    <select class="select" id="cutBoxes" data-cut-required aria-describedby="cutBoxesNote">
-                      <option value="">Seleccionar configuracion</option>
-                      <option value="48">48 cajas</option>
-                      <option value="54">54 cajas</option>
-                      <option value="66">66 cajas</option>
-                    </select>
-                    <div class="field-note" id="cutBoxesNote">FK hacia configuracion de pallets.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutLine">Linea contenedor <span class="required">*</span></label>
-                    <select class="select" id="cutLine" data-cut-required aria-describedby="cutLineNote">
-                      <option value="">Seleccionar linea</option>
-                      <option value="MAERSK">MAERSK</option>
-                      <option value="MSC">MSC</option>
-                      <option value="HAPAG-LLOYD">HAPAG-LLOYD</option>
-                    </select>
-                    <div class="field-note" id="cutLineNote">FK hacia lineas maritimas.</div>
-                  </div>
-                  <div class="field span-3">
-                    <label class="label" for="cutDirect">Directo</label>
-                    <select class="select" id="cutDirect">
-                      <option value="No">No</option>
-                      <option value="Si">Si</option>
-                    </select>
-                    <div class="field-note">Indica si el envio es directo.</div>
-                  </div>
-                  <div class="field span-12">
-                    <label class="label" for="cutObservation">Observaciones</label>
-                    <textarea class="textarea" id="cutObservation" rows="3" placeholder="Comentarios operativos del aviso"></textarea>
-                    <div class="field-note">Texto opcional para novedades de planificacion.</div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <h3 class="section-title">Resumen antes de guardar</h3>
-                <div class="validation-list" aria-live="polite">
-                  <div class="validation-item ok"><strong id="cutSummaryFarm">Finca pendiente</strong><span id="cutSummaryProduct">Selecciona finca, referencia y cliente.</span></div>
-                  <div class="validation-item"><strong id="cutSummaryPallets">0 pallets</strong><span id="cutSummaryLogistics">Define semana, linea y configuracion de cajas.</span></div>
-                  <div class="validation-item warning"><strong>Contratos pendientes</strong><span>POST/GET de avisos y catalogos dependientes no estan conectados en la propuesta estatica.</span></div>
-                </div>
-              </section>
-
-              <div class="notice notice-success is-hidden" id="cutNoticeOk">Aviso de corte listo para guardar cuando el backend confirme contratos.</div>
-              <div class="notice notice-warning is-hidden" id="cutNoticeWarning">Completa los campos obligatorios antes de guardar.</div>
-              <div class="form-actions">
-                <button class="btn btn-secondary" type="button" data-close-cut-create>Cancelar</button>
-                <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
-                <button class="btn btn-primary" type="submit">Guardar aviso de corte</button>
-              </div>
-            </form>
-          </div>
-        </article>
-
-        <article class="card mt-24" data-cut-list-view>
-          <div class="card-header">
-            <div><h2 class="card-title">Avisos registrados</h2><p class="card-subtitle">Consulta por finca, fecha, semana productiva, producto y estado.</p></div>
-            <div class="card-actions"><span class="chip" id="cutNoticeCount">0 registros visibles</span><button class="btn btn-secondary" type="button" data-export-table data-export-filename="avisos-corte" aria-label="Exportar avisos de corte"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar</span></button><a class="btn btn-primary" href="#crear" data-open-cut-create aria-label="Crear aviso de corte"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>Crear aviso</span></a></div>
-          </div>
-          <div class="card-body">
-            <div class="toolbar compact">
-              <input class="input" id="cutNoticeSearch" type="search" aria-label="Buscar aviso, finca, referencia o cliente" placeholder="Buscar aviso, finca, referencia o cliente" />
-              <select class="select" id="cutNoticeStatus"><option value="all">Todos los estados</option><option value="programado">Programado</option><option value="revision">En revision</option><option value="borrador">Borrador</option></select>
-              <select class="select" id="cutNoticeWeek"><option value="all">Todas las semanas</option><option value="SEM-2026-18">SEM-2026-18</option><option value="SEM-2026-19">SEM-2026-19</option><option value="SEM-2026-20">SEM-2026-20</option></select>
+        <article class="card cut-sheet-card">
+          <div class="card-header cut-sheet-header">
+            <div>
+              <h2 class="card-title">Planeacion semanal</h2>
+              <p class="card-subtitle">Cada fila representa un aviso. Solo los avisos en estado CREADO permiten correccion directa.</p>
+            </div>
+            <div class="card-actions">
+              <span class="chip" data-cut-visible-count>0 filas</span>
+              <button class="btn btn-ghost is-hidden" type="button" data-cut-discard>Descartar cambios</button>
+              <button class="btn btn-primary" type="button" data-cut-save disabled>Guardar cambios</button>
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Aviso</th><th>Semana</th><th>Dia corte</th><th>Finca</th><th>Referencia</th><th>Pallets</th><th>Cliente</th><th>Estado</th><th>Acciones</th></tr></thead>
-              <tbody>
-                <tr data-status="programado" data-context="SEM-2026-18" data-code="AC-2026-018-01" data-week="SEM-2026-18" data-cutdate="04/05/2026" data-farm="FINCA LA ESPERANZA" data-reference="BANANO PREMIUM 22XU" data-pallets="120" data-bunches="5400" data-direct="No" data-version="AC-01 Inicial" data-line="MAERSK" data-boxes="54 cajas" data-fruit="BANANO / CLASE A" data-group="GRUPO NORTE" data-zone="SECTOR 01" data-client="GLOBAL FRUIT EXPORT" data-status-label="Programado" data-observation="Planificacion inicial sin novedades." data-audit="Crear aviso|planeacion.admin - 30/04/2026 08:15"><td>AC-2026-018-01</td><td>SEM-2026-18</td><td>04/05/2026</td><td>FINCA LA ESPERANZA</td><td>BANANO PREMIUM 22XU</td><td>120</td><td>GLOBAL FRUIT EXPORT</td><td><span class="status status-active">Programado</span></td><td><div class="row-actions"><button class="icon-btn" data-open-detail aria-label="Visualizar aviso"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" aria-label="Editar aviso"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button></div></td></tr>
-                <tr data-status="revision" data-context="SEM-2026-19" data-code="AC-2026-019-02" data-week="SEM-2026-19" data-cutdate="12/05/2026" data-farm="FINCA SANTA ISABEL" data-reference="BANANO ORG 18XU" data-pallets="88" data-bunches="3960" data-direct="Si" data-version="AC-02 Ajuste comercial" data-line="MSC" data-boxes="48 cajas" data-fruit="BANANO ORGANICO / CLASE A" data-group="GRUPO CENTRO" data-zone="ZONA EMPAQUE" data-client="EUROBAN TRADING" data-status-label="En revision" data-observation="Validar cupo de contenedor directo antes de liberar." data-audit="Ajustar aviso|planeacion.supervisor - 01/05/2026 10:45"><td>AC-2026-019-02</td><td>SEM-2026-19</td><td>12/05/2026</td><td>FINCA SANTA ISABEL</td><td>BANANO ORG 18XU</td><td>88</td><td>EUROBAN TRADING</td><td><span class="status status-warning">En revision</span></td><td><div class="row-actions"><button class="icon-btn" data-open-detail aria-label="Visualizar aviso"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" aria-label="Editar aviso"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button></div></td></tr>
-                <tr data-status="borrador" data-context="SEM-2026-20" data-code="AC-2026-020-03" data-week="SEM-2026-20" data-cutdate="19/05/2026" data-farm="FINCA LOS ALMENDROS" data-reference="PLATANO EXPORTACION" data-pallets="148" data-bunches="6120" data-direct="No" data-version="AC-03 Reprogramacion" data-line="HAPAG-LLOYD" data-boxes="66 cajas" data-fruit="PLATANO / CLASE B" data-group="GRUPO SUR" data-zone="SECTOR 04" data-client="CARIBE FRESH" data-status-label="Borrador" data-observation="Pendiente confirmar referencia final." data-audit="Crear borrador|planeacion.auxiliar - 02/05/2026 09:20"><td>AC-2026-020-03</td><td>SEM-2026-20</td><td>19/05/2026</td><td>FINCA LOS ALMENDROS</td><td>PLATANO EXPORTACION</td><td>148</td><td>CARIBE FRESH</td><td><span class="status status-inactive">Borrador</span></td><td><div class="row-actions"><button class="icon-btn" data-open-detail aria-label="Visualizar aviso"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" aria-label="Editar aviso"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button></div></td></tr>
-              </tbody>
+
+          <div class="card-body cut-filter-body">
+            <div class="toolbar cut-filter-toolbar">
+              <label class="cut-filter-search">
+                <span class="sr-only">Buscar avisos</span>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                <input class="input" type="search" data-cut-search aria-label="Buscar avisos" placeholder="Buscar aviso, finca, cliente o referencia" />
+              </label>
+              <select class="select" data-cut-filter-week aria-label="Filtrar por semana">
+                <option value="all">Todas las semanas</option>
+                <option value="SEM-2026-30">SEM-2026-30</option>
+                <option value="SEM-2026-31">SEM-2026-31</option>
+              </select>
+              <select class="select" data-cut-filter-farm aria-label="Filtrar por finca">
+                <option value="all">Todas las fincas</option>
+                <option value="FINCA LA ESPERANZA">FINCA LA ESPERANZA</option>
+                <option value="FINCA SANTA ISABEL">FINCA SANTA ISABEL</option>
+                <option value="FINCA LOS ALMENDROS">FINCA LOS ALMENDROS</option>
+              </select>
+              <select class="select" data-cut-filter-status aria-label="Filtrar por estado">
+                <option value="all">Todos los estados</option>
+                <option value="CREADO">CREADO</option>
+                <option value="PROGRAMADO">PROGRAMADO</option>
+                <option value="EN_CARGUE">EN_CARGUE</option>
+              </select>
+            </div>
+
+            <section class="inline-form-panel cut-paste-panel is-hidden" data-cut-paste-panel aria-labelledby="cutPasteTitle">
+              <div>
+                <h3 class="card-title" id="cutPasteTitle">Pegar filas desde Excel</h3>
+                <p class="card-subtitle">Copia las columnas en este orden: dia corte, finca, sector, cliente, referencia, pallets, cajas por pallet y racimos.</p>
+              </div>
+              <textarea class="textarea cut-paste-input" data-cut-paste-input rows="4" aria-label="Filas copiadas desde Excel" placeholder="28/07/2026&#9;FINCA LA ESPERANZA&#9;SECTOR 01&#9;GLOBAL FRUIT EXPORT&#9;AGSTDRA&#9;120&#9;54&#9;5400"></textarea>
+              <div class="cut-paste-actions">
+                <button class="btn btn-ghost" type="button" data-cut-paste-cancel>Cancelar</button>
+                <button class="btn btn-secondary" type="button" data-cut-paste-apply>Agregar filas</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="table-wrap cut-sheet-scroll" data-cut-sheet-scroll tabindex="0" aria-label="Matriz editable de avisos de corte">
+            <table class="cut-sheet-table">
+              <colgroup>
+                <col class="cut-col-code" />
+                <col class="cut-col-week" />
+                <col class="cut-col-date" />
+                <col class="cut-col-farm" />
+                <col class="cut-col-sector" />
+                <col class="cut-col-group" />
+                <col class="cut-col-client" />
+                <col class="cut-col-reference" />
+                <col class="cut-col-class" />
+                <col class="cut-col-number" />
+                <col class="cut-col-number" />
+                <col class="cut-col-number" />
+                <col class="cut-col-number" />
+                <col class="cut-col-direct" />
+                <col class="cut-col-line" />
+                <col class="cut-col-version" />
+                <col class="cut-col-materials" />
+                <col class="cut-col-status" />
+                <col class="cut-col-observation" />
+                <col class="cut-col-actions" />
+              </colgroup>
+              <thead>
+                <tr class="cut-group-row">
+                  <th class="cut-sticky-code" rowspan="2" scope="col">Aviso</th>
+                  <th colspan="5" scope="colgroup">Planificacion</th>
+                  <th colspan="3" scope="colgroup">Producto y cliente</th>
+                  <th colspan="4" scope="colgroup">Proyeccion</th>
+                  <th colspan="3" scope="colgroup">Logistica</th>
+                  <th colspan="3" scope="colgroup">Control</th>
+                  <th rowspan="2" scope="col">Acciones</th>
+                </tr>
+                <tr>
+                  <th scope="col">Semana</th>
+                  <th scope="col">Dia corte</th>
+                  <th scope="col">Finca</th>
+                  <th scope="col">Sector</th>
+                  <th scope="col">Grupo</th>
+                  <th scope="col">Cliente</th>
+                  <th scope="col">Referencia</th>
+                  <th scope="col">Clase / certificacion</th>
+                  <th scope="col">Pallets</th>
+                  <th scope="col">Cajas / pallet</th>
+                  <th scope="col">Total cajas</th>
+                  <th scope="col">Racimos</th>
+                  <th scope="col">Directo</th>
+                  <th scope="col">Linea</th>
+                  <th scope="col">Version</th>
+                  <th scope="col">Materiales</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Observaciones</th>
+                </tr>
+              </thead>
+              <tbody data-cut-grid-body></tbody>
             </table>
           </div>
-          <div class="card-body"><div class="empty-state" id="cutNoticeEmpty">No hay avisos que coincidan con los filtros.</div></div>
+
+          <div class="cut-sheet-statusbar" data-cut-statusbar>
+            <div class="cut-status-legend" aria-label="Convenciones de estado">
+              <span class="status status-active">Guardado</span>
+              <span class="status status-warning">Cambio pendiente</span>
+              <span class="status status-inactive">Bloqueado</span>
+            </div>
+            <strong data-cut-change-count>Sin cambios pendientes</strong>
+            <div class="cut-statusbar-actions">
+              <button class="btn btn-ghost is-hidden" type="button" data-cut-bar-discard>Descartar cambios</button>
+              <button class="btn btn-primary" type="button" data-cut-bar-save disabled>Guardar cambios</button>
+            </div>
+          </div>
+          <div class="card-body"><div class="empty-state" data-cut-empty>No hay avisos que coincidan con los filtros.</div></div>
         </article>
+
+        <div class="notice notice-success is-hidden" data-cut-feedback-success role="status">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span>Los cambios fueron guardados y la trazabilidad visual fue actualizada.</span>
+        </div>
+        <div class="notice notice-error is-hidden" data-cut-feedback-error role="alert">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
+          <span data-cut-feedback-error-text>Revisa los campos obligatorios resaltados.</span>
+        </div>
       </section>
     </main>
   </div>
 
   <div class="drawer-backdrop" id="detailBackdrop"></div>
-  <aside class="drawer" id="detailDrawer" aria-label="Detalle aviso de corte">
-    <div class="drawer-head"><div><h3>Detalle aviso</h3><p>Consulta lateral de planificacion, producto, logistica y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
+  <aside class="drawer cut-detail-drawer" id="detailDrawer" aria-label="Detalle e impacto del aviso" aria-hidden="true">
+    <div class="drawer-head">
+      <div><h3 data-cut-detail-title>Detalle del aviso</h3><p data-cut-detail-description>Planificacion, impacto y trazabilidad.</p></div>
+      <button class="icon-btn" id="closeDetail" type="button" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
     <div class="drawer-body">
-      <div class="detail-group"><span class="detail-label">Aviso</span><div class="detail-value" data-detail-target="code">-</div></div>
-      <div class="detail-group"><span class="detail-label">Semana / dia corte</span><div class="detail-value"><span data-detail-target="week">-</span> - <span data-detail-target="cutdate">-</span></div></div>
-      <div class="detail-group"><span class="detail-label">Finca</span><div class="detail-value" data-detail-target="farm">-</div></div>
-      <div class="detail-group"><span class="detail-label">Referencia</span><div class="detail-value" data-detail-target="reference">-</div></div>
-      <div class="detail-group"><span class="detail-label">Cliente</span><div class="detail-value" data-detail-target="client">-</div></div>
-      <div class="detail-group"><span class="detail-label">Proyeccion</span><div class="detail-value"><span data-detail-target="pallets">-</span> pallets / <span data-detail-target="bunches">-</span> racimos</div></div>
-      <div class="detail-group"><span class="detail-label">Logistica</span><div class="detail-value"><span data-detail-target="line">-</span> - <span data-detail-target="boxes">-</span> - Directo: <span data-detail-target="direct">-</span></div></div>
-      <div class="detail-group"><span class="detail-label">Origen operativo</span><div class="detail-value"><span data-detail-target="group">-</span> - <span data-detail-target="zone">-</span></div></div>
-      <div class="detail-group"><span class="detail-label">Tipo fruta / version</span><div class="detail-value"><span data-detail-target="fruit">-</span> - <span data-detail-target="version">-</span></div></div>
-      <div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="statusLabel">-</div></div>
-      <div class="detail-group"><span class="detail-label">Observaciones</span><div class="detail-value" data-detail-target="observation">-</div></div>
-      <div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div>
+      <div class="cut-detail-summary" data-cut-detail-summary></div>
+      <div class="notice notice-warning is-hidden" data-cut-detail-lock></div>
+      <section class="cut-detail-section">
+        <h4 class="section-title">Impacto operativo</h4>
+        <div class="stack" data-cut-detail-impact></div>
+      </section>
+      <section class="cut-detail-section">
+        <h4 class="section-title">Historial</h4>
+        <div class="stack" data-cut-detail-audit></div>
+      </section>
     </div>
   </aside>
+
+  <div class="confirm-backdrop" data-cut-confirm-backdrop hidden></div>
+  <section class="confirm-dialog cut-confirm-dialog" data-cut-confirm-dialog role="dialog" aria-modal="true" aria-labelledby="cutConfirmTitle" aria-describedby="cutConfirmDescription" hidden>
+    <div class="confirm-dialog-head">
+      <div>
+        <h2 id="cutConfirmTitle">Confirmar cambios</h2>
+        <p id="cutConfirmDescription">Revisa el impacto antes de guardar. El ID original se conserva.</p>
+      </div>
+      <button class="icon-btn" type="button" data-cut-confirm-close aria-label="Cerrar confirmacion"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+    <div class="confirm-dialog-body">
+      <div class="notice notice-warning">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 9v5"></path><path d="M12 17h.01"></path></svg>
+        <span>Modificar referencia o cantidades deja materiales pendientes de recalculo y exige revision de transporte.</span>
+      </div>
+      <div class="cut-diff-wrap">
+        <table class="cut-diff-table">
+          <thead><tr><th>Aviso</th><th>Campo</th><th>Anterior</th><th>Nuevo</th></tr></thead>
+          <tbody data-cut-diff-body></tbody>
+        </table>
+      </div>
+      <label class="label" for="cutChangeReason">Motivo del cambio <span class="required" data-cut-reason-required>*</span></label>
+      <textarea class="textarea" id="cutChangeReason" data-cut-change-reason rows="3" placeholder="Describe por que se ajusta la planeacion"></textarea>
+      <div class="field-note" data-cut-reason-note>Obligatorio cuando se modifica un aviso existente.</div>
+    </div>
+    <div class="confirm-dialog-actions">
+      <button class="btn btn-secondary" type="button" data-cut-confirm-close>Cancelar</button>
+      <button class="btn btn-primary" type="button" data-cut-confirm-save>Confirmar y guardar</button>
+    </div>
+  </section>
+
   <script src="../shared/sial-core.js"></script>
   <script src="sial-aviso-corte.js"></script>
-  <script>SIAL.applyShell("avisos"); SIAL.initCutNoticeViewMode(); SIAL.initCutNoticeForm(); SIAL.initDrawer(); SIAL.initTableFilters({ search: "#cutNoticeSearch", status: "#cutNoticeStatus", context: "#cutNoticeWeek", empty: "#cutNoticeEmpty", count: "#cutNoticeCount" });</script>
+  <script src="sial-aviso-corte-grid.js"></script>
+  <script>SIAL.applyShell("avisos"); window.SIALCutNoticeGrid.init();</script>
 </body>
 </html>
