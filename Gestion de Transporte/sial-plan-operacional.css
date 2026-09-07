@@ -1,0 +1,237 @@
+@import url("../shared/sial-core.css");
+
+.operation-plan-page {
+  padding-bottom: 48px;
+}
+
+.plan-source-card,
+.plan-form-card {
+  margin-top: 24px;
+}
+
+.plan-source-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, .8fr) minmax(260px, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+}
+
+.plan-source-action,
+.plan-availability-action {
+  display: flex;
+  align-items: flex-end;
+  min-height: 71px;
+}
+
+.plan-source-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+
+.plan-source-loading > span:not(:last-child) {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-primary-500);
+  animation: planSourceLoading 1s ease-in-out infinite;
+}
+
+.plan-source-loading > span:nth-child(2) { animation-delay: .12s; }
+.plan-source-loading > span:nth-child(3) { animation-delay: .24s; }
+
+@keyframes planSourceLoading {
+  0%, 100% { opacity: .3; transform: scale(.82); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.plan-source-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, .55fr);
+  gap: 20px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.plan-source-summary dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin: 0;
+}
+
+.plan-source-summary dt {
+  color: var(--color-text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.plan-source-summary dd {
+  margin: 4px 0 0;
+  color: var(--color-text-1);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.plan-source-restriction {
+  padding: 14px;
+  border: 1px solid var(--color-warning-main);
+  border-radius: var(--radius-md);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.plan-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.plan-section-heading .section-title {
+  margin-bottom: 6px;
+}
+
+.plan-section-heading p,
+.plan-coverage-note {
+  margin: 0;
+  color: var(--color-text-2);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.plan-trip-table {
+  min-width: 1000px;
+  table-layout: fixed;
+}
+
+.plan-trip-table th,
+.plan-trip-table td {
+  padding-right: 10px;
+  padding-left: 10px;
+  vertical-align: middle;
+}
+
+.plan-trip-table th:nth-child(1) { width: 56px; }
+.plan-trip-table th:nth-child(2) { width: 108px; }
+.plan-trip-table th:nth-child(3),
+.plan-trip-table th:nth-child(4) { width: 110px; }
+.plan-trip-table th:nth-child(5) { width: 124px; }
+.plan-trip-table th:nth-child(6) { width: 98px; }
+.plan-trip-table th:nth-child(7) { width: 110px; }
+.plan-trip-table th:nth-child(8) { width: 156px; }
+.plan-trip-table th:nth-child(9) { width: 88px; }
+
+.plan-trip-table .input,
+.plan-trip-table .select {
+  min-width: 0;
+  width: 100%;
+}
+
+.plan-trip-table .trip-need {
+  color: var(--color-text-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.plan-trip-status {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.plan-trip-actions {
+  gap: 4px;
+  justify-content: flex-start;
+}
+
+.plan-trip-table tr.is-selected td {
+  background: color-mix(in srgb, var(--color-primary-50) 74%, transparent);
+}
+
+.plan-trip-table tr.is-selected .icon-btn:not([data-state-action="inactive"]) {
+  color: var(--color-primary-700);
+}
+
+.plan-trip-table .is-error {
+  border-color: var(--color-error-main);
+}
+
+.plan-trip-table-wrap + .empty-state {
+  margin-top: 16px;
+}
+
+.plan-coverage-note {
+  margin-top: 12px;
+}
+
+.plan-assignment-section {
+  scroll-margin-top: 24px;
+}
+
+.plan-assignment-fields {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.plan-assignment-fields .grid {
+  align-items: start;
+}
+
+.plan-assignment-group-title {
+  margin: 0 0 16px;
+  color: var(--color-text-1);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.plan-assignment-validation-action {
+  display: flex;
+  margin-top: 20px;
+}
+
+.plan-assignment-section [data-assignment-feedback] {
+  margin-top: 20px;
+}
+
+@media (max-width: 1100px) {
+  .plan-source-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .plan-source-action {
+    min-height: auto;
+  }
+
+  .plan-source-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .plan-source-controls,
+  .plan-source-summary dl {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-source-action .btn,
+  .plan-availability-action .btn,
+  .plan-section-heading .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-source-loading > span:not(:last-child) {
+    animation: none;
+  }
+}

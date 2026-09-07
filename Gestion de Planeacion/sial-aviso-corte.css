@@ -2056,6 +2056,10 @@ body.modal-open {
   border-top: 1px solid var(--color-border-subtle);
 }
 
+.cut-flow-plan-action {
+  margin-top: 16px;
+}
+
 .cut-flow-item:first-child { border-top: 0; }
 .cut-flow-item > div { display: grid; gap: 2px; }
 .cut-flow-item small { color: var(--color-text-3); font-size: 11px; }

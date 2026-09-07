@@ -640,6 +640,7 @@ const SIALMaterials = (() => {
     qs("[data-material-detail-body]", drawer).innerHTML = `
       ${detailRows(record)}
       <div class="detail-group"><span class="detail-label">Auditoría</span><div class="stack">${String(record.audit || "Sin auditoría registrada").split(";").map((item) => `<div class="audit-item"><strong>${esc(item.split("|")[0] || item)}</strong><div class="muted">${esc(item.split("|")[1] || "")}</div></div>`).join("")}</div></div>
+      ${type === "transport" && record.status === "LISTO_DESPACHO" ? `<a class="btn btn-primary" href="../Gestion%20de%20Transporte/plan-operacional.html?origen=orden&id=${encodeURIComponent(record.id)}">Planificar transporte</a>` : ""}
     `;
     drawer.classList.add("show");
     backdrop?.classList.add("show");
