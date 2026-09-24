@@ -144,6 +144,7 @@ const SIALCore = (() => {
             { id: "ordenes", label: "Ordenes de transporte", href: "ordenes-transporte-insumos.html" },
             { id: "proveedores", label: "Resumen proveedores", href: "resumen-proveedores.html" },
             { id: "entregas", label: "Seguimiento entregas", href: "seguimiento-entregas.html" },
+            { id: "trazabilidad-pedido", label: "Trazabilidad del pedido", href: "trazabilidad-pedido.html" },
             { id: "materiales", label: "Catálogo de materiales", href: "gestion-materiales.html" },
             { id: "recetas", label: "Recetas de materiales", href: "recetas-materiales.html" },
             { id: "proveedoresMaster", label: "Gestion de proveedores", href: "gestion-proveedores.html" },
