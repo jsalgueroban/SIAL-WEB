@@ -773,6 +773,16 @@ const SIALCatalog = (() => {
     {
       module: "materiales",
       moduleLabel: "Materiales y Suministros",
+      title: "Trazabilidad integral del pedido",
+      family: "gestion",
+      status: "propuesta",
+      href: "Materiales%20y%20Suministros/trazabilidad-pedido.html",
+      description: "Ruta operativa de un pedido desde su creación hasta el cierre, con foco en el estado actual y transiciones en vivo.",
+      tags: ["Pedidos", "Trazabilidad", "Tiempo real", "Propuesta"]
+    },
+    {
+      module: "materiales",
+      moduleLabel: "Materiales y Suministros",
       title: "Gestion de materiales",
       family: "configuracion",
       status: "implementada",

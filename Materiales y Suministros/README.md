@@ -25,6 +25,7 @@ Modulo orquestador para pedidos de materiales, inventario en finca, pallets, ord
 - `ordenes-transporte-insumos.html`: ordenes de transporte y notificaciones.
 - `resumen-proveedores.html`: generacion y envio digital a proveedores externos.
 - `seguimiento-entregas.html`: entrega, POD y evidencia consultable.
+- `trazabilidad-pedido.html`: consulta focalizada del recorrido integral de un pedido en siete estados, con estado actual protagonista y vehículo animado que avanza por la ruta operativa.
 - `gestion-materiales.html`: catálogo de materiales (código SAP, nombre, unidad de medida y estado).
 - `recetas-materiales.html`: recetas por combinación Referencia + Versión y cantidades sugeridas por caja.
 - `gestion-proveedores.html`: maestra minima de proveedores.

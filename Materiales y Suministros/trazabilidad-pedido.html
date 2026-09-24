@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIAL | Trazabilidad del pedido</title>
+  <script>(function(){const t=localStorage.getItem("sial-theme");const d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light");})();</script>
+  <link rel="stylesheet" href="trazabilidad-pedido.css" />
+</head>
+<body data-view-family="gestion">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Materiales</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></button><button class="icon-btn" type="button" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main">
+      <section class="page order-trace" data-order-trace>
+        <p class="page-eyebrow">Materiales / Pedidos / Trazabilidad</p>
+        <div class="page-header"><div><h1 class="page-title">Trazabilidad del pedido</h1><p class="page-subtitle">Consulta un pedido y sigue su recorrido completo, con el estado actual y lo que necesita para avanzar.</p></div></div>
+
+        <article class="card trace-search-card">
+          <div class="card-body">
+            <form class="trace-search" data-trace-search role="search">
+              <div class="field trace-search-field"><label for="orderSearch">Número del pedido</label><div class="trace-search-input"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input id="orderSearch" class="input" type="search" placeholder="Ej. PED-2026-10482" autocomplete="off" /></div></div>
+              <button class="btn btn-primary" type="submit">Consultar pedido</button>
+            </form>
+            <dl class="trace-order-data" data-order-context hidden></dl>
+          </div>
+        </article>
+
+        <div class="trace-empty" data-trace-empty>
+          <div class="trace-empty-route" aria-hidden="true">
+            <span class="trace-empty-line"></span>
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="trace-empty-copy">
+            <span class="trace-empty-kicker">Ruta operativa</span>
+            <strong>El recorrido aparecerá después de consultar</strong>
+            <span>Ingresa el número del pedido para ver su estado actual y el avance por cada etapa.</span>
+          </div>
+        </div>
+
+        <div class="trace-result" data-trace-result hidden>
+          <section class="trace-overview card">
+          <div class="current-state" data-current-state aria-labelledby="currentStateTitle">
+            <div class="current-state-main">
+              <div class="state-orbit" aria-hidden="true"><span></span><svg class="icon" data-current-icon viewBox="0 0 24 24"><path d="M3 12h18M16 5l7 7-7 7"></path></svg></div>
+              <div class="state-copy">
+                <div class="state-overline"><span class="state-kicker">Estado actual</span><span class="state-stage">Etapa <b data-stage-number>5</b> de 7</span></div>
+                <div class="state-title-row"><h2 id="currentStateTitle" data-current-title>En tránsito</h2></div>
+                <p data-current-summary>El pedido salió del centro de distribución y se dirige a Finca Santa Isabel.</p>
+                <div class="state-live"><span class="live-dot"></span><span data-live-label>Seguimiento activo · última actualización 23 sep · 12:18</span></div>
+              </div>
+            </div>
+            <div class="state-facts"><div><span>Responsable actual</span><strong data-current-owner>Transportes del Caribe</strong></div><div><span>Tiempo en esta etapa</span><strong data-current-duration>1 h 24 min</strong></div><div><span>Siguiente condición</span><strong data-current-next>Confirmar llegada a finca</strong></div></div>
+          </div>
+
+          <section class="journey-card" aria-labelledby="journeyTitle">
+            <div class="journey-heading"><div><span>Pedido <b data-order-id>PED-2026-10482</b></span><h2 id="journeyTitle">Ruta operativa</h2></div></div>
+            <div class="journey-scroll"><ol class="journey" data-journey aria-label="Etapas del pedido"></ol></div>
+          </section>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../shared/sial-core.js"></script>
+  <script src="trazabilidad-pedido.js"></script>
+</body>
+</html>
