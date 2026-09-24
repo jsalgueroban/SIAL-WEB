@@ -51,6 +51,11 @@
     target?.classList.add("is-hidden");
   }
 
+  function setSourceState(label, type = "neutral") {
+    refs.sourceChip.textContent = label;
+    refs.sourceChip.className = `status status-${type}`;
+  }
+
   function sourceFromControls() {
     return (sourceCatalog[refs.originType.value] || []).find((item) => item.id === refs.origin.value) || null;
   }
@@ -95,13 +100,13 @@
     hideFeedback();
     refs.sourceSummary.classList.add("is-hidden");
     refs.sourceLoading.classList.remove("is-hidden");
-    refs.sourceChip.textContent = "Consultando origen";
+    setSourceState("Consultando origen", "info");
 
     window.setTimeout(() => {
       refs.sourceLoading.classList.add("is-hidden");
       if (!item) {
         state.source = null;
-        refs.sourceChip.textContent = "Sin origen cargado";
+        setSourceState("Sin origen cargado");
         showFeedback("error", "Selecciona un documento de origen para continuar.");
         renderTrips();
         renderAssignment();
@@ -112,7 +117,7 @@
       refs.sourceData.innerHTML = sourceDetails(item).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
       refs.sourceRestriction.textContent = item.restriction;
       refs.sourceSummary.classList.remove("is-hidden");
-      refs.sourceChip.textContent = item.eligible ? "Origen disponible" : "Origen no elegible";
+      setSourceState(item.eligible ? "Origen disponible" : "Origen no elegible", item.eligible ? "active" : "inactive");
       refs.planPriority.value = item.priority;
       resetTrips(item);
       renderTrips();
@@ -133,21 +138,32 @@
     return '<span class="status status-warning">Pendiente de asignación</span>';
   }
 
+  function updateCoverage() {
+    const total = state.trips.length;
+    const ready = state.trips.filter((trip) => trip.availability === "ready").length;
+    const percent = total ? Math.round((ready / total) * 100) : 0;
+    if (refs.coverageValue) refs.coverageValue.textContent = `${ready} de ${total} ${total === 1 ? "viaje" : "viajes"}`;
+    if (refs.coverageBar) refs.coverageBar.style.width = `${percent}%`;
+  }
+
   function renderTrips() {
     const hasTrips = state.trips.length > 0;
     refs.tripEmpty.classList.toggle("is-hidden", hasTrips);
     refs.tripBody.innerHTML = state.trips.map((trip) => `
-      <tr class="${trip.id === state.activeTripId ? "is-selected" : ""}" data-trip-id="${esc(trip.id)}">
-        <td><strong>${esc(trip.label)}</strong></td>
-        <td><select class="select" data-trip-field="movement" aria-label="Movimiento de ${esc(trip.label)}"><option value="materiales"${trip.movement === "materiales" ? " selected" : ""}>${movementLabels.materiales}</option><option value="contenedor-vacio"${trip.movement === "contenedor-vacio" ? " selected" : ""}>${movementLabels["contenedor-vacio"]}</option><option value="contenedor-cargado"${trip.movement === "contenedor-cargado" ? " selected" : ""}>${movementLabels["contenedor-cargado"]}</option></select></td>
-        <td><input class="input" data-trip-field="origin" aria-label="Origen de ${esc(trip.label)}" value="${esc(trip.origin)}" /></td>
-        <td><input class="input" data-trip-field="destination" aria-label="Destino de ${esc(trip.label)}" value="${esc(trip.destination)}" /></td>
-        <td><input class="input" data-trip-field="scheduledAt" type="datetime-local" aria-label="Fecha y hora de ${esc(trip.label)}" value="${esc(trip.scheduledAt)}" /></td>
-        <td><div class="trip-need">${esc(trip.need)}</div></td>
-        <td><span class="muted">${esc(assignmentLabel(trip))}</span></td>
-        <td><div class="plan-trip-status">${statusMarkup(trip)}</div></td>
-        <td><div class="row-actions plan-trip-actions"><button class="icon-btn" type="button" data-select-trip aria-label="Asignar recursos a ${esc(trip.label)}" title="Asignar recursos"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-8 0v2"></path><circle cx="12" cy="7" r="4"></circle><path d="M19 8v6M16 11h6"></path></svg></button><button class="icon-btn" type="button" data-remove-trip data-state-action="inactive" aria-label="Quitar ${esc(trip.label)}" title="Quitar viaje"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg></button></div></td>
-      </tr>`).join("");
+      <article class="plan-trip-card ${trip.id === state.activeTripId ? "is-selected" : ""} is-${esc(trip.availability)}" data-trip-id="${esc(trip.id)}" data-select-trip-card tabindex="0" aria-label="Seleccionar ${esc(trip.label)}" aria-current="${trip.id === state.activeTripId ? "true" : "false"}">
+        <div class="plan-trip-main">
+          <div class="plan-trip-heading"><div><span class="plan-trip-eyebrow">Trayecto ${esc(String(state.trips.indexOf(trip) + 1).padStart(2, "0"))}</span><strong>${esc(movementLabels[trip.movement])}</strong></div>${statusMarkup(trip)}</div>
+          <div class="plan-trip-fields">
+            <div class="plan-trip-field"><label>Movimiento</label><select class="select" data-trip-field="movement" aria-label="Movimiento de ${esc(trip.label)}"><option value="materiales"${trip.movement === "materiales" ? " selected" : ""}>${movementLabels.materiales}</option><option value="contenedor-vacio"${trip.movement === "contenedor-vacio" ? " selected" : ""}>${movementLabels["contenedor-vacio"]}</option><option value="contenedor-cargado"${trip.movement === "contenedor-cargado" ? " selected" : ""}>${movementLabels["contenedor-cargado"]}</option></select></div>
+            <div class="plan-trip-field"><label>Origen</label><input class="input" data-trip-field="origin" aria-label="Origen de ${esc(trip.label)}" value="${esc(trip.origin)}" /></div>
+            <div class="plan-trip-field"><label>Destino</label><input class="input" data-trip-field="destination" aria-label="Destino de ${esc(trip.label)}" value="${esc(trip.destination)}" /></div>
+            <div class="plan-trip-field"><label>Salida</label><input class="input" data-trip-field="scheduledAt" type="datetime-local" aria-label="Fecha y hora de ${esc(trip.label)}" value="${esc(trip.scheduledAt)}" /></div>
+          </div>
+          <div class="plan-trip-meta"><span>Necesidad: <strong>${esc(trip.need)}</strong></span><span>Asignación: <strong>${esc(assignmentLabel(trip))}</strong></span></div>
+        </div>
+        <div class="plan-trip-actions"><button class="btn btn-secondary btn-compact" type="button" data-select-trip aria-label="Asignar recursos a ${esc(trip.label)}">Asignar</button><button class="icon-btn" type="button" data-remove-trip data-state-action="inactive" aria-label="Quitar ${esc(trip.label)}" title="Quitar viaje"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg></button></div>
+      </article>`).join("");
+    updateCoverage();
   }
 
   function activeTrip() {
@@ -169,6 +185,10 @@
     refs.assignmentMode.disabled = !selected;
     refs.checkAssignment.disabled = !selected;
     refs.assignmentSubtitle.textContent = selected ? `${trip.label}: ${movementLabels[trip.movement]}. Completa la asignación correspondiente.` : "Selecciona un viaje de un origen disponible para asignar sus recursos.";
+    if (refs.assignmentStatus) {
+      refs.assignmentStatus.className = trip?.availability === "ready" ? "status status-active" : trip?.availability === "conflict" ? "status status-inactive" : "status status-warning";
+      refs.assignmentStatus.textContent = trip?.availability === "ready" ? "Asignado" : trip?.availability === "conflict" ? "Con conflicto" : "Pendiente";
+    }
     refs.ownFields.classList.toggle("is-hidden", !selected || refs.assignmentMode.value !== "own");
     refs.externalFields.classList.toggle("is-hidden", !selected || refs.assignmentMode.value !== "external");
     refs.assignmentValidationAction.classList.toggle("is-hidden", !selected);
@@ -311,9 +331,34 @@
       showFeedback("error", errors[0]);
       return;
     }
-    showFeedback("success", `Plan preparado con ${state.trips.length} ${state.trips.length === 1 ? "viaje" : "viajes"}. La confirmación es simulada y no genera operaciones ni reservas reales.`);
+    hideFeedback();
     refs.confirmPlan.disabled = true;
     refs.confirmPlan.classList.add("is-loading");
+    refs.confirmPlan.textContent = "Confirmando plan";
+    window.setTimeout(() => {
+      refs.confirmPlan.classList.remove("is-loading");
+      refs.confirmPlan.classList.add("is-confirmed");
+      refs.confirmPlan.textContent = "Plan confirmado";
+      refs.confirmationCopy.textContent = `Se prepararon ${state.trips.length} ${state.trips.length === 1 ? "viaje" : "viajes"} a partir de ${state.source.document}.`;
+      refs.confirmationSummary.innerHTML = `<div><dt>Origen</dt><dd>${esc(state.source.id)}</dd></div><div><dt>Cobertura</dt><dd>${state.trips.length} de ${state.trips.length} viajes</dd></div><div><dt>Estado</dt><dd>Listo para programación</dd></div>`;
+      refs.confirmation.classList.remove("is-hidden");
+      document.body.classList.add("has-modal");
+      qs("[data-close-confirmation]", refs.confirmation)?.focus();
+    }, 650);
+  }
+
+  function toggleNotes(open) {
+    const shouldOpen = typeof open === "boolean" ? open : refs.notesPanel.classList.contains("is-hidden");
+    refs.notesPanel.classList.toggle("is-hidden", !shouldOpen);
+    refs.toggleNotes.setAttribute("aria-expanded", String(shouldOpen));
+    refs.toggleNotes.classList.toggle("is-active", shouldOpen);
+    if (shouldOpen) refs.observations.focus();
+  }
+
+  function closeConfirmation() {
+    refs.confirmation.classList.add("is-hidden");
+    document.body.classList.remove("has-modal");
+    refs.confirmPlan.focus();
   }
 
   function bindEvents() {
@@ -321,7 +366,7 @@
       populateOrigins();
       state.source = null;
       refs.sourceSummary.classList.add("is-hidden");
-      refs.sourceChip.textContent = "Sin origen cargado";
+      setSourceState("Sin origen cargado");
       state.trips = [];
       state.activeTripId = null;
       renderTrips();
@@ -333,9 +378,17 @@
     refs.tripBody.addEventListener("click", (event) => {
       const select = event.target.closest("[data-select-trip]");
       const remove = event.target.closest("[data-remove-trip]");
-      const id = event.target.closest("[data-trip-id]")?.dataset.tripId;
+      const card = event.target.closest("[data-trip-id]");
+      const id = card?.dataset.tripId;
       if (select && id) selectTrip(id);
-      if (remove && id) removeTrip(id);
+      else if (remove && id) removeTrip(id);
+      else if (card && id && !event.target.closest("input, select, button, textarea, a")) selectTrip(id);
+    });
+    refs.tripBody.addEventListener("keydown", (event) => {
+      const card = event.target.closest("[data-select-trip-card]");
+      if (!card || event.target !== card || !["Enter", " "].includes(event.key)) return;
+      event.preventDefault();
+      selectTrip(card.dataset.tripId);
     });
     refs.assignmentMode.addEventListener("change", () => {
       const trip = activeTrip();
@@ -350,6 +403,9 @@
     refs.checkAssignment.addEventListener("click", checkAssignment);
     refs.saveDraft.addEventListener("click", saveDraft);
     refs.form.addEventListener("submit", confirmPlan);
+    refs.toggleNotes.addEventListener("click", () => toggleNotes());
+    refs.closeNotes.addEventListener("click", () => toggleNotes(false));
+    qsa("[data-close-confirmation]", refs.confirmation).forEach((control) => control.addEventListener("click", closeConfirmation));
     refs.planDate.addEventListener("change", () => {
       state.trips.forEach((trip) => { if (!trip.scheduledAt) trip.scheduledAt = refs.planDate.value; });
       renderTrips();
@@ -364,9 +420,15 @@
       assignmentSection: qs("[data-assignment-section]"), assignmentSubtitle: qs("[data-assignment-subtitle]"), assignmentMode: qs("#assignmentMode"),
       ownFields: qs("[data-own-fields]"), externalFields: qs("[data-external-fields]"), assignmentValidationAction: qs("[data-assignment-validation-action]"), assignmentVehicle: qs("#assignmentVehicle"), assignmentDriver: qs("#assignmentDriver"),
       assignmentCompany: qs("#assignmentCompany"), assignmentExternalVehicle: qs("#assignmentExternalVehicle"), assignmentExternalDriver: qs("#assignmentExternalDriver"),
-      checkAssignment: qs("[data-check-assignment]"), assignmentFeedback: qs("[data-assignment-feedback]"), feedback: qs("[data-plan-feedback]"), saveDraft: qs("[data-save-draft]"), confirmPlan: qs("[data-confirm-plan]")
+      checkAssignment: qs("[data-check-assignment]"), assignmentFeedback: qs("[data-assignment-feedback]"), feedback: qs("[data-plan-feedback]"), saveDraft: qs("[data-save-draft]"), confirmPlan: qs("[data-confirm-plan]"),
+      toggleNotes: qs("[data-toggle-notes]"), closeNotes: qs("[data-close-notes]"), notesPanel: qs("#planNotesPanel"), observations: qs("#planObservations"), confirmation: qs("[data-confirmation]"), confirmationCopy: qs("[data-confirmation-copy]"), confirmationSummary: qs("[data-confirmation-summary]")
+      , coverageValue: qs("[data-coverage-value]"), coverageBar: qs("[data-coverage-bar]"), assignmentStatus: qs("[data-assignment-status]")
     });
     if (!refs.form) return;
+    const now = new Date();
+    now.setMinutes(Math.ceil(now.getMinutes() / 15) * 15, 0, 0);
+    const localTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    refs.planDate.value = localTime;
     const route = new URLSearchParams(window.location.search);
     const type = route.get("origen");
     const id = route.get("id");
