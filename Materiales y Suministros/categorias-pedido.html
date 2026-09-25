@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIAL | Categorías de pedido</title>
+  <script>(function(){const t=localStorage.getItem("sial-theme");const d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light");})();</script>
+  <link rel="stylesheet" href="sial-materiales.css" />
+</head>
+<body data-view-family="gestion">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Materiales</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema"></button><span class="avatar">QA</span></div></header>
+    <main class="main"><section class="page" data-category-root></section></main>
+  </div>
+  <script src="../shared/sial-core.js"></script>
+  <script src="sial-categorias-pedido.js?v=20260925-3"></script>
+  <script>SIALOrderCategories.init();</script>
+</body>
+</html>

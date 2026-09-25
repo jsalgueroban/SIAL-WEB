@@ -5,6 +5,7 @@ const SIALAdditionalOrders = (() => {
   const format = (value) => new Intl.NumberFormat("es-CO").format(value);
   const params = new URLSearchParams(location.search);
   const baseOrder = { id: "PED-SUG-2026-32-014", notice: "AC-2026-032", farm: "La Ceiba", farmCode: "FIN-014", reference: "AGSTDRA", week: "SEM-2026-32", status: "Validado" };
+  baseOrder.category = "EMPA";
   const saveKey = `sial-hu666-additional:${baseOrder.id}`;
   const draftKey = `sial-hu666-draft:${baseOrder.id}`;
   const icon = (path) => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${path}</svg>`;
@@ -31,7 +32,7 @@ const SIALAdditionalOrders = (() => {
     { id: "PAD-2026-31-003", base: "PED-SUG-2026-31-006", notice: "AC-2026-031", farm: "Marte", week: "SEM-2026-31", sequence: 3, lines: 1, quantity: "40 unidades", reason: "Cambio operativo", status: "Entregado", updated: "31/07/2026, 17:40", document: "RPT-2026-0894" }
   ];
 
-  const model = { lines: [{ material: materials[0].code, quantity: 0 }], reason: "", observation: "" };
+  const model = { category: "", lines: [{ material: materials[0].code, quantity: 0 }], reason: "", observation: "" };
   const listState = { page: 1, pageSize: 10 };
 
   function savedRequests() {
@@ -181,6 +182,7 @@ const SIALAdditionalOrders = (() => {
         <section class="additional-form-section additional-reason-section" aria-labelledby="additional-reason-title">
           <header class="additional-section-header"><div><h2 id="additional-reason-title" class="card-title">Motivo y detalle</h2><p class="card-subtitle">Explica por qué esta necesidad no quedó cubierta por el pedido base.</p></div></header>
           <div class="additional-reason-fields">
+            <div class="field"><label class="label" for="additionalCategory">Categoría del pedido <span class="required">*</span></label><select class="select" id="additionalCategory" required><option value="">Seleccionar categoría</option><option value="EMPA">EMPA · EMPAQUE</option><option value="ETIQ">ETIQ · ETIQUETA</option><option value="OPER">OPER · OPERATIVO</option></select><span class="field-error" data-category-error hidden>Selecciona una categoría activa.</span></div>
             <div class="field"><label class="label" for="additionalReason">Motivo de la solicitud</label><select class="select" id="additionalReason" required><option value="">Seleccionar motivo</option><option value="incremento-corte">Incremento extraordinario del corte</option><option value="inventario">Diferencia de inventario</option><option value="entrega-incompleta">Entrega incompleta del proveedor</option><option value="dano">Material dañado o no utilizable</option><option value="otro">Otra necesidad operativa</option></select><span class="field-error" data-reason-error hidden>Selecciona el motivo de la solicitud.</span></div>
             <div class="field"><label class="label" for="additionalObservation">Detalle <span class="additional-optional">Opcional</span></label><textarea class="input additional-textarea" id="additionalObservation" rows="3" placeholder="Agrega información útil para la validación."></textarea></div>
           </div>
@@ -198,6 +200,7 @@ const SIALAdditionalOrders = (() => {
     try {
       const draft = JSON.parse(localStorage.getItem(draftKey));
       if (!draft) return;
+      model.category = draft.category || "";
       if (Array.isArray(draft.lines) && draft.lines.length) model.lines = draft.lines;
       model.reason = draft.reason || "";
       model.observation = draft.observation || "";
@@ -217,7 +220,7 @@ const SIALAdditionalOrders = (() => {
     const results = model.lines.map(lineResult);
     const blocked = results.filter((item) => item.type === "blocked").length;
     const shortages = results.filter((item) => item.type === "warning").length;
-    return { blocked, shortages, valid: !blocked && Boolean(model.reason) };
+    return { blocked, shortages, valid: !blocked && Boolean(model.reason) && Boolean(model.category) };
   }
 
   function renderCreateState() {
@@ -229,6 +232,7 @@ const SIALAdditionalOrders = (() => {
     if (!summary || !submit) return;
     error.hidden = Boolean(model.reason) || model.lines.every((line) => !line.quantity);
     if (state.blocked) { summary.className = "additional-form-summary is-error"; summary.innerHTML = `${icon(icons.alert)}<div><strong>Completa las cantidades</strong><span>${state.blocked} ${state.blocked === 1 ? "línea necesita" : "líneas necesitan"} una cantidad válida.</span></div>`; }
+    else if (!model.category) { summary.className = "additional-form-summary is-warning"; summary.innerHTML = `${icon(icons.alert)}<div><strong>Falta la categoría</strong><span>Selecciona cómo se clasifica el pedido.</span></div>`; }
     else if (!model.reason) { summary.className = "additional-form-summary is-warning"; summary.innerHTML = `${icon(icons.alert)}<div><strong>Falta el motivo</strong><span>Selecciona por qué necesitas este pedido adicional.</span></div>`; }
     else if (state.shortages) { summary.className = "additional-form-summary is-warning"; summary.innerHTML = `${icon(icons.alert)}<div><strong>${state.shortages} ${state.shortages === 1 ? "material supera" : "materiales superan"} el stock visible</strong><span>La solicitud quedará pendiente de validación de abastecimiento.</span></div>`; }
     else { summary.className = "additional-form-summary is-success"; summary.innerHTML = `${icon(icons.check)}<div><strong>Solicitud lista</strong><span>Las cantidades tienen stock visible y pasarán a validación.</span></div>`; }
@@ -236,7 +240,7 @@ const SIALAdditionalOrders = (() => {
   }
 
   function draft() {
-    localStorage.setItem(draftKey, JSON.stringify({ lines: model.lines, reason: model.reason, observation: model.observation }));
+    localStorage.setItem(draftKey, JSON.stringify({ category: model.category, lines: model.lines, reason: model.reason, observation: model.observation }));
     feedback("El borrador quedó guardado en este dispositivo.");
   }
 
@@ -251,6 +255,7 @@ const SIALAdditionalOrders = (() => {
     const total = model.lines.reduce((sum, line) => sum + Number(line.quantity || 0), 0);
     const now = new Date();
     const saved = { id: `PAD-2026-32-${String(sequence).padStart(3, "0")}`, base: baseOrder.id, notice: baseOrder.notice, farm: baseOrder.farm, farmCode: baseOrder.farmCode, week: baseOrder.week, reference: baseOrder.reference, sequence, lines: model.lines.length, quantity: `${format(total)} en unidades de cada material`, reason: qs("#additionalReason").selectedOptions[0].textContent, reasonCode: model.reason, observation: model.observation, status: "Pendiente de validación", updated: "Ahora", createdAt: now.toISOString(), actor: "QA Materiales · Web", document: "Pendiente de clasificación", shortages: state.shortages, idempotencyKey, detailLines: model.lines.map((line) => ({ ...line, ...materials.find((item) => item.code === line.material) })) };
+    saved.category = model.category;
     localStorage.setItem(saveKey, JSON.stringify([...savedRequests(), saved]));
     localStorage.removeItem(draftKey);
     location.href = `pedidos-adicionales.html?pedido=${encodeURIComponent(saved.id)}&creado=1`;
@@ -264,6 +269,7 @@ const SIALAdditionalOrders = (() => {
     const lines = item.detailLines || [{ name: item.quantity, code: "Detalle consolidado", unit: "", quantity: "—", stock: "—" }];
     return `
       ${header(item.id, "Consulta el origen, la validación y los hitos posteriores de la solicitud.", `<div class="card-actions">${statusChip(item.status)}${returnToAdditionalOrders()}</div>`, "Materiales / Pedidos adicionales / Detalle")}
+      <div class="notice notice-info"><strong>Categoría del pedido:</strong>&nbsp; ${esc(item.category || baseOrder.category)}</div>
       ${created ? `<div class="notice notice-success additional-created" role="status">${icon(icons.check)}<div><strong>Pedido adicional registrado</strong><span>La solicitud se creó una sola vez y quedó pendiente de validación.</span></div></div>` : ""}
       <article class="card additional-detail-card">
         <div class="additional-chain" aria-label="Cadena de origen del pedido"><div><span>Aviso de corte</span><strong>${esc(item.notice)}</strong></div><i aria-hidden="true">→</i><div><span>Pedido base</span><strong>${esc(item.base)}</strong></div><i aria-hidden="true">→</i><div class="is-current"><span>Pedido adicional</span><strong>${esc(item.id)}</strong></div></div>
@@ -309,6 +315,8 @@ const SIALAdditionalOrders = (() => {
   }
 
   function bindCreate() {
+    try { const active = new Set(JSON.parse(localStorage.getItem("sial-order-categories") || "[]").filter((item) => item.status === "ACTIVO").map((item) => item.code)); if (active.size) Array.from(qs("#additionalCategory").options).forEach((option) => { if (option.value && !active.has(option.value)) option.remove(); }); } catch { /* Conserva las categorías semilla. */ }
+    qs("#additionalCategory").value = model.category;
     qs("#additionalReason").value = model.reason;
     qs("#additionalObservation").value = model.observation;
     qs("[data-additional-lines]")?.addEventListener("input", (event) => {
@@ -330,6 +338,7 @@ const SIALAdditionalOrders = (() => {
       model.lines.push({ material: next.code, quantity: 0 }); renderCreateState();
     });
     qs("#additionalReason")?.addEventListener("change", (event) => { model.reason = event.target.value; renderCreateState(); });
+    qs("#additionalCategory")?.addEventListener("change", (event) => { model.category = event.target.value; renderCreateState(); });
     qs("#additionalObservation")?.addEventListener("input", (event) => { model.observation = event.target.value; });
     qs("[data-save-draft]")?.addEventListener("click", draft);
     qs("[data-additional-form]")?.addEventListener("submit", submit);

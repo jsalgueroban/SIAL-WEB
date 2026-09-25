@@ -12,10 +12,15 @@ Modulo orquestador para pedidos de materiales, inventario en finca, pallets, ord
 - `HU668`: resumen digital para proveedores externos.
 - `HU681`, `HU682`, `HU547`: entrega movil, POD, foto/firma y recepcion.
 - `HU826`: maestra de materiales y configuración por referencia.
+- `HU2370`: aprobación por producto, respuesta de finca, continuidad documental e intercambio TXT demostrativo con ERP.
 - `HU559`, `HU560`: pallets completos e incompletos.
 - `HU607`: enlace contextual hacia Seguridad / Auditoria Operativa.
 
 ## Vistas
+
+- `aprobacion-pedidos-materiales.html`: bandeja y detalle de decisión por producto para HU2370; Materiales responde, relaciona documentos, intercambia TXT demostrativos y la finca aprueba o rechaza según el estado.
+- `pedidos-recurrentes.html`: solicitudes operativas sin aviso de corte ni pedido semanal base, con aprobación directa de Materiales.
+- `categorias-pedido.html`: maestra compartida de categorías para pedidos y materiales, con código único, nombre y activación/inactivación.
 
 - `index.html`: tablero operativo del modulo.
 - `gestion-pedidos-materiales.html`: pedidos sugeridos, adicionales y estandar.
@@ -44,3 +49,4 @@ Modulo orquestador para pedidos de materiales, inventario en finca, pallets, ord
 - Las maestras cortas usan formulario embebido.
 - Los listados conservan busqueda, filtros, contador, exportacion, paginacion y drawer lateral.
 - La conexion backend queda pendiente; los payloads conceptuales deben derivarse de las HU.
+- HU2370 no convierte a SIAL en maestro de existencias: stock, reservas y documentos ERP se representan como consulta, relación lógica y conciliación demostrativa local.

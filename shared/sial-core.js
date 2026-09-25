@@ -138,6 +138,8 @@ const SIALCore = (() => {
           views: [
             { id: "dashboard", label: "Tablero materiales", href: "index.html" },
             { id: "pedidos", label: "Gestion de pedidos", href: "gestion-pedidos-materiales.html" },
+            { id: "aprobacionPedidos", label: "Aprobación de pedidos", href: "aprobacion-pedidos-materiales.html" },
+            { id: "pedidosRecurrentes", label: "Pedidos recurrentes", href: "pedidos-recurrentes.html" },
             { id: "inventario", label: "Inventario de materiales", href: "inventario-materiales-finca.html" },
             { id: "movimientos", label: "Movimientos de inventario", href: "movimientos-inventario.html" },
             { id: "pallets", label: "Inventario de pallets", href: "inventario-pallets.html" },
@@ -146,6 +148,7 @@ const SIALCore = (() => {
             { id: "entregas", label: "Seguimiento entregas", href: "seguimiento-entregas.html" },
             { id: "trazabilidad-pedido", label: "Trazabilidad del pedido", href: "trazabilidad-pedido.html" },
             { id: "materiales", label: "Catálogo de materiales", href: "gestion-materiales.html" },
+            { id: "categoriasPedido", label: "Categorías de pedido", href: "categorias-pedido.html" },
             { id: "recetas", label: "Recetas de materiales", href: "recetas-materiales.html" },
             { id: "proveedoresMaster", label: "Gestion de proveedores", href: "gestion-proveedores.html" },
             { id: "reglas", label: "Reglas documentales", href: "reglas-documentales.html" }

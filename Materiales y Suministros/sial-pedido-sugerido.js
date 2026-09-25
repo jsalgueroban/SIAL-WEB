@@ -66,6 +66,7 @@ const SIALSuggestedOrder = (() => {
         <div class="card-body suggest-selector-grid">
           <div class="field"><label class="label" for="suggestNotice">Aviso de corte</label><select class="select" id="suggestNotice"><option value="AC-2026-032">AC-2026-032 · SEM-2026-32 · Publicado</option><option disabled>Los borradores no están disponibles</option></select></div>
           <div class="field"><label class="label" for="suggestFarm">Finca</label><select class="select" id="suggestFarm"><option value="ceiba">La Ceiba · lista para calcular</option><option value="marte">Marte · receta pendiente</option><option value="vijagual">Vijagual · inventario pendiente</option><option disabled>Solo se muestran fincas autorizadas</option></select></div>
+          <div class="field"><label class="label" for="suggestCategory">Categoría del pedido <span class="required">*</span></label><select class="select" id="suggestCategory" required><option value="">Seleccionar categoría</option><option value="EMPA">EMPA · EMPAQUE</option><option value="ETIQ">ETIQ · ETIQUETA</option><option value="OPER">OPER · OPERATIVO</option></select></div>
           <button class="btn btn-primary" type="button" data-suggest-calculate>${icon(icons.calc)} Calcular sugerido</button>
         </div>
       </article>
@@ -86,7 +87,7 @@ const SIALSuggestedOrder = (() => {
           ${sourceItem("Alcance", data.scope)}
         </div>
         <div class="card-header suggest-workspace-head">
-          <div><p class="page-eyebrow">${esc(data.farm)} · ${esc(data.reference)}</p><h2 class="card-title">Cálculo de materiales</h2><p class="card-subtitle">${format(data.boxes)} cajas y ${format(data.pallets)} palés planificados en ${esc(data.week)}.</p></div>
+          <div><p class="page-eyebrow">${esc(data.farm)} · ${esc(data.reference)} · <span data-suggest-category-label>categoría pendiente</span></p><h2 class="card-title">Cálculo de materiales</h2><p class="card-subtitle">${format(data.boxes)} cajas y ${format(data.pallets)} palés planificados en ${esc(data.week)}.</p></div>
           ${generatedId ? statusChip("ok", "Pedido generado") : statusChip("warning", "Pendiente de generar")}
         </div>
         <div class="table-wrap">
@@ -146,6 +147,8 @@ const SIALSuggestedOrder = (() => {
     if (!root || !data) { if (root) showDenied(root); return; }
     root.innerHTML = data.status === "ready" ? readyView(data) : blockedView(data);
     bindResultActions(data);
+    const categoryLabel = qs("[data-suggest-category-label]");
+    if (categoryLabel) categoryLabel.textContent = qs("#suggestCategory")?.value || "categoría pendiente";
     if (focusBlock) qs("[data-suggest-block]")?.focus({ preventScroll: true });
   }
 
@@ -172,11 +175,14 @@ const SIALSuggestedOrder = (() => {
   function bindResultActions(data) {
     qs("[data-suggest-export]")?.addEventListener("click", () => exportCsv(data));
     qs("[data-suggest-generate]")?.addEventListener("click", (event) => {
+      const category = qs("#suggestCategory")?.value;
+      if (!category) { feedback("Selecciona una categoría activa antes de generar el pedido.", "warning"); qs("#suggestCategory")?.focus(); return; }
       const key = `${stateKey}:${data.notice}:${data.code}`;
       const existing = localStorage.getItem(key);
       if (existing) { feedback(`El pedido ${existing} ya existe. No se creó un duplicado.`, "info"); return; }
       const id = `PED-SUG-${data.week.replace("SEM-", "")}-${data.code.replace("FIN-", "")}`;
       localStorage.setItem(key, id);
+      localStorage.setItem(`${key}:category`, category);
       event.currentTarget.disabled = true;
       event.currentTarget.textContent = "Pedido ya generado";
       feedback(`Pedido ${id} generado para ${data.farm}.`);
@@ -196,8 +202,10 @@ const SIALSuggestedOrder = (() => {
     const requestedFarm = params.get("finca");
     if (params.get("access") === "denied" || (requestedFarm && !scenarios[requestedFarm])) { root.innerHTML = deniedShell(); return; }
     root.innerHTML = shell();
+    try { const active = new Set(JSON.parse(localStorage.getItem("sial-order-categories") || "[]").filter((item) => item.status === "ACTIVO").map((item) => item.code)); if (active.size) Array.from(qs("#suggestCategory").options).forEach((option) => { if (option.value && !active.has(option.value)) option.remove(); }); } catch { /* Conserva las categorías semilla. */ }
     if (requestedFarm) qs("#suggestFarm").value = requestedFarm;
     renderScenario(requestedFarm || "ceiba");
+    qs("#suggestCategory")?.addEventListener("change", (event) => { const label = qs("[data-suggest-category-label]"); if (label) label.textContent = event.target.value || "categoría pendiente"; });
     qs("[data-suggest-calculate]")?.addEventListener("click", () => renderScenario(qs("#suggestFarm").value, true));
   }
 

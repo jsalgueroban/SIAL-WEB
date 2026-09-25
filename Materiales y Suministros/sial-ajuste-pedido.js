@@ -17,7 +17,7 @@ const SIALOrderAdjustment = (() => {
 
   const order = {
     id: "PED-SUG-2026-32-014", notice: "AC-2026-032", farm: "La Ceiba", farmCode: "FIN-014",
-    week: "SEM-2026-32", reference: "AGSTDRA", version: "Inicial",
+    week: "SEM-2026-32", reference: "AGSTDRA", version: "Inicial", category: localStorage.getItem("sial-hu659-generated:AC-2026-032:FIN-014:category") || "EMPA",
     rows: [
       { code: "MAT-CAR-001", name: "Caja de cartón corrugado", unit: "unidades", suggested: 744, stock: 1280, tolerance: 10 },
       { code: "MAT-TAP-001", name: "Tapa de cartón", unit: "unidades", suggested: 804, stock: 900, tolerance: 10 },
@@ -52,6 +52,7 @@ const SIALOrderAdjustment = (() => {
           <div><span>Pedido</span><strong>${esc(order.id)}</strong></div>
           <div><span>Aviso de corte</span><strong>${esc(order.notice)}</strong></div>
           <div><span>Finca</span><strong>${esc(order.farm)}</strong></div>
+          <div><span>Categoría</span><strong>${esc(order.category)}</strong></div>
           <div><span>Referencia y semana</span><strong>${esc(order.reference)} · ${esc(order.week)}</strong></div>
         </div>
 

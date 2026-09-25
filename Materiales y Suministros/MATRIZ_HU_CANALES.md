@@ -11,6 +11,9 @@ Fuente: Azure DevOps `Proyecto SIAL`, contexto operativo documentado en Drive y 
 | HU | Responsabilidad web | Responsabilidad móvil | Vista web | Vista móvil | Regla de diseño |
 | --- | --- | --- | --- | --- | --- |
 | HU659 | Generar pedido sugerido por finca y consultar fórmula/trazabilidad | Consulta opcional según rol | `gestion-pedidos-materiales.html` | `pedido-sugerido.html` | Móvil no genera ni ajusta el pedido |
+| HU2370 | Validar disponibilidad externa, decidir cantidades, relacionar documentos, intercambiar TXT y responder pedidos de finca | La finca consulta y aprueba o rechaza la respuesta | `aprobacion-pedidos-materiales.html` | Pendiente | SIAL conserva trazabilidad y compromisos lógicos; no administra existencias maestras del ERP |
+| Por asociar | Registrar y aprobar pedidos recurrentes sin aviso de corte | Consulta de la decisión | `pedidos-recurrentes.html` | Pendiente | Materiales aprueba directamente, sin segunda aceptación de finca |
+| Por asociar | Administrar categorías compartidas por pedidos y materiales | No administra la maestra | `categorias-pedido.html` | No aplica | Código único; registros referenciados se inactivan |
 | HU660 | Ajustar y validar cantidades | Consulta opcional | `ajustar-pedido-sugerido.html` | No requerida | No aplicar tolerancias hasta que exista matriz oficial |
 | HU662 | Consultar stock por finca/material y su historial | Consulta opcional | `inventario-materiales-finca.html`, `movimientos-inventario.html` | `inventario-finca.html` | Mostrar disponible, reservado, total informado y origen; no editar saldos libres |
 | HU666 | Registrar y procesar múltiples pedidos adicionales | Solo si el evento ocurre en campo | `pedidos-adicionales.html` | Complementaria condicionada al evento | Mantener pedido base, aviso, finca, semana, motivo, actor, fecha e idempotencia |

@@ -44,6 +44,7 @@ const SIALMaterials = (() => {
     { id: "PAR-16FT7BD-8-322", reference: "16FT7BD-8", sapMaterial: "322", name: "ESQUINERO KRAFT 1.95 MTS (20 UND)", quantityPerBox: "0,06060606061", unit: "UN", classification: "CONVENCIONAL FAIRTRADE", referenceList: "AGSTDBVRA-1", recipeVersion: "", validityStart: "", validityEnd: "", waste: "", substitutes: "", rounding: "", status: "REVISION", source: "PARAMETROS", audit: "Carga fuente - hoja PARAMETROS|24/08/2026" },
     { id: "PAR-16FT7BD-8-4925", reference: "16FT7BD-8", sapMaterial: "4925", name: "ZUNCHO AMARILLO SIN IMPRESIÓN", quantityPerBox: "0,8", unit: "M", classification: "CONVENCIONAL FAIRTRADE", referenceList: "AGSTDRA-1", recipeVersion: "", validityStart: "", validityEnd: "", waste: "", substitutes: "", rounding: "", status: "REVISION", source: "PARAMETROS", audit: "Carga fuente - hoja PARAMETROS|24/08/2026" }
   ];
+  materials.forEach((item, index) => { if (!item.orderCategory) item.orderCategory = index === 5 ? "ETIQ" : "EMPA"; });
 
   try {
     const savedConfigurations = JSON.parse(localStorage.getItem(hu826ConfigKey) || "[]");
@@ -84,6 +85,8 @@ const SIALMaterials = (() => {
     { id: "PED-073", type: "Sugerido", finca: "Finca Las Palmas", week: "Semana 27 - 2026", material: "Separador de pallet", quantity: 35, unit: "paquete", stock: "18 paquete", document: "Reserva", docState: "Auto clasificado", status: "CONSULTADO", destination: "ZE Puerto Norte", reason: "Stock consultado por finca", source: "HU659/HU662", audit: "Consultar - productor.finca|28/06/2026 09:14" },
     { id: "PED-074", type: "Estandar", finca: "Finca Santa Isabel", week: "Semana 27 - 2026", material: "Estiba madera exportacion", quantity: 80, unit: "unidad", stock: "94 unidad", document: "RPT", docState: "Confirmado", status: "VALIDADO", destination: "ZE Puerto Norte", reason: "Pedido base semanal", source: "HU667", audit: "Validar - supervisor.almacen|28/06/2026 10:05" }
   ];
+
+  orders.forEach((item, index) => { if (!item.category) item.category = index === 3 ? "OPER" : "EMPA"; });
 
   const transportOrders = [
     { id: "OTI-546-001", document: "RPT-2026-0881", docType: "RPT", finca: "Finca Santa Isabel", vehicle: "TUL458", driver: "Carlos Mendoza", materials: "Caja carton corrugado, Estiba madera", quantity: "1480 unidades", status: "NOTIFICADO", notified: "Transporte 28/06 10:20; Conductor 28/06 10:25; Seguridad 28/06 10:28; Finca 28/06 10:30", source: "HU546/HU669/HU670/HU532", audit: "Notificar - sistema|28/06/2026 10:30" },
@@ -202,7 +205,7 @@ const SIALMaterials = (() => {
     return orders.map((item) => `
       <tr ${rowDataset(item, item.type.toLowerCase(), item.status)}>
         <td><div class="materials-record-main"><strong>${esc(item.id)}</strong><span>${esc(item.source)}</span></div></td>
-        <td>${esc(item.type)}</td>
+        <td>${esc(item.type)}</td><td>${esc(item.category)}</td>
         <td>${esc(item.finca)}<br><span class="muted">${esc(item.week)}</span></td>
         <td>${esc(item.material)}<br><span class="muted">${esc(item.quantity)} ${esc(item.unit)}</span></td>
         <td>${esc(item.stock)}</td>
@@ -292,9 +295,9 @@ const SIALMaterials = (() => {
 
   function materialRows() {
     return materials.map((item) => `
-      <tr ${rowDataset(item, item.unit, item.status)}>
+      <tr ${rowDataset(item, item.orderCategory, item.status)}>
         <td><div class="materials-record-main"><strong>${esc(item.sapMaterial)}</strong><span>Material SAP</span></div></td>
-        <td>${esc(item.name)}</td><td>${esc(item.unit)}</td><td>${status(item.status)}</td><td class="muted">${esc(item.audit).replace("|", "<br>")}</td>
+        <td>${esc(item.name)}</td><td>${esc(item.orderCategory)}</td><td>${esc(item.unit)}</td><td>${status(item.status)}</td><td class="muted">${esc(item.audit).replace("|", "<br>")}</td>
         <td><div class="row-actions">${detailButton("material", item.id)}${iconButton("Editar material", "edit", "data-edit-inline")}${stateButton(item.status === "INACTIVO" ? "Activar material" : "Inactivar material")}</div></td>
       </tr>
     `).join("");
@@ -385,8 +388,8 @@ const SIALMaterials = (() => {
       <article class="card materials-navigation-card">
         <div class="card-header"><div><h2 class="card-title">Operación de materiales</h2><p class="card-subtitle">Selecciona la actividad que necesitas gestionar o consultar.</p></div></div>
         <div class="card-body materials-navigation-grid">
-          <section class="materials-navigation-group" aria-labelledby="materialsSetupTitle"><h3 id="materialsSetupTitle">Configuración</h3><a class="btn btn-secondary" href="gestion-materiales.html">Catálogo de materiales</a><a class="btn btn-secondary" href="recetas-materiales.html">Recetas de materiales</a><a class="btn btn-secondary" href="gestion-proveedores.html">Proveedores</a><a class="btn btn-secondary" href="reglas-documentales.html">Reglas documentales</a></section>
-          <section class="materials-navigation-group" aria-labelledby="materialsOrderTitle"><h3 id="materialsOrderTitle">Pedidos e inventario</h3><a class="btn btn-primary" href="gestion-pedidos-materiales.html">Gestionar pedidos</a><a class="btn btn-secondary" href="inventario-materiales-finca.html">Inventario de materiales</a><a class="btn btn-secondary" href="movimientos-inventario.html">Movimientos de inventario</a><a class="btn btn-secondary" href="inventario-pallets.html">Inventario de pallets</a></section>
+          <section class="materials-navigation-group" aria-labelledby="materialsSetupTitle"><h3 id="materialsSetupTitle">Configuración</h3><a class="btn btn-secondary" href="gestion-materiales.html">Catálogo de materiales</a><a class="btn btn-secondary" href="categorias-pedido.html">Categorías de pedido</a><a class="btn btn-secondary" href="recetas-materiales.html">Recetas de materiales</a><a class="btn btn-secondary" href="gestion-proveedores.html">Proveedores</a><a class="btn btn-secondary" href="reglas-documentales.html">Reglas documentales</a></section>
+          <section class="materials-navigation-group" aria-labelledby="materialsOrderTitle"><h3 id="materialsOrderTitle">Pedidos e inventario</h3><a class="btn btn-primary" href="gestion-pedidos-materiales.html">Gestionar pedidos</a><a class="btn btn-secondary" href="aprobacion-pedidos-materiales.html">Aprobar pedidos</a><a class="btn btn-secondary" href="pedidos-recurrentes.html">Pedidos recurrentes</a><a class="btn btn-secondary" href="inventario-materiales-finca.html">Inventario de materiales</a><a class="btn btn-secondary" href="movimientos-inventario.html">Movimientos de inventario</a><a class="btn btn-secondary" href="inventario-pallets.html">Inventario de pallets</a></section>
           <section class="materials-navigation-group" aria-labelledby="materialsDeliveryTitle"><h3 id="materialsDeliveryTitle">Despacho y seguimiento</h3><a class="btn btn-secondary" href="ordenes-transporte-insumos.html">Órdenes de transporte</a><a class="btn btn-secondary" href="resumen-proveedores.html">Resumen para proveedores</a><a class="btn btn-secondary" href="seguimiento-entregas.html">Entregas y evidencias</a><a class="btn btn-secondary" href="trazabilidad-pedido.html">Trazabilidad de pedidos</a></section>
         </div>
       </article>
@@ -461,6 +464,7 @@ const SIALMaterials = (() => {
                 <div class="field span-4"><label class="label" for="catalogMaterialCodeSelect">Código SAP <span class="required">*</span></label>${searchableSelect({ id: "catalogMaterialCodeSelect", source: "materialCode", placeholder: "Buscar por código SAP" })}<div class="field-note">Seleccione el código SAP del material.</div></div>
                 <div class="field span-5"><label class="label" for="catalogMaterialNameSelect">Nombre <span class="required">*</span></label>${searchableSelect({ id: "catalogMaterialNameSelect", source: "materialName", placeholder: "Buscar por nombre de material" })}<div class="field-note">Seleccione el nombre asociado al código SAP.</div></div>
                 <div class="field span-3"><label class="label" for="catalogMaterialUnitSelect">Unidad de medida <span class="required">*</span></label>${searchableSelect({ id: "catalogMaterialUnitSelect", source: "unit", placeholder: "Buscar unidad de medida" })}<div class="field-note">Seleccione una unidad disponible.</div></div>
+                <div class="field span-4"><label class="label" for="catalogMaterialCategory">Categoría <span class="required">*</span></label><select class="select" id="catalogMaterialCategory" required><option value="">Seleccionar categoría</option><option value="EMPA">EMPA · EMPAQUE</option><option value="ETIQ">ETIQ · ETIQUETA</option><option value="OPER">OPER · OPERATIVO</option></select><div class="field-note">Solo se muestran categorías activas.</div></div>
               </div></section>
               <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">Guardar material</button></div>
             </form>
@@ -541,7 +545,7 @@ const SIALMaterials = (() => {
     ordenes: [{ value: "rpt", label: "RPT" }, { value: "remision", label: "Remision" }, { value: "reserva", label: "Reserva" }],
     proveedores: suppliers.map((item) => ({ value: item.name, label: item.name })),
     entregas: [{ value: "Finca Santa Isabel", label: "Finca Santa Isabel" }, { value: "Finca El Retiro", label: "Finca El Retiro" }, { value: "Finca Las Palmas", label: "Finca Las Palmas" }],
-    materiales: [{ value: "UN", label: "UN" }, { value: "M", label: "M" }],
+    materiales: [{ value: "EMPA", label: "EMPA · EMPAQUE" }, { value: "ETIQ", label: "ETIQ · ETIQUETA" }, { value: "OPER", label: "OPER · OPERATIVO" }],
     movimientos: [{ value: "entrada", label: "Entradas" }, { value: "salida", label: "Salidas" }, { value: "ajuste", label: "Ajustes" }],
     recetas: [{ value: "16FT7BD-8", label: "16FT7BD-8" }, { value: "20LD7RA-20", label: "20LD7RA-20" }, { value: "21X5BDOF", label: "21X5BDOF" }],
     proveedoresMaster: [{ value: "Cartonera", label: "Cartonera" }, { value: "Estibadero", label: "Estibadero" }, { value: "Proveedor material", label: "Proveedor material" }],
@@ -551,13 +555,13 @@ const SIALMaterials = (() => {
   function renderView(view) {
     if (view === "dashboard") return dashboard();
     const map = {
-      pedidos: ["Pedidos de materiales", "Listado operativo con stock consultado, origen del pedido y documento logistico.", "pedidoCount", "pedidoSearch", "pedidoStatus", "pedidoContext", "Todos los tipos", contextByView.pedidos, ["Pedido", "Tipo", "Finca / semana", "Material / cantidad", "Stock consultado", "Documento", "Estado", "Auditoria"], orderRows(), "pedidos-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Pedido adicional</button>', "", "", inlineForm("pedido")],
+      pedidos: ["Pedidos de materiales", "Listado operativo con stock consultado, categoría, origen del pedido y documento logistico.", "pedidoCount", "pedidoSearch", "pedidoStatus", "pedidoContext", "Todos los tipos", contextByView.pedidos, ["Pedido", "Tipo", "Categoría", "Finca / semana", "Material / cantidad", "Stock consultado", "Documento", "Estado", "Auditoria"], orderRows(), "pedidos-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Pedido adicional</button>', "", "", inlineForm("pedido")],
       inventario: ["Existencias de materiales", "Inventario por finca con saldo disponible, reservado y total informado.", "stockCount", "stockSearch", "stockStatus", "stockContext", "Todas las fincas", contextByView.inventario, ["Código SAP / finca", "Material", "Unidad", "Disponible", "Reservado", "Total", "Último movimiento / actualización"], stockRows(), "inventario-materiales", "", ""],
       pallets: ["Pallets completos e incompletos", "Inventario ZE para planificar cargue de contenedores y consolidacion posterior.", "palletCount", "palletSearch", "palletStatus", "palletContext", "Todos los tipos", contextByView.pallets, ["Referencia", "Tipo", "Finca origen", "Pallets", "Cajas restantes", "Destino", "Estado", "Auditoria"], palletRows(), "inventario-pallets", '<a class="btn btn-secondary" href="../pallets/armar-pallet.html">Ver flujo movil</a>', ""],
       ordenes: ["Ordenes de transporte", "Ordenes de insumos con documento, vehiculo, finca destino y notificacion.", "transportCount", "transportSearch", "transportStatus", "transportContext", "Todos los documentos", contextByView.ordenes, ["Orden", "Documento", "Finca destino", "Vehiculo / conductor", "Materiales", "Estado", "Auditoria"], transportRows(), "ordenes-transporte-insumos", '<button class="btn btn-primary" type="button" data-material-action="notify-all">Notificar pendientes</button>', ""],
       proveedores: ["Resumenes digitales", "Consolidacion por proveedor externo, periodo, materiales, destino y envio.", "summaryCount", "summarySearch", "summaryStatus", "summaryContext", "Todos los proveedores", contextByView.proveedores, ["Proveedor", "Periodo", "Ordenes", "Materiales / cantidades", "Destino", "Estado", "Generacion / envio"], summaryRows(), "resumen-proveedores", '<button class="btn btn-primary" type="button" data-material-action="generate-summary">Generar resumen</button>', ""],
       entregas: ["Entregas y evidencias POD", "Seguimiento read-only de entrega efectiva, responsable, foto/firma y auditoria.", "deliveryCount", "deliverySearch", "deliveryStatus", "deliveryContext", "Todas las fincas", contextByView.entregas, ["Orden", "Documento", "Finca", "Transportista", "Recepcion", "Evidencia", "Estado", "Auditoria"], deliveryRows(), "seguimiento-entregas", '<a class="btn btn-secondary" href="../Trazabilidad/auditoria-operativa.html">Ver auditoria</a>', ""],
-      materiales: ["Catálogo de materiales", "Maestra de materiales para consulta, creación, edición y cambio de estado.", "materialCount", "materialSearch", "materialStatus", "materialContext", "Todas las unidades", contextByView.materiales, ["Código SAP", "Nombre", "Unidad de medida", "Estado", "Auditoría"], materialRows(), "catalogo-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nuevo material</button>', notice("El catálogo identifica cada material. La cantidad sugerida por caja pertenece a la receta, no a esta maestra.", "info"), "", inlineForm("catalogo")],
+      materiales: ["Catálogo de materiales", "Maestra de materiales para consulta, creación, edición y cambio de estado.", "materialCount", "materialSearch", "materialStatus", "materialContext", "Todas las categorías", contextByView.materiales, ["Código SAP", "Nombre", "Categoría", "Unidad de medida", "Estado", "Auditoría"], materialRows(), "catalogo-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nuevo material</button>', notice("El catálogo identifica cada material y su categoría. La cantidad sugerida por caja pertenece a la receta.", "info"), "", inlineForm("catalogo")],
       movimientos: ["Historial de movimientos", "Entradas, salidas y ajustes; filtre por material, tipo de movimiento y rango de fechas.", "movementCount", "movementSearch", "movementStatus", "movementContext", "Todos los tipos", contextByView.movimientos, ["Movimiento / SAP", "Material", "Tipo", "Cantidad", "Fecha", "Motivo", "Usuario"], movementRows(), "movimientos-inventario", "", "", '<input class="input" id="movementDateFrom" type="date" aria-label="Fecha inicial"><input class="input" id="movementDateTo" type="date" aria-label="Fecha final">'],
       recetas: ["Recetas por Referencia + Versión", "Cada receta define los materiales requeridos y la cantidad sugerida por caja.", "recipeCount", "recipeSearch", "recipeStatus", "recipeContext", "Todas las referencias", contextByView.recetas, ["Referencia", "Versión", "Materiales", "Cantidad sugerida por caja", "Estado", "Auditoría"], recipeRows(), "recetas-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nueva receta</button>', "", "", inlineForm("receta")],
       proveedoresMaster: ["Proveedores registrados", "Maestra minima de proveedores externos para resumen digital.", "supplierCount", "supplierSearch", "supplierStatus", "supplierContext", "Todos los tipos", contextByView.proveedoresMaster, ["Codigo", "Proveedor", "Tipo", "Contacto", "Estado", "Auditoria"], supplierRows(), "proveedores", '<button class="btn btn-primary" type="button" data-open-inline-form>Nuevo proveedor</button>', "", "", inlineForm("supplier")],
@@ -944,6 +948,7 @@ const SIALMaterials = (() => {
     const root = qs("[data-material-root]");
     if (!root) return;
     root.innerHTML = `${renderView(view)}<div class="notice notice-success material-runtime-alert" data-material-runtime-alert hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span data-material-runtime-message></span></div>${detailShell()}`;
+    try { const active = new Set(JSON.parse(localStorage.getItem("sial-order-categories") || "[]").filter((item) => item.status === "ACTIVO").map((item) => item.code)); const select = qs("#catalogMaterialCategory"); if (active.size && select) Array.from(select.options).forEach((option) => { if (option.value && !active.has(option.value)) option.remove(); }); } catch { /* Conserva las categorías semilla. */ }
     initFilters(view);
     SIALCore.initTableExport();
     SIALCore.initStateActionConfirm();

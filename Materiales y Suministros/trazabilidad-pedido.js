@@ -15,7 +15,7 @@ const SIALOrderTrace = (() => {
 
   const orders = {
     "PED-2026-10482": {
-      id:"PED-2026-10482", type:"Pedido estándar", destination:"Finca Santa Isabel", requested:"1.480 unidades", document:"RPT-2026-0881", source:"Aviso de corte · Semana 39", current:4,
+      id:"PED-2026-10482", type:"Pedido estándar", category:"EMPA · EMPAQUE", destination:"Finca Santa Isabel", requested:"1.480 unidades", document:"RPT-2026-0881", source:"Aviso de corte · Semana 39", current:4,
       stages:[
         {label:"Preparación", state:"complete", time:"23 sep · 07:12", owner:"Planeación", location:"SIAL Web", detail:"Se consolidaron las cantidades requeridas para iniciar la gestión del pedido.", evidence:"Aviso de corte · Semana 39"},
         {label:"Creación", state:"complete", time:"23 sep · 08:05", owner:"Supervisor de materiales", location:"SIAL Web", detail:"El pedido fue creado con las líneas y cantidades aprobadas.", evidence:"Solicitud PED-2026-10482"},
@@ -140,7 +140,7 @@ const SIALOrderTrace = (() => {
   function renderOrder(advancedIndex=-1,startIndex=0,fromEmpty=true){
     qs("[data-order-id]").textContent=order.id;
     const context=qs("[data-order-context]");
-    context.innerHTML=`<div><dt>Tipo de pedido</dt><dd>${esc(order.type)}</dd></div><div><dt>Destino</dt><dd>${esc(order.destination)}</dd></div><div><dt>Cantidad solicitada</dt><dd>${esc(order.requested)}</dd></div><div><dt>Documento logístico</dt><dd>${esc(order.document)}</dd></div><div><dt>Origen</dt><dd>${esc(order.source)}</dd></div>`;
+    context.innerHTML=`<div><dt>Tipo de pedido</dt><dd>${esc(order.type)}</dd></div><div><dt>Categoría</dt><dd>${esc(order.category || "Sin categoría")}</dd></div><div><dt>Destino</dt><dd>${esc(order.destination)}</dd></div><div><dt>Cantidad solicitada</dt><dd>${esc(order.requested)}</dd></div><div><dt>Documento logístico</dt><dd>${esc(order.document)}</dd></div><div><dt>Origen</dt><dd>${esc(order.source)}</dd></div>`;
     context.hidden=false;
     renderCurrent(); renderJourney(advancedIndex,startIndex,fromEmpty);
   }
