@@ -157,6 +157,17 @@ const SIALMaterials = (() => {
     return iconButton("Visualizar detalle", "eye", `data-material-detail="${esc(type)}" data-record-id="${esc(id)}"`);
   }
 
+  function transportNotificationMeta(item) {
+    const transportNotified = hasNotification(item, "transport");
+    const driverAssigned = item.driver !== "--" && item.vehicle !== "Sin asignar";
+    const driverNotified = driverAssigned && hasNotification(item, "driver");
+    const notifiedCount = Number(transportNotified) + Number(driverNotified);
+    const tone = notifiedCount === 2 ? "is-complete" : notifiedCount === 0 ? "is-pending" : "is-partial";
+    const driverState = !driverAssigned ? "sin asignar" : driverNotified ? "notificado" : "pendiente";
+    const detail = `Transporte: ${transportNotified ? "notificado" : "pendiente"}. Conductor: ${driverState}.`;
+    return `<div class="transport-notification-summary ${tone}" title="${esc(detail)}" aria-label="${esc(detail)}"><span class="transport-notification-dot" aria-hidden="true"></span><span>Avisos <strong>${notifiedCount}/2</strong></span></div>`;
+  }
+
   function stateButton(label) {
     const icon = /^Activar/i.test(label) ? "active" : "inactive";
     return iconButton(label, icon);
@@ -260,7 +271,7 @@ const SIALMaterials = (() => {
         <td>${esc(item.finca)}</td>
         <td>${esc(item.vehicle)}<br><span class="muted">${esc(item.driver)}</span></td>
         <td>${esc(item.materials)}<br><span class="muted">${esc(item.quantity)}</span></td>
-        <td>${status(item.status)}<br><span class="muted">Transporte: ${hasNotification(item, "transport") ? "notificado" : "pendiente"}<br>Conductor: ${item.driver === "--" ? "sin asignar" : hasNotification(item, "driver") ? "notificado" : "pendiente"}</span></td>
+        <td class="transport-status-cell">${status(item.status)}${transportNotificationMeta(item)}</td>
         <td class="muted">${esc(item.audit).replace("|", "<br>")}</td>
         <td><div class="row-actions">${detailButton("transport", item.id)}${iconButton("Notificar a transporte", "send", `data-material-action="notify-transport" data-record-id="${esc(item.id)}"`)}${iconButton("Notificar al conductor", "send", `data-material-action="notify-driver" data-record-id="${esc(item.id)}" ${item.driver === "--" || item.vehicle === "Sin asignar" ? "disabled" : ""}`)}${stateButton("Inactivar orden")}</div></td>
       </tr>

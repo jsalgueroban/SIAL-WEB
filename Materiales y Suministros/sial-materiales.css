@@ -192,6 +192,55 @@ body {
   vertical-align: middle;
 }
 
+.transport-status-cell {
+  min-width: 138px;
+}
+
+.transport-status-cell > .status {
+  white-space: nowrap;
+}
+
+.transport-notification-summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  margin-top: 8px;
+  color: var(--color-text-2);
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.transport-notification-summary strong {
+  color: inherit;
+  font-weight: 700;
+}
+
+.transport-notification-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-warning-main);
+}
+
+.transport-notification-summary.is-complete {
+  color: var(--color-success-text);
+}
+
+.transport-notification-summary.is-complete .transport-notification-dot {
+  background: var(--color-success-main);
+}
+
+.transport-notification-summary.is-pending {
+  color: var(--color-text-3);
+}
+
+.transport-notification-summary.is-pending .transport-notification-dot {
+  background: var(--color-text-3);
+}
+
 .materials-record-main {
   display: grid;
   gap: 3px;
