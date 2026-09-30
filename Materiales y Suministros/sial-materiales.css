@@ -211,6 +211,51 @@ body {
   border-top: 1px solid var(--color-border-subtle);
 }
 
+.transport-order-selector {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.transport-order-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 14px;
+  cursor: pointer;
+  background: var(--color-field-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.transport-order-option:has(input:checked) {
+  background: var(--color-info-bg);
+  border-color: var(--color-primary-500);
+}
+
+.transport-order-option input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--color-primary-500);
+}
+
+.transport-order-option strong,
+.transport-order-option small {
+  display: block;
+}
+
+.transport-order-option small {
+  margin-top: 4px;
+  color: var(--color-text-2);
+}
+
+@media (max-width: 760px) {
+  .transport-order-selector { grid-template-columns: 1fr; }
+}
+
 .search-select {
   position: relative;
   width: 100%;

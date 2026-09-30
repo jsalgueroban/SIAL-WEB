@@ -27,7 +27,7 @@ Modulo orquestador para pedidos de materiales, inventario en finca, pallets, ord
 - `inventario-materiales-finca.html`: existencias por finca y material, con disponible, reservado, total informado y acceso al historial.
 - `movimientos-inventario.html`: historial de entradas, salidas y ajustes, con filtros por material, tipo y fechas.
 - `inventario-pallets.html`: pallets completos y mochos.
-- `ordenes-transporte-insumos.html`: ordenes de transporte y notificaciones.
+- `ordenes-transporte-insumos.html`: registro de una orden desde uno o varios pedidos de insumos, asignación de finca/vehículo y notificaciones posteriores.
 - `resumen-proveedores.html`: generacion y envio digital a proveedores externos.
 - `seguimiento-entregas.html`: entrega, POD y evidencia consultable.
 - `trazabilidad-pedido.html`: consulta focalizada del recorrido integral de un pedido en siete estados, con estado actual protagonista y vehículo animado que avanza por la ruta operativa.

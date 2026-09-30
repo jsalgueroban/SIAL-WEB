@@ -30,6 +30,7 @@ const SIALMaterials = (() => {
     ERROR: ["status-inactive", "Error"]
   };
   const notificationKey = "sial-materiales-notifications";
+  const transportOrderKey = "sial-hu546-transport-orders";
   const hu826ConfigKey = "sial-hu826-configurations";
   let recipeLineSequence = 0;
 
@@ -93,6 +94,11 @@ const SIALMaterials = (() => {
     { id: "OTI-546-002", document: "REM-2026-0184", docType: "Remision", finca: "Finca El Retiro", vehicle: "CAM-102", driver: "Ana Ramirez", materials: "Caja carton corrugado", quantity: "520 unidades", status: "LISTO_DESPACHO", notified: "Pendiente", source: "HU546/HU669", audit: "Crear - usuario.logistico|28/06/2026 11:05" },
     { id: "OTI-546-003", document: "RES-2026-0045", docType: "Reserva", finca: "Finca Las Palmas", vehicle: "Sin asignar", driver: "--", materials: "Separador de pallet", quantity: "35 paquetes", status: "ASIGNADO", notified: "Finca 28/06 12:12", source: "HU546/HU670", audit: "Asignar - almacen.pedidos|28/06/2026 12:12" }
   ];
+
+  try {
+    const savedTransportOrders = JSON.parse(localStorage.getItem(transportOrderKey) || "[]");
+    if (Array.isArray(savedTransportOrders)) transportOrders.unshift(...savedTransportOrders);
+  } catch { /* La propuesta conserva los registros semilla si el almacenamiento no es legible. */ }
 
   const supplierSummaries = [
     { id: "RES-668-001", provider: "Cartonera Caribe", period: "28/06/2026", ordersCount: 2, materials: "Caja carton corrugado", quantities: "1920 unidades", destination: "Santa Isabel / El Retiro", status: "NOTIFICADO", generated: "28/06/2026 13:00", sent: "28/06/2026 13:04", source: "HU668" },
@@ -433,6 +439,32 @@ const SIALMaterials = (() => {
   }
 
   function inlineForm(kind) {
+    if (kind === "transport") {
+      const availableOrders = orders.filter((item) => item.status !== "INACTIVO");
+      return `
+        <div class="inline-form-panel materials-inline-form is-hidden" id="materialInlineForm" data-inline-form-panel>
+          <div class="form-heading"><h2 data-inline-form-title>Registrar orden de transporte</h2><p>Relaciona uno o varios pedidos de insumos con el vehículo y la finca que recibirá la carga.</p></div>
+          <div class="form-body">
+            <form data-transport-order-form novalidate>
+              <section class="section">
+                <div class="section-heading"><div><p class="section-kicker">Pedidos de insumos</p><h3>Selecciona la carga de la orden</h3></div><span class="status status-neutral" data-transport-selection-count>0 seleccionados</span></div>
+                <div class="transport-order-selector" role="group" aria-label="Pedidos de insumos disponibles">
+                  ${availableOrders.map((item) => `<label class="transport-order-option"><input type="checkbox" name="sourceOrder" value="${esc(item.id)}"><span><strong>${esc(item.id)} · ${esc(item.material)}</strong><small>${esc(item.finca)} · ${esc(item.quantity)} ${esc(item.unit)} · ${esc(item.document)}</small></span></label>`).join("")}
+                </div>
+                <p class="field-note">HU546 permite consolidar varios pedidos de insumos en una misma orden.</p>
+              </section>
+              <section class="section"><div class="grid">
+                <div class="field span-4"><label class="label" for="transportDestination">Finca destino <span class="required">*</span></label><select class="select" id="transportDestination" required><option value="">Seleccionar finca</option><option>Finca Santa Isabel</option><option>Finca El Retiro</option><option>Finca Las Palmas</option></select><div class="field-note">Destino operativo de los pedidos seleccionados.</div></div>
+                <div class="field span-4"><label class="label" for="transportVehicle">Vehículo <span class="required">*</span></label><select class="select" id="transportVehicle" required><option value="">Seleccionar vehículo</option><option value="TUL458|Carlos Mendoza">TUL458 · Carlos Mendoza</option><option value="CAM-102|Ana Ramirez">CAM-102 · Ana Ramirez</option><option value="CMN-204|Pedro Rojas">CMN-204 · Pedro Rojas</option></select><div class="field-note">La asignación incluye el conductor vigente del vehículo.</div></div>
+                <div class="field span-4"><label class="label" for="transportDocument">Documento logístico <span class="required">*</span></label><select class="select" id="transportDocument" required><option value="">Seleccionar documento</option><option value="RPT">RPT</option><option value="Remision">Remisión</option><option value="Reserva">Reserva</option></select><div class="field-note">Documento que acompaña el traslado de insumos.</div></div>
+              </div></section>
+              <div class="notice notice-warning" data-transport-form-message role="status" hidden></div>
+              <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">Registrar orden</button></div>
+            </form>
+          </div>
+        </div>
+      `;
+    }
     if (kind === "receta") {
       return `
         <div class="inline-form-panel materials-inline-form is-hidden" id="materialInlineForm" data-inline-form-panel>
@@ -558,7 +590,7 @@ const SIALMaterials = (() => {
       pedidos: ["Pedidos de materiales", "Listado operativo con stock consultado, categoría, origen del pedido y documento logistico.", "pedidoCount", "pedidoSearch", "pedidoStatus", "pedidoContext", "Todos los tipos", contextByView.pedidos, ["Pedido", "Tipo", "Categoría", "Finca / semana", "Material / cantidad", "Stock consultado", "Documento", "Estado", "Auditoria"], orderRows(), "pedidos-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Pedido adicional</button>', "", "", inlineForm("pedido")],
       inventario: ["Existencias de materiales", "Inventario por finca con saldo disponible, reservado y total informado.", "stockCount", "stockSearch", "stockStatus", "stockContext", "Todas las fincas", contextByView.inventario, ["Código SAP / finca", "Material", "Unidad", "Disponible", "Reservado", "Total", "Último movimiento / actualización"], stockRows(), "inventario-materiales", "", ""],
       pallets: ["Pallets completos e incompletos", "Inventario ZE para planificar cargue de contenedores y consolidacion posterior.", "palletCount", "palletSearch", "palletStatus", "palletContext", "Todos los tipos", contextByView.pallets, ["Referencia", "Tipo", "Finca origen", "Pallets", "Cajas restantes", "Destino", "Estado", "Auditoria"], palletRows(), "inventario-pallets", '<a class="btn btn-secondary" href="../pallets/armar-pallet.html">Ver flujo movil</a>', ""],
-      ordenes: ["Ordenes de transporte", "Ordenes de insumos con documento, vehiculo, finca destino y notificacion.", "transportCount", "transportSearch", "transportStatus", "transportContext", "Todos los documentos", contextByView.ordenes, ["Orden", "Documento", "Finca destino", "Vehiculo / conductor", "Materiales", "Estado", "Auditoria"], transportRows(), "ordenes-transporte-insumos", '<button class="btn btn-primary" type="button" data-material-action="notify-all">Notificar pendientes</button>', ""],
+      ordenes: ["Órdenes de transporte registradas", "Consulta las órdenes de insumos, su asignación y el estado de notificación.", "transportCount", "transportSearch", "transportStatus", "transportContext", "Todos los documentos", contextByView.ordenes, ["Orden", "Documento", "Finca destino", "Vehículo / conductor", "Materiales", "Estado", "Auditoría"], transportRows(), "ordenes-transporte-insumos", '<button class="btn btn-primary" type="button" data-open-inline-form>Registrar orden</button>', notice("El registro de HU546 relaciona uno o varios pedidos de insumos con un vehículo y una finca destino. Las notificaciones se gestionan desde cada orden.", "info"), "", inlineForm("transport")],
       proveedores: ["Resumenes digitales", "Consolidacion por proveedor externo, periodo, materiales, destino y envio.", "summaryCount", "summarySearch", "summaryStatus", "summaryContext", "Todos los proveedores", contextByView.proveedores, ["Proveedor", "Periodo", "Ordenes", "Materiales / cantidades", "Destino", "Estado", "Generacion / envio"], summaryRows(), "resumen-proveedores", '<button class="btn btn-primary" type="button" data-material-action="generate-summary">Generar resumen</button>', ""],
       entregas: ["Entregas y evidencias POD", "Seguimiento read-only de entrega efectiva, responsable, foto/firma y auditoria.", "deliveryCount", "deliverySearch", "deliveryStatus", "deliveryContext", "Todas las fincas", contextByView.entregas, ["Orden", "Documento", "Finca", "Transportista", "Recepcion", "Evidencia", "Estado", "Auditoria"], deliveryRows(), "seguimiento-entregas", '<a class="btn btn-secondary" href="../Trazabilidad/auditoria-operativa.html">Ver auditoria</a>', ""],
       materiales: ["Catálogo de materiales", "Maestra de materiales para consulta, creación, edición y cambio de estado.", "materialCount", "materialSearch", "materialStatus", "materialContext", "Todas las categorías", contextByView.materiales, ["Código SAP", "Nombre", "Categoría", "Unidad de medida", "Estado", "Auditoría"], materialRows(), "catalogo-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nuevo material</button>', notice("El catálogo identifica cada material y su categoría. La cantidad sugerida por caja pertenece a la receta.", "info"), "", inlineForm("catalogo")],
@@ -891,6 +923,60 @@ const SIALMaterials = (() => {
     });
   }
 
+  function initTransportOrderForm() {
+    const form = qs("[data-transport-order-form]");
+    if (!form) return;
+    const message = qs("[data-transport-form-message]", form);
+    const counter = qs("[data-transport-selection-count]", form);
+    const checkboxes = qsa('input[name="sourceOrder"]', form);
+    const updateCounter = () => {
+      const selected = checkboxes.filter((input) => input.checked).length;
+      if (counter) counter.textContent = `${selected} seleccionado${selected === 1 ? "" : "s"}`;
+    };
+    const showMessage = (text, type = "warning") => {
+      if (!message) return;
+      message.className = `notice notice-${type}`;
+      message.textContent = text;
+      message.hidden = false;
+    };
+
+    checkboxes.forEach((input) => input.addEventListener("change", updateCounter));
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const selectedIds = checkboxes.filter((input) => input.checked).map((input) => input.value);
+      const destination = qs("#transportDestination", form)?.value || "";
+      const vehicleValue = qs("#transportVehicle", form)?.value || "";
+      const docType = qs("#transportDocument", form)?.value || "";
+      if (!selectedIds.length || !destination || !vehicleValue || !docType) {
+        showMessage("Selecciona al menos un pedido, la finca destino, el vehículo y el documento logístico.");
+        return;
+      }
+      const selectedOrders = selectedIds.map((id) => orders.find((item) => item.id === id)).filter(Boolean);
+      const [vehicle, driver] = vehicleValue.split("|");
+      const sequence = transportOrders.length + 1;
+      const now = new Date();
+      const item = {
+        id: `OTI-546-${String(sequence).padStart(3, "0")}`,
+        document: `${docType === "Remision" ? "REM" : docType === "Reserva" ? "RES" : "RPT"}-2026-${String(900 + sequence).padStart(4, "0")}`,
+        docType,
+        finca: destination,
+        vehicle,
+        driver,
+        materials: selectedOrders.map((order) => order.material).join(", "),
+        quantity: selectedOrders.map((order) => `${order.quantity} ${order.unit}`).join(" · "),
+        status: "ASIGNADO",
+        notified: "Pendiente",
+        source: `HU546 · ${selectedIds.join(", ")}`,
+        audit: `Registrar - usuario.logistico|${now.toLocaleString("es-CO")}`
+      };
+      let saved = [];
+      try { saved = JSON.parse(localStorage.getItem(transportOrderKey) || "[]"); } catch { saved = []; }
+      try { localStorage.setItem(transportOrderKey, JSON.stringify([item, ...(Array.isArray(saved) ? saved : [])].slice(0, 30))); } catch { /* La demostración sigue disponible durante la sesión. */ }
+      showMessage(`Orden ${item.id} registrada con ${selectedIds.length} pedido${selectedIds.length === 1 ? "" : "s"}.`, "success");
+      window.setTimeout(() => window.location.reload(), 900);
+    });
+  }
+
   function initFilters(view) {
     if (view === "dashboard") return;
     const cfg = {
@@ -952,13 +1038,14 @@ const SIALMaterials = (() => {
     initFilters(view);
     SIALCore.initTableExport();
     SIALCore.initStateActionConfirm();
-    if (["materiales", "recetas", "proveedoresMaster", "reglas", "pedidos"].includes(view)) {
-      const newTitle = { pedidos: "Nuevo pedido adicional", recetas: "Nueva receta", proveedoresMaster: "Nuevo proveedor", reglas: "Nueva regla" }[view];
+    if (["materiales", "recetas", "proveedoresMaster", "reglas", "pedidos", "ordenes"].includes(view)) {
+      const newTitle = { pedidos: "Nuevo pedido adicional", recetas: "Nueva receta", proveedoresMaster: "Nuevo proveedor", reglas: "Nueva regla", ordenes: "Registrar orden de transporte" }[view];
       SIALCore.initEmbeddedForm({ panel: "#materialInlineForm", openButton: "[data-open-inline-form]", cancelButton: "[data-cancel-inline-form]", title: "[data-inline-form-title]", ...(newTitle ? { newTitle } : {}) });
     }
     initActions();
     initSearchSelects();
     initHu826Form();
+    initTransportOrderForm();
   }
 
   return { init };
