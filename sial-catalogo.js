@@ -1,56 +1,6 @@
 const SIALCatalog = (() => {
   const views = [
     {
-      module: "inicio",
-      moduleLabel: "Inicio adaptable",
-      title: "Centro de control por excepciones",
-      family: "analitica",
-      status: "implementada",
-      href: "Inicio/centro-excepciones.html",
-      description: "Bandeja priorizada de bloqueos, alertas y acciones, compuesta únicamente con módulos y permisos autorizados.",
-      tags: ["Permisos", "Excepciones", "Acciones"]
-    },
-    {
-      module: "inicio",
-      moduleLabel: "Inicio adaptable",
-      title: "Mi jornada operativa",
-      family: "gestion",
-      status: "implementada",
-      href: "Inicio/jornada-operativa.html",
-      description: "Agenda diaria con eventos y tareas del usuario, filtrada por módulo, acción y alcance de datos.",
-      tags: ["Agenda", "Tareas", "Rol"]
-    },
-    {
-      module: "inicio",
-      moduleLabel: "Inicio adaptable",
-      title: "Torre de control logística",
-      family: "analitica",
-      status: "implementada",
-      href: "Inicio/torre-control.html",
-      description: "Flujo operativo que omite etapas restringidas y declara cuándo la lectura de continuidad es parcial.",
-      tags: ["Flujo", "Etapas", "Alcance"]
-    },
-    {
-      module: "inicio",
-      moduleLabel: "Inicio adaptable",
-      title: "Inicio personalizado por rol",
-      family: "gestion",
-      status: "implementada",
-      href: "Inicio/inicio-personalizado.html",
-      description: "Espacio personal construido con contribuciones de cada módulo y acciones permitidas para el perfil efectivo.",
-      tags: ["Personalización", "Módulos", "RBAC"]
-    },
-    {
-      module: "inicio",
-      moduleLabel: "Inicio adaptable",
-      title: "Resumen ejecutivo autorizado",
-      family: "analitica",
-      status: "implementada",
-      href: "Inicio/resumen-ejecutivo.html",
-      description: "Indicadores y riesgos consolidados sin calcular ni revelar información proveniente de fuentes restringidas.",
-      tags: ["Ejecutivo", "Indicadores", "Seguridad"]
-    },
-    {
       module: "libreria",
       moduleLabel: "Libreria UI",
       title: "Componentes compartidos SIAL",
@@ -59,16 +9,6 @@ const SIALCatalog = (() => {
       href: "shared/componentes.html",
       description: "Guia visual navegable de tokens, botones, alertas, formularios, tablas, estados, analitica y modo oscuro.",
       tags: ["Componentes", "Dark mode", "Tokens"]
-    },
-    {
-      module: "indicadores",
-      moduleLabel: "Indicadores y KPIs",
-      title: "Catalogo funcional de indicadores",
-      family: "analitica",
-      status: "implementada",
-      href: "Indicadores/index.html",
-      description: "Vista funcional con filtros, escenarios, proyeccion, riesgo, capacidad, graficas analiticas y lectura operativa accionable.",
-      tags: ["KPIs", "Proyeccion", "Graficas", "Riesgo"]
     },
     {
       module: "changelog",
@@ -179,46 +119,6 @@ const SIALCatalog = (() => {
       href: "Login/seleccionar-empresa.html",
       description: "Paso posterior al login para elegir empresa de trabajo antes de ingresar al modulo asignado. En el prototipo redirige a Gestion de usuarios.",
       tags: ["Autenticacion", "Empresa", "Contexto"]
-    },
-    {
-      module: "autenticacion",
-      moduleLabel: "Login y Autenticacion",
-      title: "Login propuesta 2 - Cover flow",
-      family: "autenticacion",
-      status: "implementada",
-      href: "Login/login-cover-flow.html",
-      description: "Segunda propuesta de login con cover flow institucional en el panel izquierdo y formulario funcional conservado.",
-      tags: ["Autenticacion", "Cover flow", "Responsive"]
-    },
-    {
-      module: "autenticacion",
-      moduleLabel: "Login y Autenticacion",
-      title: "Cover flow - Paso 1 solicitar codigo",
-      family: "autenticacion",
-      status: "implementada",
-      href: "Login/recuperar-cover-flow.html",
-      description: "Primer paso de recuperacion para la propuesta cover flow: captura de usuario y envio del codigo OTP.",
-      tags: ["Autenticacion", "Cover flow", "OTP"]
-    },
-    {
-      module: "autenticacion",
-      moduleLabel: "Login y Autenticacion",
-      title: "Cover flow - Paso 2 verificar OTP",
-      family: "autenticacion",
-      status: "implementada",
-      href: "Login/verificar-cover-flow.html",
-      description: "Verificacion OTP de seis digitos para la propuesta cover flow, con reenvio controlado y accesibilidad basica.",
-      tags: ["Autenticacion", "Cover flow", "OTP"]
-    },
-    {
-      module: "autenticacion",
-      moduleLabel: "Login y Autenticacion",
-      title: "Cover flow - Paso 3 nueva contrasena",
-      family: "autenticacion",
-      status: "implementada",
-      href: "Login/restablecer-cover-flow.html",
-      description: "Paso final de restablecimiento de contrasena para la propuesta cover flow.",
-      tags: ["Autenticacion", "Cover flow", "Contrasena"]
     },
     {
       module: "autenticacion",
@@ -511,14 +411,14 @@ const SIALCatalog = (() => {
       tags: ["Contactos", "Maestra grande", "Notificaciones"]
     },
     {
-      module: "referencias",
-      moduleLabel: "Referencias",
-      title: "Tipos de fruta",
+      module: "empresas",
+      moduleLabel: "Empresa",
+      title: "Alertas por contacto",
       family: "configuracion",
-      status: "base",
-      href: "Gestion%20de%20Fincas/gestion-tipos-fruta.html",
-      description: "Catalogo de tipos de fruta con formulario embebido, validacion de nombre unico y mayuscula sostenida.",
-      tags: ["Maestra corta", "Formulario embebido", "Fruta"]
+      status: "implementada",
+      href: "Gestion%20de%20Empresas/gestion-notificaciones-contactos.html",
+      description: "Configuracion de alertas y canales asociados a los contactos de empresa.",
+      tags: ["Contactos", "Alertas", "Notificaciones"]
     },
     {
       module: "referencias",
@@ -529,16 +429,6 @@ const SIALCatalog = (() => {
       href: "Gestion%20de%20Fincas/gestion-productos.html",
       description: "Catalogo de productos agricolas con formulario embebido, validacion de nombre unico y estado.",
       tags: ["Maestra corta", "Formulario embebido", "Productos"]
-    },
-    {
-      module: "referencias",
-      moduleLabel: "Referencias",
-      title: "Productos por finca",
-      family: "relacion",
-      status: "base",
-      href: "Gestion%20de%20Fincas/gestion-productos-finca.html",
-      description: "Relacion N:N entre productos y fincas para identificar cultivos por ubicacion con validacion de duplicidad compuesta.",
-      tags: ["Relacion", "Fincas", "Productos"]
     },
     {
       module: "empresas",
@@ -621,26 +511,6 @@ const SIALCatalog = (() => {
       tags: ["HU337", "POMA", "Trazabilidad"]
     },
     {
-      module: "trazabilidad",
-      moduleLabel: "Seguridad",
-      title: "Tipos de inspeccion",
-      family: "configuracion",
-      status: "base",
-      href: "Trazabilidad/gestion-tipos-inspeccion.html",
-      description: "Catalogo de tipos de inspeccion para control de seguridad de contenedores en finca y puerto. Nombre unico en mayuscula sostenida.",
-      tags: ["Maestra corta", "Inspeccion", "Seguridad"]
-    },
-    {
-      module: "trazabilidad",
-      moduleLabel: "Seguridad",
-      title: "Tipos de evento trazabilidad",
-      family: "configuracion",
-      status: "base",
-      href: "Trazabilidad/gestion-tipos-evento-trazabilidad.html",
-      description: "Catalogo de eventos del flujo logistico: recepcion, inspeccion, cargue, despacho y exportacion. Incluye orden numerico opcional.",
-      tags: ["Maestra corta", "Trazabilidad", "Eventos"]
-    },
-    {
       module: "aviso-corte",
       moduleLabel: "Planeacion Aviso de Corte",
       title: "Gestion de avisos de corte",
@@ -679,26 +549,6 @@ const SIALCatalog = (() => {
       href: "Gestion%20de%20Planeacion/gestion-cintas.html",
       description: "Maestra corta con formulario embebido para el calendario oficial de cintas y orden sin saltos.",
       tags: ["Cintas", "Maestra corta", "Calendario oficial"]
-    },
-    {
-      module: "aviso-corte",
-      moduleLabel: "Planeacion Aviso de Corte",
-      title: "Validacion calendario",
-      family: "analitica",
-      status: "implementada",
-      href: "Gestion%20de%20Planeacion/validacion-calendario.html",
-      description: "Vista de control operativo para validar 52 semanas, traslapes, secuencia de cintas, auditoria y hallazgos.",
-      tags: ["Analitica", "QA operativo", "Reglas HU"]
-    },
-    {
-      module: "aviso-corte",
-      moduleLabel: "Planeacion Aviso de Corte",
-      title: "Monitoreo calendario",
-      family: "analitica",
-      status: "implementada",
-      href: "Gestion%20de%20Planeacion/monitoreo-calendarios.html",
-      description: "Vista anual tipo calendario para monitorear semanas generadas, cintas, notas operativas y trazabilidad.",
-      tags: ["Analitica", "Calendario", "Operacion"]
     },
     {
       module: "materiales",

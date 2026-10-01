@@ -1,1 +1,7 @@
 output/
+artifacts/
+docs/
+node_modules/
+.playwright-cli/
+.playwright-mcp/
+.sial-design-map/

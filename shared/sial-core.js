@@ -46,9 +46,7 @@ const SIALCore = (() => {
           views: [
             { id: "referencias", label: "Gestion de referencias", href: "gestion-referencias.html" },
             { id: "clases", label: "Clases de referencias", href: "gestion-clases-referencia.html" },
-            { id: "tiposFruta", label: "Tipos de fruta", href: "gestion-tipos-fruta.html" },
-            { id: "productos", label: "Productos", href: "gestion-productos.html" },
-            { id: "productosFinca", label: "Productos por finca", href: "gestion-productos-finca.html" }
+            { id: "productos", label: "Productos", href: "gestion-productos.html" }
           ]
         },
         {
@@ -124,9 +122,7 @@ const SIALCore = (() => {
             { id: "crearAviso", label: "Crear aviso", href: "crear-aviso-corte.html" },
             { id: "semanas", label: "Gestion de semanas", href: "gestion-semanas.html" },
             { id: "generacion", label: "Generar semanas", href: "generacion-semanas.html" },
-            { id: "cintas", label: "Gestion de cintas", href: "gestion-cintas.html" },
-            { id: "validacion", label: "Validacion calendario", href: "validacion-calendario.html" },
-            { id: "monitoreo", label: "Monitoreo calendario", href: "monitoreo-calendarios.html" }
+            { id: "cintas", label: "Gestion de cintas", href: "gestion-cintas.html" }
           ]
         },
         {
@@ -177,9 +173,7 @@ const SIALCore = (() => {
           localFolder: "Trazabilidad",
           views: [
             { id: "auditoria", label: "Auditoria operativa", href: "auditoria-operativa.html" },
-            { id: "poma", label: "Generar POMA", href: "generar-documento-poma.html" },
-            { id: "tiposInspeccion", label: "Tipos de inspeccion", href: "gestion-tipos-inspeccion.html" },
-            { id: "tiposEvento", label: "Tipos de evento trazabilidad", href: "gestion-tipos-evento-trazabilidad.html" }
+            { id: "poma", label: "Generar POMA", href: "generar-documento-poma.html" }
           ]
         }
       ]

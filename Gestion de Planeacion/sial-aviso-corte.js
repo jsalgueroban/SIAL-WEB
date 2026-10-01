@@ -26,9 +26,7 @@ const SIAL = (() => {
       ["crearAviso", "crear-aviso-corte.html", "Crear aviso"],
       ["semanas", "gestion-semanas.html", "Gestion de semanas"],
       ["generacion", "generacion-semanas.html", "Generar semanas"],
-      ["cintas", "gestion-cintas.html", "Gestion de cintas"],
-      ["validacion", "validacion-calendario.html", "Validacion calendario"],
-      ["monitoreo", "monitoreo-calendarios.html", "Monitoreo calendario"]
+      ["cintas", "gestion-cintas.html", "Gestion de cintas"]
     ];
     nav.innerHTML = items.map(([key, href, label]) =>
       `<a class="nav-link ${key === activeKey ? "active" : ""}" href="${href}"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span>${label}</span></a>`

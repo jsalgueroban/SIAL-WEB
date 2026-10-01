@@ -14,9 +14,7 @@ const SIAL = (() => {
     const items = [
       ["referencias", "gestion-referencias.html", "Gestion de referencias"],
       ["clases", "gestion-clases-referencia.html", "Clases de referencias"],
-      ["tiposFruta", "gestion-tipos-fruta.html", "Tipos de fruta"],
-      ["productos", "gestion-productos.html", "Productos"],
-      ["productosFinca", "gestion-productos-finca.html", "Productos por finca"]
+      ["productos", "gestion-productos.html", "Productos"]
     ];
     nav.innerHTML = items.map(([key, href, label]) =>
       `<a class="nav-link ${key === activeKey ? "active" : ""}" href="${href}"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span>${label}</span></a>`

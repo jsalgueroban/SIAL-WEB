@@ -12,9 +12,7 @@ const SIAL = (() => {
     if (!nav) return;
     const items = [
       ["auditoria", "auditoria-operativa.html", "Auditoria operativa"],
-      ["poma", "generar-documento-poma.html", "Generar POMA"],
-      ["tiposInspeccion", "gestion-tipos-inspeccion.html", "Tipos de inspeccion"],
-      ["tiposEvento", "gestion-tipos-evento-trazabilidad.html", "Tipos de evento trazabilidad"]
+      ["poma", "generar-documento-poma.html", "Generar POMA"]
     ];
     nav.innerHTML = items.map(([key, href, label]) =>
       `<a class="nav-link ${key === activeKey ? "active" : ""}" href="${href}"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span>${label}</span></a>`
