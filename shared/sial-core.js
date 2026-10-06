@@ -4,7 +4,9 @@ const SIALCore = (() => {
   const normalize = (value) => String(value || "").trim().toLowerCase();
   const getCoreScript = () => {
     const scripts = qsa('script[src*="sial-core.js"]');
-    return document.currentScript || scripts[scripts.length - 1] || null;
+    const currentScript = document.currentScript;
+    if (currentScript?.src?.includes("sial-core.js")) return currentScript;
+    return scripts[scripts.length - 1] || null;
   };
   const getSharedAssetUrl = (assetPath) => {
     const coreScript = getCoreScript();
@@ -33,152 +35,35 @@ const SIALCore = (() => {
     libreria: '<path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path>',
     default: '<path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>'
   };
-  const navigationRegistry = {
-    gestion: {
-      label: "Gestion",
-      modules: [
-        {
-          id: "referencias",
-          label: "Referencias",
-          icon: "referencias",
-          folder: "Gestion de Fincas",
-          localFolder: "Gestion de Fincas",
-          views: [
-            { id: "referencias", label: "Gestion de referencias", href: "gestion-referencias.html" },
-            { id: "clases", label: "Clases de referencias", href: "gestion-clases-referencia.html" },
-            { id: "productos", label: "Productos", href: "gestion-productos.html" }
-          ]
-        },
-        {
-          id: "fincas",
-          label: "Fincas",
-          icon: "fincas",
-          folder: "Gestion de Fincas",
-          localFolder: "sial-fincas-propuesta",
-          views: [
-            { id: "fincas", label: "Gestion de fincas", href: "gestion-fincas.html" },
-            { id: "sectores", label: "Gestion de sectores", href: "gestion-sectores.html" },
-            { id: "grupos", label: "Gestion de grupos", href: "gestion-grupos.html" }
-          ]
-        },
-        {
-          id: "transporte",
-          label: "Transporte",
-          icon: "transporte",
-          folder: "Gestion de Transporte",
-          localFolder: "Gestion de Transporte",
-          views: [
-            { id: "gestion", label: "Gestion de conductores", href: "gestion-conductores.html" },
-            { id: "licencias", label: "Gestion de licencias", href: "gestion-categorias-licencia.html" },
-            { id: "relacion", label: "Conductor + licencia", href: "relacion-conductor-licencia.html" },
-            { id: "vehiculos", label: "Gestion de vehiculos", href: "gestion-vehiculos.html" },
-            { id: "tiposVehiculo", label: "Tipos de vehiculos", href: "gestion-tipos-vehiculo.html" },
-            { id: "dashboard", label: "Dashboard transporte", href: "dashboard-transporte.html" },
-            { id: "documental", label: "Matriz documental", href: "matriz-documental-vehiculos.html" },
-            { id: "disponibilidad", label: "Disponibilidad", href: "disponibilidad-operativa.html" },
-            { id: "planes", label: "Planes operacionales", href: "plan-operacional.html" },
-            { id: "operaciones", label: "Programacion de vehiculos", href: "gestion-operaciones.html" },
-          ]
-        },
-        {
-          id: "empresas",
-          label: "Empresa",
-          icon: "empresas",
-          folder: "Gestion de Empresas",
-          localFolder: "Gestion de Empresas",
-          views: [
-            { id: "empresas", label: "Gestion de empresas", href: "gestion-empresas.html" },
-            { id: "roles", label: "Roles por empresas", href: "roles-empresa.html" },
-            { id: "paramRoles", label: "Creacion de roles", href: "parametrizacion-roles.html" },
-            { id: "tiposEmpresa", label: "Tipos de empresas", href: "gestion-tipos-empresa.html", folder: "Gestion de Transporte", localFolder: "Gestion de Transporte" },
-            { id: "empresaTipo", label: "Empresa + tipo", href: "relacion-empresa-tipo.html", folder: "Gestion de Transporte", localFolder: "Gestion de Transporte" },
-            { id: "clientes", label: "Clientes", href: "gestion-clientes.html" },
-            { id: "contactos", label: "Contactos", href: "gestion-contactos.html" },
-            { id: "alertasContactos", label: "Alertas por contacto", href: "gestion-notificaciones-contactos.html" },
-            { id: "dependencias", label: "Dependencias", href: "gestion-dependencias.html" }
-          ]
-        },
-        {
-          id: "usuarios",
-          label: "Usuarios",
-          icon: "usuarios",
-          folder: "Gestion de Usuarios",
-          localFolder: "Gestion de Usuarios",
-          views: [
-            { id: "usuarios", label: "Gestion de usuarios", href: "gestion-usuarios.html" },
-            { id: "registro", label: "Registro de usuario", href: "registro-usuario.html" },
-            { id: "edicion", label: "Editar usuario", href: "editar-usuario.html" },
-            { id: "permisosRol", label: "Permisos por rol", href: "gestion-permisos-rol.html" }
-          ]
-        },
-        {
-          id: "planeacion",
-          label: "Planeacion",
-          icon: "planeacion",
-          folder: "Gestion de Planeacion",
-          localFolder: "Gestion de Planeacion",
-          views: [
-            { id: "avisos", label: "Avisos de corte", href: "gestion-avisos-corte.html" },
-            { id: "crearAviso", label: "Crear aviso", href: "crear-aviso-corte.html" },
-            { id: "semanas", label: "Gestion de semanas", href: "gestion-semanas.html" },
-            { id: "generacion", label: "Generar semanas", href: "generacion-semanas.html" },
-            { id: "cintas", label: "Gestion de cintas", href: "gestion-cintas.html" }
-          ]
-        },
-        {
-          id: "materiales",
-          label: "Materiales y Suministros",
-          icon: "materiales",
-          folder: "Materiales y Suministros",
-          localFolder: "Materiales y Suministros",
-          views: [
-            { id: "dashboard", label: "Tablero materiales", href: "index.html" },
-            { id: "pedidos", label: "Gestion de pedidos", href: "gestion-pedidos-materiales.html" },
-            { id: "aprobacionPedidos", label: "Aprobación de pedidos", href: "aprobacion-pedidos-materiales.html" },
-            { id: "pedidosRecurrentes", label: "Pedidos recurrentes", href: "pedidos-recurrentes.html" },
-            { id: "inventario", label: "Inventario de materiales", href: "inventario-materiales-finca.html" },
-            { id: "movimientos", label: "Movimientos de inventario", href: "movimientos-inventario.html" },
-            { id: "pallets", label: "Inventario de pallets", href: "inventario-pallets.html" },
-            { id: "ordenes", label: "Ordenes de transporte", href: "ordenes-transporte-insumos.html" },
-            { id: "proveedores", label: "Resumen proveedores", href: "resumen-proveedores.html" },
-            { id: "entregas", label: "Seguimiento entregas", href: "seguimiento-entregas.html" },
-            { id: "trazabilidad-pedido", label: "Trazabilidad del pedido", href: "trazabilidad-pedido.html" },
-            { id: "materiales", label: "Catálogo de materiales", href: "gestion-materiales.html" },
-            { id: "categoriasPedido", label: "Categorías de pedido", href: "categorias-pedido.html" },
-            { id: "recetas", label: "Recetas de materiales", href: "recetas-materiales.html" },
-            { id: "proveedoresMaster", label: "Gestion de proveedores", href: "gestion-proveedores.html" },
-            { id: "reglas", label: "Reglas documentales", href: "reglas-documentales.html" }
-          ]
-        },
-        {
-          id: "puerto",
-          label: "Puerto",
-          icon: "puerto",
-          folder: "Gestion Operaciones Puerto",
-          localFolder: "Gestion Operaciones Puerto",
-          views: [
-            { id: "contenedores", label: "Gestion de contenedores", href: "gestion-contenedores.html" },
-            { id: "programacionContenedores", label: "Programacion de contenedores", href: "programacion-contenedores.html" },
-            { id: "trazabilidadPallets", label: "Trazabilidad de pallets", href: "trazabilidad-pallets.html" },
-            { id: "tipos", label: "Tipos de contenedor", href: "gestion-tipos-contenedor.html" },
-            { id: "etapas", label: "Etapas de contenedor", href: "gestion-etapas-contenedor.html" },
-            { id: "puertos", label: "Gestion de puertos", href: "gestion-puertos.html" }
-          ]
-        },
-        {
-          id: "trazabilidad",
-          label: "Seguridad",
-          icon: "seguridad",
-          folder: "Trazabilidad",
-          localFolder: "Trazabilidad",
-          views: [
-            { id: "auditoria", label: "Auditoria operativa", href: "auditoria-operativa.html" },
-            { id: "poma", label: "Generar POMA", href: "generar-documento-poma.html" }
-          ]
+  let navigationRegistry = {};
+  let navigationContractPromise;
+
+  function loadNavigationContract() {
+    if (Object.keys(navigationRegistry).length > 0) return Promise.resolve(navigationRegistry);
+    if (navigationContractPromise) return navigationContractPromise;
+    navigationContractPromise = new Promise((resolve, reject) => {
+      const existing = window.SIALNavigationContract;
+      if (existing?.areas) {
+        navigationRegistry = existing.areas;
+        resolve(navigationRegistry);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = getSharedAssetUrl("sial-navigation-contract.js");
+      script.dataset.sialNavigationContract = "true";
+      script.onload = () => {
+        if (!window.SIALNavigationContract?.areas) {
+          reject(new Error("Contrato de navegación inválido"));
+          return;
         }
-      ]
-    }
-  };
+        navigationRegistry = window.SIALNavigationContract.areas;
+        resolve(navigationRegistry);
+      };
+      script.onerror = () => reject(new Error("No fue posible cargar el contrato de navegación"));
+      document.head.appendChild(script);
+    });
+    return navigationContractPromise;
+  }
 
   function escapeHtml(value) {
     return String(value || "")
@@ -230,7 +115,7 @@ const SIALCore = (() => {
     if (!sidebar || sidebar.dataset.sidebarToggleReady === "true") return;
     sidebar.dataset.sidebarToggleReady = "true";
 
-    const toggles = qsa("[data-sidebar-toggle], .header [aria-label='Abrir menu']");
+    const toggles = qsa("[data-sidebar-toggle], .header [aria-label='Abrir menu'], .header [aria-label='Abrir menú']");
     if (!toggles.length) return;
 
     let backdrop = qs("[data-sidebar-backdrop]");
@@ -243,7 +128,9 @@ const SIALCore = (() => {
     }
 
     const isSmallViewport = () => window.matchMedia && window.matchMedia("(max-width: 900px)").matches;
-    const storedState = localStorage.getItem("sial-sidebar-state") === "collapsed" ? "collapsed" : "expanded";
+    const sidebarStateKey = "sial-sidebar-state-v2";
+    const storedState = localStorage.getItem(sidebarStateKey) === "expanded" ? "expanded" : "collapsed";
+    let collapseTimer = 0;
 
     function syncToggleLabels(expanded, overlayOpen = false) {
       toggles.forEach((toggle) => {
@@ -258,8 +145,18 @@ const SIALCore = (() => {
     function setSidebarState(state) {
       const normalizedState = state === "collapsed" ? "collapsed" : "expanded";
       document.documentElement.dataset.sidebarState = normalizedState;
-      localStorage.setItem("sial-sidebar-state", normalizedState);
+      localStorage.setItem(sidebarStateKey, normalizedState);
       syncToggleLabels(normalizedState !== "collapsed");
+    }
+
+    function cancelScheduledCollapse() {
+      window.clearTimeout(collapseTimer);
+    }
+
+    function scheduleCollapse(delay = 200) {
+      if (isSmallViewport() || document.documentElement.dataset.sidebarState === "collapsed") return;
+      cancelScheduledCollapse();
+      collapseTimer = window.setTimeout(() => setSidebarState("collapsed"), delay);
     }
 
     function openOverlay() {
@@ -299,16 +196,58 @@ const SIALCore = (() => {
       });
     });
 
+    sidebar.addEventListener("click", (event) => {
+      if (isSmallViewport() || document.documentElement.dataset.sidebarState !== "collapsed") return;
+      event.preventDefault();
+      event.stopPropagation();
+      setSidebarState("expanded");
+    }, true);
+    sidebar.addEventListener("pointerenter", cancelScheduledCollapse);
+    sidebar.addEventListener("pointerleave", (event) => {
+      if (event.pointerType !== "touch") scheduleCollapse();
+    });
+
+    sidebar.addEventListener("click", (event) => {
+      const link = event.target.closest("a.nav-tree-link, a.nav-module-link");
+      if (!link || isSmallViewport() || document.documentElement.dataset.sidebarState === "collapsed") return;
+      const hold = link.classList.contains("nav-tree-link") ? 900 : 250;
+      const target = link.href;
+      if (!target || link.target || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      cancelScheduledCollapse();
+      window.setTimeout(() => {
+        setSidebarState("collapsed");
+        window.location.href = target;
+      }, hold);
+    });
+
     backdrop.addEventListener("click", closeOverlay);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeOverlay();
     });
     window.addEventListener("resize", () => {
-      if (!isSmallViewport()) closeOverlay();
+      if (isSmallViewport()) {
+        document.documentElement.dataset.sidebarOverlay = "closed";
+        backdrop.hidden = true;
+        syncToggleLabels(false, false);
+      } else {
+        closeOverlay();
+        syncToggleLabels(document.documentElement.dataset.sidebarState !== "collapsed");
+      }
     });
   }
 
-  function initNavigation(config = {}) {
+  async function initNavigation(config = {}) {
+    try {
+      await loadNavigationContract();
+    } catch (error) {
+      const nav = qs(config.nav || "[data-nav]");
+      if (nav) {
+        nav.dataset.navigationError = "true";
+        nav.setAttribute("aria-label", "Navegación no disponible");
+      }
+      console.error(error);
+    }
     const areaId = config.area || "gestion";
     const group = navigationRegistry[areaId];
     const nav = qs(config.nav || "[data-nav]");
@@ -323,8 +262,6 @@ const SIALCore = (() => {
     const activeModuleId = config.module || group.modules[0]?.id;
     const activeModule = group.modules.find((module) => module.id === activeModuleId) || group.modules[0];
     const activeViewId = config.view || activeModule?.views?.[0]?.id;
-    const activeViewsStateKey = `sial-nav-views:${areaId}:${activeModule.id}`;
-    const activeViewsExpanded = localStorage.getItem(activeViewsStateKey) !== "collapsed";
     const caption = nav.closest(".sidebar")?.querySelector(".menu-caption");
     if (caption) caption.textContent = group.label;
 
@@ -335,17 +272,32 @@ const SIALCore = (() => {
       const firstView = module.views[0];
       const moduleHref = resolveNavigationHref(module, firstView);
       const sublistId = `nav-${areaId}-${module.id}-views`;
-      const sublist = isActiveModule ? `
-        <div class="nav-sublist" id="${escapeHtml(sublistId)}" aria-label="Vistas de ${escapeHtml(module.label)}" ${activeViewsExpanded ? "" : "hidden"}>
-          ${module.views.map((view) => {
+      const storageKey = `sial-nav-views:${areaId}:${module.id}`;
+      const storedState = localStorage.getItem(storageKey);
+      const expanded = storedState ? storedState === "expanded" : isActiveModule;
+      const activeIndex = isActiveModule ? module.views.findIndex((view) => view.id === activeViewId) : -1;
+      const sublist = module.views.length ? `
+        <div class="nav-tree-fold" id="${escapeHtml(sublistId)}" data-open="${String(expanded)}" aria-label="Vistas de ${escapeHtml(module.label)}" aria-hidden="${String(!expanded)}" ${expanded ? "" : "inert"}>
+          <div class="nav-tree-frame">
+            <span class="nav-tree-trunk" aria-hidden="true"></span>
+            <span class="nav-tree-trunk-accent" aria-hidden="true"></span>
+            <ul class="nav-tree-list">
+          ${module.views.map((view, index) => {
             const isActiveView = view.id === activeViewId;
-            return `<a class="nav-link nav-sub-link ${isActiveView ? "active" : ""}" href="${escapeHtml(resolveNavigationHref(module, view))}" ${isActiveView ? 'aria-current="page"' : ""}><span>${escapeHtml(view.label)}</span></a>`;
+            return `<li class="nav-tree-item ${isActiveView ? "is-active" : ""}" data-path="${String(isActiveView)}" style="--tree-delay:${index * 28 + 60}ms">
+              <span class="nav-tree-curve" aria-hidden="true"></span>
+              <span class="nav-tree-curve-accent" aria-hidden="true"></span>
+              <span class="nav-tree-marker" aria-hidden="true"></span>
+              <a class="nav-tree-link ${isActiveView ? "active" : ""}" href="${escapeHtml(resolveNavigationHref(module, view))}" ${isActiveView ? 'aria-current="page"' : ""}><span>${escapeHtml(view.label)}</span></a>
+            </li>`;
           }).join("")}
+            </ul>
+          </div>
         </div>
       ` : "";
-      const moduleToggle = isActiveModule ? `
-        <button class="nav-module-toggle" type="button" data-nav-module-toggle data-storage-key="${escapeHtml(activeViewsStateKey)}" aria-controls="${escapeHtml(sublistId)}" aria-expanded="${String(activeViewsExpanded)}" aria-label="${activeViewsExpanded ? "Contraer vistas de" : "Expandir vistas de"} ${escapeHtml(module.label)}" title="${activeViewsExpanded ? "Contraer vistas" : "Expandir vistas"}">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+      const moduleToggle = module.views.length ? `
+        <button class="nav-module-toggle" type="button" data-nav-module-toggle data-module-label="${escapeHtml(module.label)}" data-storage-key="${escapeHtml(storageKey)}" aria-controls="${escapeHtml(sublistId)}" aria-expanded="${String(expanded)}" aria-label="${expanded ? "Contraer" : "Expandir"} ${escapeHtml(module.label)}" title="${expanded ? "Contraer" : "Expandir"}">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
         </button>
       ` : "";
 
@@ -363,38 +315,51 @@ const SIALCore = (() => {
       `;
     }).join("");
 
+    const measureTree = (list) => {
+      const rows = qsa(":scope > li", list);
+      const last = rows[rows.length - 1];
+      const active = qs(":scope > li[data-path='true']", list);
+      const style = getComputedStyle(list);
+      const radius = (Number.parseFloat(style.getPropertyValue("--tree-radius")) || 10)
+        - (Number.parseFloat(style.getPropertyValue("--tree-line-width")) || 2) / 2;
+      const reach = (row) => {
+        const link = row ? qs(":scope > a", row) : null;
+        return row && link ? Math.max(row.offsetTop + link.offsetHeight / 2 - radius, 0) : 0;
+      };
+      const frame = list.parentElement;
+      frame?.style.setProperty("--trunk-end", `${reach(last)}px`);
+      frame?.style.setProperty("--trunk-accent", `${reach(active)}px`);
+    };
+
+    qsa(".nav-tree-list", nav).forEach((list) => {
+      measureTree(list);
+      if (typeof ResizeObserver !== "undefined") {
+        const observer = new ResizeObserver(() => measureTree(list));
+        observer.observe(list);
+      }
+    });
+
     qsa("[data-nav-module-toggle]", nav).forEach((button) => {
       button.addEventListener("click", () => {
         const sublist = qs(`#${button.getAttribute("aria-controls")}`, nav);
         if (!sublist) return;
-        const willExpand = sublist.hasAttribute("hidden");
+        const willExpand = sublist.dataset.open !== "true";
         const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const motionDuration = reducedMotion ? 0 : 180;
-        clearTimeout(sublist.navMotionTimer);
-        if (willExpand) {
-          sublist.hidden = false;
-          if (reducedMotion) {
-            delete sublist.dataset.navMotion;
-          } else {
-            sublist.dataset.navMotion = "opening";
-          }
-          sublist.navMotionTimer = window.setTimeout(() => {
-            delete sublist.dataset.navMotion;
-          }, motionDuration + 40);
-        } else if (motionDuration > 0) {
-          sublist.dataset.navMotion = "closing";
-          sublist.navMotionTimer = window.setTimeout(() => {
-            sublist.hidden = true;
-            delete sublist.dataset.navMotion;
-          }, motionDuration);
-        } else {
-          sublist.hidden = true;
-          delete sublist.dataset.navMotion;
-        }
+        sublist.dataset.open = String(willExpand);
+        sublist.setAttribute("aria-hidden", String(!willExpand));
+        sublist.toggleAttribute("inert", !willExpand);
+        if (reducedMotion) sublist.dataset.reducedMotion = "true";
+        else delete sublist.dataset.reducedMotion;
         button.setAttribute("aria-expanded", String(willExpand));
-        button.setAttribute("aria-label", `${willExpand ? "Contraer" : "Expandir"} vistas de ${activeModule.label}`);
-        button.setAttribute("title", willExpand ? "Contraer vistas" : "Expandir vistas");
+        button.setAttribute("aria-label", `${willExpand ? "Contraer" : "Expandir"} ${button.dataset.moduleLabel}`);
+        button.setAttribute("title", willExpand ? "Contraer" : "Expandir");
         localStorage.setItem(button.dataset.storageKey, willExpand ? "expanded" : "collapsed");
+        if (willExpand) {
+          requestAnimationFrame(() => {
+            const list = qs(".nav-tree-list", sublist);
+            if (list) measureTree(list);
+          });
+        }
       });
     });
 
@@ -406,7 +371,7 @@ const SIALCore = (() => {
   }
 
   function initShell(config = {}) {
-    initNavigation(config);
+    return initNavigation(config);
   }
 
   function initThemeToggle() {
@@ -1993,7 +1958,8 @@ const SIALCore = (() => {
     initNavigation,
     initShell,
     initProfileMenu,
-    navigationRegistry,
+    get navigationRegistry() { return navigationRegistry; },
+    loadNavigationContract,
     setFieldState,
     initDatePickers,
     initTableFilters,

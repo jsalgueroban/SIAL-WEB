@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "mappings": [
+    { "route": "/401", "view": "Errores/401.html", "status": "aligned" },
+    { "route": "/403", "view": "Errores/403.html", "status": "aligned" },
+    { "route": "/404", "view": "404.html", "status": "aligned" },
+    { "route": "/500", "view": "Errores/500.html", "status": "aligned" },
+    { "route": "/503", "view": "Errores/503.html", "status": "aligned" },
+    { "route": "/login", "view": "Login/index.html", "status": "aligned" },
+    { "route": "/login/select-company", "view": "Login/seleccionar-empresa.html", "status": "aligned" },
+    { "route": "/recovery-password", "view": "Login/recuperar-contrasena.html", "status": "aligned" },
+    { "route": "/admin/users", "view": "Gestion de Usuarios/gestion-usuarios.html", "status": "aligned" },
+    { "route": "/admin/users/edit", "view": "Gestion de Usuarios/editar-usuario.html", "status": "aligned" },
+    { "route": "/admin/users/register", "view": "Gestion de Usuarios/registro-usuario.html", "status": "aligned" }
+  ]
+}

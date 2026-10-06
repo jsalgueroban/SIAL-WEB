@@ -508,8 +508,9 @@ body {
   align-items: end;
 }
 
-.suggest-selector-grid .btn {
-  min-height: 44px;
+.suggest-selector-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .suggest-state {
@@ -636,20 +637,32 @@ body {
 }
 
 .suggest-footer {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   padding: 16px 20px;
   border-top: 1px solid var(--color-border-subtle);
 }
 
-.suggest-footer .suggest-total { text-align: center; }
+.suggest-footer .suggest-total { text-align: left; }
+
+.suggest-footer .card-actions {
+  flex: 0 0 auto;
+  justify-content: flex-end;
+}
 
 .suggest-total {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 2px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.suggest-total-main {
+  display: flex;
   align-items: baseline;
+  gap: 8px;
 }
 
 .suggest-total span,
@@ -660,11 +673,11 @@ body {
 
 .suggest-total strong {
   color: var(--color-text);
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .suggest-total small {
-  grid-column: 1 / -1;
+  display: block;
 }
 
 .suggest-block-body {
@@ -738,6 +751,15 @@ body {
 }
 
 @media (max-width: 800px) {
+  .suggest-selector-card > .card-header {
+    align-items: stretch;
+  }
+
+  .suggest-selector-actions,
+  .suggest-selector-actions .btn {
+    width: 100%;
+  }
+
   .suggest-selector-grid {
     grid-template-columns: 1fr;
   }
@@ -760,6 +782,10 @@ body {
   .suggest-block-body {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .suggest-footer .suggest-total {
+    text-align: left;
   }
 
   .suggest-footer .card-actions,
@@ -1041,4 +1067,161 @@ body {
   .additional-context > div { padding-left: 20px; padding-right: 20px; }
   .additional-source-details { grid-template-columns: 1fr; }
   .additional-source-details > div { padding-left: 20px; padding-right: 20px; }
+}
+/* Pedidos agrupados por receta */
+.recipe-order-groups { display: grid; gap: 1rem; padding: 0 1.25rem 1.25rem; }
+.recipe-order-group { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+.recipe-order-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); background: var(--surface-subtle); }
+.recipe-order-header h3 { margin: .15rem 0 0; font-size: 1rem; }
+.recipe-order-header dl { display: flex; gap: 1.5rem; margin: 0; }
+.recipe-order-header dl div { display: grid; gap: .15rem; min-width: 4.5rem; }
+.recipe-order-header dt { color: var(--text-muted); font-size: .75rem; }
+.recipe-order-header dd { margin: 0; font-weight: 700; }
+.recipe-order-group .table-wrap { border: 0; border-radius: 0; }
+.recipe-order-group textarea { min-width: 14rem; }
+.recipe-order-group + .recipe-order-group { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--color-border); border-radius: 0; }
+.adjust-table tbody td { vertical-align: middle; }
+.adjust-table .adjust-justification { padding-top: 12px; padding-bottom: 12px; }
+.adjust-justification-input { display: block; min-height: 72px; height: 72px; margin: 0; padding: 10px 12px; }
+.adjust-recipe-header { align-items: flex-start; }
+.adjust-recipe-header h3 { margin: 0; font-size: 17px; }
+.adjust-recipe-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 6px 0 0; color: var(--color-text-2); font-size: 12px; }
+.adjust-recipe-meta span:not(:first-child)::before { content: "·"; margin-right: 16px; color: var(--color-text-3); }
+.adjust-comparison-head { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 10px 20px; border-top: 1px solid var(--color-border-subtle); border-bottom: 1px solid var(--color-border-subtle); background: var(--color-soft-surface); color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.adjust-material-list { display: grid; }
+.adjust-material-item { border-top: 1px solid var(--color-border-subtle); }
+.adjust-material-item:first-child { border-top: 0; }
+.adjust-material-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: center; width: 100%; padding: 16px 20px; }
+.adjust-material-identity { min-width: 0; }
+.adjust-reference-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; min-width: 0; }
+.adjust-reference-group > div { display: grid; gap: 4px; min-width: 0; }
+.adjust-reference-group > div + div { padding-left: 16px; border-left: 1px solid var(--color-border-subtle); }
+.adjust-reference-group span,
+.adjust-request-label { color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.adjust-reference-group strong { color: var(--color-text); font-size: 15px; font-variant-numeric: tabular-nums; }
+.adjust-reference-group small { color: var(--color-text-2); font-size: 12px; font-weight: 500; }
+.adjust-request-group { display: grid; gap: 6px; min-width: 0; }
+.adjust-request-label { display: none; }
+.adjust-request-control { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.adjust-request-control .adjust-quantity { flex: 0 0 112px; }
+.adjust-inline-state { min-width: 0; }
+.adjust-inline-state .status { white-space: nowrap; }
+.adjust-neutral-state { color: var(--color-text-3); font-size: 12px; font-weight: 600; }
+.adjust-justification-panel { display: grid; gap: 7px; padding: 14px 20px 16px; border-top: 1px solid var(--color-border-subtle); background: var(--color-soft-surface); }
+.adjust-justification-panel[hidden] { display: none; }
+.adjust-justification-panel .adjust-justification-input { width: 100%; min-width: 0; }
+.adjust-recipe-group { border-color: var(--color-border-subtle); }
+.tracking-detail { margin-top: 1rem; }
+
+/* Patrón de materiales por receta: la estructura se comparte; el contenido cambia según la tarea. */
+.order-material-head,
+.order-material-row { display: grid; gap: 18px; align-items: center; }
+.order-material-head { padding: 10px 20px; border-bottom: 1px solid var(--color-border-subtle); background: var(--color-soft-surface); color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.order-material-head--suggested,
+.order-material-row--suggested { grid-template-columns: minmax(0, 1fr) minmax(150px, .3fr); }
+.order-material-head--tracking,
+.order-material-row--tracking { grid-template-columns: minmax(240px, 1.1fr) minmax(190px, .7fr) minmax(230px, .8fr); }
+.order-material-head--approval,
+.order-material-row--approval { grid-template-columns: minmax(220px, 1fr) minmax(170px, .65fr) minmax(210px, .75fr) minmax(210px, .8fr); }
+.order-material-list { display: grid; }
+.order-material-item + .order-material-item,
+.order-material-row--suggested + .order-material-row--suggested { border-top: 1px solid var(--color-border-subtle); }
+.order-material-row { min-width: 0; padding: 16px 20px; }
+.order-material-value,
+.order-material-comparison,
+.order-material-response,
+.approval-availability,
+.approval-decision { display: flex; flex-direction: column; gap: 4px; min-width: 0; align-self: stretch; }
+.order-material-value { justify-items: start; }
+.order-material-value strong,
+.order-material-comparison strong,
+.order-material-response strong { color: var(--color-text); font-size: 15px; font-variant-numeric: tabular-nums; }
+.order-material-value small,
+.order-material-comparison small,
+.approval-availability small { color: var(--color-text-2); font-size: 12px; }
+.order-material-label { color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.order-material-head + .order-material-list .order-material-label { display: none; }
+.order-material-response { align-items: start; grid-template-columns: minmax(0, 1fr) auto; }
+.order-material-response .order-material-label { grid-column: 1 / -1; }
+.order-material-response .status { justify-self: start; white-space: nowrap; }
+.order-material-note,
+.approval-reason-panel { padding: 13px 20px 15px; border-top: 1px solid var(--color-border-subtle); background: var(--color-soft-surface); }
+.order-material-note span,
+.approval-reason-panel > span { color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.order-material-note p,
+.approval-reason-panel > p { margin: 5px 0 0; color: var(--color-text-2); font-size: 13px; line-height: 1.45; }
+.approval-reason-panel[hidden] { display: none; }
+.approval-reason-panel .textarea { width: 100%; min-height: 82px; margin-top: 7px; resize: vertical; }
+.approval-availability label { display: grid; grid-template-columns: auto minmax(88px, 112px); gap: 10px; align-items: center; min-height: 46px; margin-top: auto; color: var(--color-text-2); font-size: 12px; }
+.approval-availability .input-quantity { width: 100%; min-width: 0; height: 46px; }
+.approval-decision .select { width: 100%; min-width: 0; height: 46px; margin-top: auto; }
+
+/* Seguimiento: retícula tabular ligera para sostener la comparación horizontal. */
+.tracking-detail .order-material-head--tracking,
+.tracking-detail .order-material-row--tracking { gap: 0; }
+.tracking-detail .order-material-head--tracking { padding: 0; }
+.tracking-detail .order-material-head--tracking > span { padding: 10px 20px; }
+.tracking-detail .order-material-row--tracking { padding: 0; }
+.tracking-detail .order-material-row--tracking > * { align-self: stretch; padding: 16px 20px; }
+.tracking-detail .order-material-head--tracking > span + span,
+.tracking-detail .order-material-row--tracking > * + * { border-left: 1px solid var(--color-border); }
+.tracking-detail .order-material-item + .order-material-item { border-top: 1px solid var(--color-border-subtle); }
+
+@media (max-width: 1180px) {
+  .order-material-head--approval { display: none; }
+  .order-material-row--approval { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .order-material-row--approval .order-material-label { display: block; }
+}
+
+@media (max-width: 900px) {
+  .order-material-head--tracking { display: none; }
+  .order-material-row--tracking { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .order-material-row--tracking .materials-record-main { grid-column: 1 / -1; }
+  .order-material-row--tracking .order-material-label { display: block; }
+  .tracking-detail .order-material-row--tracking > * + * { border-left: 0; }
+  .tracking-detail .order-material-row--tracking > .order-material-comparison,
+  .tracking-detail .order-material-row--tracking > .order-material-response { border-top: 1px solid var(--color-border-subtle); }
+  .tracking-detail .order-material-row--tracking > .order-material-response { border-left: 1px solid var(--color-border-subtle); }
+}
+
+@media (max-width: 1080px) {
+  .adjust-comparison-head { display: none; }
+  .adjust-material-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+  .adjust-material-identity { grid-column: 1 / -1; }
+  .adjust-request-label { display: block; }
+}
+
+@media (max-width: 760px) {
+  .adjust-material-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 16px; }
+  .adjust-material-identity { grid-column: 1 / -1; }
+  .adjust-request-control { align-items: flex-start; flex-direction: column; }
+  .adjust-request-control .adjust-quantity { flex-basis: auto; width: 100%; }
+  .adjust-justification-panel { padding: 14px 16px 16px; }
+}
+
+@media (max-width: 760px) {
+  .recipe-order-header { align-items: flex-start; flex-direction: column; }
+  .recipe-order-header dl { width: 100%; }
+  .recipe-order-groups { padding-inline: .75rem; }
+  .order-material-head { display: none; }
+  .order-material-row--suggested,
+  .order-material-row--tracking,
+  .order-material-row--approval { grid-template-columns: 1fr; padding: 15px 16px; }
+  .order-material-row .materials-record-main { grid-column: auto; }
+  .order-material-row .order-material-label { display: block; }
+  .order-material-response { grid-template-columns: 1fr; }
+  .order-material-response .order-material-label { grid-column: auto; }
+  .tracking-detail .order-material-row--tracking > .order-material-response { border-left: 0; }
+  .order-material-note,
+  .approval-reason-panel { padding: 13px 16px 15px; }
+}
+
+@media (max-width: 520px) {
+  .adjust-material-grid { grid-template-columns: 1fr; }
+  .adjust-material-identity,
+  .adjust-request-group { grid-column: auto; }
+  .adjust-reference-group { grid-template-columns: 1fr; }
+  .adjust-reference-group > div + div { padding: 0; border-left: 0; }
+  .adjust-recipe-meta { display: grid; gap: 4px; }
+  .adjust-recipe-meta span:not(:first-child)::before { content: none; }
 }

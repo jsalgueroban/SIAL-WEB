@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "platform": "web",
+  "library": "@banasandev/banasan-ui",
+  "adapters": [
+    { "component": "Button", "prototypeSelector": ".btn", "status": "adopted-product-proposal-pending" },
+    { "component": "IconButton", "prototypeSelector": ".icon-btn", "status": "adopted-product-proposal-pending" },
+    { "component": "Card", "prototypeSelector": ".card", "status": "adopted-product-proposal-pending" },
+    { "component": "Notice", "prototypeSelector": ".notice", "status": "adopted-product-proposal-pending" },
+    { "component": "TextInput", "prototypeSelector": "input[type='text']", "status": "adopted-product-proposal-pending" },
+    { "component": "SelectInput", "prototypeSelector": "select", "status": "adopted-product-proposal-pending" },
+    { "component": "Chip", "prototypeSelector": ".chip", "status": "adopted-product-proposal-pending" }
+  ]
+}

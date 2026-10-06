@@ -14,14 +14,20 @@ const SIALSuggestedOrder = (() => {
   const scenarios = {
     ceiba: {
       farm: "La Ceiba", code: "FIN-014", week: "SEM-2026-32", notice: "AC-2026-032", version: "Inicial",
-      recipe: "REC-AGSTDRA · versión 3", inventory: "03/08/2026, 06:40", status: "ready",
-      scope: "Banasan · finca autorizada", reference: "AGSTDRA", boxes: 2004, pallets: 38,
+      recipe: "2 recetas vigentes", inventory: "03/08/2026, 06:40", status: "ready",
+      scope: "Banasan · finca autorizada", reference: "Aviso con múltiples referencias", boxes: 2004, pallets: 38,
       message: "Las fuentes están completas. Revisa la fórmula antes de generar el pedido sugerido.",
-      materials: [
-        { code: "MAT-CAR-001", name: "Caja de cartón corrugado", unit: "unidades", need: 2004, stock: 1280, reserved: 120, incoming: 200, safety: 100 },
-        { code: "MAT-TAP-001", name: "Tapa de cartón", unit: "unidades", need: 2004, stock: 900, reserved: 100, incoming: 500, safety: 100 },
-        { code: "MAT-ETQ-001", name: "Etiqueta de trazabilidad", unit: "rollos", need: 42, stock: 12, reserved: 2, incoming: 10, safety: 3 },
-        { code: "MAT-EST-001", name: "Estiba de exportación", unit: "unidades", need: 38, stock: 12, reserved: 3, incoming: 5, safety: 4 }
+      recipes: [
+        { id: "REC-AGSTDRA-V3", reference: "AGSTDRA", version: "V3", boxes: 1200, pallets: 23, materials: [
+          { code: "MAT-CAR-001", name: "Caja de cartón corrugado", unit: "unidades", suggested: 520 },
+          { code: "MAT-TAP-001", name: "Tapa de cartón", unit: "unidades", suggested: 580 },
+          { code: "MAT-ETQ-001", name: "Etiqueta de trazabilidad", unit: "rollos", suggested: 16 }
+        ] },
+        { id: "REC-20LD7RA-20-V2", reference: "20LD7RA-20", version: "V2", boxes: 804, pallets: 15, materials: [
+          { code: "MAT-CAR-001", name: "Caja de cartón corrugado", unit: "unidades", suggested: 224 },
+          { code: "MAT-EST-001", name: "Estiba de exportación", unit: "unidades", suggested: 28 },
+          { code: "MAT-ETQ-001", name: "Etiqueta de trazabilidad", unit: "rollos", suggested: 9 }
+        ] }
       ]
     },
     marte: {
@@ -41,7 +47,7 @@ const SIALSuggestedOrder = (() => {
   };
 
   const format = (value) => new Intl.NumberFormat("es-CO").format(value);
-  const suggested = (row) => Math.max(0, row.need + row.safety - (row.stock - row.reserved) - row.incoming);
+  const allMaterials = (data) => (data.recipes || []).flatMap((recipe) => recipe.materials.map((material) => ({ ...material, recipe })));
 
   function statusChip(type, text) {
     return `<span class="status ${type === "ok" ? "status-active" : type === "blocked" ? "status-inactive" : "status-warning"}">${esc(text)}</span>`;
@@ -61,13 +67,15 @@ const SIALSuggestedOrder = (() => {
       <article class="card suggest-selector-card">
         <div class="card-header">
           <div><h2 class="card-title">Origen del cálculo</h2><p class="card-subtitle">Selecciona un aviso publicado y una finca dentro de tu alcance.</p></div>
-          <a class="btn btn-secondary" href="../Gestion%20de%20Planeacion/consultar-aviso-corte.html?aviso=AC-2026-032">${icon(icons.eye)} Ver aviso</a>
+          <div class="card-actions suggest-selector-actions">
+            <button class="btn btn-primary" type="button" data-suggest-calculate>${icon(icons.calc)} Calcular sugerido</button>
+            <a class="btn btn-secondary" href="../Gestion%20de%20Planeacion/consultar-aviso-corte.html?aviso=AC-2026-032">${icon(icons.eye)} Ver aviso</a>
+          </div>
         </div>
         <div class="card-body suggest-selector-grid">
           <div class="field"><label class="label" for="suggestNotice">Aviso de corte</label><select class="select" id="suggestNotice"><option value="AC-2026-032">AC-2026-032 · SEM-2026-32 · Publicado</option><option disabled>Los borradores no están disponibles</option></select></div>
           <div class="field"><label class="label" for="suggestFarm">Finca</label><select class="select" id="suggestFarm"><option value="ceiba">La Ceiba · lista para calcular</option><option value="marte">Marte · receta pendiente</option><option value="vijagual">Vijagual · inventario pendiente</option><option disabled>Solo se muestran fincas autorizadas</option></select></div>
           <div class="field"><label class="label" for="suggestCategory">Categoría del pedido <span class="required">*</span></label><select class="select" id="suggestCategory" required><option value="">Seleccionar categoría</option><option value="EMPA">EMPA · EMPAQUE</option><option value="ETIQ">ETIQ · ETIQUETA</option><option value="OPER">OPER · OPERATIVO</option></select></div>
-          <button class="btn btn-primary" type="button" data-suggest-calculate>${icon(icons.calc)} Calcular sugerido</button>
         </div>
       </article>
       <section data-suggest-result aria-live="polite"></section>
@@ -82,28 +90,22 @@ const SIALSuggestedOrder = (() => {
       <article class="card suggest-workspace">
         <div class="suggest-source-band" aria-label="Fuentes utilizadas">
           ${sourceItem("Aviso publicado", `${data.notice} · ${data.version}`)}
-          ${sourceItem("Receta aplicada", data.recipe)}
+          ${sourceItem("Recetas aplicadas", data.recipe)}
           ${sourceItem("Inventario consultado", data.inventory)}
           ${sourceItem("Alcance", data.scope)}
         </div>
         <div class="card-header suggest-workspace-head">
-          <div><p class="page-eyebrow">${esc(data.farm)} · ${esc(data.reference)} · <span data-suggest-category-label>categoría pendiente</span></p><h2 class="card-title">Cálculo de materiales</h2><p class="card-subtitle">${format(data.boxes)} cajas y ${format(data.pallets)} palés planificados en ${esc(data.week)}.</p></div>
+          <div><p class="page-eyebrow">${esc(data.farm)} · <span data-suggest-category-label>categoría pendiente</span></p><h2 class="card-title">Materiales sugeridos por receta</h2><p class="card-subtitle">${format(data.boxes)} cajas y ${format(data.pallets)} pallets distribuidos entre ${data.recipes.length} recetas en ${esc(data.week)}.</p></div>
           ${generatedId ? statusChip("ok", "Pedido generado") : statusChip("warning", "Pendiente de generar")}
         </div>
-        <div class="table-wrap">
-          <table class="materials-table suggest-formula-table">
-            <thead><tr><th>Material</th><th>Necesidad del aviso</th><th>Stock físico</th><th>Ya reservado</th><th>Por recibir</th><th>Margen de seguridad</th><th>Sugerido</th></tr></thead>
-            <tbody>${data.materials.map((row) => `
-              <tr>
-                <td><div class="materials-record-main"><strong>${esc(row.name)}</strong><span>${esc(row.code)} · ${esc(row.unit)}</span></div></td>
-                <td class="suggest-number">${format(row.need)}</td><td class="suggest-number">${format(row.stock)}</td><td class="suggest-number">${format(row.reserved)}</td><td class="suggest-number">${format(row.incoming)}</td><td class="suggest-number">${format(row.safety)}</td>
-                <td class="suggest-result-cell"><strong>${format(suggested(row))}</strong><span>${esc(row.unit)}</span></td>
-              </tr>`).join("")}</tbody>
-          </table>
-        </div>
-        <div class="suggest-formula-note"><strong>Cómo se obtiene:</strong><span>necesidad del aviso + margen de seguridad − stock utilizable − cantidades por recibir. El stock reservado no se considera disponible.</span></div>
+        <div class="recipe-order-groups">${data.recipes.map((recipe) => `
+          <section class="recipe-order-group" aria-labelledby="suggest-${esc(recipe.id)}">
+            <div class="recipe-order-header"><div><p class="section-kicker">${esc(recipe.id)}</p><h3 id="suggest-${esc(recipe.id)}">${esc(recipe.reference)} · ${esc(recipe.version)}</h3></div><dl><div><dt>Cajas</dt><dd>${format(recipe.boxes)}</dd></div><div><dt>Pallets</dt><dd>${format(recipe.pallets)}</dd></div></dl></div>
+            <div class="order-material-head order-material-head--suggested" aria-hidden="true"><span>Material</span><span>Sugerido</span></div>
+            <div class="order-material-list">${recipe.materials.map((row) => `<article class="order-material-row order-material-row--suggested"><div class="materials-record-main"><strong>${esc(row.name)}</strong><span>${esc(row.code)} · ${esc(row.unit)}</span></div><div class="order-material-value"><span class="order-material-label">Sugerido</span><strong>${format(row.suggested)}</strong><small>${esc(row.unit)}</small></div></article>`).join("")}</div>
+          </section>`).join("")}</div>
         <div class="suggest-footer">
-          <div class="suggest-total"><span>Materiales calculados</span><strong>${data.materials.length}</strong><small>Las cantidades conservan su unidad de medida por material.</small></div>
+          <div class="suggest-total"><div class="suggest-total-main"><strong>${allMaterials(data).length}</strong><span>líneas calculadas</span></div><small>Los materiales comunes se muestran en cada receta.</small></div>
           <div class="card-actions"><button class="btn btn-secondary" type="button" data-suggest-export>${icon(icons.download)} Exportar cálculo</button>${generatedId ? `<a class="btn btn-primary" href="ajustar-pedido-sugerido.html?pedido=${encodeURIComponent(generatedId)}">Revisar y ajustar</a>` : `<button class="btn btn-primary" type="button" data-suggest-generate>Generar pedido sugerido</button>`}</div>
         </div>
       </article>
@@ -164,8 +166,8 @@ const SIALSuggestedOrder = (() => {
   }
 
   function exportCsv(data) {
-    const header = ["Material","Código","Unidad","Necesidad","Stock","Reservado","Por recibir","Margen de seguridad","Sugerido"];
-    const rows = data.materials.map((row) => [row.name,row.code,row.unit,row.need,row.stock,row.reserved,row.incoming,row.safety,suggested(row)]);
+    const header = ["Receta","Referencia","Versión","Cajas","Pallets","Material","Código","Unidad","Sugerido"];
+    const rows = allMaterials(data).map((row) => [row.recipe.id,row.recipe.reference,row.recipe.version,row.recipe.boxes,row.recipe.pallets,row.name,row.code,row.unit,row.suggested]);
     const csv = [header, ...rows].map((row) => row.map((cell) => `"${String(cell).replaceAll('"','""')}"`).join(",")).join("\r\n");
     const url = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
     const link = document.createElement("a"); link.href = url; link.download = `pedido-sugerido-${data.notice}-${data.code}.csv`; link.click(); URL.revokeObjectURL(url);
