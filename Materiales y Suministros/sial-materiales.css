@@ -4,6 +4,30 @@ body {
   overflow-x: hidden;
 }
 
+/* Gestión del estado general del pedido dentro de su expediente. */
+.approval-order-state { margin: 0 0 26px; padding: 20px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-control); background: var(--color-soft-surface); }
+.approval-order-state-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
+.approval-order-state h3 { margin: 3px 0 5px; font-size: 17px; }
+.approval-order-state p { margin: 0; color: var(--color-text-2); font-size: 13px; }
+.approval-order-state-current { display: grid; justify-items: end; gap: 7px; flex: 0 0 auto; }
+.approval-order-state-current > span { color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.approval-state-change-panel { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--color-border-subtle); }
+.approval-state-change-panel[hidden] { display: none; }
+.approval-state-change-panel .field { align-content: start; grid-auto-rows: max-content; }
+.approval-state-impact { margin: 14px 0 0 !important; padding: 12px 14px; border-left: 3px solid var(--color-warning-main); background: var(--color-warning-bg); color: var(--color-warning-text) !important; }
+.approval-state-impact[hidden], .approval-state-error[hidden] { display: none; }
+.approval-state-error { margin-top: 0; }
+.approval-state-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
+.approval-order-state--closed { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+
+@media (max-width: 680px) {
+  .approval-order-state-head,
+  .approval-order-state--closed { flex-direction: column; }
+  .approval-order-state-current { justify-items: start; }
+  .approval-state-actions { align-items: stretch; flex-direction: column-reverse; }
+  .approval-state-actions .btn { justify-content: center; width: 100%; }
+}
+
 /* Flujos de aprobación, pedidos recurrentes y categorías */
 .section-kicker{margin:0 0 8px;color:var(--color-text-3);font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
 .notice[hidden]{display:none!important}.workflow-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(360px,.8fr);gap:20px;align-items:start}.workflow-layout>.card{margin-bottom:0}.workflow-list{overflow:hidden}.workflow-detail{position:sticky;top:88px;min-width:0}.workflow-detail .card-body{padding:24px}

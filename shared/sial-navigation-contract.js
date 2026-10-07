@@ -49,6 +49,7 @@ window.SIALNavigationContract = Object.freeze({
             { id: "dashboard", label: "Dashboard transporte", href: "dashboard-transporte.html" },
             { id: "documental", label: "Matriz documental", href: "matriz-documental-vehiculos.html" },
             { id: "disponibilidad", label: "Disponibilidad", href: "disponibilidad-operativa.html" },
+            { id: "mantenimientos", label: "Mantenimientos", href: "gestion-mantenimientos.html" },
             { id: "planes", label: "Planes operacionales", href: "plan-operacional.html" },
             { id: "operaciones", label: "Programacion de vehiculos", href: "gestion-operaciones.html" },
           ]

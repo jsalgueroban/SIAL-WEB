@@ -55,6 +55,7 @@
       ["dashboard", "dashboard-transporte.html", "Dashboard transporte"],
       ["documental", "matriz-documental-vehiculos.html", "Matriz documental"],
       ["disponibilidad", "disponibilidad-operativa.html", "Disponibilidad"],
+      ["mantenimientos", "gestion-mantenimientos.html", "Mantenimientos"],
       ["operaciones", "gestion-operaciones.html", "Programacion de vehiculos"]
     ];
     nav.innerHTML = items.map(([key, href, label]) =>

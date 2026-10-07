@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIAL | Registrar mantenimiento</title>
+  <script>(function(){const t=localStorage.getItem("sial-theme"),d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light")})();</script>
+  <link rel="stylesheet" href="sial-mantenimientos.css" />
+</head>
+<body data-view-family="registro-extenso">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Transporte</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main">
+      <section class="page">
+        <p class="page-eyebrow">Transporte / Mantenimientos / Registro</p>
+        <div class="page-header"><div><h1 class="page-title">Registrar mantenimiento</h1><p class="page-subtitle">Registra la atención preventiva o correctiva que inmovilizará el vehículo.</p></div><a class="btn btn-secondary" href="gestion-mantenimientos.html">Volver a mantenimientos</a></div>
+        <div class="notice notice-error is-hidden" id="maintenanceBlocked"><span>El vehículo tiene una operación activa. Finaliza o libera la operación antes de registrar su inmovilización.</span></div>
+        <article class="card form-card">
+          <div class="form-heading"><h2>Formulario de mantenimiento</h2><p>Completa los datos del ingreso. Los campos marcados son obligatorios.</p></div>
+          <div class="form-body">
+            <div class="notice notice-success is-hidden" id="maintenanceSuccess"><span>Mantenimiento listo para registrar. El vehículo quedará no disponible.</span></div>
+            <form id="maintenanceForm" novalidate>
+              <section class="section"><h3 class="section-title">Vehículo</h3><div class="grid">
+                <div class="field span-6"><label class="label" for="maintenanceVehicle">Vehículo <span class="required">*</span></label><select class="select" id="maintenanceVehicle" required aria-describedby="maintenanceVehicleNote"><option value="">Selecciona un vehículo</option><option value="FLT-001">FLT-001 · CAMIÓN</option><option value="CMN-204">CMN-204 · CAMIÓN</option><option value="TRK-421">TRK-421 · TRACTOMULA</option></select><div class="field-note" id="maintenanceVehicleNote">Solo puede registrarse si no tiene una operación activa.</div></div>
+                <div class="field span-3"><label class="label" for="maintenancePlate">Placa seleccionada</label><input class="input" id="maintenancePlate" data-context-plate value="Sin seleccionar" readonly /></div>
+                <div class="field span-3"><label class="label" for="maintenanceAvailability">Disponibilidad actual</label><input class="input" id="maintenanceAvailability" data-context-state value="Sin seleccionar" readonly /></div>
+                <div class="field span-12"><div class="field-note maintenance-consequence" id="maintenanceImpact">Selecciona un vehículo para validar su disponibilidad.</div></div>
+              </div></section>
+              <section class="section"><h3 class="section-title">Datos del mantenimiento</h3><div class="grid">
+                <div class="field span-4"><label class="label" for="maintenanceKind">Tipo <span class="required">*</span></label><select class="select" id="maintenanceKind" required><option value="">Selecciona el tipo</option><option>Preventivo</option><option>Correctivo</option></select></div>
+                <div class="field span-4"><label class="label" for="maintenanceWorkshop">Taller o responsable <span class="required">*</span></label><input class="input" id="maintenanceWorkshop" required placeholder="Ej. Taller Central" /></div>
+                <div class="field span-4"><label class="label" for="maintenanceCost">Costo estimado</label><input class="input" id="maintenanceCost" type="number" min="0" placeholder="0" /><div class="field-note">Valor opcional en pesos colombianos.</div></div>
+                <div class="field span-6"><label class="label" for="maintenanceStart">Fecha y hora de ingreso <span class="required">*</span></label><input class="input" id="maintenanceStart" type="datetime-local" required /></div>
+                <div class="field span-6"><label class="label" for="maintenanceExpected">Fecha y hora estimada de salida <span class="required">*</span></label><input class="input" id="maintenanceExpected" type="datetime-local" required /></div>
+                <div class="field span-12"><label class="label" for="maintenanceDiagnosis">Motivo y diagnóstico inicial <span class="required">*</span></label><textarea class="textarea" id="maintenanceDiagnosis" required placeholder="Describe la condición que origina el mantenimiento"></textarea></div>
+                <div class="field span-12"><label class="label" for="maintenanceNotes">Observaciones</label><textarea class="textarea maintenance-notes" id="maintenanceNotes" placeholder="Agrega información útil para el seguimiento"></textarea></div>
+              </div></section>
+              <section class="section"><h3 class="section-title">Evidencia de ingreso</h3><div class="grid"><div class="field span-12"><label class="label" for="maintenanceEvidence">Adjuntar soportes</label><div class="maintenance-upload"><input class="maintenance-upload-input" id="maintenanceEvidence" type="file" multiple /><label class="btn btn-secondary" for="maintenanceEvidence">Seleccionar archivos</label><span class="maintenance-upload-name" id="maintenanceEvidenceName" aria-live="polite">Ningún archivo seleccionado</span></div><div class="field-note">La obligatoriedad, cantidad y formatos permitidos están pendientes de definición funcional.</div></div></div></section>
+              <div class="form-actions"><a class="btn btn-secondary" href="gestion-mantenimientos.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar</button><button class="btn btn-primary" id="maintenanceSubmit" type="submit" disabled>Registrar mantenimiento</button></div>
+            </form>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="../shared/sial-core.js"></script><script src="sial-conductores.js"></script><script src="sial-mantenimientos.js"></script><script>SIAL.applyShell("mantenimientos"); SIALMaintenance.initForm();</script>
+</body>
+</html>
