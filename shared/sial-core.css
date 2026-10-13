@@ -1262,7 +1262,7 @@ html[data-theme="dark"] .theme-icon-sun { opacity: 1; transform: scale(1); }
 .otp-input.is-digit-entered {
   animation: sialOtpDigitEntered var(--motion-duration-base) var(--motion-ease-standard);
 }
-.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+:where(.app-shell) .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
 .form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .field { min-width: 0; }
 .span-3 { grid-column: span 3; }
@@ -1296,7 +1296,40 @@ html[data-theme="dark"] .theme-icon-sun { opacity: 1; transform: scale(1); }
 .inline-form-panel .form-heading { padding: 0 0 16px; border-bottom: 0; }
 .inline-form-panel .form-body { padding: 0; }
 .inline-form-panel .section { margin-bottom: 20px; }
-.inline-form-panel .form-actions { justify-content: flex-end; padding: 0; }
+.inline-form-panel .form-actions { justify-content: center; padding: 0; }
+.inline-form-panel.inline-form-compact {
+  margin: 16px 20px 24px;
+  padding: 18px;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  box-shadow: var(--shadow-elevated);
+}
+.inline-form-panel.inline-form-compact .form-heading { padding: 0; }
+.inline-form-panel.inline-form-compact .section { margin-bottom: 0; }
+.inline-form-panel.inline-form-compact .form-actions {
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 0;
+  border-top: 0;
+}
+.inline-form-panel .form-body .notice,
+.inline-form-panel .form-body .form-feedback {
+  display: block;
+  margin: 8px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+.inline-form-panel .form-body .notice-warning { color: var(--color-error-main); }
+.inline-form-panel .form-body .notice-success,
+.inline-form-panel .form-body .form-feedback { color: var(--color-success-main); }
 
 .table-wrap { width: 100%; overflow-x: auto; }
 table { width: 100%; min-width: 1060px; border-collapse: collapse; }
@@ -1322,8 +1355,46 @@ tbody tr:hover { background: var(--color-nav-hover); }
 .muted { color: var(--color-text-2); }
 .row-actions { display: flex; align-items: center; gap: 8px; }
 .row-actions .icon-btn { width: 36px; height: 36px; }
+.row-actions > .icon-btn:not(.sial-native-proxy) { border: 0; background: transparent; box-shadow: none; }
+html:not([data-sial-library-controls="ready"]) .card-actions .chip,
+html:not([data-sial-library-controls="ready"]) main .toolbar select.select,
+html:not([data-sial-library-controls="ready"]) main .workflow-filters select.select,
+html:not([data-sial-library-controls="ready"]) .table-wrap .row-actions > .icon-btn,
+html:not([data-sial-library-controls="ready"]) .table-pagination,
+html:not([data-sial-library-controls="ready"]) .table-wrap[data-sial-table-adapter] { visibility: hidden; }
 .row-actions .icon-btn[data-state-action="inactive"] { color: var(--color-error-main); }
 .row-actions .icon-btn[data-state-action="active"] { color: var(--color-success-main); }
+.sial-native-proxy { display: none !important; }
+.sial-library-field-ready > .label,
+.sial-library-field-ready > .input,
+.sial-library-field-ready > .select,
+.sial-library-field-ready > .field-note { display: none !important; }
+.sial-library-field { min-width: 0; width: 100%; }
+.sial-library-table .bui-table-wrapper { border: 0; border-top: 1px solid var(--color-border-subtle); border-radius: 0; }
+.sial-library-table .bui-table-row-actions { justify-content: flex-start; }
+.sial-library-table .bui-icon-button svg { width: 18px; height: 18px; }
+.sial-library-table-cell, .sial-library-table-muted { white-space: pre-line; }
+.sial-library-table-muted { color: var(--color-text-2); }
+.sial-library-filter { min-width: 180px; }
+.sial-library-filter > * { width: 100%; }
+.sial-library-search { min-width: 0; width: 100%; }
+.sial-library-search > * { width: 100%; }
+.sial-library-button { display: inline-flex; }
+.sial-library-button > .bui-button { white-space: nowrap; }
+.inline-form-panel .form-actions > .sial-library-button { flex: 0 0 auto; }
+.sial-library-count { display: inline-flex; align-items: center; }
+.sial-library-notice { margin-bottom: 20px; }
+.sial-library-action { display: inline-flex; align-items: center; }
+.sial-library-action-danger { color: var(--color-error-main); }
+.sial-library-action-success { color: var(--color-success-main); }
+.sial-library-pagination { border-top: 1px solid var(--color-border-subtle); }
+.sial-library-detail-drawer .bui-drawer-container[aria-hidden="true"] { visibility: hidden; }
+@media (max-width: 640px) {
+  article[data-sial-catalog-actions] .card-actions,
+  main[data-sial-catalog-actions] .card-actions { justify-content: flex-end; }
+  article[data-sial-catalog-actions] .card-actions .sial-library-count,
+  main[data-sial-catalog-actions] .card-actions .sial-library-count { flex-basis: 100%; justify-content: flex-end; }
+}
 tbody tr.state-updated {
   background: color-mix(in srgb, var(--color-info-bg) 68%, transparent);
   transition: background-color .22s ease;
@@ -4413,12 +4484,12 @@ html[data-view-motion-overlay="visible"] .view-motion-overlay {
 }
 @media (max-width: 900px) {
   .app-shell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: var(--header-height) auto;
     grid-template-areas: "header" "main";
   }
   html[data-sidebar-state="collapsed"] .app-shell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .sidebar {
     position: fixed;
@@ -4554,6 +4625,8 @@ html[data-view-motion-overlay="visible"] .view-motion-overlay {
   .form-heading, .form-body, .card-body { padding: 24px; }
   .inline-form-panel { margin: 0 24px 24px; }
   .inline-form-panel .form-heading, .inline-form-panel .form-body { padding: 0; }
+  .inline-form-panel.inline-form-compact { margin: 16px 16px 24px; }
+  .inline-form-panel.inline-form-compact .form-actions { flex-direction: row; justify-content: center; align-items: center; }
   .license-option { grid-template-columns: 24px 1fr; }
   .license-option .field { grid-column: 2; }
   .compact-license-option .field { max-width: none; justify-self: stretch; }

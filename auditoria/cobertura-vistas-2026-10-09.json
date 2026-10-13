@@ -1,0 +1,3038 @@
+{
+  "snapshot": {
+    "date": "2026-10-09",
+    "platform": "web",
+    "proposal": "D:/Propuestas UI-UX/SIAL UI UX/SIAL Web - Propuesta",
+    "product": "D:/SIAL/Repos/sial/fe-sial-web",
+    "product_ref": "origin/dev",
+    "product_commit": "22c5e7d00f3d46c5811fb6a6db28160d7c7aeef6",
+    "hu_count": 358,
+    "proposal_views": 97,
+    "product_screens": 63,
+    "covered_product_routes": 60,
+    "unmatched_product_routes": 3,
+    "business_product_gaps": 3,
+    "categories": {
+      "sistema": 5,
+      "presente-en-ambos": 46,
+      "propuesta-con-HU-sin-pantalla-propia": 19,
+      "referencia": 3,
+      "HU-candidata-alcance-pendiente": 4,
+      "soporte-navegación": 8,
+      "subflujo": 10,
+      "HU-retirada-o-vacia": 1,
+      "revisar-alcance": 1
+    },
+    "limitations": [
+      "Presencia y correspondencia se comprobaron en código; no es QA funcional ni equivalencia visual.",
+      "El menú por rol proviene del backend y no se aportó snapshot runtime.",
+      "Las HUs candidatas y variantes están declaradas en notas; no se promueven como contrato definitivo."
+    ]
+  },
+  "views": [
+    {
+      "view": "404.html",
+      "title": "SIAL | Error 404",
+      "category": "sistema",
+      "routes": [
+        "/404"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "entrada por confirmar",
+      "incoming": [],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "9b65f2f3b61c1edd428ecf1cae68a399e997d78e49e6bb36f33bb4ab71238d1a"
+    },
+    {
+      "view": "index.html",
+      "title": "SIAL | Catalogo UI/UX",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/dashboard"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "404.html:21",
+        "404.html:35",
+        "Changelog/administracion-changelog.html:19",
+        "Changelog/administracion-changelog.html:39",
+        "Changelog/changelog-interno.html:19",
+        "Changelog/changelog-interno.html:39",
+        "Errores/401.html:20",
+        "Errores/401.html:35",
+        "Errores/403.html:20",
+        "Errores/403.html:34",
+        "Errores/404.html:20",
+        "Errores/404.html:34",
+        "Errores/500.html:20",
+        "Errores/500.html:35",
+        "Errores/503.html:20",
+        "Errores/503.html:35",
+        "Errores/mantenimiento.html:20",
+        "Errores/mantenimiento.html:43",
+        "shared/componentes.html:19",
+        "shared/componentes.html:83"
+      ],
+      "product_evidence": [
+        "src/app/(main)/dashboard/page.tsx:2: import { DashboardOverview } from \"@features/dashboard\";",
+        "src/app/(main)/dashboard/page.tsx:7: title=\"Inicio\""
+      ],
+      "note": "Inicio global; no equivale al dashboard de transporte.",
+      "proposal_sha256": "9ddbb1a8d2b9759823b38603a37e69cdd8379cd394561b8638bceac161573f24"
+    },
+    {
+      "view": "Changelog/administracion-changelog.html",
+      "title": "SIAL | Administracion de changelog",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 2239,
+          "title": "HU2239 | ChangeLog.",
+          "state": "Approved",
+          "revision": 6,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2239"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Changelog/changelog-interno.html:30",
+        "index.html:220",
+        "sial-catalogo.js:39"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "51feaf743f9221c4fd49daaf5237f5ebec34351cab62da94adaa68a2c0364e5d"
+    },
+    {
+      "view": "Changelog/changelog-interno.html",
+      "title": "SIAL | Changelog interno",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 2239,
+          "title": "HU2239 | ChangeLog.",
+          "state": "Approved",
+          "revision": 6,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2239"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Changelog/administracion-changelog.html:26",
+        "Changelog/administracion-changelog.html:41",
+        "index.html:219",
+        "sial-catalogo.js:29"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "29ccf0953b1d85b3103eec1f1863c8ecd621f490bda9ed38816e7613151bd0c3"
+    },
+    {
+      "view": "Changelog/index.html",
+      "title": "SIAL | Novedades",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 2239,
+          "title": "HU2239 | ChangeLog.",
+          "state": "Approved",
+          "revision": 6,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2239"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Changelog/administracion-changelog.html:22",
+        "Changelog/administracion-changelog.html:40",
+        "Changelog/changelog-interno.html:22",
+        "Changelog/changelog-interno.html:40",
+        "Errores/403.html:35",
+        "Login/index.html:64",
+        "index.html:218",
+        "sial-catalogo.js:19"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "44bb27d190d07a9d7e5ed1f2a22055687cb2e7d123813ecc06c41bee0ac364b0"
+    },
+    {
+      "view": "Errores/401.html",
+      "title": "SIAL | Error 401",
+      "category": "sistema",
+      "routes": [
+        "/401"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "sial-catalogo.js:49"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "ea2cbe716cd58eff08020759219db1b2011d8622c8ebda5768cdde1cec85268e"
+    },
+    {
+      "view": "Errores/403.html",
+      "title": "SIAL | Error 403",
+      "category": "sistema",
+      "routes": [
+        "/403"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "sial-catalogo.js:59"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "abb9ffba4154d7891738961752a3b3dd5e370be22b1cd444cb7516ca6bedbd3a"
+    },
+    {
+      "view": "Errores/404.html",
+      "title": "SIAL | Error 404",
+      "category": "referencia",
+      "routes": [
+        "/404"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "404.html:36",
+        "index.html:234",
+        "sial-catalogo.js:69"
+      ],
+      "product_evidence": [],
+      "note": "Alternativa del error 404 raíz.",
+      "proposal_sha256": "9bd4f6b44cbfaeb95ba0afaaf05e861e9c9f3ab46b02e6cb6b62cd4ce4722113"
+    },
+    {
+      "view": "Errores/500.html",
+      "title": "SIAL | Error 500",
+      "category": "sistema",
+      "routes": [
+        "/500"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "shared/componentes.html:715",
+        "sial-catalogo.js:79"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "a2e429196e0536c215f3cd087059ff3fc4501cb9403581ccccad44e5af0be232"
+    },
+    {
+      "view": "Errores/503.html",
+      "title": "SIAL | Mantenimiento 503",
+      "category": "sistema",
+      "routes": [
+        "/503"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Errores/mantenimiento.html:44",
+        "shared/componentes.html:739",
+        "sial-catalogo.js:89"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "215fd42f4565f77c6549d8ca230d42e0f427b46d36eee64460dbc690bf5fff2c"
+    },
+    {
+      "view": "Errores/mantenimiento.html",
+      "title": "SIAL | Vista de mantenimiento",
+      "category": "referencia",
+      "routes": [
+        "/503"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:235",
+        "sial-catalogo.js:99"
+      ],
+      "product_evidence": [],
+      "note": "Alternativa de mantenimiento, no ruta de negocio independiente.",
+      "proposal_sha256": "f9b089351e8047e98ecb1ba2396db008539dce9554fff08b10a25d857965825a"
+    },
+    {
+      "view": "Gestion de Empresas/gestion-clientes.html",
+      "title": "SIAL | Gestion de clientes",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/clients/management"
+      ],
+      "hus": [
+        {
+          "id": 1456,
+          "title": "HU1456 | Gestión de maestros de clientes",
+          "state": "Done",
+          "revision": 19,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1456"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/sial-empresas.js:26",
+        "sial-catalogo.js:399",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/clients/management/page.tsx:2: import { SessionService } from '@features/auth/session/server';",
+        "src/app/(main)/admin/company/clients/management/page.tsx:6: } from '@features/clients';",
+        "src/app/(main)/admin/company/clients/management/page.tsx:7: import { ClientService } from '@features/clients/server';",
+        "src/app/(main)/admin/company/clients/management/page.tsx:23: title=\"Gestión de clientes\""
+      ],
+      "note": "",
+      "proposal_sha256": "c63cfd9feb255aaac251aa071ebe7698b8f85535b163ebb424ae242c10284b37"
+    },
+    {
+      "view": "Gestion de Empresas/gestion-contactos.html",
+      "title": "SIAL | Contactos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/contacts/management"
+      ],
+      "hus": [
+        {
+          "id": 800,
+          "title": "HU800 | Gestión de maestros para Finca I - Parte 2",
+          "state": "Done",
+          "revision": 51,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/800"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/registro-contacto.html:22",
+        "Gestion de Empresas/registro-contacto.html:51",
+        "Gestion de Empresas/sial-empresas.js:27",
+        "sial-catalogo.js:409",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/contacts/management/page.tsx:4: import { ContactQueryFilters, ContactsTable, ContactsTableButtons } from \"@features/contacts\"",
+        "src/app/(main)/admin/company/contacts/management/page.tsx:5: import { contactService } from \"@features/contacts/server\"",
+        "src/app/(main)/admin/company/contacts/management/page.tsx:15: title=\"Gestión de contactos\"",
+        "src/app/(main)/admin/company/contacts/management/page.tsx:27: title=\"Contactos registrados\"",
+        "src/app/(main)/admin/company/contacts/management/page.tsx:28: subtitle=\"Consulta por contacto, empresa asociada, roles asociados y estado operativo.\""
+      ],
+      "note": "",
+      "proposal_sha256": "ae77ce6d69cd83f0114c6b0a90871ac44ab08af60e1d3ddba2c846c49e20f2bd"
+    },
+    {
+      "view": "Gestion de Empresas/gestion-dependencias.html",
+      "title": "SIAL | Dependencias",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/dependencies/management"
+      ],
+      "hus": [
+        {
+          "id": 800,
+          "title": "HU800 | Gestión de maestros para Finca I - Parte 2",
+          "state": "Done",
+          "revision": 51,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/800"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/sial-empresas.js:29",
+        "sial-catalogo.js:439",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/dependencies/management/page.tsx:8: } from \"@features/dependency\";",
+        "src/app/(main)/admin/company/dependencies/management/page.tsx:9: import { dependencyService } from \"@features/dependency/server\";",
+        "src/app/(main)/admin/company/dependencies/management/page.tsx:26: title=\"Gestión de dependencias\"",
+        "src/app/(main)/admin/company/dependencies/management/page.tsx:36: title=\"Dependencias registradas\"",
+        "src/app/(main)/admin/company/dependencies/management/page.tsx:37: subtitle=\"Gestion compacta con registro embebido, filtros, estado y trazabilidad.\""
+      ],
+      "note": "",
+      "proposal_sha256": "26cb52da31eab0710c5a791c5d74090e5c056b2053c588df2f58608ad154656f"
+    },
+    {
+      "view": "Gestion de Empresas/gestion-empresas.html",
+      "title": "SIAL | Gestion de empresas",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/registro-empresa.html:54",
+        "Gestion de Empresas/registro-empresa.html:106",
+        "Gestion de Empresas/roles-empresa.html:19",
+        "Gestion de Empresas/sial-empresas.js:21",
+        "Gestion de Transporte/sial-conductores.js:16",
+        "sial-catalogo.js:199",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/page.tsx:4: import { CompanyQueryFilters, CompanyStatistics, CompanyTable, CompanyTableActions } from \"@features/company\";",
+        "src/app/(main)/admin/company/page.tsx:5: import { CompanyService } from \"@features/company/server\";",
+        "src/app/(main)/admin/company/page.tsx:16: title=\"Gestión de empresas\"",
+        "src/app/(main)/admin/company/page.tsx:31: title=\"Activas\"",
+        "src/app/(main)/admin/company/page.tsx:38: title=\"Con roles\"",
+        "src/app/(main)/admin/company/page.tsx:45: title=\"Inactivas\""
+      ],
+      "note": "No se identificó una HU específica de la maestra general entre las 358 HUs consultadas.",
+      "proposal_sha256": "0685e39ea0e80e36d78af3086aa0b5664aef6c4590a5ab52546a54e97c517127"
+    },
+    {
+      "view": "Gestion de Empresas/gestion-notificaciones-contactos.html",
+      "title": "SIAL | Alertas de contactos",
+      "category": "HU-candidata-alcance-pendiente",
+      "routes": [],
+      "hus": [
+        {
+          "id": 800,
+          "title": "HU800 | Gestión de maestros para Finca I - Parte 2",
+          "state": "Done",
+          "revision": 51,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/800"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/sial-empresas.js:28",
+        "sial-catalogo.js:419",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "HU800 respalda contactos para comunicaciones; la parametrización completa de alertas necesita confirmar alcance.",
+      "proposal_sha256": "54c29266679d0bd3ad79813be1a8207967f4bb6545149c73bf7a636cc20a0d1f"
+    },
+    {
+      "view": "Gestion de Empresas/index.html",
+      "title": "SIAL | Gestion de empresas",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:296"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "ccefa985abcba7ed5d2a2d58bb320e34ff6eebf63bb092b97d730c1309bdb780"
+    },
+    {
+      "view": "Gestion de Empresas/parametrizacion-roles.html",
+      "title": "SIAL | Creacion de roles",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/role/management"
+      ],
+      "hus": [
+        {
+          "id": 851,
+          "title": "HU851 | FE | Gestión de roles y permisos",
+          "state": "Done",
+          "revision": 26,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/851"
+        },
+        {
+          "id": 936,
+          "title": "HU936 | Implementación de la funcionalidad de editar roles",
+          "state": "In Progress",
+          "revision": 22,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/936"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/roles-empresa.html:19",
+        "Gestion de Empresas/sial-empresas.js:23",
+        "Gestion de Transporte/sial-conductores.js:18",
+        "sial-catalogo.js:219",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/role/management/page.tsx:8: } from \"@features/company-role\";",
+        "src/app/(main)/admin/company/role/management/page.tsx:9: import { RoleQueryFilters, RoleService } from \"@features/company-role/server\";",
+        "src/app/(main)/admin/company/role/management/page.tsx:24: title=\"Roles de sistema\"",
+        "src/app/(main)/admin/company/role/management/page.tsx:34: title=\"Roles registrados\"",
+        "src/app/(main)/admin/company/role/management/page.tsx:35: subtitle=\"Gestión compacta con registro embebido, filtros de estado y auditoría.\""
+      ],
+      "note": "",
+      "proposal_sha256": "982bc1bac77b9f81dc33fc16dafd2eb45d4e0c1a51d431c8f085514676b3930c"
+    },
+    {
+      "view": "Gestion de Empresas/registro-contacto.html",
+      "title": "SIAL | Registro de contacto",
+      "category": "subflujo",
+      "routes": [
+        "/admin/company/contacts/register",
+        "/admin/company/contacts/edit/:id"
+      ],
+      "hus": [
+        {
+          "id": 800,
+          "title": "HU800 | Gestión de maestros para Finca I - Parte 2",
+          "state": "Done",
+          "revision": 51,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/800"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/gestion-contactos.html:25",
+        "Gestion de Empresas/gestion-contactos.html:28",
+        "Gestion de Empresas/gestion-contactos.html:29",
+        "Gestion de Empresas/gestion-contactos.html:30"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/contacts/register/page.tsx:3: import { ContactsForm } from \"@features/contacts\"",
+        "src/app/(main)/admin/company/contacts/register/page.tsx:4: import { dependencyService } from \"@features/dependency/server\"",
+        "src/app/(main)/admin/company/contacts/register/page.tsx:5: import { UsersService } from \"@features/users/server\";",
+        "src/app/(main)/admin/company/contacts/register/page.tsx:16: title=\"Registro de contacto\"",
+        "src/app/(main)/admin/company/contacts/edit/[id]/page.tsx:3: import { ContactsForm } from \"@features/contacts\";",
+        "src/app/(main)/admin/company/contacts/edit/[id]/page.tsx:4: import { contactService } from \"@features/contacts/server\";",
+        "src/app/(main)/admin/company/contacts/edit/[id]/page.tsx:5: import { dependencyService } from \"@features/dependency/server\";",
+        "src/app/(main)/admin/company/contacts/edit/[id]/page.tsx:6: import { UsersService } from \"@features/users/server\";",
+        "src/app/(main)/admin/company/contacts/edit/[id]/page.tsx:19: title=\"Registro de contacto\""
+      ],
+      "note": "Formulario descrito para crear/editar; comprobar variante con datos existentes.",
+      "proposal_sha256": "d770c4b2af52051f649bd667638254841c8d33e0ac4bfdafa48e2981e5ce4d86"
+    },
+    {
+      "view": "Gestion de Empresas/registro-empresa.html",
+      "title": "SIAL | Registro de empresa",
+      "category": "subflujo",
+      "routes": [
+        "/admin/company/register",
+        "/admin/company/edit/:id"
+      ],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/gestion-empresas.html:20",
+        "Gestion de Empresas/gestion-empresas.html:21",
+        "Gestion de Empresas/gestion-empresas.html:22",
+        "Gestion de Empresas/gestion-empresas.html:23"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/register/page.tsx:3: import { CompanyForm } from \"@features/company\";",
+        "src/app/(main)/admin/company/register/page.tsx:11: title=\"Registro de empresa\"",
+        "src/app/(main)/admin/company/edit/[id]/page.tsx:3: import { CompanyForm, type CompanyListResponse } from \"@features/company\";",
+        "src/app/(main)/admin/company/edit/[id]/page.tsx:4: import { CompanyService } from \"@features/company/server\";",
+        "src/app/(main)/admin/company/edit/[id]/page.tsx:24: title=\"Edición de empresa\""
+      ],
+      "note": "La bandeja enlaza edición; confirmar modo y datos precargados. HU propia pendiente.",
+      "proposal_sha256": "8fa5591369d95edd0b63619ec74bced5e33a0328e95beade525960265356ea25"
+    },
+    {
+      "view": "Gestion de Empresas/roles-empresa.html",
+      "title": "SIAL | Roles por empresas",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/role/assignment"
+      ],
+      "hus": [
+        {
+          "id": 529,
+          "title": "HU529 | Reestructuración de roles",
+          "state": "Done",
+          "revision": 55,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/529"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/gestion-empresas.html:20",
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/parametrizacion-roles.html:76",
+        "Gestion de Empresas/sial-empresas.js:22",
+        "Gestion de Transporte/sial-conductores.js:17",
+        "sial-catalogo.js:209",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/role/assignment/page.tsx:3: import { ButtonCompanyRoleAssignment, CompanyRoleAssignment, getCompanySelectOptions } from \"@features/company-role-assignment\";",
+        "src/app/(main)/admin/company/role/assignment/page.tsx:12: title=\"Roles disponibles por empresa\""
+      ],
+      "note": "Relación funcional candidata; contrastar alcance company/usuario.",
+      "proposal_sha256": "4b679af88048bdcf7233c0233fd92e49a3e91770aad235312bc3012e1d844f00"
+    },
+    {
+      "view": "Gestion de Fincas/gestion-clases-referencia.html",
+      "title": "SIAL | Clases de referencia",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/products/references/class"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/sial-fincas.js:21",
+        "Gestion de Fincas/sial-referencias.js:16",
+        "sial-catalogo.js:389",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/products/references/class/page.tsx:10: } from \"@features/products/reference-class\";",
+        "src/app/(main)/admin/products/references/class/page.tsx:11: import { referenceClassService } from \"@features/products/reference-class/server\";",
+        "src/app/(main)/admin/products/references/class/page.tsx:21: title=\"Gestión de clases de referencia\"",
+        "src/app/(main)/admin/products/references/class/page.tsx:33: title=\"Clases de referencia registradas\"",
+        "src/app/(main)/admin/products/references/class/page.tsx:34: subtitle=\"Gestión compacta con registro embebido, filtros de uso y auditoría.\""
+      ],
+      "note": "",
+      "proposal_sha256": "2e86cf993dd233e788567d677bb61c96ba6a0467ad980b4c6b7e99c1ba660302"
+    },
+    {
+      "view": "Gestion de Fincas/gestion-fincas.html",
+      "title": "SIAL | Gestion de fincas",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/farms"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/index.html:34",
+        "Gestion de Fincas/index.html:45",
+        "Gestion de Fincas/registro-finca.html:22",
+        "Gestion de Fincas/registro-finca.html:76",
+        "Gestion de Fincas/sial-fincas.js:23",
+        "sial-catalogo.js:349",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(farms)/farms/page.tsx:2: import { FarmQueryFilters, FarmsTable, FarmsTableActions } from \"@features/farms/farms\";",
+        "src/app/(main)/admin/(farms)/farms/page.tsx:4: import { FarmService } from \"@features/farms/farms/server\";",
+        "src/app/(main)/admin/(farms)/farms/page.tsx:7: import { FarmSectorService } from \"@features/farms/sectors/server\";",
+        "src/app/(main)/admin/(farms)/farms/page.tsx:9: import { FarmGroupService } from \"@features/farms/groups/server\";",
+        "src/app/(main)/admin/(farms)/farms/page.tsx:10: import { collectAllPages } from \"@features/containers/shared/server\";",
+        "src/app/(main)/admin/(farms)/farms/page.tsx:33: title=\"Gestión de fincas\""
+      ],
+      "note": "",
+      "proposal_sha256": "35319d1c090bfe2f229c52789d4b5f96e0f68d4017a290015fb4ba12fafcfd54"
+    },
+    {
+      "view": "Gestion de Fincas/gestion-grupos.html",
+      "title": "SIAL | Gestion de grupos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/farms-groups"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/index.html:47",
+        "Gestion de Fincas/sial-fincas.js:25",
+        "sial-catalogo.js:369",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(farms)/farms-groups/page.tsx:8: } from \"@features/farms/groups\";",
+        "src/app/(main)/admin/(farms)/farms-groups/page.tsx:10: import { FarmGroupService } from \"@features/farms/groups/server\";",
+        "src/app/(main)/admin/(farms)/farms-groups/page.tsx:20: title=\"Gestión de grupos\"",
+        "src/app/(main)/admin/(farms)/farms-groups/page.tsx:31: title=\"Grupos registrados\"",
+        "src/app/(main)/admin/(farms)/farms-groups/page.tsx:32: subtitle=\"Consulta compacta con registro embebido, estado y auditoria.\""
+      ],
+      "note": "",
+      "proposal_sha256": "bce4fffcaf34229cade10d57ec6b057bb69fcaba4371f6138a3b123498e139f2"
+    },
+    {
+      "view": "Gestion de Fincas/gestion-productos.html",
+      "title": "SIAL | Productos",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 800,
+          "title": "HU800 | Gestión de maestros para Finca I - Parte 2",
+          "state": "Done",
+          "revision": 51,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/800"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/index.html:53",
+        "Gestion de Fincas/sial-referencias.js:17",
+        "sial-catalogo.js:429",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "HU800 exige Productos, Tipo de fruta y relación Producto-Finca; no hay ruta propia en el corte.",
+      "proposal_sha256": "2f4bf7cd68107f16123ef5e01c3871252ad23cf69fc4706b7bf3cd56ea2b477b"
+    },
+    {
+      "view": "Gestion de Fincas/gestion-referencias.html",
+      "title": "SIAL | Gestion de referencias",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/products/references"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/registro-referencia.html:22",
+        "Gestion de Fincas/registro-referencia.html:50",
+        "Gestion de Fincas/sial-fincas.js:20",
+        "Gestion de Fincas/sial-referencias.js:15",
+        "index.html:260",
+        "sial-catalogo.js:359",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/products/references/page.tsx:4: import { fruitService } from \"@features/products/fruits/server\";",
+        "src/app/(main)/admin/products/references/page.tsx:9: } from \"@features/products/references\";",
+        "src/app/(main)/admin/products/references/page.tsx:10: import { referenceServices } from \"@features/products/references/server\";",
+        "src/app/(main)/admin/products/references/page.tsx:28: title=\"Gestión de referencias\"",
+        "src/app/(main)/admin/products/references/page.tsx:40: title=\"Referencias registradas\"",
+        "src/app/(main)/admin/products/references/page.tsx:41: subtitle=\"Consulta de clave compuesta, versiones, tipo de fruta, clase y trazabilidad.\""
+      ],
+      "note": "",
+      "proposal_sha256": "b72324fe2620069ac5b48d12a90adbd5310dcaa69696fbd4df7d93ee68973af5"
+    },
+    {
+      "view": "Gestion de Fincas/gestion-sectores.html",
+      "title": "SIAL | Gestion de sectores",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/farms-sectors"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/index.html:46",
+        "Gestion de Fincas/sial-fincas.js:24",
+        "sial-catalogo.js:379",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(farms)/farms-sectors/page.tsx:8: } from \"@features/farms/sectors\";",
+        "src/app/(main)/admin/(farms)/farms-sectors/page.tsx:10: import { FarmSectorService } from \"@features/farms/sectors/server\";",
+        "src/app/(main)/admin/(farms)/farms-sectors/page.tsx:20: title=\"Gestión de sectores\"",
+        "src/app/(main)/admin/(farms)/farms-sectors/page.tsx:31: title=\"Sectores registrados\"",
+        "src/app/(main)/admin/(farms)/farms-sectors/page.tsx:32: subtitle=\"Gestión compacta con registro embebido, filtros de uso y auditoria.\""
+      ],
+      "note": "",
+      "proposal_sha256": "4f807184d480e3283f43fdb58a4b543ee6f2c2fe5ec26ada4869c024676f0d8c"
+    },
+    {
+      "view": "Gestion de Fincas/index.html",
+      "title": "SIAL | Gestion de fincas",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:308"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "82d6272c1bf862411b78800c0d9a51ccc00c454154947e1a648a224d3d95d7ca"
+    },
+    {
+      "view": "Gestion de Fincas/registro-finca.html",
+      "title": "SIAL | Registro de finca",
+      "category": "subflujo",
+      "routes": [
+        "/admin/farms/register",
+        "/admin/farms/edit"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/gestion-fincas.html:26",
+        "Gestion de Fincas/gestion-fincas.html:29",
+        "Gestion de Fincas/gestion-fincas.html:30"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(farms)/farms/register/page.tsx:2: import { FormFarmRegister } from \"@features/farms/farms\";",
+        "src/app/(main)/admin/(farms)/farms/register/page.tsx:9: title=\"Registro de finca\"",
+        "src/app/(main)/admin/(farms)/farms/edit/page.tsx:3: import { FormFarmEdit } from \"@features/farms/farms\";",
+        "src/app/(main)/admin/(farms)/farms/edit/page.tsx:4: import { FarmService } from \"@features/farms/farms/server\";",
+        "src/app/(main)/admin/(farms)/farms/edit/page.tsx:15: title=\"Editar finca\"",
+        "src/app/(main)/admin/(farms)/farms/edit/page.tsx:24: title=\"Formulario de edición\"",
+        "src/app/(main)/admin/(farms)/farms/edit/page.tsx:25: subtitle=\"Edita productor, grupo, sector, geolocalización e identificación.\""
+      ],
+      "note": "Bandeja enlaza ?modo=editar; verificar estado de edición en la propuesta.",
+      "proposal_sha256": "becc3c351dbedd27358c58159e0dd751a612c9cbef09c159bc2f4c046981f927"
+    },
+    {
+      "view": "Gestion de Fincas/registro-referencia.html",
+      "title": "SIAL | Registro de referencia",
+      "category": "subflujo",
+      "routes": [
+        "/admin/products/references/register",
+        "/admin/products/references/edit/:code"
+      ],
+      "hus": [
+        {
+          "id": 335,
+          "title": "HU335 | Gestión de maestros para Finca I - Parte 1",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/335"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Fincas/gestion-referencias.html:25",
+        "Gestion de Fincas/gestion-referencias.html:28",
+        "Gestion de Fincas/gestion-referencias.html:29"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/products/references/register/page.tsx:3: import { fruitService } from \"@features/products/fruits/server\";",
+        "src/app/(main)/admin/products/references/register/page.tsx:4: import { referenceClassService } from \"@features/products/reference-class/server\";",
+        "src/app/(main)/admin/products/references/register/page.tsx:5: import { FormReference } from \"@features/products/references\";",
+        "src/app/(main)/admin/products/references/register/page.tsx:6: import { referenceServices } from \"@features/products/references/server\";",
+        "src/app/(main)/admin/products/references/register/page.tsx:7: import { ClientService } from \"@features/clients/server\";",
+        "src/app/(main)/admin/products/references/register/page.tsx:8: import { collectAllPages } from \"@features/containers/shared/server\";",
+        "src/app/(main)/admin/products/references/edit/[code]/page.tsx:3: import { fruitService } from \"@features/products/fruits/server\";",
+        "src/app/(main)/admin/products/references/edit/[code]/page.tsx:4: import { referenceClassService } from \"@features/products/reference-class/server\";",
+        "src/app/(main)/admin/products/references/edit/[code]/page.tsx:5: import { FormReference } from \"@features/products/references\";",
+        "src/app/(main)/admin/products/references/edit/[code]/page.tsx:6: import { referenceServices } from \"@features/products/references/server\";",
+        "src/app/(main)/admin/products/references/edit/[code]/page.tsx:7: import { ClientService } from \"@features/clients/server\";",
+        "src/app/(main)/admin/products/references/edit/[code]/page.tsx:8: import { collectAllPages } from \"@features/containers/shared/server\";"
+      ],
+      "note": "La propuesta enlaza versionar/copiar; producto tiene ruta de edición. Revisar semántica de versión.",
+      "proposal_sha256": "d5f2c82ba37a933e8e510cce00ed5ca4b0a49d8a42d8b34ed4271c7163c05af5"
+    },
+    {
+      "view": "Gestion de Planeacion/consultar-aviso-corte.html",
+      "title": "SIAL | Consultar aviso de corte",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/planning/cut-notices/detail"
+      ],
+      "hus": [
+        {
+          "id": 290,
+          "title": "HU290 | Gestión de aviso de corte - WEB",
+          "state": "In QA",
+          "revision": 49,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/290"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/sial-aviso-corte-list.js:92",
+        "Materiales y Suministros/sial-pedido-sugerido.js:72"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/planning/cut-notices/detail/page.tsx:1: import { CutNoticeDetailPage } from \"@features/planning/cut-notices/server\";"
+      ],
+      "note": "",
+      "proposal_sha256": "b4f2a6b6305fb582898e89f956adf5ff5aeb3daa0afd8fde69ae5efb463a62d1"
+    },
+    {
+      "view": "Gestion de Planeacion/crear-aviso-corte.html",
+      "title": "SIAL | Crear aviso de corte",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/planning/cut-notices/create"
+      ],
+      "hus": [
+        {
+          "id": 290,
+          "title": "HU290 | Gestión de aviso de corte - WEB",
+          "state": "In QA",
+          "revision": 49,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/290"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/gestion-avisos-corte.html:64",
+        "Gestion de Planeacion/sial-aviso-corte-detail.js:183",
+        "Gestion de Planeacion/sial-aviso-corte-detail.js:184",
+        "Gestion de Planeacion/sial-aviso-corte-list.js:91",
+        "Gestion de Planeacion/sial-aviso-corte.js:26",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/planning/cut-notices/create/page.tsx:1: import { CutNoticeFormPage } from \"@features/planning/cut-notices/server\";"
+      ],
+      "note": "",
+      "proposal_sha256": "e689382d1e3188c210bf9215a436f8809a42508fa2b7c51ca20b5382300a430a"
+    },
+    {
+      "view": "Gestion de Planeacion/generacion-semanas.html",
+      "title": "SIAL | Generacion de semanas",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/planning/weeks/generate"
+      ],
+      "hus": [
+        {
+          "id": 769,
+          "title": "HU769 | Gestión de maestros para Aviso de Corte I",
+          "state": "Done",
+          "revision": 36,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/769"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/gestion-semanas.html:26",
+        "Gestion de Planeacion/index.html:19",
+        "Gestion de Planeacion/sial-aviso-corte.js:28",
+        "sial-catalogo.js:539",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/planning/weeks/generate/page.tsx:2: import { GenerateWeeksPage } from \"@features/planning/weeks\";",
+        "src/app/(main)/admin/planning/weeks/generate/page.tsx:3: import { getPlanningRibbons } from \"@features/planning/ribbons/server\";",
+        "src/app/(main)/admin/planning/weeks/generate/page.tsx:4: import { collectAllPages } from \"@features/containers/shared/server\";",
+        "src/app/(main)/admin/planning/weeks/generate/page.tsx:5: import { PLANNING_PERMISSION_KEYS } from \"@features/planning/shared\";"
+      ],
+      "note": "",
+      "proposal_sha256": "2cd2c0132c93205715d275735c32a7a7da00f79022ad72eb6ab22ba33f49bdf5"
+    },
+    {
+      "view": "Gestion de Planeacion/gestion-avisos-corte.html",
+      "title": "SIAL | Avisos de corte",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/planning/cut-notices"
+      ],
+      "hus": [
+        {
+          "id": 290,
+          "title": "HU290 | Gestión de aviso de corte - WEB",
+          "state": "In QA",
+          "revision": 49,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/290"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/consultar-aviso-corte.html:58",
+        "Gestion de Planeacion/consultar-aviso-corte.html:80",
+        "Gestion de Planeacion/crear-aviso-corte.html:58",
+        "Gestion de Planeacion/index.html:19",
+        "Gestion de Planeacion/sial-aviso-corte.js:25",
+        "sial-catalogo.js:519",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/planning/cut-notices/page.tsx:1: import { CutNoticesPage } from \"@features/planning/cut-notices/server\";"
+      ],
+      "note": "",
+      "proposal_sha256": "bbb30740de82e09e45615edf4480e50749040b21aa4ffa65c409db4740716a79"
+    },
+    {
+      "view": "Gestion de Planeacion/gestion-cintas.html",
+      "title": "SIAL | Gestion de cintas",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/planning/ribbons"
+      ],
+      "hus": [
+        {
+          "id": 769,
+          "title": "HU769 | Gestión de maestros para Aviso de Corte I",
+          "state": "Done",
+          "revision": 36,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/769"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/index.html:19",
+        "Gestion de Planeacion/sial-aviso-corte.js:29",
+        "sial-catalogo.js:549",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/planning/ribbons/page.tsx:2: import { PlanningRibbonsPage, type PlanningRibbonQueryFilters } from \"@features/planning/ribbons\";",
+        "src/app/(main)/admin/planning/ribbons/page.tsx:3: import { getPlanningRibbons } from \"@features/planning/ribbons/server\";",
+        "src/app/(main)/admin/planning/ribbons/page.tsx:4: import { PLANNING_PERMISSION_KEYS } from \"@features/planning/shared\";"
+      ],
+      "note": "",
+      "proposal_sha256": "46b8249b982cc6975ec93eed5725c68b83b602fe8271a04d0172890e481d045f"
+    },
+    {
+      "view": "Gestion de Planeacion/gestion-semanas.html",
+      "title": "SIAL | Gestion de semanas",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/planning/weeks"
+      ],
+      "hus": [
+        {
+          "id": 769,
+          "title": "HU769 | Gestión de maestros para Aviso de Corte I",
+          "state": "Done",
+          "revision": 36,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/769"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/generacion-semanas.html:19",
+        "Gestion de Planeacion/index.html:19",
+        "Gestion de Planeacion/sial-aviso-corte.js:27",
+        "sial-catalogo.js:529",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/planning/weeks/page.tsx:2: import { PlanningWeeksPage, type PlanningWeekQueryFilters } from \"@features/planning/weeks\";",
+        "src/app/(main)/admin/planning/weeks/page.tsx:3: import { PLANNING_PERMISSION_KEYS } from \"@features/planning/shared\";",
+        "src/app/(main)/admin/planning/weeks/page.tsx:4: import { getPlanningWeeks, getPlanningWeekStats } from \"@features/planning/weeks/server\";"
+      ],
+      "note": "",
+      "proposal_sha256": "847a08f29733fcc86b99004f0ab8b67ee0079e649564856492da3f3cd3175e2c"
+    },
+    {
+      "view": "Gestion de Planeacion/index.html",
+      "title": "SIAL | Aviso de Corte",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:320"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "9a5a65afa154839f7fdf836227f57771a29c761fbedb8498bb19afd56d713e27"
+    },
+    {
+      "view": "Gestion de Transporte/dashboard-transporte.html",
+      "title": "SIAL | Dashboard transporte",
+      "category": "HU-candidata-alcance-pendiente",
+      "routes": [],
+      "hus": [
+        {
+          "id": 531,
+          "title": "HU531 | Generar programación semanal de transporte",
+          "state": "New",
+          "revision": 16,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/531"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:54",
+        "Gestion de Transporte/sial-conductores.js:27",
+        "Gestion de Transporte/sial-operaciones.js:55",
+        "sial-catalogo.js:299",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "Candidata por programación; HU531 no define de forma inequívoca este dashboard.",
+      "proposal_sha256": "f202ca7da0fcad51dc5dd3213dca22cbe8e8de6d23517db5c6ef43e67f2f6296"
+    },
+    {
+      "view": "Gestion de Transporte/detalle-mantenimiento.html",
+      "title": "SIAL | Expediente de mantenimiento",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 297,
+          "title": "HU297 | Registrar mantenimiento vehículo",
+          "state": "Approved",
+          "revision": 21,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/297"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/disponibilidad-operativa.html:36",
+        "Gestion de Transporte/gestion-mantenimientos.html:6",
+        "Gestion de Transporte/gestion-mantenimientos.html:7",
+        "Gestion de Transporte/gestion-mantenimientos.html:8",
+        "Gestion de Transporte/gestion-mantenimientos.html:9",
+        "Gestion de Transporte/gestion-operaciones.html:70"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "eb96ceb329b697914ba778f986c5e68b93f9d921d0259fd872e2a3341ff27304"
+    },
+    {
+      "view": "Gestion de Transporte/disponibilidad-operativa.html",
+      "title": "SIAL | Disponibilidad operativa",
+      "category": "subflujo",
+      "routes": [
+        "/admin/transport/vehicle/management",
+        "/admin/transport/operations/management"
+      ],
+      "hus": [
+        {
+          "id": 302,
+          "title": "HU302 | Gestión de vehículos disponibles/No disponibles para la operación",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/302"
+        },
+        {
+          "id": 1491,
+          "title": "HU1491 | Gestión de vehículos disponibles/No disponibles para la operación - parte 2",
+          "state": "In Progress",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1491"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:56",
+        "Gestion de Transporte/sial-conductores.js:29",
+        "Gestion de Transporte/sial-operaciones.js:57",
+        "sial-catalogo.js:319",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:11: } from \"@features/transport/vehicle\";",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:14: } from \"@features/transport/vehicle/server\";",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:31: title=\"Gestion de vehiculos\"",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:41: title=\"Disponibles\"",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:48: title=\"Por vencer\"",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:55: title=\"No disponibles\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:12: } from \"@features/transport/operations\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:13: import { VehicleScheduleService } from \"@features/transport/operations/server\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:14: import { VehicleTypeService } from \"@features/transport/vehicle-types/server\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:40: title=\"Gestión de operaciones de transporte\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:55: title=\"Programaciones\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:62: title=\"Con semana definida\""
+      ],
+      "note": "En producto disponibilidad participa en bandejas; no existe una pantalla independiente homónima.",
+      "proposal_sha256": "f47d278f099d64f539550b1ebb733a68461ab2a5476152d480df4e6621a1ce5b"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-categorias-licencia.html",
+      "title": "SIAL | Gestion de licencias",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/licenses"
+      ],
+      "hus": [
+        {
+          "id": 298,
+          "title": "HU298 | Gestión de maestros de conductores",
+          "state": "Done",
+          "revision": 78,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/298"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:50",
+        "Gestion de Transporte/sial-conductores.js:23",
+        "Gestion de Transporte/sial-operaciones.js:51",
+        "sial-catalogo.js:239",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/licenses/page.tsx:8: } from \"@features/transport/licenses\";",
+        "src/app/(main)/admin/transport/licenses/page.tsx:9: import { LicenseCategoryServices } from \"@features/transport/licenses/server\";",
+        "src/app/(main)/admin/transport/licenses/page.tsx:28: title=\"Gestión de licencias\"",
+        "src/app/(main)/admin/transport/licenses/page.tsx:31: title=\"Categorías existentes\"",
+        "src/app/(main)/admin/transport/licenses/page.tsx:32: subtitle=\"Listado maestro compacto con acciones permitidas y estado.\""
+      ],
+      "note": "",
+      "proposal_sha256": "937e5de1f252c6e45cfd8b3168b291d8ae344709a9e6e7c0d1673f1ce012fc00"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-conductores.html",
+      "title": "SIAL | Gestion de conductores",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/drivers/management"
+      ],
+      "hus": [
+        {
+          "id": 298,
+          "title": "HU298 | Gestión de maestros de conductores",
+          "state": "Done",
+          "revision": 78,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/298"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:37",
+        "Gestion de Transporte/index.html:49",
+        "Gestion de Transporte/registro-conductor.html:22",
+        "Gestion de Transporte/registro-conductor.html:62",
+        "Gestion de Transporte/sial-conductores.js:22",
+        "Gestion de Transporte/sial-operaciones.js:50",
+        "sial-catalogo.js:229",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/drivers/management/page.tsx:10: } from \"@features/transport/drivers\";",
+        "src/app/(main)/admin/transport/drivers/management/page.tsx:11: import { DriverServices } from \"@features/transport/drivers/server\";",
+        "src/app/(main)/admin/transport/drivers/management/page.tsx:27: title=\"Gestión de conductores\"",
+        "src/app/(main)/admin/transport/drivers/management/page.tsx:38: title=\"Activos\"",
+        "src/app/(main)/admin/transport/drivers/management/page.tsx:45: title=\"Inactivos\"",
+        "src/app/(main)/admin/transport/drivers/management/page.tsx:52: title=\"Licencias por vencer\""
+      ],
+      "note": "",
+      "proposal_sha256": "14fef5a907cd63e1a82d8b6fcfcda52fa8cbefd26a7d027a127a0b4379bf3169"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-mantenimientos.html",
+      "title": "SIAL | Mantenimientos de vehículos",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 297,
+          "title": "HU297 | Registrar mantenimiento vehículo",
+          "state": "Approved",
+          "revision": 21,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/297"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/detalle-mantenimiento.html:3",
+        "Gestion de Transporte/gestion-vehiculos.html:31",
+        "Gestion de Transporte/index.html:57",
+        "Gestion de Transporte/registrar-mantenimiento.html:17",
+        "Gestion de Transporte/registrar-mantenimiento.html:40",
+        "Gestion de Transporte/sial-conductores.js:30",
+        "Gestion de Transporte/sial-operaciones.js:58",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "274d168e1dec8f97694ca9fd000945f3aabbe72d99eeccdc209b96fd709cf4be"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-operaciones.html",
+      "title": "SIAL | Programacion de vehiculos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/operations/management"
+      ],
+      "hus": [
+        {
+          "id": 302,
+          "title": "HU302 | Gestión de vehículos disponibles/No disponibles para la operación",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/302"
+        },
+        {
+          "id": 1491,
+          "title": "HU1491 | Gestión de vehículos disponibles/No disponibles para la operación - parte 2",
+          "state": "In Progress",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1491"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:58",
+        "Gestion de Transporte/inicio-operacion.html:23",
+        "Gestion de Transporte/inicio-operacion.html:55",
+        "Gestion de Transporte/plan-operacional.html:18",
+        "Gestion de Transporte/plan-operacional.html:44",
+        "Gestion de Transporte/sial-conductores.js:31",
+        "Gestion de Transporte/sial-operaciones.js:59",
+        "sial-catalogo.js:329",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/operations/management/page.tsx:12: } from \"@features/transport/operations\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:13: import { VehicleScheduleService } from \"@features/transport/operations/server\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:14: import { VehicleTypeService } from \"@features/transport/vehicle-types/server\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:40: title=\"Gestión de operaciones de transporte\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:55: title=\"Programaciones\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:62: title=\"Con semana definida\""
+      ],
+      "note": "",
+      "proposal_sha256": "97e5cab691ce245a0bd661114466cc8c93fb1de4387ca42d8972bf5fa0963063"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-tipos-empresa.html",
+      "title": "SIAL | Tipos de empresa",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/types"
+      ],
+      "hus": [
+        {
+          "id": 333,
+          "title": "HU333 | Gestión de maestros para Transporte I",
+          "state": "Done",
+          "revision": 76,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/333"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/sial-empresas.js:24",
+        "Gestion de Transporte/sial-conductores.js:19",
+        "sial-catalogo.js:279"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/types/page.tsx:9: } from \"@features/company\";",
+        "src/app/(main)/admin/company/types/page.tsx:10: import { CompanyService } from \"@features/company/server\";",
+        "src/app/(main)/admin/company/types/page.tsx:24: title=\"Gestión de tipos de empresa\"",
+        "src/app/(main)/admin/company/types/page.tsx:36: title=\"Tipos registrados\"",
+        "src/app/(main)/admin/company/types/page.tsx:37: subtitle=\"Gestión compacta con registro embebido, filtros y auditoría.\""
+      ],
+      "note": "",
+      "proposal_sha256": "8962d02d27c81934e6e664f9e74a7c57aab49ffd17cf7ebf001be3501cda6678"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-tipos-vehiculo.html",
+      "title": "SIAL | Tipos de vehiculos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/vehicle/types"
+      ],
+      "hus": [
+        {
+          "id": 333,
+          "title": "HU333 | Gestión de maestros para Transporte I",
+          "state": "Done",
+          "revision": 76,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/333"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:53",
+        "Gestion de Transporte/sial-conductores.js:26",
+        "Gestion de Transporte/sial-operaciones.js:54",
+        "sial-catalogo.js:269",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/vehicle/types/page.tsx:8: } from \"@features/transport/vehicle-types\";",
+        "src/app/(main)/admin/transport/vehicle/types/page.tsx:9: import { VehicleTypeService } from \"@features/transport/vehicle-types/server\";",
+        "src/app/(main)/admin/transport/vehicle/types/page.tsx:29: title=\"Gestion de tipos de vehiculos\"",
+        "src/app/(main)/admin/transport/vehicle/types/page.tsx:33: title=\"Tipos registrados\"",
+        "src/app/(main)/admin/transport/vehicle/types/page.tsx:34: subtitle=\"Listado maestro con formulario corto embebido, estado y uso operativo.\""
+      ],
+      "note": "",
+      "proposal_sha256": "80d2af915b94b2080316176718f3e8bf54e6ef9ea602506bbcd90fce88c3a542"
+    },
+    {
+      "view": "Gestion de Transporte/gestion-vehiculos.html",
+      "title": "SIAL | Gestion de vehiculos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/vehicle/management"
+      ],
+      "hus": [
+        {
+          "id": 333,
+          "title": "HU333 | Gestión de maestros para Transporte I",
+          "state": "Done",
+          "revision": 76,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/333"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/disponibilidad-operativa.html:33",
+        "Gestion de Transporte/index.html:52",
+        "Gestion de Transporte/registro-vehiculo.html:22",
+        "Gestion de Transporte/registro-vehiculo.html:55",
+        "Gestion de Transporte/sial-conductores.js:25",
+        "Gestion de Transporte/sial-operaciones.js:53",
+        "sial-catalogo.js:259",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:11: } from \"@features/transport/vehicle\";",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:14: } from \"@features/transport/vehicle/server\";",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:31: title=\"Gestion de vehiculos\"",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:41: title=\"Disponibles\"",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:48: title=\"Por vencer\"",
+        "src/app/(main)/admin/transport/vehicle/management/page.tsx:55: title=\"No disponibles\""
+      ],
+      "note": "",
+      "proposal_sha256": "a347b544829b0475760d9be13399fd3604230fd3794aa5026b30a32879cf662a"
+    },
+    {
+      "view": "Gestion de Transporte/index.html",
+      "title": "SIAL | HU Conductores",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:272"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "918e0aeafcb6e2e6d88337b87d35cdc5e9de9f2d7686f78ee8111cee39e6f15d"
+    },
+    {
+      "view": "Gestion de Transporte/inicio-operacion.html",
+      "title": "SIAL | Programar vehiculo",
+      "category": "subflujo",
+      "routes": [
+        "/admin/transport/operations/management",
+        "/admin/transport/operations/management/edit"
+      ],
+      "hus": [
+        {
+          "id": 302,
+          "title": "HU302 | Gestión de vehículos disponibles/No disponibles para la operación",
+          "state": "Done",
+          "revision": 71,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/302"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/gestion-operaciones.html:62",
+        "Gestion de Transporte/gestion-operaciones.html:65",
+        "Gestion de Transporte/gestion-operaciones.html:66",
+        "Gestion de Transporte/gestion-operaciones.html:67",
+        "Gestion de Transporte/gestion-operaciones.html:69",
+        "Gestion de Transporte/index.html:59",
+        "sial-catalogo.js:339"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/operations/management/page.tsx:12: } from \"@features/transport/operations\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:13: import { VehicleScheduleService } from \"@features/transport/operations/server\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:14: import { VehicleTypeService } from \"@features/transport/vehicle-types/server\";",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:40: title=\"Gestión de operaciones de transporte\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:55: title=\"Programaciones\"",
+        "src/app/(main)/admin/transport/operations/management/page.tsx:62: title=\"Con semana definida\"",
+        "src/app/(main)/admin/transport/operations/management/edit/page.tsx:4: import { getCatalog, OperationEditForm } from \"@features/transport/operations\";",
+        "src/app/(main)/admin/transport/operations/management/edit/page.tsx:5: import { VehicleScheduleService } from \"@features/transport/operations/server\";",
+        "src/app/(main)/admin/transport/operations/management/edit/page.tsx:24: title=\"Editar programación\"",
+        "src/app/(main)/admin/transport/operations/management/edit/page.tsx:40: title=\"Edición de programación\"",
+        "src/app/(main)/admin/transport/operations/management/edit/page.tsx:41: subtitle=\"Campos editables: conductor, tipo de destino, destino y observaciones.\""
+      ],
+      "note": "Registro desde bandeja y variante de edición; comprobar modo editable.",
+      "proposal_sha256": "cec5388a5e6a255044436a0fd992d1446768a214fc91591babbddaac3af6248f"
+    },
+    {
+      "view": "Gestion de Transporte/matriz-documental-vehiculos.html",
+      "title": "SIAL | Matriz documental vehiculos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/vehicle/documentary-matrix"
+      ],
+      "hus": [
+        {
+          "id": 333,
+          "title": "HU333 | Gestión de maestros para Transporte I",
+          "state": "Done",
+          "revision": 76,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/333"
+        },
+        {
+          "id": 1491,
+          "title": "HU1491 | Gestión de vehículos disponibles/No disponibles para la operación - parte 2",
+          "state": "In Progress",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1491"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/disponibilidad-operativa.html:34",
+        "Gestion de Transporte/index.html:55",
+        "Gestion de Transporte/sial-conductores.js:28",
+        "Gestion de Transporte/sial-operaciones.js:56",
+        "sial-catalogo.js:309",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/vehicle/documentary-matrix/page.tsx:9: } from \"@features/transport/documentary-matrix\";",
+        "src/app/(main)/admin/transport/vehicle/documentary-matrix/page.tsx:10: import { DocumentaryMatrixServices } from \"@features/transport/documentary-matrix/server\";",
+        "src/app/(main)/admin/transport/vehicle/documentary-matrix/page.tsx:35: title=\"Documentos vigentes\"",
+        "src/app/(main)/admin/transport/vehicle/documentary-matrix/page.tsx:42: title=\"Por vencer\"",
+        "src/app/(main)/admin/transport/vehicle/documentary-matrix/page.tsx:49: title=\"Vencidos\"",
+        "src/app/(main)/admin/transport/vehicle/documentary-matrix/page.tsx:56: title=\"Próximo vencimiento\""
+      ],
+      "note": "",
+      "proposal_sha256": "20eab3be895470bacb2932eea5965e8f7ad31f85760c6e936c8d55d52e40bcb3"
+    },
+    {
+      "view": "Gestion de Transporte/plan-operacional.html",
+      "title": "SIAL | Programar traslado de materiales",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 1919,
+          "title": "HU1919 | Programación y Asignación de Vehículos para Traslado de Materiales desde Remisiones, Reservas y RTP",
+          "state": "In Progress",
+          "revision": 10,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1919"
+        },
+        {
+          "id": 2367,
+          "title": "HU2367 | Crear el plan operacional de transporte a partir de órdenes de materiales y avisos de corte",
+          "state": "Approved",
+          "revision": 15,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2367"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Planeacion/sial-aviso-corte-detail.js:200",
+        "Gestion de Transporte/gestion-operaciones.html:62",
+        "Materiales y Suministros/sial-materiales.js:687",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "HU1919 respalda traslado de materiales; HU2367 amplía el plan a avisos de corte.",
+      "proposal_sha256": "ec3a7336e5b92c9d36b9e9bc401dbe79e94711d7a52cc4403ffa04ee339fdd98"
+    },
+    {
+      "view": "Gestion de Transporte/registrar-mantenimiento.html",
+      "title": "SIAL | Registrar mantenimiento",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 297,
+          "title": "HU297 | Registrar mantenimiento vehículo",
+          "state": "Approved",
+          "revision": 21,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/297"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/gestion-mantenimientos.html:4"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "d8da836da4aa917041691b5b5f67ac9bbad12b7c142e935257732bd592151fdb"
+    },
+    {
+      "view": "Gestion de Transporte/registro-conductor.html",
+      "title": "SIAL | Registro de conductor",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/drivers/register"
+      ],
+      "hus": [
+        {
+          "id": 298,
+          "title": "HU298 | Gestión de maestros de conductores",
+          "state": "Done",
+          "revision": 78,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/298"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/gestion-conductores.html:61",
+        "Gestion de Transporte/gestion-conductores.html:71",
+        "Gestion de Transporte/gestion-conductores.html:75",
+        "Gestion de Transporte/gestion-conductores.html:79"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/drivers/register/page.tsx:3: import { FormDriver } from \"@features/transport/drivers\";",
+        "src/app/(main)/admin/transport/drivers/register/page.tsx:17: title=\"Registro de conductor\""
+      ],
+      "note": "",
+      "proposal_sha256": "52562f1d5ff3faabbeb0a0ecd38860d4cad5e52aa9a7c1433a3ed6c8fe2030d8"
+    },
+    {
+      "view": "Gestion de Transporte/registro-vehiculo.html",
+      "title": "SIAL | Registro de vehiculo",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/transport/vehicle/register"
+      ],
+      "hus": [
+        {
+          "id": 333,
+          "title": "HU333 | Gestión de maestros para Transporte I",
+          "state": "Done",
+          "revision": 76,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/333"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/disponibilidad-operativa.html:35",
+        "Gestion de Transporte/gestion-vehiculos.html:31",
+        "Gestion de Transporte/gestion-vehiculos.html:34",
+        "Gestion de Transporte/gestion-vehiculos.html:35",
+        "Gestion de Transporte/gestion-vehiculos.html:36",
+        "Gestion de Transporte/matriz-documental-vehiculos.html:34",
+        "Gestion de Transporte/matriz-documental-vehiculos.html:35",
+        "Gestion de Transporte/matriz-documental-vehiculos.html:36"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/vehicle/register/page.tsx:3: import { VehicleForm } from \"@features/transport/vehicle\";",
+        "src/app/(main)/admin/transport/vehicle/register/page.tsx:12: title=\"Registro de Vehículo\"",
+        "src/app/(main)/admin/transport/vehicle/register/page.tsx:25: title=\"Formulario de vehículo\"",
+        "src/app/(main)/admin/transport/vehicle/register/page.tsx:26: subtitle=\"Campos obligatorios, fechas coherentes, estado administrativo y trazabilidad completa.\">"
+      ],
+      "note": "",
+      "proposal_sha256": "f2afaaad945b7d2dca98c800ecf465ec0a8426411699911556ff27627f6fe142"
+    },
+    {
+      "view": "Gestion de Transporte/relacion-conductor-licencia.html",
+      "title": "SIAL | Relacion conductor licencia",
+      "category": "subflujo",
+      "routes": [
+        "/admin/transport/drivers/register"
+      ],
+      "hus": [
+        {
+          "id": 298,
+          "title": "HU298 | Gestión de maestros de conductores",
+          "state": "Done",
+          "revision": 78,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/298"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Transporte/index.html:51",
+        "Gestion de Transporte/sial-conductores.js:24",
+        "Gestion de Transporte/sial-operaciones.js:52",
+        "sial-catalogo.js:249",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/transport/drivers/register/page.tsx:3: import { FormDriver } from \"@features/transport/drivers\";",
+        "src/app/(main)/admin/transport/drivers/register/page.tsx:17: title=\"Registro de conductor\""
+      ],
+      "note": "Producto incluye licencias en el formulario del conductor; propuesta separa la relación.",
+      "proposal_sha256": "f91143c466a51a442a7400bb7411352d5a7231385a6fceaa3412992fdd3bb819"
+    },
+    {
+      "view": "Gestion de Transporte/relacion-empresa-tipo.html",
+      "title": "SIAL | Empresa + tipo",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/company/relations"
+      ],
+      "hus": [
+        {
+          "id": 333,
+          "title": "HU333 | Gestión de maestros para Transporte I",
+          "state": "Done",
+          "revision": 76,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/333"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Empresas/index.html:19",
+        "Gestion de Empresas/sial-empresas.js:25",
+        "Gestion de Transporte/sial-conductores.js:20",
+        "sial-catalogo.js:289"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/company/relations/page.tsx:10: } from \"@features/company\";",
+        "src/app/(main)/admin/company/relations/page.tsx:11: import { CompanyService } from \"@features/company/server\";",
+        "src/app/(main)/admin/company/relations/page.tsx:26: title=\"Relación de empresas\"",
+        "src/app/(main)/admin/company/relations/page.tsx:38: title=\"Relaciones registradas\"",
+        "src/app/(main)/admin/company/relations/page.tsx:39: subtitle=\"Consulta de tipos asignados a empresas con estado y auditoría.\""
+      ],
+      "note": "",
+      "proposal_sha256": "5439ef6beb0c0103c168c274e1612a78fdf137f4486bd235ae64b196edd2f12e"
+    },
+    {
+      "view": "Gestion de Usuarios/editar-usuario.html",
+      "title": "SIAL | Editar usuario",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/users/edit"
+      ],
+      "hus": [
+        {
+          "id": 778,
+          "title": "HU778 | Gestión de usuarios | Backend",
+          "state": "Done",
+          "revision": 43,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/778"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Usuarios/gestion-usuarios.html:35",
+        "Gestion de Usuarios/gestion-usuarios.html:36",
+        "Gestion de Usuarios/gestion-usuarios.html:37",
+        "Gestion de Usuarios/index.html:35",
+        "Gestion de Usuarios/sial-usuarios.js:244",
+        "sial-catalogo.js:179",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(security)/users/edit/page.tsx:4: import { CompanyService } from \"@features/company/server\";",
+        "src/app/(main)/admin/(security)/users/edit/page.tsx:5: import { FormUserKnownDevicesEdit } from \"@features/known-devices\";",
+        "src/app/(main)/admin/(security)/users/edit/page.tsx:6: import { KnownDevicesService } from \"@features/known-devices/server\";",
+        "src/app/(main)/admin/(security)/users/edit/page.tsx:11: } from \"@features/users\";",
+        "src/app/(main)/admin/(security)/users/edit/page.tsx:12: import { UsersService } from \"@features/users/server\";",
+        "src/app/(main)/admin/(security)/users/edit/page.tsx:64: title={`Editar usuario | ${user.username}`}"
+      ],
+      "note": "",
+      "proposal_sha256": "fc4bd2abc4e6eb943328c4d5f1ce634e58f35e200e1b903bdffaa29b857947ed"
+    },
+    {
+      "view": "Gestion de Usuarios/gestion-permisos-rol.html",
+      "title": "SIAL | Administracion de permisos en roles",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/permissions"
+      ],
+      "hus": [
+        {
+          "id": 851,
+          "title": "HU851 | FE | Gestión de roles y permisos",
+          "state": "Done",
+          "revision": 26,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/851"
+        },
+        {
+          "id": 830,
+          "title": "HU830 | BE | Gestión de roles y permisos",
+          "state": "Done",
+          "revision": 30,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/830"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Usuarios/index.html:36",
+        "Gestion de Usuarios/sial-usuarios.js:245",
+        "sial-catalogo.js:189",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(security)/permissions/page.tsx:4: import { PermissionControlPanel } from \"@features/permissions\";",
+        "src/app/(main)/admin/(security)/permissions/page.tsx:11: title=\"Administración de permisos en roles\""
+      ],
+      "note": "",
+      "proposal_sha256": "635f793f803b3f2e835fbfc20c5d2d4d20b04cb34c9b3b1df26773f9d8e2205d"
+    },
+    {
+      "view": "Gestion de Usuarios/gestion-usuarios.html",
+      "title": "SIAL | Gestion de usuarios",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/users"
+      ],
+      "hus": [
+        {
+          "id": 748,
+          "title": "HU748 | Listado y visualización de usuarios de SIAL (FE)",
+          "state": "Done",
+          "revision": 52,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/748"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Usuarios/editar-usuario.html:28",
+        "Gestion de Usuarios/editar-usuario.html:47",
+        "Gestion de Usuarios/editar-usuario.html:93",
+        "Gestion de Usuarios/index.html:23",
+        "Gestion de Usuarios/index.html:33",
+        "Gestion de Usuarios/registro-usuario.html:23",
+        "Gestion de Usuarios/registro-usuario.html:48",
+        "Gestion de Usuarios/sial-usuarios.js:242",
+        "Login/seleccionar-empresa.html:86",
+        "Login/sial-company-select.js:98",
+        "sial-catalogo.js:159",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(security)/users/page.tsx:4: import { UsersService } from \"@features/users/server\";",
+        "src/app/(main)/admin/(security)/users/page.tsx:5: import { UsersTable, UserStatistics, UserQueryFilters, TableUserActions } from \"@features/users\";",
+        "src/app/(main)/admin/(security)/users/page.tsx:8: import { CompanyService } from \"@features/company/server\";",
+        "src/app/(main)/admin/(security)/users/page.tsx:26: title=\"Gestión de usuarios\"",
+        "src/app/(main)/admin/(security)/users/page.tsx:41: title=\"Activos\"",
+        "src/app/(main)/admin/(security)/users/page.tsx:48: title=\"Vigentes\""
+      ],
+      "note": "",
+      "proposal_sha256": "783c8f2839e38496e409587272f5a1f23ebce8111b4e5a3c28cb6143e7e358bd"
+    },
+    {
+      "view": "Gestion de Usuarios/index.html",
+      "title": "SIAL | Gestion de usuarios",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:284"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "4b7e80e32c8083159f599ebd610a190afaade0691b6822a966ef789a341a0bec"
+    },
+    {
+      "view": "Gestion de Usuarios/registro-usuario.html",
+      "title": "SIAL | Registro de usuario",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/users/register"
+      ],
+      "hus": [
+        {
+          "id": 246,
+          "title": "HU246 | Desarrollo de registro de usuario(UI)",
+          "state": "Done",
+          "revision": 49,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/246"
+        },
+        {
+          "id": 778,
+          "title": "HU778 | Gestión de usuarios | Backend",
+          "state": "Done",
+          "revision": 43,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/778"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion de Usuarios/gestion-usuarios.html:32",
+        "Gestion de Usuarios/index.html:34",
+        "Gestion de Usuarios/sial-usuarios.js:243",
+        "sial-catalogo.js:169",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(security)/users/register/page.tsx:3: import { FormUserRegister } from \"@features/users\";",
+        "src/app/(main)/admin/(security)/users/register/page.tsx:11: title=\"Registro de usuario\"",
+        "src/app/(main)/admin/(security)/users/register/page.tsx:16: title=\"Datos del usuario\"",
+        "src/app/(main)/admin/(security)/users/register/page.tsx:17: subtitle=\"Los campos obligatorios se validan antes de guardar. El usuario debe quedar asociado al menos a una empresa con uno o mas roles.\""
+      ],
+      "note": "",
+      "proposal_sha256": "48bff4ce270a756e5c7381d3b6df9206e7dc4d86fa9cb1b3799d5b7984e053d6"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/gestion-contenedores.html",
+      "title": "SIAL | Gestion de contenedores",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/container"
+      ],
+      "hus": [
+        {
+          "id": 334,
+          "title": "HU334 | Gestión de maestros para Operaciones Puerto I",
+          "state": "Done",
+          "revision": 58,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/334"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/index.html:33",
+        "Gestion Operaciones Puerto/sial-puerto.js:14",
+        "sial-catalogo.js:449",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(ports)/(containers)/container/page.tsx:9: } from \"@features/containers/container\";",
+        "src/app/(main)/admin/(ports)/(containers)/container/page.tsx:10: import { ContainerService } from \"@features/containers/container/server\";",
+        "src/app/(main)/admin/(ports)/(containers)/container/page.tsx:11: import { getContainerTypeFilterOptions } from \"@features/containers/container-type/server\";",
+        "src/app/(main)/admin/(ports)/(containers)/container/page.tsx:23: title=\"Gestión de contenedores\"",
+        "src/app/(main)/admin/(ports)/(containers)/container/page.tsx:34: title=\"Contenedores registrados\"",
+        "src/app/(main)/admin/(ports)/(containers)/container/page.tsx:35: subtitle=\"Gestión compacta con registro embebido, filtros operativos y auditoría.\""
+      ],
+      "note": "",
+      "proposal_sha256": "66428a19ffda1e11b2c77afd45da7866ef611a4b89357ba93aed132b20a8ed3e"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/gestion-etapas-contenedor.html",
+      "title": "SIAL | Etapas de contenedor",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/container/operations"
+      ],
+      "hus": [
+        {
+          "id": 334,
+          "title": "HU334 | Gestión de maestros para Operaciones Puerto I",
+          "state": "Done",
+          "revision": 58,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/334"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/index.html:33",
+        "Gestion Operaciones Puerto/sial-puerto.js:18",
+        "sial-catalogo.js:479",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(ports)/(containers)/container/operations/page.tsx:10: } from \"@features/containers/operations\";",
+        "src/app/(main)/admin/(ports)/(containers)/container/operations/page.tsx:11: import { getContainerSchedulesPage } from \"@features/containers/operations/server\";",
+        "src/app/(main)/admin/(ports)/(containers)/container/operations/page.tsx:25: title=\"Programación de contenedores\"",
+        "src/app/(main)/admin/(ports)/(containers)/container/operations/page.tsx:39: title=\"Programaciones de contenedores\"",
+        "src/app/(main)/admin/(ports)/(containers)/container/operations/page.tsx:40: subtitle=\"Consulta de programaciones vigentes, futuras y finalizadas por semana operativa.\""
+      ],
+      "note": "",
+      "proposal_sha256": "d05192c8a30c3e2f0005642b255ec565a2185b6ea525b1b491e9fee1bee4573d"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/gestion-puertos.html",
+      "title": "SIAL | Gestion de puertos",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/port"
+      ],
+      "hus": [
+        {
+          "id": 334,
+          "title": "HU334 | Gestión de maestros para Operaciones Puerto I",
+          "state": "Done",
+          "revision": 58,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/334"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/index.html:33",
+        "Gestion Operaciones Puerto/sial-puerto.js:19",
+        "sial-catalogo.js:489",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(ports)/port/page.tsx:4: import { FormPortRegister, PortQueryFilters, TablePort, TablePortActions } from \"@features/ports\"",
+        "src/app/(main)/admin/(ports)/port/page.tsx:5: import { portService } from \"@features/ports/server\";",
+        "src/app/(main)/admin/(ports)/port/page.tsx:16: title=\"Gestión de puertos\"",
+        "src/app/(main)/admin/(ports)/port/page.tsx:26: title=\"Puertos registrados\"",
+        "src/app/(main)/admin/(ports)/port/page.tsx:27: subtitle=\"Listado maestro con registro embebido, estado, acciones y auditoria.\""
+      ],
+      "note": "",
+      "proposal_sha256": "575dd9653ece6c84f575df4d076759601e4a4f655aa5811f695240a0733acdee"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/gestion-tipos-contenedor.html",
+      "title": "SIAL | Tipos de contenedor",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/container-type"
+      ],
+      "hus": [
+        {
+          "id": 334,
+          "title": "HU334 | Gestión de maestros para Operaciones Puerto I",
+          "state": "Done",
+          "revision": 58,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/334"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/index.html:33",
+        "Gestion Operaciones Puerto/sial-puerto.js:17",
+        "sial-catalogo.js:469",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(ports)/(containers)/container-type/page.tsx:9: } from \"@features/containers/container-type\";",
+        "src/app/(main)/admin/(ports)/(containers)/container-type/page.tsx:10: import { ContainerTypeService, getContainerTypeFilterOptions } from \"@features/containers/container-type/server\";",
+        "src/app/(main)/admin/(ports)/(containers)/container-type/page.tsx:22: title=\"Gestión de tipos de contenedor\"",
+        "src/app/(main)/admin/(ports)/(containers)/container-type/page.tsx:33: title=\"Tipos de contenedor registrados\"",
+        "src/app/(main)/admin/(ports)/(containers)/container-type/page.tsx:34: subtitle=\"Gestión compacta con registro embebido, filtros operativos y auditoría.\""
+      ],
+      "note": "",
+      "proposal_sha256": "067204e46d3e4b75baf8e42a6f88cbf0153d808314ac65f99bf97acbe458cffe"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/index.html",
+      "title": "SIAL | Operaciones Puerto",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/trazabilidad-pallets.js:235",
+        "index.html:344"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "bb40b15f9fba582abbdbdb18926c0492e43b2a9103741a291acff29e5d7d6e7c"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/programacion-contenedores.html",
+      "title": "SIAL | Programacion de contenedores",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 1447,
+          "title": "HU1447 | Creación programación de contenedores - WEB",
+          "state": "Done",
+          "revision": 16,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1447"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/index.html:25",
+        "Gestion Operaciones Puerto/index.html:33",
+        "Gestion Operaciones Puerto/sial-puerto.js:15",
+        "sial-catalogo.js:459",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "No hay ruta propia de programación; confirmar si se compone dentro de operaciones.",
+      "proposal_sha256": "1eb6aff5673d97e0f279b479681fe604daa670ad823a537fc0e91630b4a78830"
+    },
+    {
+      "view": "Gestion Operaciones Puerto/trazabilidad-pallets.html",
+      "title": "SIAL | Trazabilidad de pallets",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/pallets"
+      ],
+      "hus": [
+        {
+          "id": 2362,
+          "title": "HU2362 | Consultar trazabilidad integral de finca, cajas, pallets y contenedor",
+          "state": "New",
+          "revision": 5,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2362"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Gestion Operaciones Puerto/index.html:33",
+        "Gestion Operaciones Puerto/sial-puerto.js:16",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/(ports)/pallets/page.tsx:4: import { LocationService } from \"@features/locations/server\";",
+        "src/app/(main)/admin/(ports)/pallets/page.tsx:8: } from \"@features/pallets/traceability\";",
+        "src/app/(main)/admin/(ports)/pallets/page.tsx:9: import { PalletService } from \"@features/pallets/traceability/server\";",
+        "src/app/(main)/admin/(ports)/pallets/page.tsx:25: title=\"Trazabilidad de pallets\"",
+        "src/app/(main)/admin/(ports)/pallets/page.tsx:32: title=\"Pallets registrados\"",
+        "src/app/(main)/admin/(ports)/pallets/page.tsx:33: subtitle=\"Consulta todos los pallets o utiliza los filtros para acotar el resultado.\""
+      ],
+      "note": "Coincidencia confirmada por import PalletTraceabilityPanel y título de producto.",
+      "proposal_sha256": "a8f58feb56881229f2f876889a4d78d3ca2018bdd89d9571d9c25e518fdd9e2b"
+    },
+    {
+      "view": "Login/index.html",
+      "title": "SIAL | Login institucional",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/login"
+      ],
+      "hus": [
+        {
+          "id": 245,
+          "title": "HU245 | Desarrollo de login, seguridad, logout y recovery password",
+          "state": "Done",
+          "revision": 25,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/245"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Errores/401.html:34",
+        "Login/recuperar-contrasena.html:105",
+        "Login/restablecer-contrasena.html:89",
+        "Login/seleccionar-empresa.html:186",
+        "index.html:248",
+        "shared/sial-core.js:411",
+        "sial-catalogo.js:109"
+      ],
+      "product_evidence": [
+        "src/app/(auth)/login/page.tsx:1: import { FormSignIn } from \"@features/auth/login\""
+      ],
+      "note": "",
+      "proposal_sha256": "1d58db34de90799623ed827e597bf920da2c0f4d71749f70b02f677ac72dcd13"
+    },
+    {
+      "view": "Login/recuperar-contrasena.html",
+      "title": "SIAL | Recuperar contrasena",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/recovery-password"
+      ],
+      "hus": [
+        {
+          "id": 257,
+          "title": "HU257 | Desarrollo de recuperación de contraseña vía correo electrónico",
+          "state": "Done",
+          "revision": 15,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/257"
+        },
+        {
+          "id": 245,
+          "title": "HU245 | Desarrollo de login, seguridad, logout y recovery password",
+          "state": "Done",
+          "revision": 25,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/245"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Login/index.html:113",
+        "Login/verificar-codigo.html:112",
+        "sial-catalogo.js:129"
+      ],
+      "product_evidence": [
+        "src/app/(auth)/recovery-password/page.tsx:1: import { RecoveryWizard } from \"@features/auth/recovery-password\""
+      ],
+      "note": "",
+      "proposal_sha256": "4e2b7a2ef9a6140521b776d28c2ee05b2fd0381f837346428f4fc9877a34cb3a"
+    },
+    {
+      "view": "Login/restablecer-contrasena.html",
+      "title": "SIAL | Restablecer contrasena",
+      "category": "subflujo",
+      "routes": [
+        "/recovery-password"
+      ],
+      "hus": [
+        {
+          "id": 257,
+          "title": "HU257 | Desarrollo de recuperación de contraseña vía correo electrónico",
+          "state": "Done",
+          "revision": 15,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/257"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Login/verificar-codigo.html:89",
+        "sial-catalogo.js:149"
+      ],
+      "product_evidence": [
+        "src/app/(auth)/recovery-password/page.tsx:1: import { RecoveryWizard } from \"@features/auth/recovery-password\""
+      ],
+      "note": "Paso del RecoveryWizard.",
+      "proposal_sha256": "341b2ca231c18d38a90342e1baf626f8b6f4d7b774159e42871aebccfffa5550"
+    },
+    {
+      "view": "Login/seleccionar-empresa.html",
+      "title": "SIAL | Seleccion de empresa",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/login/select-company"
+      ],
+      "hus": [
+        {
+          "id": 245,
+          "title": "HU245 | Desarrollo de login, seguridad, logout y recovery password",
+          "state": "Done",
+          "revision": 25,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/245"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Login/index.html:86",
+        "sial-catalogo.js:119"
+      ],
+      "product_evidence": [
+        "src/app/(auth)/login/select-company/page.tsx:1: import { SelectCompany } from \"@features/auth/select-company\"",
+        "src/app/(auth)/login/select-company/page.tsx:2: import { companyService } from \"@features/auth/select-company/server\""
+      ],
+      "note": "",
+      "proposal_sha256": "33054b0e3536182eacd687f79bb63afb304fed464b28c7e02751cd9ae2443c1d"
+    },
+    {
+      "view": "Login/verificar-codigo.html",
+      "title": "SIAL | Verificar codigo",
+      "category": "subflujo",
+      "routes": [
+        "/recovery-password"
+      ],
+      "hus": [
+        {
+          "id": 257,
+          "title": "HU257 | Desarrollo de recuperación de contraseña vía correo electrónico",
+          "state": "Done",
+          "revision": 15,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/257"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Login/recuperar-contrasena.html:89",
+        "sial-catalogo.js:139"
+      ],
+      "product_evidence": [
+        "src/app/(auth)/recovery-password/page.tsx:1: import { RecoveryWizard } from \"@features/auth/recovery-password\""
+      ],
+      "note": "Paso del RecoveryWizard.",
+      "proposal_sha256": "a20006eaf6a585c7e592841d1b5f150eeb722beca2221c55ae14e4e8665065df"
+    },
+    {
+      "view": "Materiales y Suministros/ajustar-pedido-sugerido.html",
+      "title": "SIAL | Revisar cantidades del pedido",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 660,
+          "title": "HU660 | Ajustar y validar las cantidades del pedido sugerido (Finca)",
+          "state": "In Progress",
+          "revision": 37,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/660"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-pedido-sugerido.js:109"
+      ],
+      "product_evidence": [],
+      "note": "El CTA actual apunta a /admin/supplies/suggested-orders/review, pero origin/dev no contiene page.tsx para esa ruta. Fuente: suggested-order-navigation.ts.",
+      "proposal_sha256": "12790eb0bc8a1226256b73c862e27383139f31ac3ec61d0ad02a1cb1da309729"
+    },
+    {
+      "view": "Materiales y Suministros/aprobacion-pedidos-materiales.html",
+      "title": "SIAL | Aprobación de pedidos",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 2370,
+          "title": "HU2370 | Aprobar el pedido y generar documentos asociados",
+          "state": "New",
+          "revision": 7,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2370"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:405",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "07c50bf63590ca341cc43baa2a462a57a0d10ef66111693285d46d4e2c771326"
+    },
+    {
+      "view": "Materiales y Suministros/categorias-pedido.html",
+      "title": "SIAL | Categorías de pedido",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/supplies/material-categories"
+      ],
+      "hus": [
+        {
+          "id": 1918,
+          "title": "HU1918 | Parametrización y Maestro de Categorías de Materiales",
+          "state": "In Progress",
+          "revision": 6,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1918"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:404",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/supplies/material-categories/page.tsx:9: } from \"@features/supplies/material-categories\";",
+        "src/app/(main)/admin/supplies/material-categories/page.tsx:10: import { materialCategoryService } from \"@features/supplies/material-categories/server\";",
+        "src/app/(main)/admin/supplies/material-categories/page.tsx:23: title=\"Categorías de materiales\"",
+        "src/app/(main)/admin/supplies/material-categories/page.tsx:28: title=\"Categorías registradas\"",
+        "src/app/(main)/admin/supplies/material-categories/page.tsx:29: subtitle=\"Consulta códigos, nombres y disponibilidad de las categorías.\""
+      ],
+      "note": "",
+      "proposal_sha256": "6ea80ee2df3c911349b2c79319f6a98cb597bcd63fc9eb40ab654931c640951c"
+    },
+    {
+      "view": "Materiales y Suministros/gestion-materiales.html",
+      "title": "SIAL | Catálogo de materiales",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/supplies/materials"
+      ],
+      "hus": [
+        {
+          "id": 826,
+          "title": "HU826 | Gestionar materiales y su configuración por referencia",
+          "state": "In Progress",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/826"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:404",
+        "Materiales y Suministros/sial-pedido-sugerido.js:128",
+        "sial-catalogo.js:639",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/supplies/materials/page.tsx:10: } from \"@features/supplies/materials\";",
+        "src/app/(main)/admin/supplies/materials/page.tsx:11: import { materialService } from \"@features/supplies/materials/server\";",
+        "src/app/(main)/admin/supplies/materials/page.tsx:25: title=\"Catálogo de materiales\"",
+        "src/app/(main)/admin/supplies/materials/page.tsx:30: title=\"Catálogo de materiales\"",
+        "src/app/(main)/admin/supplies/materials/page.tsx:31: subtitle=\"Gestión compacta con formulario embebido, filtros, estado y trazabilidad.\""
+      ],
+      "note": "",
+      "proposal_sha256": "aa3527194f9d3d55b538bdd5a30d16a8cadfa5e0b0cb49db1606898eac685eb7"
+    },
+    {
+      "view": "Materiales y Suministros/gestion-pedidos-materiales.html",
+      "title": "SIAL | Pedido sugerido por finca",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/supplies/suggested-orders"
+      ],
+      "hus": [
+        {
+          "id": 659,
+          "title": "HU659 | Generar pedido sugerido de materiales por finca",
+          "state": "In Progress",
+          "revision": 26,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/659"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-ajuste-pedido.js:51",
+        "Materiales y Suministros/sial-materiales.js:405",
+        "Materiales y Suministros/sial-pedidos-adicionales.js:77",
+        "sial-catalogo.js:569",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/supplies/suggested-orders/page.tsx:7: } from \"@features/supplies/suggested-orders\";",
+        "src/app/(main)/admin/supplies/suggested-orders/page.tsx:8: import { loadSuggestedOrdersPage } from \"@features/supplies/suggested-orders/server\";",
+        "src/app/(main)/admin/supplies/suggested-orders/page.tsx:21: title=\"Pedido sugerido por finca\""
+      ],
+      "note": "",
+      "proposal_sha256": "6b818097324d6a5f5c302e8d8691e43810be4ab86a4c42b1ce4d3f6d0dbfc124"
+    },
+    {
+      "view": "Materiales y Suministros/gestion-proveedores.html",
+      "title": "SIAL | Gestion de proveedores",
+      "category": "HU-candidata-alcance-pendiente",
+      "routes": [],
+      "hus": [
+        {
+          "id": 668,
+          "title": "HU668 | Generar resumen de órdenes para proveedores externos",
+          "state": "New",
+          "revision": 14,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/668"
+        },
+        {
+          "id": 677,
+          "title": "HU677 | Permitir a proveedores externos registrar la entrega o gestión de carga",
+          "state": "New",
+          "revision": 15,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/677"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:404",
+        "sial-catalogo.js:649",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "El renderer cita HU668 como soporte. Esa HU exige resumen para proveedores y HU677 gestión de entrega externa; ninguna confirma inequívocamente una maestra independiente.",
+      "proposal_sha256": "2f320579a1323069c45c60d37c31b94a45cf1bdbad4605a56e76c42afc63961b"
+    },
+    {
+      "view": "Materiales y Suministros/index.html",
+      "title": "SIAL | Materiales y suministros",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-pedido-sugerido.js:196",
+        "index.html:332",
+        "sial-catalogo.js:559",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "e3eb892b16579e0a062ff746c32d5369725f0633b5a9f6491cf33eff7a27fa85"
+    },
+    {
+      "view": "Materiales y Suministros/inventario-materiales-finca.html",
+      "title": "SIAL | Inventario por finca",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 662,
+          "title": "HU662 | Consultar disponibilidad de materiales cargada desde SAP/UNOE/finca",
+          "state": "Blocked",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/662"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:405",
+        "Materiales y Suministros/sial-pedido-sugerido.js:128",
+        "sial-catalogo.js:579",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "HU vigente permite consulta desde ERP/finca; no administración de existencias maestras.",
+      "proposal_sha256": "273f5487a8111d1d45a6636b561d11bffe534b1ac273af3e4baa4fef42ff8a13"
+    },
+    {
+      "view": "Materiales y Suministros/inventario-pallets.html",
+      "title": "SIAL | Inventario de pallets",
+      "category": "HU-retirada-o-vacia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 559,
+          "title": "HU559 | Visualizar inventario pallets completos/incompletos - Vista puerto mobile",
+          "state": "Removed",
+          "revision": 20,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/559"
+        },
+        {
+          "id": 560,
+          "title": "HU560 |",
+          "state": "New",
+          "revision": 18,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/560"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:405",
+        "sial-catalogo.js:589",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "HU559 Removed y HU560 sin descripción/criterios; requiere necesidad vigente.",
+      "proposal_sha256": "10bcbb012c59c6b6a56f3f2a5b7482e41344ef03b44fdcd63c836828d7d07d5c"
+    },
+    {
+      "view": "Materiales y Suministros/movimientos-inventario.html",
+      "title": "SIAL | Movimientos de inventario",
+      "category": "revisar-alcance",
+      "routes": [],
+      "hus": [
+        {
+          "id": 662,
+          "title": "HU662 | Consultar disponibilidad de materiales cargada desde SAP/UNOE/finca",
+          "state": "Blocked",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/662"
+        },
+        {
+          "id": 2369,
+          "title": "HU2369 | Registrar compromiso operativo de materiales y generar archivo TXT para ERP",
+          "state": "Approved",
+          "revision": 7,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2369"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:244",
+        "Materiales y Suministros/sial-materiales.js:405",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "El renderer cita HU662. La HU2369 vigente prohíbe kardex y saldos maestros en SIAL; limitar a consulta/intercambio ERP o replantear alcance.",
+      "proposal_sha256": "dea849410c3a2238103ec418730796f2a2fa24bdd24469ed46c5aa26ec5db352"
+    },
+    {
+      "view": "Materiales y Suministros/ordenes-transporte-insumos.html",
+      "title": "SIAL | Ordenes de transporte de insumos",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 546,
+          "title": "HU546 | Registrar orden de transporte de insumos",
+          "state": "In Progress",
+          "revision": 24,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/546"
+        },
+        {
+          "id": 1919,
+          "title": "HU1919 | Programación y Asignación de Vehículos para Traslado de Materiales desde Remisiones, Reservas y RTP",
+          "state": "In Progress",
+          "revision": 10,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1919"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:406",
+        "sial-catalogo.js:599",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "4508364b81bf051be88d759f3416b6c6f3d16474b5038f1706c036afafc3c72c"
+    },
+    {
+      "view": "Materiales y Suministros/pedidos-adicionales.html",
+      "title": "SIAL | Pedidos adicionales",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 666,
+          "title": "HU666 | Registrar y procesar pedidos adicionales de materiales",
+          "state": "New",
+          "revision": 13,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/666"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-pedidos-adicionales.js:73",
+        "Materiales y Suministros/sial-pedidos-adicionales.js:86",
+        "Materiales y Suministros/sial-pedidos-adicionales.js:125",
+        "Materiales y Suministros/sial-pedidos-adicionales.js:261"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "8820a6ee17325a664cf7960a4d5a2b2820c59f86f4985743a2cae941d9ad7999"
+    },
+    {
+      "view": "Materiales y Suministros/pedidos-recurrentes.html",
+      "title": "SIAL | Pedidos recurrentes",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 1917,
+          "title": "HU1917 | Solicitud de Pedidos Diarios/Insumos Generales (No vinculados a Aviso de Corte)",
+          "state": "Approved",
+          "revision": 6,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1917"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:405",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "f03eb6f0f03f868a8fc52c7cf4791a7ccfd51a114ec6e368345be93e47347fba"
+    },
+    {
+      "view": "Materiales y Suministros/recetas-materiales.html",
+      "title": "SIAL | Recetas de materiales",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/supplies/material-recipes"
+      ],
+      "hus": [
+        {
+          "id": 826,
+          "title": "HU826 | Gestionar materiales y su configuración por referencia",
+          "state": "In Progress",
+          "revision": 23,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/826"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:404",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/supplies/material-recipes/page.tsx:10: } from \"@features/supplies/material-recipes\";",
+        "src/app/(main)/admin/supplies/material-recipes/page.tsx:11: import { materialRecipeService } from \"@features/supplies/material-recipes/server\";",
+        "src/app/(main)/admin/supplies/material-recipes/page.tsx:24: title=\"Recetas de materiales\"",
+        "src/app/(main)/admin/supplies/material-recipes/page.tsx:29: title=\"Recetas por Referencia + Versión\"",
+        "src/app/(main)/admin/supplies/material-recipes/page.tsx:30: subtitle=\"Cada receta define los materiales requeridos y su cantidad sugerida por caja o pallet.\""
+      ],
+      "note": "",
+      "proposal_sha256": "bb4a6f8377e464ac3ac25163dba1a5ea5b2db9d046abeb9cace07099b168051e"
+    },
+    {
+      "view": "Materiales y Suministros/reglas-documentales.html",
+      "title": "SIAL | Reglas documentales",
+      "category": "HU-candidata-alcance-pendiente",
+      "routes": [],
+      "hus": [
+        {
+          "id": 667,
+          "title": "HU667 | Segmentar automáticamente órdenes según el tipo de documento logístico",
+          "state": "New",
+          "revision": 13,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/667"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:404",
+        "sial-catalogo.js:659",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "La HU exige segmentación documental; parametrización de reglas es candidata, no obligación explícita.",
+      "proposal_sha256": "e9b17358e616c7b586cfd0258dd9f13660fee12a5ae3c90eb39ee7c24acd0604"
+    },
+    {
+      "view": "Materiales y Suministros/resumen-proveedores.html",
+      "title": "SIAL | Resumen proveedores externos",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 668,
+          "title": "HU668 | Generar resumen de órdenes para proveedores externos",
+          "state": "New",
+          "revision": 14,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/668"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:406",
+        "sial-catalogo.js:609",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "a2443612b27905e71662cb5595c9122a89c24256a40fa17bb5c8d5f8a2613250"
+    },
+    {
+      "view": "Materiales y Suministros/seguimiento-entregas.html",
+      "title": "SIAL | Seguimiento de entregas",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 1920,
+          "title": "HU1920 | Matriz de Control de Trazabilidad y Estado de Entregas (Consolidado vs. Despachado)",
+          "state": "New",
+          "revision": 5,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1920"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:406",
+        "sial-catalogo.js:619",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "f4809554332abde014ec67eaefb0469372fd3fb52ae4bd51a0fa8c4081cd81c3"
+    },
+    {
+      "view": "Materiales y Suministros/seguimiento-pedidos-finca.html",
+      "title": "SIAL | Seguimiento de pedidos de finca",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 671,
+          "title": "HU671 | Permitir a productores consultar el tracking del pedido",
+          "state": "New",
+          "revision": 14,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/671"
+        },
+        {
+          "id": 2370,
+          "title": "HU2370 | Aprobar el pedido y generar documentos asociados",
+          "state": "New",
+          "revision": 7,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2370"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:405",
+        "Materiales y Suministros/sial-pedidos-workflow.js:84",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "264494494eeec6ced14e1662cedda39a01f3526126bbc42c762dac18e9402545"
+    },
+    {
+      "view": "Materiales y Suministros/trazabilidad-pedido.html",
+      "title": "SIAL | Trazabilidad del pedido",
+      "category": "propuesta-con-HU-sin-pantalla-propia",
+      "routes": [],
+      "hus": [
+        {
+          "id": 671,
+          "title": "HU671 | Permitir a productores consultar el tracking del pedido",
+          "state": "New",
+          "revision": 14,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/671"
+        },
+        {
+          "id": 1920,
+          "title": "HU1920 | Matriz de Control de Trazabilidad y Estado de Entregas (Consolidado vs. Despachado)",
+          "state": "New",
+          "revision": 5,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/1920"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:406",
+        "sial-catalogo.js:629",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "b4e63342c27a75844952e1b4e63254fd07dd3be90f8fb87d193db787fd0959ec"
+    },
+    {
+      "view": "shared/componentes.html",
+      "title": "SIAL | Libreria UI",
+      "category": "referencia",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Errores/404.html:35",
+        "index.html:205",
+        "sial-catalogo.js:9"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "58b50241e20fac5f2f8db682088bfa9114aacbed4e7d9752884a6dacaeaddf12"
+    },
+    {
+      "view": "Trazabilidad/auditoria-operativa.html",
+      "title": "SIAL | Auditoria operativa",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/audit/operational"
+      ],
+      "hus": [
+        {
+          "id": 363,
+          "title": "HU363 | Consultar evidencias de los contenedores",
+          "state": "Done",
+          "revision": 44,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/363"
+        },
+        {
+          "id": 2362,
+          "title": "HU2362 | Consultar trazabilidad integral de finca, cajas, pallets y contenedor",
+          "state": "New",
+          "revision": 5,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/2362"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Materiales y Suministros/sial-materiales.js:308",
+        "Materiales y Suministros/sial-materiales.js:603",
+        "Trazabilidad/index.html:25",
+        "Trazabilidad/sial-trazabilidad.js:14",
+        "sial-catalogo.js:499",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/audit/operational/page.tsx:3: import { OperationalAuditPage } from \"@features/audit/operational/components/operational-audit-page\";",
+        "src/app/(main)/admin/audit/operational/page.tsx:4: import type { OperationalAuditQueryFilters } from \"@features/audit/operational/server\";"
+      ],
+      "note": "Consulta de auditoría y evidencias; HU específica de la bandeja pendiente.",
+      "proposal_sha256": "4fc02c001ce7fd441be27c3a1a1b62b28609dd1b954ec512fc9d188e109fa177"
+    },
+    {
+      "view": "Trazabilidad/documento-poma.html",
+      "title": "SIAL | POMA",
+      "category": "subflujo",
+      "routes": [
+        "/admin/audit/poma"
+      ],
+      "hus": [
+        {
+          "id": 337,
+          "title": "HU337 | Generar documento POMA",
+          "state": "Done",
+          "revision": 46,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/337"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "entrada por confirmar",
+      "incoming": [],
+      "product_evidence": [
+        "src/app/(main)/admin/audit/poma/page.tsx:1: import type { PomaLoadingsQueryFilters } from \"@features/audit/poma\";",
+        "src/app/(main)/admin/audit/poma/page.tsx:2: import { PomaPage, PomaService } from \"@features/audit/poma/server\";"
+      ],
+      "note": "Artefacto generado/consulta: no es una segunda ruta de captura.",
+      "proposal_sha256": "457a7fd070bb87b988967d237cd46bf0685e39f3ed9a2f893dfc2427b8cdc371"
+    },
+    {
+      "view": "Trazabilidad/generar-documento-poma.html",
+      "title": "SIAL | Generar documento POMA",
+      "category": "presente-en-ambos",
+      "routes": [
+        "/admin/audit/poma"
+      ],
+      "hus": [
+        {
+          "id": 337,
+          "title": "HU337 | Generar documento POMA",
+          "state": "Done",
+          "revision": 46,
+          "url": "https://dev.azure.com/banasanti/Proyecto%20SIAL/_workitems/edit/337"
+        }
+      ],
+      "hu_basis": "contraste funcional/manual con Azure; no certifica cobertura de criterios",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "Trazabilidad/index.html:25",
+        "Trazabilidad/sial-trazabilidad.js:15",
+        "sial-catalogo.js:509",
+        "shared/sial-navigation-contract.js (menú)"
+      ],
+      "product_evidence": [
+        "src/app/(main)/admin/audit/poma/page.tsx:1: import type { PomaLoadingsQueryFilters } from \"@features/audit/poma\";",
+        "src/app/(main)/admin/audit/poma/page.tsx:2: import { PomaPage, PomaService } from \"@features/audit/poma/server\";"
+      ],
+      "note": "",
+      "proposal_sha256": "8713902387e3bb7c8c935b3aa6a07bd37885c3fe373a6bf6455304272b69b224"
+    },
+    {
+      "view": "Trazabilidad/index.html",
+      "title": "SIAL | Seguridad",
+      "category": "soporte-navegación",
+      "routes": [],
+      "hus": [],
+      "hu_basis": "sin HU específica identificada",
+      "access": "referencia de entrada detectada",
+      "incoming": [
+        "index.html:356"
+      ],
+      "product_evidence": [],
+      "note": "",
+      "proposal_sha256": "c9b9c777056eceec29b915f7535322d15612cf49fc8200d7ad2bf59c5136dda4"
+    }
+  ],
+  "product_only": [
+    {
+      "route": "/admin/farms/roles/assignment",
+      "file": "src/app/(main)/admin/(farms)/farms/roles/assignment/page.tsx",
+      "hash": "9340d67e79ee1e3ea85af9a916a3a6e3422a097d97314134b4e31e085cdad5b6",
+      "evidence": [
+        "src/app/(main)/admin/(farms)/farms/roles/assignment/page.tsx:7: } from \"@features/farm-role-assignment\";",
+        "src/app/(main)/admin/(farms)/farms/roles/assignment/page.tsx:20: title=\"Asignar roles en una finca\""
+      ],
+      "placeholder": false,
+      "category": "producto-sin-propuesta",
+      "note": "Asignar roles a usuario en finca. No equivale a roles por empresa; confirmar HU específica.",
+      "hus": [
+        {
+          "id": 529,
+          "title": "HU529 | Reestructuración de roles",
+          "state": "Done"
+        },
+        {
+          "id": 851,
+          "title": "HU851 | FE | Gestión de roles y permisos",
+          "state": "Done"
+        }
+      ]
+    },
+    {
+      "route": "/admin/known-devices",
+      "file": "src/app/(main)/admin/(security)/known-devices/page.tsx",
+      "hash": "d385f7f299a00afe59f7567dc32884f8ef34e7cbd72ea1c0778b86a1073c7e62",
+      "evidence": [
+        "src/app/(main)/admin/(security)/known-devices/page.tsx:4: import { FormUserKnownDevicesEdit } from \"@features/known-devices\";",
+        "src/app/(main)/admin/(security)/known-devices/page.tsx:5: import { KnownDevicesService } from \"@features/known-devices/server\";",
+        "src/app/(main)/admin/(security)/known-devices/page.tsx:6: import { SessionService } from \"@features/auth/session/server\";",
+        "src/app/(main)/admin/(security)/known-devices/page.tsx:19: title=\"Mis dispositivos\"",
+        "src/app/(main)/admin/(security)/known-devices/page.tsx:31: title=\"Whitelist de dispositivos\"",
+        "src/app/(main)/admin/(security)/known-devices/page.tsx:32: subtitle=\"Gestiona tus equipos autorizados y revisa la informaciÃ³n registrada de cada dispositivo.\""
+      ],
+      "placeholder": false,
+      "category": "producto-sin-propuesta",
+      "note": "Mis dispositivos: listado y revocación. HU1916 es contexto offline; no hay propuesta Web equivalente.",
+      "hus": [
+        {
+          "id": 1916,
+          "title": "HU1916 | Estrategia Offline flujo 1 de trazabilidad e inspección en finca con un solo dispositivo",
+          "state": "In Progress"
+        }
+      ]
+    },
+    {
+      "route": "/admin/audit/operational-vehicles",
+      "file": "src/app/(main)/admin/audit/operational-vehicles/page.tsx",
+      "hash": "5a8eb16ea15e9def443099b30a647bc6f139118c4d00e2ebc3f914471dcb9bcf",
+      "evidence": [
+        "src/app/(main)/admin/audit/operational-vehicles/page.tsx:3: import { OperationalVehicleAuditPage } from \"@features/audit/operational-vehicles/components/operational-vehicle-audit-page\";",
+        "src/app/(main)/admin/audit/operational-vehicles/page.tsx:4: import type { OperationalVehicleAuditQueryFilters } from \"@features/audit/operational-vehicles/server\";"
+      ],
+      "placeholder": false,
+      "category": "producto-sin-propuesta",
+      "note": "Centro de control vehicular. El dashboard de transporte no replica esta consulta.",
+      "hus": [
+        {
+          "id": 302,
+          "title": "HU302 | Gestión de vehículos disponibles/No disponibles para la operación",
+          "state": "Done"
+        },
+        {
+          "id": 2359,
+          "title": "HU2359 | Consultar la línea de tiempo integral del transporte",
+          "state": "New"
+        }
+      ]
+    }
+  ]
+}

@@ -20,18 +20,16 @@
       <section class="page">
         <p class="page-eyebrow">Empresa / Dependencias</p>
         <div class="page-header"><div><h1 class="page-title">Gestion de dependencias</h1><p class="page-subtitle">Catalogo de areas o dependencias funcionales para asignacion de contactos y personal administrativo u operativo.</p></div></div>
-        <div class="notice notice-warning"><svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="m10.3 3.8-7 12.2A2 2 0 0 0 5 19h14a2 2 0 0 0 1.7-3L13.7 3.8a2 2 0 0 0-3.4 0Z"></path></svg><span>No se permite eliminar una dependencia con registros asociados. El nombre debe estar en mayuscula sostenida y no debe duplicarse.</span></div>
         <article class="card">
-          <div class="card-header"><div><h2 class="card-title">Dependencias registradas</h2><p class="card-subtitle">Gestion compacta con registro embebido, filtros, estado y trazabilidad.</p></div><div class="card-actions"><span class="chip" id="depCount">0 registros visibles</span><button class="btn btn-primary" type="button" data-open-inline-form aria-expanded="false" aria-controls="depInlineForm">Nueva dependencia</button></div></div>
+          <div class="card-header"><div><h2 class="card-title">Dependencias registradas</h2><p class="card-subtitle">Las dependencias asociadas se inactivan conservando su trazabilidad.</p></div><div class="card-actions"><span class="chip" id="depCount">0 registros visibles</span><button class="btn btn-primary" type="button" data-open-inline-form aria-expanded="false" aria-controls="depInlineForm">Nueva dependencia</button></div></div>
           <div class="card-body"><div class="toolbar compact"><input class="input" id="depSearch" type="search" aria-label="Buscar dependencia" placeholder="Buscar dependencia" /><select class="select" id="depStatus"><option value="all">Todos</option><option value="active">Activo</option><option value="inactive">Inactivo</option></select></div></div>
-          <div class="inline-form-panel is-hidden" id="depInlineForm" data-inline-form-panel>
+          <div class="inline-form-panel inline-form-compact is-hidden" id="depInlineForm" data-inline-form-panel>
             <div class="form-heading"><h2 data-inline-form-title>Nueva dependencia</h2><p>El nombre se guarda en mayuscula sostenida y debe ser unico.</p></div>
             <div class="form-body">
-              <div class="notice notice-success is-hidden" id="formOk">Dependencia lista para guardar.</div>
+              <div class="form-feedback is-hidden" id="formOk" role="status">Dependencia lista para guardar.</div>
               <form data-generic-form novalidate>
                 <section class="section"><div class="grid">
-                  <div class="field span-4"><label class="label">Estado inicial</label><span class="status status-active">Activo</span><div class="field-note">Estado obligatorio.</div></div>
-                  <div class="field span-8"><label class="label" for="depName">Nombre area <span class="required">*</span></label><input class="input" id="depName" data-required data-uppercase data-unique-list="OPERACIONES|ADMINISTRACION|CAMPO|LOGISTICA" aria-describedby="depNameNote" placeholder="OPERACIONES" /><div class="field-note" id="depNameNote">Mayuscula sostenida. No duplicado.</div></div>
+                  <div class="field span-12"><label class="label" for="depName">Nombre area <span class="required">*</span></label><input class="input" id="depName" data-required data-uppercase data-unique-list="OPERACIONES|ADMINISTRACION|CAMPO|LOGISTICA" aria-describedby="depNameNote" placeholder="OPERACIONES" /><div class="field-note" id="depNameNote">Mayuscula sostenida. No duplicado.</div></div>
                 </div></section>
                 <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">Guardar dependencia</button></div>
               </form>

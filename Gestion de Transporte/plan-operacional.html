@@ -3,51 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Programar traslado de materiales</title>
+  <title>SIAL | Plan operacional de traslados</title>
   <script>(function(){const t=localStorage.getItem("sial-theme"),d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light")})();</script>
   <link rel="stylesheet" href="sial-operaciones.css" />
-  <link rel="stylesheet" href="sial-plan-operacional.css?v=20261007-1" />
+  <link rel="stylesheet" href="sial-plan-operacional.css?v=20261013-1" />
 </head>
-<body data-view-family="registro-extenso">
+<body data-view-family="gestion">
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Transporte</p><nav data-nav></nav></aside>
-    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></button><button class="icon-btn" type="button" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
-    <main class="main">
-      <section class="page">
-        <p class="page-eyebrow">Transporte / Programación de vehículos / Traslado de materiales</p>
-        <div class="page-header"><div><h1 class="page-title">Programar traslado de materiales</h1><p class="page-subtitle">Asigna vehículo, conductor, ruta y fecha a partir de una remisión, reserva o RTP disponible.</p></div><a class="btn btn-secondary" href="gestion-operaciones.html">Volver a programación</a></div>
-        <div class="notice notice-success is-hidden" id="formOk" role="status" aria-live="polite"></div>
-        <article class="card form-card">
-          <div class="form-heading"><h2>Formulario de programación</h2><p>La programación conserva el mismo flujo operativo y agrega el documento que origina el traslado.</p></div>
-          <div class="form-body"><form id="materialTransferForm" novalidate>
-            <section class="section"><h3 class="section-title">Documento de origen</h3><div class="grid">
-              <div class="field span-3"><label class="label" for="documentType">Tipo de documento <span class="required">*</span></label><select class="select" id="documentType"><option value="">Selecciona el tipo</option><option value="remision">Remisión</option><option value="reserva">Reserva</option><option value="rtp">RTP</option></select><div class="field-note">Documento aprobado y disponible para programación.</div></div>
-              <div class="field span-3"><label class="label" for="sourceDocument">Documento <span class="required">*</span></label><select class="select" id="sourceDocument" disabled><option value="">Primero selecciona el tipo</option></select><div class="field-note">La información asociada se completa automáticamente.</div></div>
-              <div class="field span-3"><label class="label">Finca destino</label><input class="input" id="farmDisplay" readonly /><div class="field-note">Definida por el documento.</div></div>
-              <div class="field span-3"><label class="label">Necesidad</label><input class="input" id="needDisplay" readonly /><div class="field-note">Cantidad pendiente de trasladar.</div></div>
-              <div class="field span-6"><label class="label">Materiales</label><input class="input" id="materialsDisplay" readonly /><div class="field-note">Resumen de los materiales incluidos.</div></div>
-              <div class="field span-3"><label class="label">Punto de recogida</label><input class="input" id="pickupDisplay" readonly /><div class="field-note">Origen logístico del traslado.</div></div>
-              <div class="field span-3"><label class="label">Estado</label><input class="input" id="documentStatusDisplay" readonly /><div class="field-note">Debe permitir una nueva programación.</div></div>
-            </div></section>
-            <section class="section assignment-section"><div class="section-heading-inline"><div><h3 class="section-title">Distribución en vehículos</h3><p class="section-support">Agrega los vehículos necesarios y distribuye la cantidad pendiente sin superar el total del documento.</p></div><button class="btn btn-secondary" id="addAssignment" type="button">Agregar vehículo</button></div>
-              <div class="assignment-summary"><span>Programado <strong id="assignedTotal">0</strong></span><span>Pendiente <strong id="remainingTotal">0</strong></span><span class="status status-warning" id="coverageStatus">Sin distribuir</span></div>
-              <div class="table-wrap assignment-table-wrap"><table class="assignment-table"><thead><tr><th>Tipo de flota</th><th>Vehículo / empresa</th><th>Conductor</th><th>Cantidad</th><th>Fecha y hora</th><th>Semana</th><th>Acción</th></tr></thead><tbody id="assignmentRows"></tbody></table></div>
-              <div class="notice notice-warning is-hidden" id="assignmentWarning" role="status"></div>
-            </section>
-            <section class="section"><h3 class="section-title">Programación operativa</h3><div class="grid">
-              <div class="field span-3"><label class="label" for="dateOperative">Fecha base sugerida <span class="required">*</span></label><input class="input" id="dateOperative" type="datetime-local" /><div class="field-note">Se propone al agregar cada vehículo.</div></div>
-              <div class="field span-3"><label class="label" for="weekDisplay">Semana operativa</label><input class="input" id="weekDisplay" readonly /><div class="field-note">Se calcula desde la fecha programada.</div></div>
-              <div class="field span-3"><label class="label" for="originDisplay">Origen</label><input class="input" id="originDisplay" readonly /><div class="field-note">Tomado del documento seleccionado.</div></div>
-              <div class="field span-3"><label class="label" for="destinationDisplay">Destino</label><input class="input" id="destinationDisplay" readonly /><div class="field-note">Finca asociada al documento.</div></div>
-              <div class="field span-12"><label class="label" for="operationObservations">Observaciones</label><textarea class="textarea" id="operationObservations" rows="3" placeholder="Notas opcionales sobre la programación..."></textarea><div class="field-note">Registra únicamente condiciones operativas relevantes.</div></div>
-            </div></section>
-            <div class="form-actions"><a class="btn btn-secondary" href="gestion-operaciones.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar formulario</button><button class="btn btn-primary" id="transferFormSubmit" type="submit">Guardar programación</button></div>
-          </form></div>
-        </article>
-      </section>
-    </main>
+    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main"><section class="page">
+      <p class="page-eyebrow">Transporte / Plan operacional</p>
+      <div class="page-header"><div><h1 class="page-title">Plan operacional de traslados</h1><p class="page-subtitle">Consulta las programaciones de materiales y organiza los documentos que atenderá cada conductor en sus viajes.</p><p class="plan-origin is-hidden" id="sourceContext"></p></div></div>
+      <article class="card plan-list" id="programList">
+        <div class="card-header"><div><h2 class="card-title">Programaciones operativas</h2><p class="card-subtitle">Un conductor y un vehículo por programación; los documentos se atienden en el orden de los viajes.</p></div><div class="card-actions"><span class="chip" id="programCount" aria-live="polite">0 registros</span><button class="btn btn-primary" type="button" id="newProgram" aria-controls="programPanel" aria-expanded="false">Programar traslado</button></div></div>
+        <div class="card-body"><div class="toolbar plan-toolbar"><label class="visually-hidden" for="programSearch">Buscar programación</label><input class="input" id="programSearch" type="search" placeholder="Buscar por código, conductor, vehículo o documento" /><div class="field plan-filter"><select class="select" id="programStatus" aria-label="Estado"><option value="all">Todos los estados</option><option value="Programado">Programado</option><option value="En curso">En curso</option><option value="Finalizado">Finalizado</option></select></div></div></div>
+        <div class="table-wrap"><table class="plan-table"><thead><tr><th scope="col">Programación</th><th scope="col">Conductor</th><th scope="col">Vehículo</th><th scope="col">Documentos / viajes</th><th scope="col">Primer viaje</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead><tbody id="programRows"></tbody></table></div>
+        <div class="card-body"><p class="empty-state is-hidden" id="programEmpty">No hay programaciones que coincidan con la búsqueda.</p></div>
+      </article>
+      <article class="card form-card plan-form is-hidden" id="programPanel" aria-labelledby="programHeading">
+        <div class="form-heading"><h2 id="programHeading">Nueva programación de traslado</h2><p>Define el responsable y el vehículo; después agrega los documentos en el orden de los viajes.</p></div>
+        <div class="form-body"><form id="materialTransferForm" novalidate>
+          <section class="section"><h3 class="section-title">1. Conductor y vehículo</h3><div class="grid">
+            <div class="field span-4"><label class="label" for="driver">Conductor <span class="required">*</span></label><select class="select" id="driver" required><option value="">Selecciona un conductor</option><option>Carlos Méndez</option><option>Ana Lucía Paz</option><option>Pedro Rojas</option></select></div>
+            <div class="field span-4"><label class="label" for="fleet">Tipo de flota <span class="required">*</span></label><select class="select" id="fleet"><option value="own">Flota propia</option><option value="external">Empresa tercera</option></select></div>
+            <div class="field span-4"><label class="label" for="vehicle">Vehículo <span class="required">*</span></label><select class="select" id="vehicle" required><option value="">Selecciona un vehículo</option></select></div>
+          </div></section>
+          <section class="section" id="documentsSection"><div class="section-heading-inline"><div><h3 class="section-title">2. Documentos y viajes</h3><p class="section-support">Cada documento seleccionado genera un viaje. Puedes cambiar el orden antes de guardar.</p></div></div>
+            <div class="grid plan-add-row"><div class="field span-8"><label class="label" for="sourceDocument">Documento disponible</label><select class="select" id="sourceDocument" disabled><option value="">Primero selecciona un vehículo</option></select></div><div class="field span-4 plan-add-action"><button class="btn btn-secondary" id="addDocument" type="button" disabled>Agregar documento</button></div></div>
+            <div class="table-wrap plan-trips-wrap"><table class="plan-trips"><thead><tr><th scope="col">Viaje</th><th scope="col">Documento</th><th scope="col">Origen → destino</th><th scope="col">Fecha y hora <span class="required">*</span></th><th scope="col">Orden / acción</th></tr></thead><tbody id="tripRows"></tbody></table><p class="plan-empty-trips" id="tripEmpty">Selecciona un vehículo y agrega al menos un documento.</p></div>
+          </section>
+          <div class="field plan-observations"><label class="label" for="operationObservations">Observaciones operativas</label><textarea class="textarea" id="operationObservations" rows="3" placeholder="Condiciones del recorrido, si aplican"></textarea></div>
+          <p class="plan-message is-hidden" id="formMessage" role="status" aria-live="polite"></p>
+          <div class="form-actions"><button class="btn btn-secondary" id="cancelProgram" type="button">Cancelar</button><button class="btn btn-primary" type="submit">Guardar programación</button></div>
+        </form></div>
+      </article>
+    </section></main>
   </div>
-  <script src="../shared/sial-core.js"></script><script src="sial-plan-operacional.js?v=20261007-1"></script>
+  <dialog class="plan-detail" id="programDetail" aria-labelledby="detailHeading"><div class="plan-detail-head"><h2 id="detailHeading">Viajes programados</h2><button class="icon-btn" type="button" id="closeDetail" aria-label="Cerrar detalle">×</button></div><p id="detailSummary"></p><ol id="detailTrips"></ol><div class="plan-detail-actions"><button class="btn btn-secondary" type="button" id="detailDone">Cerrar</button></div></dialog>
+  <script src="../shared/sial-core.js"></script><script src="sial-plan-operacional.js?v=20261013-1"></script>
   <script>SIALCore.initShell({ area: "gestion", module: "transporte", view: "planes" }); window.SIALOperationalPlan.init();</script>
 </body>
 </html>

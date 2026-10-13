@@ -412,13 +412,15 @@ const SIAL = (() => {
       panel.classList.remove("is-hidden");
       openButton.setAttribute("aria-expanded", "true");
       if (title) title.textContent = mode === "edit" ? config.editTitle || "Editar registro" : config.newTitle || "Nuevo registro";
-      panel.querySelector("input:not([readonly]), select, textarea")?.focus();
+      (panel.querySelector(".sial-library-field input, .sial-library-field select") || panel.querySelector("input:not([readonly]), select, textarea"))?.focus();
     };
     const close = () => {
       panel.classList.add("is-hidden");
       openButton.setAttribute("aria-expanded", "false");
       form?.reset();
-      openButton.focus();
+      (openButton.previousElementSibling?.matches(".sial-library-button")
+        ? openButton.previousElementSibling.querySelector("button")
+        : openButton)?.focus();
     };
 
     openButton.addEventListener("click", () => open("new"));

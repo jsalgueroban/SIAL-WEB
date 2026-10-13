@@ -652,7 +652,7 @@
   }
 
   function initTableFilters(config) {
-    if (window.SIALCore?.initTableFilters && !(config.extraFilters || []).length) {
+    if (window.SIALCore?.initTableFilters) {
       window.SIALCore.initTableFilters(config);
       return;
     }

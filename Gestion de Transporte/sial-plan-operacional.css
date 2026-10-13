@@ -1,15 +1,39 @@
-.form-card .field-note { min-height: 35px; }
-.form-card input[readonly] { color: var(--color-text-2); }
-.section-heading-inline { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
-.section-heading-inline .section-title { margin-bottom: 4px; }
-.section-support { margin: 0; color: var(--color-text-2); font-size: 13px; }
-.assignment-summary { display: flex; align-items: center; gap: 28px; padding: 14px 16px; background: var(--color-surface-muted); border-bottom: 1px solid var(--color-border-subtle); }
-.assignment-summary span { color: var(--color-text-2); font-size: 13px; }
-.assignment-summary strong { margin-left: 5px; color: var(--color-text-1); font-size: 15px; }
-.assignment-table { min-width: 1080px; }
-.assignment-table th, .assignment-table td { vertical-align: middle; }
-.assignment-table .select, .assignment-table .input { min-width: 140px; }
-.assignment-table .assignment-resource { min-width: 230px; }
-.assignment-table-wrap { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); }
-.assignment-section .notice { margin-top: 14px; }
-@media (max-width: 720px) { .page-header .btn { width: 100%; } }
+.plan-list .card-header { align-items: center; }
+.plan-origin { margin: 10px 0 0; color: var(--color-text-2); font-size: 13px; }
+.plan-list .card-actions { display: flex; align-items: center; gap: 12px; }
+.plan-toolbar { display: grid; grid-template-columns: minmax(250px, 1fr) 220px; align-items: end; gap: 16px; }
+.plan-toolbar .plan-filter { margin: 0; }
+.plan-table { min-width: 980px; }
+.plan-table th, .plan-table td { vertical-align: middle; }
+.plan-documents { max-width: 280px; line-height: 1.5; }
+.plan-documents small { display: block; color: var(--color-text-2); }
+.plan-form { margin-top: 24px; }
+.plan-form .field-note { min-height: 0; }
+.plan-form .section-heading-inline { margin-bottom: 16px; }
+.section-heading-inline { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.section-support { margin: 4px 0 0; color: var(--color-text-2); font-size: 13px; }
+.plan-add-row { align-items: end; margin-bottom: 16px; }
+.plan-add-action { display: flex; align-items: end; }
+.plan-add-action .btn { min-height: 44px; }
+.plan-trips-wrap { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); }
+.plan-trips { min-width: 850px; }
+.plan-trips th, .plan-trips td { vertical-align: middle; }
+.plan-trips .input { min-width: 170px; }
+.plan-trips .trip-order { white-space: nowrap; }
+.plan-trips .trip-order button { padding: 6px 9px; border: 0; background: transparent; color: var(--color-primary-500); cursor: pointer; }
+.plan-trips .trip-order button:disabled { opacity: .4; cursor: not-allowed; }
+.plan-empty-trips { margin: 0; padding: 22px; text-align: center; color: var(--color-text-2); }
+.plan-observations { margin: 22px 0 0; }
+.plan-observations .textarea { width: 100%; }
+.plan-message { margin: 18px 0 0; color: var(--color-error-text); }
+.plan-message.is-success { color: var(--color-success-text); }
+.plan-form .form-actions { justify-content: center; }
+.plan-detail { width: min(560px, calc(100vw - 32px)); max-height: min(680px, calc(100vh - 32px)); padding: 24px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-surface, #fff); color: var(--color-text-1); box-shadow: 0 18px 50px #0a18301f; }
+.plan-detail::backdrop { background: #0a183077; }
+.plan-detail-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.plan-detail-head h2 { margin: 0; font-size: 20px; }
+.plan-detail ol { padding-left: 25px; }
+.plan-detail li { padding: 10px 0; border-bottom: 1px solid var(--color-border-subtle); }
+.plan-detail-actions { display: flex; justify-content: center; margin-top: 24px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 720px) { .plan-list .card-header, .plan-list .card-actions { align-items: stretch; flex-direction: column; } .plan-toolbar { grid-template-columns: 1fr; } .plan-add-action .btn { width: 100%; } }

@@ -3,57 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Tipos de vehiculos</title>
-  <script>
-    (function () {
-      const savedTheme = localStorage.getItem("sial-theme");
-      const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
-    })();
-  </script>  <link rel="stylesheet" href="sial-conductores.css" />
+  <title>SIAL | Tipos de vehículos</title>
+  <script>(function(){const t=localStorage.getItem("sial-theme");const d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light");})();</script>
+  <link rel="stylesheet" href="../shared/vendor/sial-ui-runtime.css" />
+  <link rel="stylesheet" href="sial-conductores.css" />
+  <link rel="stylesheet" href="../shared/sial-ui-master.css" />
 </head>
 <body data-view-family="configuracion">
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Navegacion principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Transporte</p><nav data-nav></nav></aside>
-    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
-    <main class="main">
-      <section class="page">
-        <p class="page-eyebrow">Transporte / Tipos de vehiculos</p>
-        <div class="page-header"><div><h1 class="page-title">Gestion de tipos de vehiculos</h1><p class="page-subtitle">Maestra corta para clasificar vehiculos usados en programacion, asignacion y control de flota.</p></div></div>
-        <div class="notice notice-info"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>No se elimina un tipo de vehiculo con operaciones asociadas; debe inactivarse manteniendo auditoria.</span></div>
-        <article class="card">
-          <div class="card-header"><div><h2 class="card-title">Tipos registrados</h2><p class="card-subtitle">Listado maestro con formulario corto embebido, estado y trazabilidad.</p></div><div class="card-actions"><span class="chip" id="vehicleTypeCount">0 registros visibles</span><button class="btn btn-primary" type="button" data-open-inline-form aria-expanded="false" aria-controls="vehicleTypeInlineForm">Nuevo tipo</button></div></div>
-          <div class="card-body"><div class="toolbar compact"><input class="input" id="vehicleTypeSearch" type="search" aria-label="Buscar tipo de vehiculo" placeholder="Buscar tipo de vehiculo" /><select class="select" id="vehicleTypeStatus"><option value="all">Todos</option><option value="active">Activo</option><option value="inactive">Inactivo</option></select><select class="select" id="vehicleTypeContext"><option value="all">Todos los usos</option><option value="operacion">Con operaciones</option><option value="libre">Sin operaciones</option></select></div></div>
-          <div class="inline-form-panel is-hidden" id="vehicleTypeInlineForm" data-inline-form-panel>
-            <div class="form-heading"><h2 data-inline-form-title>Nuevo tipo de vehiculo</h2><p>El nombre se guarda en mayusculas sostenidas y no debe repetirse.</p></div>
-            <div class="form-body"><div class="notice notice-success is-hidden" id="formOk">Tipo listo para guardar.</div>
-              <form data-catalog-form novalidate>
-                <section class="section"><div class="grid">
-                  <input type="hidden" id="vehicleTypeCode" readonly data-catalog-code />
-                  <div class="field span-4"><label class="label">Estado inicial</label><span class="status status-active">Activo</span><div class="field-note">Estado obligatorio.</div></div>
-                  <div class="field span-8"><label class="label" for="vehicleTypeName">Nombre <span class="required">*</span></label><input class="input" id="vehicleTypeName" data-catalog-name aria-describedby="vehicleTypeNameNote" placeholder="TRACTOMULA" /><div class="field-note" id="vehicleTypeNameNote">Debe ser unico y guardarse en mayusculas.</div></div>
-                </div></section>
-                <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">Guardar tipo</button></div>
-              </form>
-            </div>
-          </div>
-          <div class="table-wrap"><table><thead><tr><th>Codigo</th><th>Nombre</th><th>Uso</th><th>Estado</th><th>Auditoria</th><th>Acciones</th></tr></thead><tbody>
-            <tr data-status="active" data-context="operacion" data-code="1" data-name="CAMION" data-use="18 vehiculos asociados" data-state="Activo" data-audit="Crear - admin.transportes|20/04/2026 09:15"><td>1</td><td>CAMION</td><td>18 vehiculos asociados</td><td><span class="status status-active">Activo</span></td><td class="muted">Crear - admin.transportes<br />20/04/2026 09:15</td><td><div class="row-actions"><button class="icon-btn" data-open-detail aria-label="Visualizar tipo CAMION"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" data-edit-inline aria-label="Editar tipo"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button><button class="icon-btn" aria-label="Inactivar tipo"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div></td></tr>
-            <tr data-status="active" data-context="operacion" data-code="2" data-name="TRACTOMULA" data-use="11 vehiculos asociados" data-state="Activo" data-audit="Crear - admin.transportes|21/04/2026 11:10"><td>2</td><td>TRACTOMULA</td><td>11 vehiculos asociados</td><td><span class="status status-active">Activo</span></td><td class="muted">Crear - admin.transportes<br />21/04/2026 11:10</td><td><div class="row-actions"><button class="icon-btn" data-open-detail aria-label="Visualizar tipo TRACTOMULA"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" data-edit-inline aria-label="Editar tipo"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button><button class="icon-btn" aria-label="Inactivar tipo"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div></td></tr>
-            <tr data-status="inactive" data-context="libre" data-code="3" data-name="CAMION RIGIDO" data-use="Sin nuevas asignaciones" data-state="Inactivo" data-audit="Desactivar - auditor.logistica|25/04/2026 16:40"><td>3</td><td>CAMION RIGIDO</td><td>Sin nuevas asignaciones</td><td><span class="status status-inactive">Inactivo</span></td><td class="muted">Desactivar - auditor.logistica<br />25/04/2026 16:40</td><td><div class="row-actions"><button class="icon-btn" data-open-detail aria-label="Visualizar tipo CAMION RIGIDO"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" data-edit-inline aria-label="Editar tipo"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button><button class="icon-btn" aria-label="Activar tipo"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></button></div></td></tr>
-          </tbody></table></div>
-          <div class="card-body"><div class="empty-state" id="vehicleTypeEmpty">No hay tipos que coincidan con los filtros.</div></div>
-        </article>
-      </section>
-    </main>
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Transporte</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main"><section class="page" data-sial-react-view="transport-vehicle-types" data-sial-source="@banasandev/banasan-ui"></section></main>
   </div>
-  <div class="drawer-backdrop" id="detailBackdrop"></div>
-  <aside class="drawer" id="detailDrawer" aria-label="Detalle de tipo de vehiculo">
-    <div class="drawer-head"><div><h3>Detalle tipo</h3><p>Consulta de uso, estado y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
-    <div class="drawer-body"><div class="detail-group"><span class="detail-label">Codigo</span><div class="detail-value" data-detail-target="code">-</div></div><div class="detail-group"><span class="detail-label">Nombre</span><div class="detail-value" data-detail-target="name">-</div></div><div class="detail-group"><span class="detail-label">Uso</span><div class="detail-value" data-detail-target="use">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div></div>
-  </aside>
   <script src="../shared/sial-core.js"></script>
-  <script src="sial-conductores.js"></script>
-  <script>SIAL.applyShell("tiposVehiculo"); SIAL.initDrawer(); SIAL.initEmbeddedForm({ newTitle: "Nuevo tipo de vehiculo", editTitle: "Editar tipo de vehiculo" }); SIAL.initCatalogForm({ existing: "CAMION|TRACTOMULA|CAMION RIGIDO" }); SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#vehicleTypeSearch", status: "#vehicleTypeStatus", context: "#vehicleTypeContext", empty: "#vehicleTypeEmpty", count: "#vehicleTypeCount" });</script>
+  <script>SIALCore.initShell({ area: "gestion", module: "transporte", view: "tiposVehiculo" });</script>
+  <script src="../shared/vendor/sial-ui-runtime.js"></script>
 </body>
 </html>

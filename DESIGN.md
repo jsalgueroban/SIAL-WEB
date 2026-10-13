@@ -115,6 +115,8 @@ Cada vista debe facilitar una tarea o decisión reconocible. No se agregan métr
 
 Planeación, Materiales, Transporte, Puerto y Trazabilidad pertenecen al mismo sistema, aunque sus roles y flujos sean distintos. Deben compartir shell, controles, estados, tablas y lenguaje visual.
 
+La normalización se evalúa en **todas** las vistas vigentes por componente aplicable, no por la cantidad de páginas que cargan la librería. Cada input, select, botón, acción de fila, tabla/listado, chip/estado, paginación y superficie de feedback debe consumir el componente publicado cuando exista equivalencia funcional. La estructura de la vista sigue su flujo propio; no se le añaden componentes para alcanzar una cuota. Cuando el paquete no tenga equivalente semántico, se conserva la pieza local con excepción documentada y necesidad de librería, sin marcar la vista como completamente normalizada mientras haya componentes pendientes.
+
 ### 3.3 Visibilidad según rol
 
 La interfaz muestra únicamente módulos, datos y acciones autorizados. Un dashboard no supone acceso global. La ausencia de una etapa por permisos no se presenta como error ni se reemplaza con datos simulados.
@@ -286,6 +288,8 @@ Anatomía recomendada:
 6. estados vacío, loading y error dentro del mismo contenedor.
 
 No duplicar pestañas, filtros y métricas que representen exactamente la misma clasificación.
+
+Para catálogos breves con alta o edición en la misma bandeja, la composición calibrada es `card-header` con contador compacto y acción primaria al extremo derecho → búsqueda y filtros → formulario embebido opcional → tabla → vacío y paginación. El formulario se abre entre filtros y tabla, no como fila editable; usa panel sobrio, campos alineados con label y ayuda propios, validación inline y acciones centradas con la primaria a la derecha del grupo. No se agrega un chip del estado inicial automático ni un `notice` contextual dentro del formulario. Los filtros usan su nombre funcional; la tabla consume los componentes publicados cuando preservan celdas, eventos y estados. Esta regla es de familia: no se aplica automáticamente a matrices, aprobaciones, pedidos u otras vistas transaccionales.
 
 ### 6.2 Formulario
 

@@ -11,6 +11,18 @@
     { "route": "/recovery-password", "view": "Login/recuperar-contrasena.html", "status": "aligned" },
     { "route": "/admin/users", "view": "Gestion de Usuarios/gestion-usuarios.html", "status": "aligned" },
     { "route": "/admin/users/edit", "view": "Gestion de Usuarios/editar-usuario.html", "status": "aligned" },
-    { "route": "/admin/users/register", "view": "Gestion de Usuarios/registro-usuario.html", "status": "aligned" }
+    { "route": "/admin/users/register", "view": "Gestion de Usuarios/registro-usuario.html", "status": "aligned" },
+    { "route": "/admin/company/dependencies/management", "view": "Gestion de Empresas/gestion-dependencias.html", "status": "aligned" },
+    { "route": "/admin/company/types", "view": "Gestion de Transporte/gestion-tipos-empresa.html", "status": "aligned" },
+    { "route": "/admin/company/relations", "view": "Gestion de Transporte/relacion-empresa-tipo.html", "status": "aligned" },
+    { "route": "/admin/farms-groups", "view": "Gestion de Fincas/gestion-grupos.html", "status": "aligned" },
+    { "route": "/admin/farms-sectors", "view": "Gestion de Fincas/gestion-sectores.html", "status": "aligned" },
+    { "route": "/admin/products/references/class", "view": "Gestion de Fincas/gestion-clases-referencia.html", "status": "aligned" },
+    { "route": "/admin/container", "view": "Gestion Operaciones Puerto/gestion-contenedores.html", "status": "aligned" },
+    { "route": "/admin/container-type", "view": "Gestion Operaciones Puerto/gestion-tipos-contenedor.html", "status": "aligned" },
+    { "route": "/admin/port", "view": "Gestion Operaciones Puerto/gestion-puertos.html", "status": "aligned" },
+    { "route": "/admin/transport/vehicle/types", "view": "Gestion de Transporte/gestion-tipos-vehiculo.html", "status": "aligned" },
+    { "route": "/admin/transport/licenses", "view": "Gestion de Transporte/gestion-categorias-licencia.html", "status": "aligned" },
+    { "route": "/admin/supplies/material-categories", "view": "Materiales y Suministros/categorias-pedido.html", "status": "aligned" }
   ]
 }

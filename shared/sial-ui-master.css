@@ -1,0 +1,28 @@
+.sial-ui-master-card .card-header { align-items: center; }
+.sial-ui-master-card .card-actions { justify-content: flex-end; }
+.sial-ui-master-toolbar { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(180px, 230px); gap: 16px; align-items: end; }
+.sial-ui-master-toolbar.has-usage { grid-template-columns: minmax(260px, 1fr) minmax(160px, 220px) minmax(160px, 220px); }
+.sial-ui-master-fields { display: grid; grid-template-columns: minmax(170px, 1fr) minmax(260px, 2fr); gap: 16px; align-items: start; }
+.sial-ui-master-fields.three-fields { grid-template-columns: minmax(170px, 1fr) minmax(210px, 1.4fr) minmax(260px, 2fr); }
+.sial-ui-master-code { display: grid; gap: 6px; padding-top: 2px; }
+.sial-ui-master-field-label { font-size: 13px; font-weight: 600; }
+.sial-ui-master-code strong { min-height: 44px; display: flex; align-items: center; font-size: 16px; }
+.sial-ui-master-code small { color: var(--color-text-2); font-size: 12px; }
+.sial-ui-master-error { margin: 14px 0 0; color: var(--color-error-main); font-size: 13px; }
+.sial-ui-master-table .bui-table-wrapper { border: 0; border-top: 1px solid var(--color-border-subtle); border-radius: 0; }
+.sial-ui-master-card > .bui-pagination { border-top: 1px solid var(--color-border-subtle); padding: 14px 20px; }
+.sial-ui-master-card .bui-table-row-actions { justify-content: flex-start; }
+.sial-ui-master-card .bui-icon-button svg { width: 18px; height: 18px; }
+.sial-ui-master-card .sial-ui-action-danger { color: var(--color-error-main); }
+.sial-ui-master-card .sial-ui-action-success { color: var(--color-success-main); }
+.sial-ui-master-audit { color: var(--color-text-2); font-size: 13px; }
+.sial-ui-master-confirm-backdrop { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; padding: 20px; background: rgba(10, 24, 48, .48); }
+.sial-ui-master-confirm { width: min(100%, 460px); padding: 24px; border-radius: var(--radius-control); background: var(--color-surface); box-shadow: 0 18px 48px rgba(0, 0, 0, .18); }
+.sial-ui-master-confirm h2 { margin: 0 0 8px; font-size: 20px; }
+.sial-ui-master-confirm p { margin: 0; color: var(--color-text-2); line-height: 1.5; }
+.sial-ui-master-confirm-actions { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
+@media (max-width: 850px) {
+  .sial-ui-master-toolbar, .sial-ui-master-toolbar.has-usage, .sial-ui-master-fields, .sial-ui-master-fields.three-fields { grid-template-columns: 1fr; }
+  .sial-ui-master-card .card-header { align-items: stretch; }
+  .sial-ui-master-card .card-actions { justify-content: flex-start; }
+}

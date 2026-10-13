@@ -30,5 +30,17 @@
   <div class="drawer-backdrop" id="detailBackdrop"></div><aside class="drawer" id="detailDrawer" aria-label="Detalle cinta"><div class="drawer-head"><div><h3>Detalle cinta</h3><p>Consulta lateral de color, orden y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div><div class="drawer-body"><div class="detail-group"><span class="detail-label">Codigo</span><div class="detail-value" data-detail-target="code">-</div></div><div class="detail-group"><span class="detail-label">Color espanol</span><div class="detail-value" data-detail-target="name">-</div></div><div class="detail-group"><span class="detail-label">Color ingles</span><div class="detail-value" data-detail-target="english">-</div></div><div class="detail-group"><span class="detail-label">Orden</span><div class="detail-value" data-detail-target="order">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div></div></aside>
   <script src="../shared/sial-core.js"></script>
   <script src="sial-aviso-corte.js"></script><script>SIAL.applyShell("cintas"); SIAL.initDrawer(); SIAL.initEmbeddedForm(); SIAL.initRibbonForm(); SIAL.initTableFilters({ search: "#ribbonSearch", status: "#ribbonStatus", context: "#ribbonContext", empty: "#ribbonEmpty", count: "#ribbonCount" });</script>
+  <script>
+    (() => {
+      const panel = document.querySelector("[data-inline-form-panel]");
+      const toolbar = panel?.closest(".card")?.querySelector(".card-body:has(.toolbar)");
+      if (!panel || !toolbar) return;
+      toolbar.after(panel);
+      panel.classList.add("inline-form-compact");
+      const feedback = panel.querySelector("#formOk");
+      feedback?.classList.remove("notice", "notice-success");
+      feedback?.classList.add("form-feedback");
+    })();
+  </script>
 </body>
 </html>

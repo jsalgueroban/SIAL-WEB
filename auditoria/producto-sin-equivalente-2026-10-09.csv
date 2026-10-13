@@ -1,0 +1,4 @@
+﻿"Ruta","Archivo fuente","Clasificación","HUs contexto","Nota"
+"/admin/farms/roles/assignment","src/app/(main)/admin/(farms)/farms/roles/assignment/page.tsx","producto-sin-propuesta","HU529 Done ; HU851 Done","Asignar roles a usuario en finca. No equivale a roles por empresa; confirmar HU específica."
+"/admin/known-devices","src/app/(main)/admin/(security)/known-devices/page.tsx","producto-sin-propuesta","HU1916 In Progress","Mis dispositivos: listado y revocación. HU1916 es contexto offline; no hay propuesta Web equivalente."
+"/admin/audit/operational-vehicles","src/app/(main)/admin/audit/operational-vehicles/page.tsx","producto-sin-propuesta","HU302 Done ; HU2359 New","Centro de control vehicular. El dashboard de transporte no replica esta consulta."

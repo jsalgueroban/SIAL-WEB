@@ -1398,8 +1398,13 @@ const SIALCore = (() => {
     const search = qs(config.search);
     const status = qs(config.status);
     const context = qs(config.context);
+    const extraFilters = (config.extraFilters || []).map((item) => ({
+      control: qs(item.select),
+      datasetKey: item.datasetKey
+    }));
     const empty = qs(config.empty);
     const count = qs(config.count);
+    if (count) count.dataset.sialRecordCount = "0";
     let page = 1;
     let pageSize = Number(config.pageSize) || 10;
     const pageSizeOptions = (config.pageSizeOptions || [10, 30, 50]).filter((option) => [10, 30, 50].includes(Number(option))).map(Number);
@@ -1423,6 +1428,9 @@ const SIALCore = (() => {
       if (!pagination) return;
       const totalPages = Math.max(1, Math.ceil(total / pageSize));
       page = Math.min(Math.max(page, 1), totalPages);
+      pagination.dataset.sialPage = String(page);
+      pagination.dataset.sialPageSize = String(pageSize);
+      pagination.dataset.sialTotal = String(total);
       const start = total === 0 ? 0 : ((page - 1) * pageSize) + 1;
       const end = Math.min(page * pageSize, total);
       const currentOptions = pageSizeOptions.includes(pageSize) ? pageSizeOptions : [10, 30, 50];
@@ -1448,6 +1456,9 @@ const SIALCore = (() => {
           ${pageButton("Siguiente", page + 1, page >= totalPages)}
         </div>
       `;
+      pagination.dispatchEvent(new CustomEvent("sial:table-page-state", {
+        detail: { page, pageSize, total }
+      }));
     }
 
     function filterRows() {
@@ -1457,7 +1468,11 @@ const SIALCore = (() => {
       const filteredRows = rows.filter((row) => {
         const show = (!term || row.textContent.toLowerCase().includes(term)) &&
           (state === "all" || row.dataset.status === state) &&
-          (ctx === "all" || row.dataset.context === ctx);
+          (ctx === "all" || row.dataset.context === ctx) &&
+          extraFilters.every(({ control, datasetKey }) => {
+            const value = control?.value || "all";
+            return value === "all" || row.dataset[datasetKey] === value;
+          });
         row.dataset.filterMatch = show ? "true" : "false";
         return show;
       });
@@ -1473,14 +1488,14 @@ const SIALCore = (() => {
       });
       empty?.classList.toggle("show", visible === 0);
       if (count) {
-        const start = visible === 0 ? 0 : startIndex + 1;
-        const end = Math.min(endIndex, visible);
-        count.textContent = `${start}-${end} de ${visible} registros`;
+        count.textContent = `${visible} ${visible === 1 ? "registro" : "registros"}`;
+        count.dataset.sialRecordCount = String(visible);
+        count.dispatchEvent(new CustomEvent("sial:table-count-state", { detail: { total: visible } }));
       }
       renderPagination(visible);
     }
 
-    [search, status, context].filter(Boolean).forEach((control) => {
+    [search, status, context, ...extraFilters.map((item) => item.control)].filter(Boolean).forEach((control) => {
       control.addEventListener(control.tagName === "INPUT" ? "input" : "change", () => {
         page = 1;
         filterRows();
@@ -1501,6 +1516,15 @@ const SIALCore = (() => {
       page = 1;
       filterRows();
     });
+    pagination?.addEventListener("sial:table-page-request", (event) => {
+      page = Number(event.detail?.page) || 1;
+      filterRows();
+    });
+    pagination?.addEventListener("sial:table-page-size-request", (event) => {
+      pageSize = Number(event.detail?.pageSize) || 10;
+      page = 1;
+      filterRows();
+    });
     document.addEventListener("sial:table-state-change", () => {
       page = 1;
       filterRows();
@@ -1509,7 +1533,10 @@ const SIALCore = (() => {
   }
 
   function cleanExportText(node) {
-    return String(node?.textContent || "").replace(/\s+/g, " ").trim();
+    if (!node) return "";
+    const copy = node.cloneNode(true);
+    copy.querySelectorAll?.("br").forEach((breakNode) => breakNode.replaceWith(" "));
+    return String(copy.textContent || "").replace(/\s+/g, " ").trim();
   }
 
   function csvCell(value) {
@@ -1975,15 +2002,59 @@ window.SIALCore = SIALCore;
 
 SIALCore.ensureFavicon();
 
+function loadLibraryTableControls() {
+  if (/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname) || document.querySelector("[data-sial-react-view]")) {
+    document.documentElement.dataset.sialLibraryControls = "ready";
+    return;
+  }
+  if (document.querySelector('script[data-sial-library-runtime]')) return;
+  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], main .page > .notice[data-sial-notice-adapter]")) {
+    document.documentElement.dataset.sialLibraryControls = "ready";
+    return;
+  }
+  document.documentElement.dataset.sialLibraryControls = "loading";
+  const style = document.createElement("link");
+  style.rel = "stylesheet";
+  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css");
+  style.dataset.sialLibraryRuntime = "true";
+  document.head.appendChild(style);
+  const script = document.createElement("script");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js");
+  script.dataset.sialLibraryRuntime = "true";
+  document.body.appendChild(script);
+  window.setTimeout(() => {
+    if (document.documentElement.dataset.sialLibraryControls === "loading") {
+      document.documentElement.dataset.sialLibraryControls = "ready";
+    }
+  }, 5000);
+}
+
+function watchLibraryTableControls() {
+  if (/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname)) {
+    document.documentElement.dataset.sialLibraryControls = "ready";
+    return;
+  }
+  loadLibraryTableControls();
+  if (document.querySelector('script[data-sial-library-runtime], [data-sial-react-view]')) return;
+  const observer = new MutationObserver(() => {
+    loadLibraryTableControls();
+    if (document.querySelector('script[data-sial-library-runtime], [data-sial-react-view]')) observer.disconnect();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+  window.setTimeout(() => observer.disconnect(), 10000);
+}
+
 /* === SIAL View Motion START (reversible hook) === */
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
     SIALCore.initPageTransitions();
     SIALCore.initProfileMenu();
+    watchLibraryTableControls();
   }, { once: true });
 } else {
   SIALCore.initPageTransitions();
   SIALCore.initProfileMenu();
+  watchLibraryTableControls();
 }
 /* === SIAL View Motion END (reversible hook) === */
 

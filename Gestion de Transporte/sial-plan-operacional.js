@@ -1,90 +1,244 @@
 (function () {
-  const qs = (selector, root = document) => root.querySelector(selector);
-  const qsa = (selector, root = document) => Array.from(root.querySelectorAll(selector));
-  const documents = {
-    remision: [
-      { id: "REM-2026-0184", label: "REM-2026-0184 · Finca El Retiro", farm: "Finca El Retiro", quantity: 520, unit: "unidades", materials: "Caja de cartón corrugado", pickup: "Bodega principal", status: "Disponible" },
-      { id: "REM-2026-0186", label: "REM-2026-0186 · Finca La Ceiba", farm: "Finca La Ceiba", quantity: 246, unit: "unidades", materials: "Caja de cartón y etiqueta", pickup: "Centro de distribución", status: "Disponible" }
-    ],
-    reserva: [{ id: "RES-2026-0047", label: "RES-2026-0047 · Finca Santa Isabel", farm: "Finca Santa Isabel", quantity: 12, unit: "pallets", materials: "Material de empaque reservado", pickup: "Bodega de suministros", status: "Disponible" }],
-    rtp: [{ id: "RTP-2026-0881", label: "RTP-2026-0881 · Finca Santa Isabel", farm: "Finca Santa Isabel", quantity: 1480, unit: "unidades", materials: "Insumos de producción", pickup: "Proveedor regional", status: "Disponible" }]
+  const byId = (id) => document.getElementById(id);
+  const documents = [
+    { id: "REM-2026-0184", type: "Remisión", farm: "Finca El Retiro", pickup: "Bodega principal" },
+    { id: "REM-2026-0186", type: "Remisión", farm: "Finca La Ceiba", pickup: "Centro de distribución" },
+    { id: "RES-2026-0047", type: "Reserva", farm: "Finca Santa Isabel", pickup: "Bodega de suministros" },
+    { id: "RTP-2026-0881", type: "RTP", farm: "Finca Santa Isabel", pickup: "Proveedor regional" }
+  ];
+  const vehicles = {
+    own: ["TRK-421 · TRANSLOGISTICA SAS", "CAM-102 · Carga Pesada Ltda.", "CMN-204 · OPERADOR CARIBE SAS"],
+    external: ["EXT-014 · Transportadora Caribe", "EXT-021 · Carga Sierra"]
   };
-  const ownResources = ["TRK-421 · TRANSLOGISTICA SAS", "CAM-102 · Carga Pesada Ltda.", "CMN-204 · OPERADOR CARIBE SAS"];
-  const externalResources = ["Transportadora Caribe", "Carga Sierra"];
-  const drivers = ["Carlos Méndez", "Ana Lucía Paz", "Pedro Rojas"];
-  let rowSequence = 0;
+  const programs = [
+    { id: "POM-2026-014", driver: "Carlos Méndez", vehicle: "TRK-421 · TRANSLOGISTICA SAS", trips: [{ documentId: "REM-2026-0184", date: "2026-10-14T07:30" }], status: "Programado" },
+    { id: "POM-2026-013", driver: "Ana Lucía Paz", vehicle: "CMN-204 · OPERADOR CARIBE SAS", trips: [{ documentId: "RTP-2026-0881", date: "2026-10-13T08:00" }], status: "En curso" }
+  ];
+  let trips = [];
+  let pendingDocument = "";
 
-  function setValue(id, value = "") { const field = qs(`#${id}`); if (field) field.value = value || ""; }
-  function selectedDocument() { const type = qs("#documentType").value; return (documents[type] || []).find((item) => item.id === qs("#sourceDocument").value) || null; }
-  function options(items, placeholder) { return `<option value="">${placeholder}</option>${items.map((item) => `<option>${item}</option>`).join("")}`; }
-  function isoWeek(value) {
-    if (!value) return "";
-    const date = new Date(value), utc = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())), day = utc.getUTCDay() || 7;
-    utc.setUTCDate(utc.getUTCDate() + 4 - day);
-    const start = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1)), week = Math.ceil((((utc - start) / 86400000) + 1) / 7);
-    return `Semana ${week} - ${utc.getUTCFullYear()}`;
+  function option(value, label) {
+    const item = document.createElement("option");
+    item.value = value;
+    item.textContent = label;
+    return item;
   }
-  function renderDocumentDetail() {
-    const item = selectedDocument();
-    setValue("farmDisplay", item?.farm); setValue("needDisplay", item ? `${item.quantity} ${item.unit}` : ""); setValue("materialsDisplay", item?.materials);
-    setValue("pickupDisplay", item?.pickup); setValue("documentStatusDisplay", item?.status); setValue("originDisplay", item?.pickup); setValue("destinationDisplay", item?.farm);
-    qs("#assignmentRows").innerHTML = ""; rowSequence = 0; if (item) addRow(); updateCoverage();
+  function setOptions(select, placeholder, items) {
+    select.replaceChildren(option("", placeholder));
+    items.forEach((item) => select.appendChild(option(item.value, item.label)));
   }
-  function renderDocuments() {
-    const items = documents[qs("#documentType").value] || [], select = qs("#sourceDocument");
-    select.disabled = !items.length;
-    select.innerHTML = items.length ? `<option value="">Selecciona el documento</option>${items.map((item) => `<option value="${item.id}">${item.label}</option>`).join("")}` : '<option value="">Primero selecciona el tipo</option>';
-    renderDocumentDetail();
+  function formatDate(value) {
+    if (!value) return "—";
+    const [date, time] = value.split("T");
+    return `${date.slice(8, 10)}/${date.slice(5, 7)}/${date.slice(0, 4)} · ${time}`;
   }
-  function defaultDate() {
-    const date = new Date(); date.setDate(date.getDate() + 1); date.setMinutes(Math.ceil(date.getMinutes() / 15) * 15, 0, 0);
+  function defaultDate(index) {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    date.setHours(8 + index * 3, 0, 0, 0);
     return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
   }
-  function resourceOptions(mode) { return options(mode === "external" ? externalResources : ownResources, mode === "external" ? "Selecciona empresa" : "Selecciona vehículo"); }
-  function addRow() {
-    if (!selectedDocument()) { showAssignmentWarning("Selecciona primero el documento que origina el traslado."); return; }
-    rowSequence += 1;
-    const row = document.createElement("tr"); row.dataset.assignmentRow = String(rowSequence);
-    row.innerHTML = `<td><select class="select" data-fleet aria-label="Tipo de flota fila ${rowSequence}"><option value="own">Flota propia</option><option value="external">Empresa tercera</option></select></td><td><select class="select assignment-resource" data-resource aria-label="Vehículo o empresa fila ${rowSequence}">${resourceOptions("own")}</select></td><td><select class="select" data-driver aria-label="Conductor fila ${rowSequence}">${options(drivers, "Selecciona conductor")}</select></td><td><input class="input" data-quantity type="number" min="1" aria-label="Cantidad fila ${rowSequence}" /></td><td><input class="input" data-date type="datetime-local" value="${qs("#dateOperative").value}" aria-label="Fecha fila ${rowSequence}" /></td><td><span data-week>${isoWeek(qs("#dateOperative").value)}</span></td><td><button class="icon-btn" type="button" data-remove aria-label="Quitar asignación"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"></path></svg></button></td>`;
-    qs("#assignmentRows").appendChild(row); updateCoverage();
+  function showMessage(message, success = false) {
+    const field = byId("formMessage");
+    field.textContent = message;
+    field.classList.remove("is-hidden");
+    field.classList.toggle("is-success", success);
   }
-  function updateCoverage() {
-    const item = selectedDocument(), assigned = qsa("[data-quantity]", qs("#assignmentRows")).reduce((sum, input) => sum + (Number(input.value) || 0), 0);
-    const remaining = item ? item.quantity - assigned : 0;
-    qs("#assignedTotal").textContent = item ? `${assigned} ${item.unit}` : "0"; qs("#remainingTotal").textContent = item ? `${Math.max(remaining, 0)} ${item.unit}` : "0";
-    const status = qs("#coverageStatus"); status.className = remaining === 0 && item ? "status status-active" : remaining < 0 ? "status status-inactive" : "status status-warning";
-    status.textContent = remaining === 0 && item ? "Distribución completa" : remaining < 0 ? "Cantidad excedida" : assigned > 0 ? "Distribución parcial" : "Sin distribuir";
-    showAssignmentWarning(remaining < 0 ? `La distribución supera en ${Math.abs(remaining)} ${item.unit} la cantidad pendiente.` : "", remaining < 0);
-    return { item, assigned, remaining };
+  function clearMessage() { byId("formMessage").classList.add("is-hidden"); }
+  function renderVehicleOptions() {
+    setOptions(byId("vehicle"), "Selecciona un vehículo", vehicles[byId("fleet").value].map((value) => ({ value, label: value })));
+    renderDocumentOptions();
   }
-  function showAssignmentWarning(message, show = Boolean(message)) { const box = qs("#assignmentWarning"); box.textContent = message; box.classList.toggle("is-hidden", !show); }
-  function showResult(type, message) { const result = qs("#formOk"); result.className = `notice notice-${type}`; result.textContent = message; result.classList.remove("is-hidden"); result.scrollIntoView({ behavior: "auto", block: "center" }); }
-  function validateRows() {
-    const rows = qsa("[data-assignment-row]", qs("#assignmentRows")), { item, remaining } = updateCoverage(), errors = [], ownVehicles = new Set();
-    if (!item) errors.push("Selecciona un documento disponible."); if (!rows.length) errors.push("Agrega al menos un vehículo."); if (remaining < 0) errors.push("La cantidad distribuida supera el pendiente.");
-    rows.forEach((row, index) => {
-      const fleet = qs("[data-fleet]", row).value, resource = qs("[data-resource]", row).value, driver = qs("[data-driver]", row).value, quantity = Number(qs("[data-quantity]", row).value), date = qs("[data-date]", row).value;
-      if (!resource || !driver || quantity <= 0 || !date) errors.push(`Completa la asignación ${index + 1}.`);
-      if (fleet === "own" && resource && ownVehicles.has(resource)) errors.push(`El vehículo de la asignación ${index + 1} está repetido.`);
-      if (fleet === "own" && resource) ownVehicles.add(resource);
+  function renderDocumentOptions() {
+    const selected = byId("sourceDocument");
+    const enabled = Boolean(byId("vehicle").value);
+    const occupied = new Set(programs.flatMap((program) => program.status === "Finalizado" ? [] : program.trips.map((trip) => trip.documentId)));
+    const available = documents.filter((item) => !occupied.has(item.id) && !trips.some((trip) => trip.documentId === item.id));
+    setOptions(selected, enabled ? (available.length ? "Selecciona un documento" : "No hay más documentos disponibles") : "Primero selecciona un vehículo",
+      enabled ? available.map((item) => ({ value: item.id, label: `${item.id} · ${item.type} · ${item.farm}` })) : []);
+    selected.disabled = !enabled || !available.length;
+    byId("addDocument").disabled = !enabled || !available.length;
+    if (enabled && pendingDocument && available.some((item) => item.id === pendingDocument)) {
+      selected.value = pendingDocument;
+      pendingDocument = "";
+    }
+  }
+  function renderTrips() {
+    const body = byId("tripRows");
+    body.replaceChildren();
+    trips.forEach((trip, index) => {
+      const source = documents.find((item) => item.id === trip.documentId);
+      const row = document.createElement("tr");
+      const ordinal = row.insertCell();
+      ordinal.textContent = String(index + 1);
+      const identity = row.insertCell();
+      const name = document.createElement("strong");
+      name.textContent = source.id;
+      const type = document.createElement("small");
+      type.textContent = source.type;
+      identity.append(name, document.createElement("br"), type);
+      const route = row.insertCell();
+      route.textContent = `${source.pickup} → ${source.farm}`;
+      const schedule = row.insertCell();
+      const date = document.createElement("input");
+      date.className = "input";
+      date.type = "datetime-local";
+      date.value = trip.date;
+      date.required = true;
+      date.setAttribute("aria-label", `Fecha y hora del viaje ${index + 1}, ${source.id}`);
+      date.addEventListener("change", () => { trip.date = date.value; clearMessage(); });
+      schedule.appendChild(date);
+      const actions = row.insertCell();
+      actions.className = "trip-order";
+      [["Subir", "up", index === 0], ["Bajar", "down", index === trips.length - 1], ["Quitar", "remove", false]].forEach(([label, action, disabled]) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.disabled = disabled;
+        button.dataset.tripAction = action;
+        button.dataset.index = String(index);
+        button.setAttribute("aria-label", `${label} viaje ${index + 1}: ${source.id}`);
+        actions.appendChild(button);
+      });
+      body.appendChild(row);
     });
-    return errors;
+    byId("tripEmpty").classList.toggle("is-hidden", trips.length > 0);
+    renderDocumentOptions();
   }
-  function submit(event) {
-    event.preventDefault(); const errors = validateRows();
-    if (errors.length) { showResult("error", errors[0]); return; }
-    const { item, remaining } = updateCoverage();
-    showResult("success", `${item.id}: programación ${remaining === 0 ? "total" : "parcial"} preparada con ${qsa("[data-assignment-row]").length} vehículo(s).`);
+  function renderPrograms() {
+    const search = byId("programSearch").value.trim().toLocaleLowerCase("es");
+    const status = byId("programStatus").value;
+    const visible = programs.filter((program) => (status === "all" || program.status === status) &&
+      [program.id, program.driver, program.vehicle, ...program.trips.map((trip) => trip.documentId)].join(" ").toLocaleLowerCase("es").includes(search));
+    const body = byId("programRows");
+    body.replaceChildren();
+    visible.forEach((program) => {
+      const row = document.createElement("tr");
+      [program.id, program.driver, program.vehicle].forEach((value) => { row.insertCell().textContent = value; });
+      const docCell = row.insertCell();
+      docCell.className = "plan-documents";
+      const count = document.createElement("strong");
+      count.textContent = `${program.trips.length} ${program.trips.length === 1 ? "viaje" : "viajes"}`;
+      const list = document.createElement("small");
+      list.textContent = program.trips.map((trip) => trip.documentId).join(" → ");
+      docCell.append(count, list);
+      row.insertCell().textContent = formatDate(program.trips[0]?.date);
+      const state = document.createElement("span");
+      state.className = `status ${program.status === "Finalizado" ? "status-inactive" : program.status === "En curso" ? "status-warning" : "status-active"}`;
+      state.dataset.sialChipAdapter = "true";
+      state.textContent = program.status;
+      row.insertCell().appendChild(state);
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = "icon-btn";
+      action.title = "Ver viajes";
+      action.setAttribute("aria-label", `Ver viajes de ${program.id}`);
+      action.innerHTML = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+      action.addEventListener("click", () => showProgramDetail(program));
+      const actionWrap = document.createElement("div");
+      actionWrap.className = "row-actions";
+      actionWrap.appendChild(action);
+      row.insertCell().appendChild(actionWrap);
+      body.appendChild(row);
+    });
+    byId("programCount").textContent = `${visible.length} ${visible.length === 1 ? "registro" : "registros"}`;
+    byId("programEmpty").classList.toggle("is-hidden", visible.length !== 0);
+  }
+  function showProgramDetail(program) {
+    byId("detailSummary").textContent = `${program.id} · ${program.driver} · ${program.vehicle}`;
+    const list = byId("detailTrips");
+    list.replaceChildren();
+    program.trips.forEach((trip) => {
+      const source = documents.find((item) => item.id === trip.documentId);
+      const item = document.createElement("li");
+      item.textContent = `${trip.documentId} · ${source?.pickup || "Origen"} → ${source?.farm || "Destino"} · ${formatDate(trip.date)}`;
+      list.appendChild(item);
+    });
+    byId("programDetail").showModal();
+  }
+  function openForm() {
+    byId("programPanel").classList.remove("is-hidden");
+    byId("newProgram").setAttribute("aria-expanded", "true");
+    byId("programHeading").setAttribute("tabindex", "-1");
+    byId("programHeading").focus();
+    byId("programPanel").scrollIntoView({ block: "start" });
+  }
+  function closeForm() {
+    byId("programPanel").classList.add("is-hidden");
+    byId("newProgram").setAttribute("aria-expanded", "false");
+    byId("materialTransferForm").reset();
+    trips = [];
+    renderVehicleOptions();
+    renderTrips();
+    clearMessage();
+    byId("newProgram").focus();
+  }
+  function save(event) {
+    event.preventDefault();
+    if (!byId("driver").value) { showMessage("Selecciona el conductor."); byId("driver").focus(); return; }
+    if (!byId("vehicle").value) { showMessage("Selecciona el vehículo antes de agregar documentos."); byId("vehicle").focus(); return; }
+    if (!trips.length) { showMessage("Agrega al menos un documento para programar un viaje."); byId("sourceDocument").focus(); return; }
+    if (trips.some((trip) => !trip.date)) { showMessage("Indica fecha y hora para cada viaje."); byId("tripRows").querySelectorAll("input")[trips.findIndex((trip) => !trip.date)].focus(); return; }
+    for (let index = 1; index < trips.length; index += 1) {
+      if (trips[index].date <= trips[index - 1].date) { showMessage("Las fechas deben seguir el orden de los viajes."); byId("tripRows").querySelectorAll("input")[index].focus(); return; }
+    }
+    const next = Math.max(...programs.map((item) => Number(item.id.split("-").pop()))) + 1;
+    programs.unshift({ id: `POM-2026-${String(next).padStart(3, "0")}`, driver: byId("driver").value, vehicle: byId("vehicle").value,
+      trips: trips.map((item) => ({ ...item })), status: "Programado", observations: byId("operationObservations").value.trim() });
+    byId("programSearch").value = "";
+    byId("programStatus").value = "all";
+    renderPrograms();
+    closeForm();
   }
   function init() {
-    const form = qs("#materialTransferForm"); if (!form) return;
-    setValue("dateOperative", defaultDate()); setValue("weekDisplay", isoWeek(qs("#dateOperative").value));
-    qs("#documentType").addEventListener("change", renderDocuments); qs("#sourceDocument").addEventListener("change", renderDocumentDetail); qs("#addAssignment").addEventListener("click", addRow);
-    qs("#dateOperative").addEventListener("change", () => { setValue("weekDisplay", isoWeek(qs("#dateOperative").value)); });
-    qs("#assignmentRows").addEventListener("change", (event) => { const row = event.target.closest("[data-assignment-row]"); if (event.target.matches("[data-fleet]")) qs("[data-resource]", row).innerHTML = resourceOptions(event.target.value); if (event.target.matches("[data-date]")) qs("[data-week]", row).textContent = isoWeek(event.target.value); updateCoverage(); });
-    qs("#assignmentRows").addEventListener("input", updateCoverage); qs("#assignmentRows").addEventListener("click", (event) => { if (!event.target.closest("[data-remove]")) return; event.target.closest("tr").remove(); updateCoverage(); });
-    form.addEventListener("submit", submit); form.addEventListener("reset", () => window.setTimeout(() => { renderDocuments(); setValue("dateOperative", defaultDate()); setValue("weekDisplay", isoWeek(qs("#dateOperative").value)); qs("#formOk").classList.add("is-hidden"); }));
-    const params = new URLSearchParams(location.search), type = params.get("tipo"), id = params.get("id"); if (documents[type]) qs("#documentType").value = type; renderDocuments(); if (id && (documents[type] || []).some((item) => item.id === id)) { qs("#sourceDocument").value = id; renderDocumentDetail(); }
+    if (!byId("materialTransferForm")) return;
+    renderVehicleOptions();
+    renderPrograms();
+    byId("newProgram").addEventListener("click", openForm);
+    byId("cancelProgram").addEventListener("click", closeForm);
+    byId("fleet").addEventListener("change", () => { renderVehicleOptions(); clearMessage(); });
+    byId("vehicle").addEventListener("change", () => { renderDocumentOptions(); clearMessage(); });
+    byId("addDocument").addEventListener("click", () => {
+      const id = byId("sourceDocument").value;
+      if (!id) { showMessage("Selecciona un documento disponible."); byId("sourceDocument").focus(); return; }
+      trips.push({ documentId: id, date: defaultDate(trips.length) });
+      renderTrips();
+      clearMessage();
+    });
+    byId("tripRows").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-trip-action]");
+      if (!button) return;
+      const index = Number(button.dataset.index);
+      if (button.dataset.tripAction === "remove") trips.splice(index, 1);
+      else {
+        const target = index + (button.dataset.tripAction === "up" ? -1 : 1);
+        [trips[index], trips[target]] = [trips[target], trips[index]];
+      }
+      renderTrips();
+      clearMessage();
+    });
+    byId("materialTransferForm").addEventListener("submit", save);
+    byId("programSearch").addEventListener("input", renderPrograms);
+    byId("programStatus").addEventListener("change", renderPrograms);
+    byId("closeDetail").addEventListener("click", () => byId("programDetail").close());
+    byId("detailDone").addEventListener("click", () => byId("programDetail").close());
+    const params = new URLSearchParams(location.search);
+    const requested = params.get("id");
+    const origin = params.get("origen");
+    if (requested && origin === "orden") {
+      documents.push({ id: requested, type: "Orden de materiales", farm: "Destino de la orden", pickup: "Origen de la orden" });
+      pendingDocument = requested;
+      byId("sourceContext").textContent = `Origen de la planificación: orden de materiales ${requested}`;
+      byId("sourceContext").classList.remove("is-hidden");
+      openForm();
+    } else if (requested && origin === "aviso") {
+      byId("sourceContext").textContent = `Origen de la planificación: aviso de corte ${requested}`;
+      byId("sourceContext").classList.remove("is-hidden");
+      openForm();
+    } else if (requested && documents.some((item) => item.id === requested)) {
+      pendingDocument = requested;
+      openForm();
+    }
   }
   window.SIALOperationalPlan = { init };
 })();
