@@ -16,6 +16,7 @@
   ];
   let trips = [];
   let pendingDocument = "";
+  let detailTrigger = null;
 
   function option(value, label) {
     const item = document.createElement("option");
@@ -134,7 +135,7 @@
       action.title = "Ver viajes";
       action.setAttribute("aria-label", `Ver viajes de ${program.id}`);
       action.innerHTML = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-      action.addEventListener("click", () => showProgramDetail(program));
+      action.addEventListener("click", (event) => showProgramDetail(program, event.currentTarget));
       const actionWrap = document.createElement("div");
       actionWrap.className = "row-actions";
       actionWrap.appendChild(action);
@@ -144,17 +145,42 @@
     byId("programCount").textContent = `${visible.length} ${visible.length === 1 ? "registro" : "registros"}`;
     byId("programEmpty").classList.toggle("is-hidden", visible.length !== 0);
   }
-  function showProgramDetail(program) {
-    byId("detailSummary").textContent = `${program.id} · ${program.driver} · ${program.vehicle}`;
-    const list = byId("detailTrips");
-    list.replaceChildren();
-    program.trips.forEach((trip) => {
+  function detailGroup(label, value) {
+    const group = document.createElement("div");
+    group.className = "detail-group";
+    const caption = document.createElement("span");
+    caption.className = "detail-label";
+    caption.textContent = label;
+    const content = document.createElement("div");
+    content.className = "detail-value";
+    content.textContent = value;
+    group.append(caption, content);
+    return group;
+  }
+  function showProgramDetail(program, trigger) {
+    detailTrigger = trigger;
+    const body = byId("detailBody");
+    body.replaceChildren(
+      detailGroup("Programación", program.id),
+      detailGroup("Conductor", program.driver),
+      detailGroup("Vehículo", program.vehicle),
+      detailGroup("Estado", program.status)
+    );
+    program.trips.forEach((trip, index) => {
       const source = documents.find((item) => item.id === trip.documentId);
-      const item = document.createElement("li");
-      item.textContent = `${trip.documentId} · ${source?.pickup || "Origen"} → ${source?.farm || "Destino"} · ${formatDate(trip.date)}`;
-      list.appendChild(item);
+      body.appendChild(detailGroup(`Viaje ${index + 1} · ${trip.documentId}`,
+        `${source?.pickup || "Origen por consultar"} → ${source?.farm || "Destino por consultar"} · ${formatDate(trip.date)}`));
     });
-    byId("programDetail").showModal();
+    byId("detailBackdrop").classList.add("show");
+    byId("detailDrawer").classList.add("show");
+    byId("detailDrawer").setAttribute("aria-hidden", "false");
+    byId("closeDetail").focus();
+  }
+  function closeDetail() {
+    byId("detailBackdrop").classList.remove("show");
+    byId("detailDrawer").classList.remove("show");
+    byId("detailDrawer").setAttribute("aria-hidden", "true");
+    detailTrigger?.focus();
   }
   function openForm() {
     byId("programPanel").classList.remove("is-hidden");
@@ -220,8 +246,9 @@
     byId("materialTransferForm").addEventListener("submit", save);
     byId("programSearch").addEventListener("input", renderPrograms);
     byId("programStatus").addEventListener("change", renderPrograms);
-    byId("closeDetail").addEventListener("click", () => byId("programDetail").close());
-    byId("detailDone").addEventListener("click", () => byId("programDetail").close());
+    byId("closeDetail").addEventListener("click", closeDetail);
+    byId("detailBackdrop").addEventListener("click", closeDetail);
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && byId("detailDrawer").classList.contains("show")) closeDetail(); });
     const params = new URLSearchParams(location.search);
     const requested = params.get("id");
     const origin = params.get("origen");

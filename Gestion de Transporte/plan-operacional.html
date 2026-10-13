@@ -38,9 +38,14 @@
           <div class="form-actions"><button class="btn btn-secondary" id="cancelProgram" type="button">Cancelar</button><button class="btn btn-primary" type="submit">Guardar programación</button></div>
         </form></div>
       </article>
-    </section></main>
+    </section>
+    <div class="drawer-backdrop" id="detailBackdrop"></div>
+    <aside class="drawer" id="detailDrawer" data-sial-drawer-adapter aria-label="Detalle de viajes programados" aria-hidden="true">
+      <div class="drawer-head"><div><h3>Viajes programados</h3><p>Secuencia de documentos del plan operacional.</p></div><button class="icon-btn" type="button" id="closeDetail" aria-label="Cerrar detalle">×</button></div>
+      <div class="drawer-body" id="detailBody"></div>
+    </aside>
+    </main>
   </div>
-  <dialog class="plan-detail" id="programDetail" aria-labelledby="detailHeading"><div class="plan-detail-head"><h2 id="detailHeading">Viajes programados</h2><button class="icon-btn" type="button" id="closeDetail" aria-label="Cerrar detalle">×</button></div><p id="detailSummary"></p><ol id="detailTrips"></ol><div class="plan-detail-actions"><button class="btn btn-secondary" type="button" id="detailDone">Cerrar</button></div></dialog>
   <script src="../shared/sial-core.js"></script><script src="sial-plan-operacional.js?v=20261013-1"></script>
   <script>SIALCore.initShell({ area: "gestion", module: "transporte", view: "planes" }); window.SIALOperationalPlan.init();</script>
 </body>
