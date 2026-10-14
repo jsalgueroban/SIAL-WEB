@@ -1,5 +1,13 @@
 @import url("../shared/sial-core.css");
 
+.maintenance-toolbar { grid-template-columns: minmax(280px, 1fr) minmax(190px, 220px) minmax(190px, 220px); align-items: end; }
+.maintenance-filter-field { min-width: 0; }
+.maintenance-filter-field > .input, .maintenance-filter-field > .select { width: 100%; min-width: 0; height: 44px; }
+.maintenance-filter-field > .sial-library-search, .maintenance-filter-field > .sial-library-filter { width: 100%; min-width: 0; }
+.maintenance-filter-field > .sial-library-search > *, .maintenance-filter-field > .sial-library-filter > * { width: 100%; }
+@media (max-width: 800px) { .maintenance-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); } .maintenance-search-field { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .maintenance-toolbar { grid-template-columns: 1fr; } .maintenance-search-field { grid-column: auto; } }
+
 .maintenance-vehicle { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(130px, .6fr)); gap: 20px; align-items: center; padding: 20px 24px; }
 .maintenance-vehicle h2 { margin: 0 0 4px; font-size: 20px; }
 .maintenance-vehicle p, .maintenance-vehicle dl, .maintenance-vehicle dd { margin: 0; }
@@ -15,9 +23,11 @@
 .maintenance-impact { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px; padding: 16px 18px; background: var(--surface-subtle, var(--primary-50)); border-radius: var(--radius-control); }
 .maintenance-impact p { margin: 4px 0 0; color: var(--text-secondary); }
 .maintenance-consequence { margin-top: -4px; padding-top: 12px; border-top: 1px solid var(--color-border-subtle); }
+.maintenance-form-feedback { max-width: 760px; margin: 18px auto 0; color: var(--color-text-2); text-align: center; }
+.maintenance-form-feedback[hidden] { display: none; }
 .maintenance-notes { min-height: 72px; }
 .form-card .field { align-content: start; grid-auto-rows: max-content; }
-.maintenance-upload { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 6px; border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); }
+.maintenance-upload { position: relative; display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 6px; border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); }
 .maintenance-upload:focus-within { border-color: var(--color-primary-500); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 18%, transparent); }
 .maintenance-upload-input { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .maintenance-upload .btn { flex: 0 0 auto; }

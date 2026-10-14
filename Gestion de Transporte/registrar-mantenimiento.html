@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SIAL | Registrar mantenimiento</title>
   <script>(function(){const t=localStorage.getItem("sial-theme"),d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light")})();</script>
-  <link rel="stylesheet" href="sial-mantenimientos.css" />
+  <link rel="stylesheet" href="sial-mantenimientos.css?v=hu297-4" />
 </head>
 <body data-view-family="registro-extenso">
   <div class="app-shell">
@@ -14,36 +14,42 @@
     <main class="main">
       <section class="page">
         <p class="page-eyebrow">Transporte / Mantenimientos / Registro</p>
-        <div class="page-header"><div><h1 class="page-title">Registrar mantenimiento</h1><p class="page-subtitle">Registra la atención preventiva o correctiva que inmovilizará el vehículo.</p></div><a class="btn btn-secondary" href="gestion-mantenimientos.html">Volver a mantenimientos</a></div>
+        <div class="page-header"><div><h1 class="page-title">Registrar mantenimiento</h1><p class="page-subtitle">Documenta el ingreso, el motivo y la atención prevista para el vehículo.</p></div><a class="btn btn-secondary" href="gestion-mantenimientos.html">Volver a mantenimientos</a></div>
         <div class="notice notice-error is-hidden" id="maintenanceBlocked"><span>El vehículo tiene una operación activa. Finaliza o libera la operación antes de registrar su inmovilización.</span></div>
         <article class="card form-card">
           <div class="form-heading"><h2>Formulario de mantenimiento</h2><p>Completa los datos del ingreso. Los campos marcados son obligatorios.</p></div>
           <div class="form-body">
-            <div class="notice notice-success is-hidden" id="maintenanceSuccess"><span>Mantenimiento listo para registrar. El vehículo quedará no disponible.</span></div>
             <form id="maintenanceForm" novalidate>
               <section class="section"><h3 class="section-title">Vehículo</h3><div class="grid">
-                <div class="field span-6"><label class="label" for="maintenanceVehicle">Vehículo <span class="required">*</span></label><select class="select" id="maintenanceVehicle" required aria-describedby="maintenanceVehicleNote"><option value="">Selecciona un vehículo</option><option value="FLT-001">FLT-001 · CAMIÓN</option><option value="CMN-204">CMN-204 · CAMIÓN</option><option value="TRK-421">TRK-421 · TRACTOMULA</option></select><div class="field-note" id="maintenanceVehicleNote">Solo puede registrarse si no tiene una operación activa.</div></div>
-                <div class="field span-3"><label class="label" for="maintenancePlate">Placa seleccionada</label><input class="input" id="maintenancePlate" data-context-plate value="Sin seleccionar" readonly /></div>
+                <div class="field span-6"><label class="label" for="maintenanceVehicle">Vehículo <span class="required">*</span></label><select class="select" id="maintenanceVehicle" required aria-describedby="maintenanceVehicleNote"><option value="">Selecciona un vehículo</option><option value="FLT-001">FLT-001 · CAMIÓN</option><option value="CMN-204">CMN-204 · CAMIÓN</option><option value="TRK-421">TRK-421 · TRACTOMULA</option></select><div class="field-note" id="maintenanceVehicleNote">No se puede iniciar otro mantenimiento si tiene una operación activa.</div></div>
+                <div class="field span-3"><label class="label" for="maintenancePlate">Código seleccionado</label><input class="input" id="maintenancePlate" data-context-plate value="Sin seleccionar" readonly /></div>
                 <div class="field span-3"><label class="label" for="maintenanceAvailability">Disponibilidad actual</label><input class="input" id="maintenanceAvailability" data-context-state value="Sin seleccionar" readonly /></div>
                 <div class="field span-12"><div class="field-note maintenance-consequence" id="maintenanceImpact">Selecciona un vehículo para validar su disponibilidad.</div></div>
               </div></section>
               <section class="section"><h3 class="section-title">Datos del mantenimiento</h3><div class="grid">
                 <div class="field span-4"><label class="label" for="maintenanceKind">Tipo <span class="required">*</span></label><select class="select" id="maintenanceKind" required><option value="">Selecciona el tipo</option><option>Preventivo</option><option>Correctivo</option></select></div>
-                <div class="field span-4"><label class="label" for="maintenanceWorkshop">Taller o responsable <span class="required">*</span></label><input class="input" id="maintenanceWorkshop" required placeholder="Ej. Taller Central" /></div>
-                <div class="field span-4"><label class="label" for="maintenanceCost">Costo estimado</label><input class="input" id="maintenanceCost" type="number" min="0" placeholder="0" /><div class="field-note">Valor opcional en pesos colombianos.</div></div>
+                <div class="field span-4"><label class="label" for="maintenanceCause">Causa <span class="required">*</span></label><input class="input" id="maintenanceCause" required placeholder="Ej. Alerta de frenos" /></div>
+                <div class="field span-4"><label class="label" for="maintenancePriority">Prioridad <span class="required">*</span></label><input class="input" id="maintenancePriority" required placeholder="Indica la prioridad" /></div>
+                <div class="field span-4"><label class="label" for="maintenanceWorkshop">Taller o proveedor <span class="required">*</span></label><input class="input" id="maintenanceWorkshop" required placeholder="Ej. Taller Central" /></div>
+                <div class="field span-4"><label class="label" for="maintenanceResponsible">Responsable <span class="required">*</span></label><input class="input" id="maintenanceResponsible" required placeholder="Nombre del responsable" /></div>
+                <div class="field span-4"><label class="label" for="maintenanceCost">Costo estimado</label><input class="input" id="maintenanceCost" type="number" min="0" placeholder="0" /><div class="field-note" id="maintenanceCostNote">Valor opcional en pesos colombianos.</div></div>
                 <div class="field span-6"><label class="label" for="maintenanceStart">Fecha y hora de ingreso <span class="required">*</span></label><input class="input" id="maintenanceStart" type="datetime-local" required /></div>
                 <div class="field span-6"><label class="label" for="maintenanceExpected">Fecha y hora estimada de salida <span class="required">*</span></label><input class="input" id="maintenanceExpected" type="datetime-local" required /></div>
-                <div class="field span-12"><label class="label" for="maintenanceDiagnosis">Motivo y diagnóstico inicial <span class="required">*</span></label><textarea class="textarea" id="maintenanceDiagnosis" required placeholder="Describe la condición que origina el mantenimiento"></textarea></div>
+                <div class="field span-4"><label class="label" for="maintenanceMileage">Kilometraje de ingreso</label><input class="input" id="maintenanceMileage" type="number" min="0" placeholder="Ej. 40300" /><div class="field-note">Indica kilometraje u horómetro.</div></div>
+                <div class="field span-4"><label class="label" for="maintenanceHours">Horómetro de ingreso</label><input class="input" id="maintenanceHours" type="number" min="0" placeholder="Si aplica" /></div>
+                <div class="field span-4"><label class="label" for="maintenanceOrigin">Origen</label><input class="input" id="maintenanceOrigin" placeholder="Plan, inspección, alerta u orden" /></div>
+                <div class="field span-12"><label class="label" for="maintenanceDiagnosis">Diagnóstico inicial <span class="required">*</span></label><textarea class="textarea" id="maintenanceDiagnosis" required placeholder="Describe la condición encontrada y el trabajo previsto"></textarea></div>
                 <div class="field span-12"><label class="label" for="maintenanceNotes">Observaciones</label><textarea class="textarea maintenance-notes" id="maintenanceNotes" placeholder="Agrega información útil para el seguimiento"></textarea></div>
               </div></section>
-              <section class="section"><h3 class="section-title">Evidencia de ingreso</h3><div class="grid"><div class="field span-12"><label class="label" for="maintenanceEvidence">Adjuntar soportes</label><div class="maintenance-upload"><input class="maintenance-upload-input" id="maintenanceEvidence" type="file" multiple /><label class="btn btn-secondary" for="maintenanceEvidence">Seleccionar archivos</label><span class="maintenance-upload-name" id="maintenanceEvidenceName" aria-live="polite">Ningún archivo seleccionado</span></div><div class="field-note">La obligatoriedad, cantidad y formatos permitidos están pendientes de definición funcional.</div></div></div></section>
-              <div class="form-actions"><a class="btn btn-secondary" href="gestion-mantenimientos.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar</button><button class="btn btn-primary" id="maintenanceSubmit" type="submit" disabled>Registrar mantenimiento</button></div>
+              <section class="section"><h3 class="section-title">Evidencia de ingreso</h3><div class="grid"><div class="field span-12"><label class="label" for="maintenanceEvidence">Adjuntar soportes <span class="required">*</span></label><div class="maintenance-upload"><input class="maintenance-upload-input" id="maintenanceEvidence" type="file" multiple required /><label class="btn btn-secondary" for="maintenanceEvidence">Seleccionar archivos</label><span class="maintenance-upload-name" id="maintenanceEvidenceName" aria-live="polite">Ningún archivo seleccionado</span></div><div class="field-note">La cantidad y los formatos permitidos siguen pendientes de definición funcional.</div></div></div></section>
+              <p class="maintenance-form-feedback" id="maintenanceFormFeedback" role="status" aria-live="polite" hidden></p>
+              <div class="form-actions"><a class="btn btn-secondary" href="gestion-mantenimientos.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar</button><button class="btn btn-primary" id="maintenanceSubmit" type="submit" disabled>Revisar registro</button></div>
             </form>
           </div>
         </article>
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script><script src="sial-conductores.js"></script><script src="sial-mantenimientos.js"></script><script>SIAL.applyShell("mantenimientos"); SIALMaintenance.initForm();</script>
+  <script src="../shared/sial-core.js"></script><script src="sial-conductores.js"></script><script src="sial-mantenimientos.js?v=hu297-3"></script><script>SIAL.applyShell("mantenimientos"); SIALMaintenance.initForm();</script>
 </body>
 </html>

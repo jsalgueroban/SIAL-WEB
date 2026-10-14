@@ -1,0 +1,29 @@
+.vehicle-page { max-width: 1320px; }
+.vehicle-showcase { overflow: hidden; }
+.vehicle-showcase-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 22px 28px 18px; }
+.vehicle-overline { margin: 0 0 5px; color: var(--color-text-3); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.vehicle-showcase-head h2 { margin: 0; font-size: 23px; line-height: 1.2; }
+.vehicle-type-switch { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--color-border-subtle); border-radius: 9px; background: var(--color-surface-2, #f5f7fa); }
+.vehicle-type-button { min-height: 38px; padding: 0 14px; border: 0; border-radius: 6px; background: transparent; color: var(--color-text-2); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.vehicle-type-button:hover { color: var(--color-primary-600); }
+.vehicle-type-button.is-active { background: var(--color-surface); color: var(--color-primary-600); box-shadow: 0 1px 5px rgb(16 35 59 / 12%); }
+.vehicle-type-button:focus-visible, .vehicle-control:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 2px; }
+.vehicle-stage { position: relative; height: min(55vw, 540px); min-height: 360px; overflow: hidden; border-block: 1px solid var(--color-border-subtle); background: radial-gradient(ellipse at 49% 38%, #ffffff 0, #f3f6f8 55%, #e6ebef 100%); touch-action: none; }
+.vehicle-stage::after { content: "SIAL  /  TRANSPORTE"; position: absolute; right: 24px; bottom: 18px; color: #8597aa; font-size: 10px; font-weight: 700; letter-spacing: .18em; pointer-events: none; }
+.vehicle-stage canvas { position: relative; z-index: 1; display: block; width: 100%; height: 100%; cursor: grab; }
+.vehicle-stage canvas:active { cursor: grabbing; }
+.vehicle-stage-pending, .vehicle-stage-fallback { position: absolute; z-index: 2; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; padding: 28px; color: var(--color-text-2); text-align: center; }
+.vehicle-stage-fallback[hidden], .vehicle-stage-pending[hidden] { display: none; }
+.vehicle-stage-fallback span { max-width: 430px; }
+.vehicle-showcase-foot { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 76px; padding: 14px 28px; }
+.vehicle-showcase-foot p { margin: 0; color: var(--color-text-2); font-size: 13px; }
+.vehicle-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+.vehicle-control { min-height: 37px; padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+.vehicle-control[hidden] { display: none; }
+.vehicle-scope-note { margin: 12px 2px 0; color: var(--color-text-3); font-size: 12px; }
+[data-theme="dark"] .vehicle-stage { background: radial-gradient(ellipse at 49% 38%, #263c51 0, #182b40 58%, #102033 100%); }
+[data-theme="dark"] .vehicle-type-switch { background: #15263a; }
+[data-theme="dark"] .vehicle-type-button.is-active { background: #25425d; color: #f3f8ff; box-shadow: none; }
+[data-theme="dark"] .vehicle-stage::after { color: #7990a8; }
+@media (max-width: 900px) { .vehicle-showcase-head, .vehicle-showcase-foot { align-items: stretch; flex-direction: column; } .vehicle-controls { justify-content: flex-start; } }
+@media (max-width: 600px) { .vehicle-showcase-head, .vehicle-showcase-foot { padding-inline: 18px; } .vehicle-type-switch { width: 100%; } .vehicle-type-button { flex: 1; } .vehicle-stage { height: 420px; min-height: 0; } .vehicle-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .vehicle-control { width: auto; min-width: 0; } .vehicle-control:last-child { grid-column: 1 / -1; } .vehicle-controls.has-focus .vehicle-control:last-child { grid-column: auto; } }

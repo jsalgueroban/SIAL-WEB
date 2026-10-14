@@ -3,13 +3,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:ui": "vite build --config vite.ui.config.mjs"
+    "build:ui": "vite build --config vite.ui.config.mjs",
+    "build:vehicle": "vite build --config vite.vehicle.config.mjs",
+    "build:tractomula": "node scripts/build-tractomula.mjs"
   },
   "dependencies": {
     "@banasandev/banasan-ui": "1.4.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "recharts": "^3.8.1"
+    "recharts": "^3.8.1",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "vite": "^8.0.14"

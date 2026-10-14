@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIAL | Modelo de vehículo</title>
+  <script>(function(){const t=localStorage.getItem("sial-theme"),d=matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light")})();</script>
+  <link rel="stylesheet" href="sial-mantenimientos.css">
+  <link rel="stylesheet" href="modelo-vehiculo-3d.css">
+</head>
+<body data-view-family="detalle">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Transporte</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input aria-label="Búsqueda principal" placeholder="Buscar..."></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main"><section class="page vehicle-page">
+      <p class="page-eyebrow">Transporte / Mantenimientos / Modelo de vehículo</p>
+      <div class="page-header"><div><h1 class="page-title">Modelo de vehículo</h1><p class="page-subtitle">Explora la forma general del vehículo desde cualquier ángulo.</p></div><a class="btn btn-secondary" href="detalle-mantenimiento.html">Volver al expediente</a></div>
+      <section class="card vehicle-showcase" aria-labelledby="vehicle-model-title">
+        <div class="vehicle-showcase-head"><div><p class="vehicle-overline">Representación genérica</p><h2 id="vehicle-model-title">Camión rígido</h2></div><div class="vehicle-type-switch" role="group" aria-label="Tipo de vehículo"><button type="button" class="vehicle-type-button is-active" data-vehicle-type="TRUCK" aria-pressed="true">Camión rígido</button><button type="button" class="vehicle-type-button" data-vehicle-type="TRACTOR_TRUCK" aria-pressed="false">Tractomula</button></div></div>
+        <div class="vehicle-stage" id="vehicleStage" role="img" aria-label="Modelo tridimensional genérico de camión rígido, visible desde distintos ángulos">
+          <div class="vehicle-stage-pending" id="vehiclePending">Preparando modelo 3D…</div>
+          <div class="vehicle-stage-fallback" id="vehicleFallback" hidden><strong>El modelo 3D no está disponible en este navegador.</strong><span>Puedes identificar el tipo de vehículo en el encabezado. La consulta del mantenimiento sigue disponible.</span></div>
+        </div>
+        <div class="vehicle-showcase-foot"><p id="vehicleHelp">Arrastra sobre el modelo para girarlo. Usa la rueda o los controles para acercarlo.</p><div class="vehicle-controls" role="group" aria-label="Controles del modelo"><button class="btn btn-secondary vehicle-control" type="button" data-view-action="focus" hidden>Ver cabina</button><button class="btn btn-secondary vehicle-control" type="button" data-view-action="left" aria-label="Girar a la izquierda">← Girar</button><button class="btn btn-secondary vehicle-control" type="button" data-view-action="right" aria-label="Girar a la derecha">Girar →</button><button class="btn btn-secondary vehicle-control" type="button" data-view-action="zoom-out" aria-label="Alejar modelo">−</button><button class="btn btn-secondary vehicle-control" type="button" data-view-action="zoom-in" aria-label="Acercar modelo">+</button><button class="btn btn-secondary vehicle-control" type="button" data-view-action="reset">Restablecer vista</button></div></div>
+      </section>
+      <p class="vehicle-scope-note">El modelo representa el tipo de vehículo, no un vehículo específico ni su condición mecánica.</p>
+    </section></main>
+  </div>
+  <script src="../shared/sial-core.js"></script><script src="sial-conductores.js"></script><script src="../shared/vendor/sial-vehicle-viewer.js?v=6"></script><script>SIAL.applyShell("mantenimientos"); SIALVehicleViewer.mount(document.getElementById("vehicleStage"));</script>
+</body>
+</html>

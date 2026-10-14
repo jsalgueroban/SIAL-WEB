@@ -10,18 +10,28 @@
     const status = qs("#maintenanceStatus");
     const empty = qs("#maintenanceEmpty");
     const count = qs("#maintenanceCount");
+    const pagination = qs("#maintenancePagination");
+    let page = 1;
+    let pageSize = 10;
     const apply = () => {
       const term = (search?.value || "").trim().toLowerCase();
-      let visible = 0;
-      rows.forEach((row) => {
-        const matches = (!term || row.textContent.toLowerCase().includes(term)) && (!type || type.value === "all" || row.dataset.type === type.value) && (!status || status.value === "all" || row.dataset.status === status.value);
-        row.hidden = !matches;
-        if (matches) visible += 1;
-      });
-      if (count) count.textContent = `${visible} registros visibles`;
-      if (empty) empty.classList.toggle("is-visible", visible === 0);
+      const matches = rows.filter((row) => (!term || row.textContent.toLowerCase().includes(term)) && (!type || type.value === "all" || row.dataset.type === type.value) && (!status || status.value === "all" || row.dataset.status === status.value));
+      const total = matches.length;
+      page = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+      rows.forEach((row) => { row.hidden = true; });
+      matches.slice((page - 1) * pageSize, page * pageSize).forEach((row) => { row.hidden = false; });
+      if (count) count.textContent = `${total} ${total === 1 ? "registro" : "registros"}`;
+      if (empty) empty.classList.toggle("is-visible", total === 0);
+      if (pagination) {
+        pagination.dataset.sialPage = String(page);
+        pagination.dataset.sialPageSize = String(pageSize);
+        pagination.dataset.sialTotal = String(total);
+        pagination.dispatchEvent(new CustomEvent("sial:table-page-state", { detail: { page, pageSize, total, sizes: [10, 30, 50] } }));
+      }
     };
-    [search, type, status].filter(Boolean).forEach((control) => control.addEventListener(control.tagName === "INPUT" ? "input" : "change", apply));
+    [search, type, status].filter(Boolean).forEach((control) => control.addEventListener(control.tagName === "INPUT" ? "input" : "change", () => { page = 1; apply(); }));
+    pagination?.addEventListener("sial:table-page-request", (event) => { page = Number(event.detail?.page) || 1; apply(); });
+    pagination?.addEventListener("sial:table-page-size-request", (event) => { pageSize = Number(event.detail?.pageSize) || 10; page = 1; apply(); });
     apply();
   }
 
@@ -30,10 +40,12 @@
     if (!form) return;
     const vehicle = qs("#maintenanceVehicle");
     const impact = qs("#maintenanceImpact");
-    const success = qs("#maintenanceSuccess");
     const blocked = qs("#maintenanceBlocked");
     const evidence = qs("#maintenanceEvidence");
     const evidenceName = qs("#maintenanceEvidenceName");
+    const feedback = qs("#maintenanceFormFeedback");
+    const cost = qs("#maintenanceCost");
+    const costNote = qs("#maintenanceCostNote");
     const queryVehicle = new URLSearchParams(location.search).get("vehiculo");
     if (queryVehicle && [...vehicle.options].some((option) => option.value === queryVehicle)) vehicle.value = queryVehicle;
     const updateContext = () => {
@@ -41,28 +53,44 @@
       qs("[data-context-plate]").value = vehicle.value || "Sin seleccionar";
       qs("[data-context-state]").value = activeTrip ? "En tránsito a puerto" : vehicle.value ? "Disponible" : "Sin seleccionar";
       blocked.classList.toggle("is-hidden", !activeTrip);
-      impact.textContent = vehicle.value ? (activeTrip ? "No puede registrarse mientras la operación OP-001 permanezca activa." : "Al registrar el mantenimiento, el vehículo cambiará a No disponible.") : "Selecciona un vehículo para validar su disponibilidad.";
+      impact.textContent = vehicle.value ? (activeTrip ? "No puede registrarse mientras la operación OP-001 permanezca activa." : "El impacto sobre la disponibilidad se determina según la causa, la prioridad y las reglas operativas.") : "Selecciona un vehículo para validar su disponibilidad.";
       qs("#maintenanceSubmit").disabled = !vehicle.value || activeTrip;
     };
     vehicle.addEventListener("change", updateContext);
+    cost?.addEventListener("input", () => {
+      costNote.textContent = Number(cost.value) > 5000000 ? "Para aprobar o ejecutar este costo se requerirán cotizaciones, aprobación y soporte de compra." : "Valor opcional en pesos colombianos.";
+    });
     evidence?.addEventListener("change", () => {
       const files = Array.from(evidence.files || []);
       evidenceName.textContent = files.length === 0 ? "Ningún archivo seleccionado" : files.length === 1 ? files[0].name : `${files.length} archivos seleccionados`;
     });
-    form.addEventListener("reset", () => requestAnimationFrame(() => { updateContext(); if (evidenceName) evidenceName.textContent = "Ningún archivo seleccionado"; }));
+    form.addEventListener("reset", () => requestAnimationFrame(() => { updateContext(); if (evidenceName) evidenceName.textContent = "Ningún archivo seleccionado"; feedback.hidden = true; costNote.textContent = "Valor opcional en pesos colombianos."; qsa(".is-error", form).forEach(field => field.classList.remove("is-error")); }));
     updateContext();
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+      feedback.hidden = true;
+      if (vehicle.value === "TRK-421") return;
       const required = qsa("[required]", form);
       let firstInvalid = null;
       required.forEach((field) => {
-        const invalid = !String(field.value || "").trim();
+        const invalid = !field.checkValidity() || !String(field.value || "").trim();
         field.classList.toggle("is-error", invalid);
         if (invalid && !firstInvalid) firstInvalid = field;
       });
-      if (firstInvalid) { firstInvalid.focus(); return; }
-      success.classList.remove("is-hidden");
-      success.scrollIntoView({ behavior: "smooth", block: "center" });
+      const start = qs("#maintenanceStart");
+      const expected = qs("#maintenanceExpected");
+      if (!firstInvalid && expected.value <= start.value) { expected.classList.add("is-error"); firstInvalid = expected; }
+      const mileage = qs("#maintenanceMileage");
+      const hours = qs("#maintenanceHours");
+      if (!firstInvalid && !mileage.value && !hours.value) { mileage.classList.add("is-error"); hours.classList.add("is-error"); firstInvalid = mileage; }
+      if (firstInvalid) {
+        feedback.textContent = firstInvalid === evidence ? "Adjunta al menos un soporte de ingreso." : firstInvalid === expected ? "La salida estimada debe ser posterior al ingreso." : firstInvalid === mileage ? "Indica el kilometraje o el horómetro de ingreso." : "Completa los campos obligatorios para revisar el registro.";
+        feedback.hidden = false;
+        firstInvalid.focus();
+        return;
+      }
+      feedback.textContent = "Datos completos para revisión. Esta propuesta visual todavía no guarda el mantenimiento.";
+      feedback.hidden = false;
     });
   }
 
