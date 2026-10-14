@@ -82,7 +82,8 @@ window.SIALNavigationContract = Object.freeze({
             { id: "usuarios", label: "Gestion de usuarios", href: "gestion-usuarios.html" },
             { id: "registro", label: "Registro de usuario", href: "registro-usuario.html" },
             { id: "edicion", label: "Editar usuario", href: "editar-usuario.html" },
-            { id: "permisosRol", label: "Permisos por rol", href: "gestion-permisos-rol.html" }
+            { id: "permisosRol", label: "Permisos por rol", href: "gestion-permisos-rol.html" },
+            { id: "dispositivos", label: "Mis dispositivos", href: "mis-dispositivos.html" }
           ]
         },
         {

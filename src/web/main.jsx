@@ -4,11 +4,13 @@ import "@banasandev/banasan-ui/style.css";
 import { OrderCategories } from "./order-categories.jsx";
 import { TransportCatalog } from "./transport-catalogs.jsx";
 import { mountLegacyTableControls } from "./legacy-table-controls.jsx";
+import { KnownDevices } from "./known-devices.jsx";
 
 const mounts = {
   "order-categories": OrderCategories,
   "transport-licenses": () => <TransportCatalog catalog="licenses" />,
-  "transport-vehicle-types": () => <TransportCatalog catalog="vehicleTypes" />
+  "transport-vehicle-types": () => <TransportCatalog catalog="vehicleTypes" />,
+  "known-devices": KnownDevices
 };
 
 function mountProposalViews() {

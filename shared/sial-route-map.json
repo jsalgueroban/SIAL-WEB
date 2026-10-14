@@ -12,6 +12,7 @@
     { "route": "/admin/users", "view": "Gestion de Usuarios/gestion-usuarios.html", "status": "aligned" },
     { "route": "/admin/users/edit", "view": "Gestion de Usuarios/editar-usuario.html", "status": "aligned" },
     { "route": "/admin/users/register", "view": "Gestion de Usuarios/registro-usuario.html", "status": "aligned" },
+    { "route": "/admin/known-devices", "view": "Gestion de Usuarios/mis-dispositivos.html", "status": "aligned" },
     { "route": "/admin/company/dependencies/management", "view": "Gestion de Empresas/gestion-dependencias.html", "status": "aligned" },
     { "route": "/admin/company/types", "view": "Gestion de Transporte/gestion-tipos-empresa.html", "status": "aligned" },
     { "route": "/admin/company/relations", "view": "Gestion de Transporte/relacion-empresa-tipo.html", "status": "aligned" },
