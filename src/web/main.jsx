@@ -5,12 +5,14 @@ import { OrderCategories } from "./order-categories.jsx";
 import { TransportCatalog } from "./transport-catalogs.jsx";
 import { mountLegacyTableControls } from "./legacy-table-controls.jsx";
 import { KnownDevices } from "./known-devices.jsx";
+import { MaterialsTransportOrders } from "./materials-transport-orders.jsx";
 
 const mounts = {
   "order-categories": OrderCategories,
   "transport-licenses": () => <TransportCatalog catalog="licenses" />,
   "transport-vehicle-types": () => <TransportCatalog catalog="vehicleTypes" />,
-  "known-devices": KnownDevices
+  "known-devices": KnownDevices,
+  "materials-transport-orders": MaterialsTransportOrders
 };
 
 function mountProposalViews() {
