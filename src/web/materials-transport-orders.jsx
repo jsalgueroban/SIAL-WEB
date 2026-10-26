@@ -1,10 +1,22 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button, Chip, DateInput, IconButton, Pagination, SelectInput, Table,
   TableRowActions, TextInput, Toast, ViewIcon
 } from "@banasandev/banasan-ui";
-import { exportRows } from "./materials-inventory.jsx";
+
+
+function exportRows(rows, columns, filename) {
+  const quote = (value) => '"' + String(value ?? "").replaceAll('"', '""') + '"';
+  const csv = [columns.map((column) => quote(column.header)).join(","),
+    ...rows.map((row) => columns.map((column) => quote(row[column.key])).join(","))].join("\r\n");
+  const url = URL.createObjectURL(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }));
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename + ".csv";
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 const orderKey = "sial-hu546-transport-orders";
 const partitionKey = "sial-hu546-partitioned-sources";
@@ -69,6 +81,11 @@ export function MaterialsTransportOrders() {
     return () => window.clearTimeout(timeout);
   }, [feedback]);
   const [selectedId, setSelectedId] = useState(null);
+  const [pickedLineId, setPickedLineId] = useState(null);
+  const [dragLineId, setDragLineId] = useState(null);
+  const [dropZone, setDropZone] = useState(null);
+  const [arrivingLineId, setArrivingLineId] = useState(null);
+  const dragPreviewRef = useRef(null);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [page, setPage] = useState(1);
@@ -89,6 +106,7 @@ export function MaterialsTransportOrders() {
   function openCreate() {
     setDraft(initialDraft());
     setErrors({});
+    setPickedLineId(null);
     setMode("create");
   }
   function updateGroup(id, key, value) {
@@ -101,9 +119,71 @@ export function MaterialsTransportOrders() {
     updateGroup(id, "window", `${part === "date" ? value : date}T${part === "time" ? value : time}`);
     setErrors((previous) => ({ ...previous, [`${id}-window${part === "date" ? "Date" : "Time"}`]: "" }));
   }
-  function assign(lineId, groupId) {
+  function assign(lineId, groupId, animate = true) {
     setDraft((previous) => ({ ...previous, allocation: { ...previous.allocation, [lineId]: groupId } }));
     setErrors((previous) => ({ ...previous, allocation: "", groups: "" }));
+    setArrivingLineId(animate ? lineId : null);
+    setPickedLineId(null);
+    setDropZone(null);
+  }
+  useEffect(() => {
+    if (!arrivingLineId) return undefined;
+    const element = document.querySelector('[data-transport-line="' + arrivingLineId + '"]');
+    if (!element) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const timeout = window.setTimeout(() => setArrivingLineId(null), 120);
+      return () => window.clearTimeout(timeout);
+    }
+    const animation = element.animate([
+      { opacity: 0.45, transform: "translateY(-8px) scale(0.92)" },
+      { opacity: 1, transform: "translateY(0) scale(1)" }
+    ], { duration: 260, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
+    animation.onfinish = () => setArrivingLineId(null);
+    return () => animation.cancel();
+  }, [arrivingLineId, draft.allocation]);
+  function beginDrag(event, lineId) {
+    event.dataTransfer.setData("text/plain", lineId);
+    event.dataTransfer.effectAllowed = "move";
+    if (dragPreviewRef.current) event.dataTransfer.setDragImage(dragPreviewRef.current, 28, 28);
+    setDragLineId(lineId);
+    setPickedLineId(null);
+  }
+  function allowDrop(event, zone) {
+    if (!dragLineId) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+    setDropZone(zone);
+  }
+  function finishDrop(event, groupId) {
+    event.preventDefault();
+    const lineId = event.dataTransfer.getData("text/plain");
+    if (source?.lines.some((line) => line.id === lineId)) assign(lineId, groupId);
+    setDragLineId(null);
+    setDropZone(null);
+  }
+  function leaveDrop(event) {
+    if (!event.currentTarget.contains(event.relatedTarget)) setDropZone(null);
+  }
+  function togglePicked(lineId) {
+    setPickedLineId((previous) => previous === lineId ? null : lineId);
+  }
+  useEffect(() => {
+    if (!pickedLineId) return undefined;
+    const cancelSelection = (event) => {
+      if (event.key === "Escape") setPickedLineId(null);
+    };
+    window.addEventListener("keydown", cancelSelection);
+    return () => window.removeEventListener("keydown", cancelSelection);
+  }, [pickedLineId]);
+  function draggableLineProps(line) {
+    return {
+      draggable: true,
+      onDragStart: (event) => beginDrag(event, line.id),
+      onDragEnd: () => { setDragLineId(null); setDropZone(null); },
+      onClick: () => togglePicked(line.id),
+      "aria-pressed": pickedLineId === line.id,
+      "aria-label": line.material + ", " + line.quantity + " " + line.unit + ". " + (pickedLineId === line.id ? "Seleccionado; elige una orden o pendientes." : "Seleccionar para mover o arrastrar.")
+    };
   }
   function addGroup() {
     setDraft((previous) => ({ ...previous, groups: [...previous.groups, blankGroup(Math.max(...previous.groups.map((group) => group.id)) + 1)] }));
@@ -118,6 +198,7 @@ export function MaterialsTransportOrders() {
   function chooseSource(value) {
     setDraft({ ...initialDraft(), sourceId: value });
     setErrors({});
+    setPickedLineId(null);
   }
   function savePartition() {
     const nextErrors = {};
@@ -148,7 +229,7 @@ export function MaterialsTransportOrders() {
         window: group.window, responsible: group.responsible.trim(), modality: group.modality,
         carrier: group.carrier.trim(), vehicle: "Pendiente de asignación", driver: "Pendiente de asignación",
         lines, materials: lines.map((line) => line.material).join(", "), quantity: lineSummary(lines),
-        status: "CREADO", audit: `Crear orden|${compactDate(createdAt)}`, createdAt
+        status: "CREADO", audit: `Crear - propuesta local|${compactDate(createdAt)}`, createdAt
       };
     });
     const next = [...created, ...saved];
@@ -170,6 +251,7 @@ export function MaterialsTransportOrders() {
   ];
 
   return <>
+    <div ref={dragPreviewRef} className="transport-drag-preview" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 5 42 15v18L24 43 6 33V15L24 5Z" stroke="currentColor" strokeWidth="2.5"/><path d="m6 15 18 10 18-10M24 25v18" stroke="currentColor" strokeWidth="2.5"/></svg><span>Ítem</span></div>
     <p className="page-eyebrow">Materiales / Transporte</p>
     <div className="page-header"><div><h1 className="page-title">{mode === "list" ? "Órdenes de transporte de insumos" : "Particionar pedido de materiales"}</h1><p className="page-subtitle">{mode === "list" ? "Consulta las órdenes creadas a partir de pedidos de materiales y su estado operativo." : "Distribuye todos los ítems completos de un pedido aprobado entre las órdenes que atenderá Transporte."}</p></div></div>
     {feedback && <div className="transport-feedback-toast" role="status"><Toast visible variant="success" title="Órdenes registradas" description={feedback} onClose={() => setFeedback("")} /></div>}
@@ -189,16 +271,18 @@ export function MaterialsTransportOrders() {
       {source && <>
         <section className="card transport-allocation-card"><div className="card-body">
           <div className="transport-section-head"><h2>Distribuir ítems</h2><Chip preset={pending.length ? "warning" : "active"}>{assigned.length} de {source.lines.length} asignados</Chip></div>
-          <p className="transport-help">Cada ítem se mueve completo. Su cantidad no se divide ni se modifica.</p>
+          <p className="transport-help">Arrastra cada ítem a una orden. En pantalla táctil o con teclado, selecciónalo y pulsa «Colocar aquí». Su cantidad no se divide.</p>
+          {pickedLineId && <p className="transport-pick-hint" role="status">Ítem seleccionado: {source.lines.find((line) => line.id === pickedLineId)?.material}. Elige una orden o devuélvelo a pendientes.</p>}
           {errors.allocation && <p className="field-error" role="alert">{errors.allocation}</p>}
           {errors.groups && <p className="field-error" role="alert">{errors.groups}</p>}
           <div className="transport-allocation-grid">
-            <div className="transport-pending"><div className="transport-column-head"><div><span className="transport-column-kicker">POR DISTRIBUIR</span><h3>Ítems del pedido</h3></div><strong>{pending.length} pendientes</strong></div>{pending.length ? <div className="transport-pending-list">{pending.map((line) => <div className="transport-item" key={line.id}><div className="transport-item-data"><span className="transport-item-index">{line.id}</span><div><strong>{line.material}</strong><small>Código {line.code}</small></div><span className="transport-item-quantity">{line.quantity.toLocaleString("es-CO")} <small>{line.unit}</small></span></div><SelectInput id={`assign-${line.id}`} label={`Orden para ${line.material}`} value="" options={[{ value: "", label: "Elegir orden" }, ...draft.groups.map((group) => ({ value: String(group.id), label: `Orden ${group.id}` }))]} onChange={(value) => value && assign(line.id, Number(value))} /></div>)}</div> : <p className="transport-empty transport-pending-complete">Todos los ítems están distribuidos.</p>}</div>
+            <div className={"transport-pending transport-drop-zone" + (dropZone === "pending" ? " is-drop-target" : "")} onDragOver={(event) => allowDrop(event, "pending")} onDragLeave={leaveDrop} onDrop={(event) => finishDrop(event, null)}><div className="transport-column-head"><div><span className="transport-column-kicker">POR DISTRIBUIR</span><h3>Ítems del pedido</h3></div><strong>{pending.length} {pending.length === 1 ? "pendiente" : "pendientes"}</strong></div>{pickedLineId && draft.allocation[pickedLineId] && <div className="transport-drop-action"><Button variant="outlined" type="button" onClick={(event) => assign(pickedLineId, null, event.detail !== 0)}>Devolver a pendientes</Button></div>}{pending.length ? <div className="transport-pending-list">{pending.map((line) => <div className="transport-item" key={line.id}><button type="button" data-transport-line={line.id} className={"transport-drag-item" + (pickedLineId === line.id ? " is-picked" : "") + (dragLineId === line.id ? " is-dragging" : "")} {...draggableLineProps(line)}><span className="transport-item-index">{line.id}</span><span className="transport-item-copy"><strong>{line.material}</strong><small>Código {line.code}</small></span><span className="transport-item-quantity">{line.quantity.toLocaleString("es-CO")} <small>{line.unit}</small></span></button></div>)}</div> : <p className="transport-empty transport-pending-complete">Todos los ítems están distribuidos. Puedes devolver uno aquí.</p>}</div>
             <div className="transport-groups"><div className="transport-groups-heading"><div><span className="transport-column-kicker">RESULTADO DE LA PARTICIÓN</span><h3>Órdenes en construcción</h3></div><Button variant="outlined" type="button" onClick={addGroup}>Agregar orden</Button></div>
               {draft.groups.map((group) => {
                 const lines = source.lines.filter((line) => draft.allocation[line.id] === group.id);
-                return <section className={`transport-group${lines.length ? " has-items" : ""}`} key={group.id} aria-label={`Orden ${group.id}`}><div className="transport-group-head"><div><span>ORDEN EN PREPARACIÓN</span><h4>Orden {group.id}</h4></div><strong>{lines.length} {lines.length === 1 ? "ítem" : "ítems"}</strong></div>
-                  {lines.length ? <ul className="transport-assigned-list">{lines.map((line) => <li key={line.id}><div><strong>{line.material}</strong><small>{line.code} · {line.quantity.toLocaleString("es-CO")} {line.unit}</small></div><Button variant="outlined" type="button" onClick={() => assign(line.id, null)}>Retirar</Button></li>)}</ul> : <p className="transport-empty">Todavía no hay materiales en esta orden.</p>}
+                return <section className={"transport-group transport-drop-zone" + (lines.length ? " has-items" : "") + (dropZone === group.id ? " is-drop-target" : "")} key={group.id} aria-label={"Orden " + group.id} onDragOver={(event) => allowDrop(event, group.id)} onDragLeave={leaveDrop} onDrop={(event) => finishDrop(event, group.id)}><div className="transport-group-head"><div><span>ORDEN EN PREPARACIÓN</span><h4>Orden {group.id}</h4></div><strong>{lines.length} {lines.length === 1 ? "ítem" : "ítems"}</strong></div>
+                  {pickedLineId && draft.allocation[pickedLineId] !== group.id && <div className="transport-drop-action"><Button variant="outlined" type="button" onClick={(event) => assign(pickedLineId, group.id, event.detail !== 0)}>Colocar aquí</Button></div>}
+                  {lines.length ? <ul className="transport-assigned-list">{lines.map((line) => <li key={line.id}><button type="button" data-transport-line={line.id} className={"transport-drag-item" + (pickedLineId === line.id ? " is-picked" : "") + (dragLineId === line.id ? " is-dragging" : "")} {...draggableLineProps(line)}><span className="transport-item-copy"><strong>{line.material}</strong><small>{line.code} · {line.quantity.toLocaleString("es-CO")} {line.unit}</small></span></button></li>)}</ul> : <p className="transport-empty">Arrastra aquí los ítems que viajarán juntos.</p>}
                   <div className="transport-group-foot"><span>{lines.length ? "Los ítems se trasladarán juntos." : "Selecciona ítems del pedido para conformarla."}</span>{draft.groups.length > 2 && !lines.length && <Button variant="outlined" type="button" onClick={() => removeGroup(group.id)}>Eliminar orden vacía</Button>}</div>
                 </section>;
               })}
