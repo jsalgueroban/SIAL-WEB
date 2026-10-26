@@ -76,35 +76,12 @@
           <div class="card-actions"><a class="btn btn-secondary" href="roles-empresa.html">Ajuste de asignaciones por empresa</a></div>
         </div>
 
-        <div class="notice notice-info">
+        <div class="notice notice-info" data-sial-notice-adapter>
           <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
           <span>El rol se guarda asociado desde el instante de creacion para evitar deuda operativa. La eliminacion solo es posible si no hay usuarios asociados.</span>
         </div>
 
-        <div class="stats">
-          <article class="stat">
-            <label>Roles totales</label>
-            <strong>24</strong>
-            <span>Perfiles configurados en el sistema.</span>
-          </article>
-          <article class="stat">
-            <label>Asignados</label>
-            <strong>18</strong>
-            <span>Roles con empresas activas vinculadas.</span>
-          </article>
-          <article class="stat">
-            <label>En revision</label>
-            <strong>2</strong>
-            <span>Pendientes de validacion de permisos.</span>
-          </article>
-          <article class="stat">
-            <label>Sin asignar</label>
-            <strong>4</strong>
-            <span>Roles huerfanos sin alcance definido.</span>
-          </article>
-        </div>
-
-        <article class="card">
+        <article class="card" data-sial-catalog-actions>
           <div class="card-header">
             <div>
               <h2 class="card-title">Mantenedor de roles</h2>
@@ -124,7 +101,7 @@
           </div>
           <div class="card-body">
             <div class="toolbar compact">
-              <input class="input" id="roleSearch" type="search" aria-label="Buscar por codigo, rol o empresa" placeholder="Buscar por codigo, rol o empresa" />
+              <input class="input" id="roleSearch" type="search" data-sial-search-adapter aria-label="Buscar por codigo, rol o empresa" placeholder="Buscar por codigo, rol o empresa" />
               <select class="select" id="roleStatus">
                 <option value="all">Todos los estados</option>
                 <option value="active">Activo</option>
@@ -140,11 +117,11 @@
               <p>Formulario resumido para registrar el rol y su asignacion inicial de empresa.</p>
             </div>
             <div class="form-body">
-              <div class="notice notice-success is-hidden" id="roleFormOk">Rol listo para crear.</div>
+              <p class="field-note is-hidden" id="roleFormOk" role="status">Rol revisado en esta propuesta; no se guarda en el sistema real.</p>
               <form data-role-simple-form novalidate>
                 <input type="hidden" id="roleCodeField" />
                 <div class="grid">
-                  <div class="field span-12">
+                  <div class="field span-12" data-sial-form-control>
                     <label class="label" for="roleName">Nombre del rol <span class="required">*</span></label>
                     <input class="input" id="roleName" data-required data-uppercase aria-describedby="roleNameNote" placeholder="ADMINISTRADOR GENERAL" />
                     <div class="field-note" id="roleNameNote">Texto en mayusculas sostenidas.</div>
@@ -193,7 +170,7 @@
             </div>
           </div>
 
-          <div class="table-wrap">
+          <div class="table-wrap" data-sial-table-adapter="simple">
             <table>
               <thead>
                 <tr>
@@ -259,7 +236,7 @@
     </main>
   </div>
 
-  <div class="drawer-backdrop" id="detailBackdrop"></div><aside class="drawer" id="detailDrawer" aria-label="Detalle rol"><div class="drawer-head"><div><h3>Detalle rol</h3><p>Consulta lateral de parametrizacion y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div><div class="drawer-body"><div class="detail-group"><span class="detail-label">Codigo</span><div class="detail-value" data-detail-target="code">-</div></div><div class="detail-group"><span class="detail-label">Nombre del rol</span><div class="detail-value" data-detail-target="name">-</div></div><div class="detail-group"><span class="detail-label">Empresas asociadas</span><div class="detail-value" data-detail-target="companies">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div></div></aside>
+  <div class="drawer-backdrop" id="detailBackdrop"></div><aside class="drawer" data-sial-drawer-adapter id="detailDrawer" aria-label="Detalle rol"><div class="drawer-head"><div><h3>Detalle rol</h3><p>Consulta lateral de parametrizacion y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div><div class="drawer-body"><div class="detail-group"><span class="detail-label">Codigo</span><div class="detail-value" data-detail-target="code">-</div></div><div class="detail-group"><span class="detail-label">Nombre del rol</span><div class="detail-value" data-detail-target="name">-</div></div><div class="detail-group"><span class="detail-label">Empresas asociadas</span><div class="detail-value" data-detail-target="companies">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div></div></aside>
 
   <script src="../shared/sial-core.js"></script>
   <script src="sial-empresas.js"></script>

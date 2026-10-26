@@ -1,3 +1,11 @@
+// Font Awesome Free broom icon, CC BY 4.0: https://fontawesome.com/icons/broom
+const sialBroomIconMarkup = '<svg viewBox="0 0 576 512" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6l0 29.1L364.3 320l29.1 0c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"/></svg>';
+
+function markFilterToolbar(host, button) {
+  host.classList.add('sial-filter-toolbar');
+  host.dataset.sialFilterFields = String(Array.from(host.children).filter((child) => child !== button && getComputedStyle(child).display !== 'none').length);
+}
+
 const SIALCore = (() => {
   const qs = (selector, root = document) => root.querySelector(selector);
   const qsa = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -371,7 +379,36 @@ const SIALCore = (() => {
   }
 
   function initShell(config = {}) {
-    return initNavigation(config);
+    const nav = qs(config.nav || "[data-nav]");
+    if (!nav || !qs(".app-shell")) return initNavigation(config);
+    return loadNavigationContract().then(() => {
+      const mount = () => {
+        if (nav.dataset.sialShellMounted === "true") return;
+        if (!window.SIALWebProposalUI?.mountShell) return;
+        window.SIALWebProposalUI.mountShell(nav, config, navigationRegistry);
+        initStateActionConfirm();
+        initTableExport();
+        initProfileMenu();
+      };
+      if (window.SIALWebProposalUI?.mountShell) return mount();
+      let script = qs('script[data-sial-library-runtime]');
+      if (!script) {
+        const style = document.createElement("link");
+        style.rel = "stylesheet";
+        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css");
+        style.dataset.sialLibraryRuntime = "true";
+        document.head.appendChild(style);
+        script = document.createElement("script");
+        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js");
+        script.dataset.sialLibraryRuntime = "true";
+        document.body.appendChild(script);
+      }
+      script.addEventListener("load", mount, { once: true });
+      if (window.SIALWebProposalUI?.mountShell) mount();
+    }).catch((error) => {
+      console.error(error);
+      return initNavigation(config);
+    });
   }
 
   function initThemeToggle() {
@@ -1402,6 +1439,23 @@ const SIALCore = (() => {
       control: qs(item.select),
       datasetKey: item.datasetKey
     }));
+    const filterControls = [search, status, context, ...extraFilters.map((item) => item.control), ...(config.extraControls || []).map((selector) => qs(selector))].filter(Boolean);
+    const filterHost = search?.closest(".toolbar, .filters, .workflow-filters, .permission-toolbar") || status?.closest(".toolbar, .filters, .workflow-filters, .permission-toolbar");
+    const resetButton = filterHost && filterControls.length ? document.createElement("button") : null;
+    if (resetButton) {
+      resetButton.type = "button";
+      resetButton.className = "sial-filter-reset";
+      resetButton.innerHTML = sialBroomIconMarkup;
+      resetButton.hidden = true;
+      resetButton.setAttribute("aria-label", "Limpiar filtros");
+      resetButton.title = "Limpiar filtros";
+      filterHost.appendChild(resetButton);
+      markFilterToolbar(filterHost, resetButton);
+    }
+    const defaultValue = (control) => control.tagName === "SELECT"
+      ? (Array.from(control.options).find((option) => option.value === "all" || option.value === "")?.value ?? control.options[0]?.value ?? "")
+      : "";
+    const hasActiveFilters = () => filterControls.some((control) => control.value !== defaultValue(control));
     const empty = qs(config.empty);
     const count = qs(config.count);
     if (count) count.dataset.sialRecordCount = "0";
@@ -1462,6 +1516,7 @@ const SIALCore = (() => {
     }
 
     function filterRows() {
+      if (resetButton) resetButton.hidden = !hasActiveFilters();
       const term = (search?.value || "").trim().toLowerCase();
       const state = status?.value || "all";
       const ctx = context?.value || "all";
@@ -1472,7 +1527,7 @@ const SIALCore = (() => {
           extraFilters.every(({ control, datasetKey }) => {
             const value = control?.value || "all";
             return value === "all" || row.dataset[datasetKey] === value;
-          });
+          }) && (!config.rowPredicate || config.rowPredicate(row));
         row.dataset.filterMatch = show ? "true" : "false";
         return show;
       });
@@ -1495,11 +1550,20 @@ const SIALCore = (() => {
       renderPagination(visible);
     }
 
-    [search, status, context, ...extraFilters.map((item) => item.control)].filter(Boolean).forEach((control) => {
+    filterControls.forEach((control) => {
       control.addEventListener(control.tagName === "INPUT" ? "input" : "change", () => {
         page = 1;
         filterRows();
       });
+    });
+    resetButton?.addEventListener("click", () => {
+      filterControls.forEach((control) => {
+        control.value = defaultValue(control);
+        control.dispatchEvent(new Event(control.tagName === "INPUT" ? "input" : "change", { bubbles: true }));
+      });
+      page = 1;
+      filterRows();
+      search?.focus();
     });
 
     pagination?.addEventListener("click", (event) => {
@@ -2001,6 +2065,63 @@ const SIALCore = (() => {
 window.SIALCore = SIALCore;
 
 SIALCore.ensureFavicon();
+if (!document.querySelector('link[data-sial-filter-reset-style]')) {
+  const filterStyle = document.createElement('link');
+  filterStyle.rel = 'stylesheet';
+  filterStyle.href = SIALCore.getSharedAssetUrl('sial-filter-reset.css?v=20261026-composed');
+  filterStyle.dataset.sialFilterResetStyle = 'true';
+  document.head.appendChild(filterStyle);
+}
+
+// Complements custom legacy tables that do not use initTableFilters. React views own
+// their filter state and render the same action from table-filter-reset.jsx.
+function mountCustomTableFilterResets() {
+  if (document.querySelector('[data-sial-react-view]')) return;
+  document.querySelectorAll('main .toolbar, main .filters, main .workflow-filters').forEach((host) => {
+    if (!host.closest('.card, article')?.querySelector('table')) return;
+    const existing = Array.from(host.querySelectorAll('button')).find((button) => button.dataset.hubClear !== undefined || /^limpiar filtros$/i.test(button.textContent.trim()));
+    if (existing) {
+      existing.classList.remove('btn', 'btn-ghost', 'btn-secondary');
+      existing.classList.add('sial-filter-reset');
+      existing.innerHTML = sialBroomIconMarkup;
+      existing.setAttribute('aria-label', 'Limpiar filtros');
+      existing.title = 'Limpiar filtros';
+      markFilterToolbar(host, existing);
+      return;
+    }
+    if (host.querySelector('.sial-filter-reset')) return;
+    const controls = Array.from(host.querySelectorAll('input[type="search"], input[type="text"], input[type="date"], select'));
+    if (!controls.length) return;
+    const baseline = (control) => control.tagName === 'SELECT'
+      ? (Array.from(control.options).find((option) => option.value === 'all' || option.value === '')?.value ?? control.options[0]?.value ?? '')
+      : '';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'sial-filter-reset';
+    button.innerHTML = sialBroomIconMarkup;
+    button.setAttribute('aria-label', 'Limpiar filtros');
+    button.title = 'Limpiar filtros';
+    button.hidden = true;
+    const sync = () => { button.hidden = !controls.some((control) => control.value !== baseline(control)); };
+    controls.forEach((control) => {
+      control.addEventListener('input', sync);
+      control.addEventListener('change', sync);
+    });
+    button.addEventListener('click', () => {
+      controls.forEach((control) => {
+        control.value = baseline(control);
+        control.dispatchEvent(new Event(control.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
+      });
+      sync();
+      controls.find((control) => control.type === 'search')?.focus();
+    });
+    host.appendChild(button);
+    markFilterToolbar(host, button);
+    sync();
+  });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountCustomTableFilterResets, { once: true });
+else mountCustomTableFilterResets();
 
 function loadLibraryTableControls() {
   if (/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname) || document.querySelector("[data-sial-react-view]")) {
@@ -2008,7 +2129,7 @@ function loadLibraryTableControls() {
     return;
   }
   if (document.querySelector('script[data-sial-library-runtime]')) return;
-  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], main .page > .notice[data-sial-notice-adapter]")) {
+  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page > .notice[data-sial-notice-adapter]")) {
     document.documentElement.dataset.sialLibraryControls = "ready";
     return;
   }
@@ -2019,7 +2140,7 @@ function loadLibraryTableControls() {
   style.dataset.sialLibraryRuntime = "true";
   document.head.appendChild(style);
   const script = document.createElement("script");
-  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261016-material-normalized-15");
   script.dataset.sialLibraryRuntime = "true";
   document.body.appendChild(script);
   window.setTimeout(() => {

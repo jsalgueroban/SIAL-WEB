@@ -1,0 +1,61 @@
+.sial-filter-reset-row {
+  display: flex;
+  justify-content: flex-end;
+  align-self: end;
+}
+
+:is(.toolbar, .filters, .workflow-filters) > .sial-filter-reset,
+.sial-filter-reset-row {
+  justify-self: end;
+  align-self: end;
+}
+
+:is(.toolbar, .filters, .workflow-filters, .sial-ui-category-toolbar, .sial-ui-master-toolbar, .materials-date-range).sial-filter-toolbar:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) {
+  display: grid;
+  align-items: end;
+}
+
+.sial-filter-toolbar[data-sial-filter-fields="1"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(0, 1fr) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="2"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) minmax(150px, 240px) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="3"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(2, minmax(150px, 240px)) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="4"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(3, minmax(135px, 200px)) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="5"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(4, minmax(120px, 180px)) 44px; }
+
+.sial-filter-reset,
+.sial-filter-reset-row .sial-filter-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-2);
+  cursor: pointer;
+}
+
+.sial-filter-reset:hover,
+.sial-filter-reset:focus-visible {
+  border-color: var(--color-primary-500);
+  background: var(--color-hover-surface);
+  color: var(--color-primary-600);
+}
+
+.sial-filter-reset[hidden] { display: none !important; }
+
+@media (max-width: 1050px) {
+  :is(.toolbar, .filters, .workflow-filters, .sial-ui-category-toolbar, .sial-ui-master-toolbar, .materials-date-range).sial-filter-toolbar[data-sial-filter-fields]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  :is(.toolbar, .filters, .workflow-filters, .sial-ui-category-toolbar, .sial-ui-master-toolbar, .materials-date-range).sial-filter-toolbar[data-sial-filter-fields]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 10px;
+  }
+}

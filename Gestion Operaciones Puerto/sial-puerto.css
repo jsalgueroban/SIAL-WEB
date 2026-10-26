@@ -2,6 +2,20 @@
 
 /* Estilos especificos del modulo. Mantener aqui solo excepciones justificadas al core SIAL. */
 
+/* Alinea el control numérico nativo con los campos publicados de la librería. */
+#typeInlineForm .native-number-field {
+  display: block;
+}
+
+#typeInlineForm .native-number-field > .input {
+  display: block;
+  width: 100%;
+}
+
+#typeInlineForm .native-number-field > .field-note {
+  margin-top: 8px;
+}
+
 .container-schedule-grid {
   grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
   align-items: start;

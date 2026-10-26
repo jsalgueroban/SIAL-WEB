@@ -61,7 +61,7 @@
               </p>
             </div>
           </div>
-          <article class="card">
+          <article class="card" data-sial-catalog-actions>
             <div class="card-header">
               <div>
                 <h2 class="card-title">Contactos y alertas</h2>
@@ -80,6 +80,7 @@
                   class="input"
                   id="search"
                   type="search"
+                  data-sial-search-adapter
                   placeholder="Buscar contacto, correo o alerta"
                   aria-label="Buscar contacto, correo o alerta"
                 /><select class="select" id="farm">
@@ -141,7 +142,7 @@
                 </div>
               </form>
             </div>
-            <div class="table-wrap">
+            <div class="table-wrap" data-sial-table-adapter="simple">
               <table>
                 <thead>
                   <tr>
@@ -332,6 +333,11 @@
         q("#summary").textContent = n
           ? "Mostrando 1–" + n + " de " + n + " registros"
           : "Sin registros";
+        q(".table-pagination").dispatchEvent(
+          new CustomEvent("sial:table-page-state", {
+            detail: { page: 1, pageSize: 10, total: n, sizes: [10] },
+          }),
+        );
         q("#empty").classList.toggle("show", !n);
       }
       ["#search", "#farm", "#alert", "#state"].forEach((x) =>
@@ -342,9 +348,9 @@
           (b.onclick = () => {
             row = b.closest("tr");
             q("#context").textContent =
-              row.cells[0].innerText.replace("\n", " · ") +
+              row.cells[0].innerText.split(/\s*\n\s*/).map((item) => item.trim()).filter(Boolean).join(" · ") +
               " · " +
-              row.cells[1].innerText;
+              row.cells[1].innerText.trim();
             const set = row.dataset.alerts.split(" ");
             document
               .querySelectorAll("#editor input")

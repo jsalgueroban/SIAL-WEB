@@ -173,10 +173,10 @@ const SIALMaterials = (() => {
     return iconButton(label, icon);
   }
 
-  function tableShell({ title, subtitle, countId, searchId, searchPlaceholder = "Buscar orden, finca, material o documento", statusId, contextId, contextLabel, contextOptions, rows, headers, body, filename, primary = "", notice = "", extraFilters = "", embeddedForm = "" }) {
+  function tableShell({ title, subtitle, countId, searchId, searchLabel, searchPlaceholder = "Buscar orden, finca, material o documento", statusId, contextId, contextLabel, contextFilterLabel, contextOptions, rows, headers, body, filename, primary = "", notice = "", extraFilters = "", embeddedForm = "" }) {
     return `
       ${notice}
-      <article class="card mt-24">
+      <article class="card mt-24" data-sial-catalog-actions>
         <div class="card-header">
           <div><h2 class="card-title">${esc(title)}</h2><p class="card-subtitle">${esc(subtitle)}</p></div>
           <div class="card-actions">
@@ -187,14 +187,14 @@ const SIALMaterials = (() => {
         </div>
         <div class="card-body">
           <div class="toolbar materials-toolbar">
-            <input class="input" id="${esc(searchId)}" type="search" aria-label="Buscar" placeholder="${esc(searchPlaceholder)}" />
-            <select class="select" id="${esc(statusId)}" aria-label="Filtrar por estado">
+            <input class="input" id="${esc(searchId)}" type="search" aria-label="${esc(searchLabel || `Buscar en ${title}`)}" placeholder="${esc(searchPlaceholder)}" data-sial-search-adapter />
+            <select class="select" id="${esc(statusId)}" aria-label="Estado">
               <option value="all">Todos los estados</option>
               <option value="active">Activos / cerrados</option>
               <option value="warning">Pendientes / revision</option>
               <option value="inactive">Inactivos / bloqueo</option>
             </select>
-            <select class="select" id="${esc(contextId)}" aria-label="${esc(contextLabel)}">
+            <select class="select" id="${esc(contextId)}" aria-label="${esc(contextFilterLabel || contextLabel)}">
               <option value="all">${esc(contextLabel)}</option>
               ${contextOptions.map((item) => `<option value="${esc(item.value)}">${esc(item.label)}</option>`).join("")}
             </select>
@@ -202,7 +202,7 @@ const SIALMaterials = (() => {
           </div>
         </div>
         ${embeddedForm}
-        <div class="table-wrap">
+        <div class="table-wrap" data-sial-table-adapter="materials">
           <table class="materials-table" data-material-table="${esc(rows)}">
             <thead><tr>${headers.map((item) => `<th>${esc(item)}</th>`).join("")}<th>Acciones</th></tr></thead>
             <tbody>${body}</tbody>
@@ -497,7 +497,6 @@ const SIALMaterials = (() => {
         <div class="inline-form-panel materials-inline-form is-hidden" id="materialInlineForm" data-inline-form-panel>
           <div class="form-heading"><h2 data-inline-form-title>Nuevo material</h2><p>Formulario corto dentro de la gestión. El código SAP identifica el material en el catálogo.</p></div>
           <div class="form-body">
-            <div class="notice notice-success is-hidden" id="formOk">Material listo para guardar.</div>
             <form data-material-form novalidate>
               <section class="section"><div class="grid">
                 <div class="field span-4"><label class="label" for="catalogMaterialCodeSelect">Código SAP <span class="required">*</span></label>${searchableSelect({ id: "catalogMaterialCodeSelect", source: "materialCode", placeholder: "Buscar por código SAP" })}<div class="field-note">Seleccione el código SAP del material.</div></div>
@@ -566,10 +565,9 @@ const SIALMaterials = (() => {
       <div class="inline-form-panel materials-inline-form is-hidden" id="materialInlineForm" data-inline-form-panel>
         <div class="form-heading"><h2 data-inline-form-title>${esc(config[0])}</h2><p>${esc(config[2])}</p></div>
         <div class="form-body">
-          <div class="notice notice-success is-hidden" id="formOk">Registro listo para guardar.</div>
           <form data-material-form novalidate>
             <section class="section"><div class="grid">
-              ${config[3].map(([label, placeholder]) => `<div class="field span-3"><label class="label">${esc(label)} <span class="required">*</span></label><input class="input" required placeholder="${esc(placeholder)}"></div>`).join("")}
+              ${config[3].map(([label, placeholder], index) => `<div class="field span-3"><label class="label" for="${esc(kind)}Field${index}">${esc(label)} <span class="required">*</span></label><input class="input" id="${esc(kind)}Field${index}" required placeholder="${esc(placeholder)}"></div>`).join("")}
             </div></section>
             <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">${esc(config[1])}</button></div>
           </form>
@@ -602,7 +600,7 @@ const SIALMaterials = (() => {
       proveedores: ["Resumenes digitales", "Consolidacion por proveedor externo, periodo, materiales, destino y envio.", "summaryCount", "summarySearch", "summaryStatus", "summaryContext", "Todos los proveedores", contextByView.proveedores, ["Proveedor", "Periodo", "Ordenes", "Materiales / cantidades", "Destino", "Estado", "Generacion / envio"], summaryRows(), "resumen-proveedores", '<button class="btn btn-primary" type="button" data-material-action="generate-summary">Generar resumen</button>', ""],
       entregas: ["Entregas y evidencias POD", "Seguimiento read-only de entrega efectiva, responsable, foto/firma y auditoria.", "deliveryCount", "deliverySearch", "deliveryStatus", "deliveryContext", "Todas las fincas", contextByView.entregas, ["Orden", "Documento", "Finca", "Transportista", "Recepcion", "Evidencia", "Estado", "Auditoria"], deliveryRows(), "seguimiento-entregas", '<a class="btn btn-secondary" href="../Trazabilidad/auditoria-operativa.html">Ver auditoria</a>', ""],
       materiales: ["Catálogo de materiales", "Maestra de materiales para consulta, creación, edición y cambio de estado.", "materialCount", "materialSearch", "materialStatus", "materialContext", "Todas las categorías", contextByView.materiales, ["Código SAP", "Nombre", "Categoría", "Unidad de medida", "Margen", "Estado", "Auditoría"], materialRows(), "catalogo-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nuevo material</button>', "", "", inlineForm("catalogo")],
-      movimientos: ["Historial de movimientos", "Entradas, salidas y ajustes; filtre por material, tipo de movimiento y rango de fechas.", "movementCount", "movementSearch", "movementStatus", "movementContext", "Todos los tipos", contextByView.movimientos, ["Movimiento / SAP", "Material", "Tipo", "Cantidad", "Fecha", "Motivo", "Usuario"], movementRows(), "movimientos-inventario", "", "", '<input class="input" id="movementDateFrom" type="date" aria-label="Fecha inicial"><input class="input" id="movementDateTo" type="date" aria-label="Fecha final">'],
+      movimientos: ["Historial de movimientos", "Entradas, salidas y ajustes; filtre por material, tipo de movimiento y rango de fechas.", "movementCount", "movementSearch", "movementStatus", "movementContext", "Todos los tipos", contextByView.movimientos, ["Movimiento / SAP", "Material", "Tipo", "Cantidad", "Fecha", "Motivo", "Usuario"], movementRows(), "movimientos-inventario", "", "", '<div class="materials-date-range"><div class="field" data-sial-form-control><label class="label" for="movementDateFrom">Desde</label><input class="input" id="movementDateFrom" type="date"></div><div class="field" data-sial-form-control><label class="label" for="movementDateTo">Hasta</label><input class="input" id="movementDateTo" type="date"></div></div>'],
       recetas: ["Recetas por Referencia + Versión", "Cada receta define los materiales requeridos y la cantidad sugerida por caja.", "recipeCount", "recipeSearch", "recipeStatus", "recipeContext", "Todas las referencias", contextByView.recetas, ["Referencia", "Versión", "Materiales", "Cantidad sugerida por caja", "Estado", "Auditoría"], recipeRows(), "recetas-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nueva receta</button>', "", "", inlineForm("receta")],
       proveedoresMaster: ["Proveedores registrados", "Maestra minima de proveedores externos para resumen digital.", "supplierCount", "supplierSearch", "supplierStatus", "supplierContext", "Todos los tipos", contextByView.proveedoresMaster, ["Codigo", "Proveedor", "Tipo", "Contacto", "Estado", "Auditoria"], supplierRows(), "proveedores", '<button class="btn btn-primary" type="button" data-open-inline-form>Nuevo proveedor</button>', "", "", inlineForm("supplier")],
       reglas: ["Reglas documentales", "Clasificacion automatica para RPT, remision y reserva.", "ruleCount", "ruleSearch", "ruleStatus", "ruleContext", "Todos los resultados", contextByView.reglas, ["Codigo", "Regla", "Resultado", "Condicion", "Estado", "Auditoria"], ruleRows(), "reglas-documentales", '<button class="btn btn-primary" type="button" data-open-inline-form>Nueva regla</button>', "", "", inlineForm("rule")]
@@ -618,17 +616,26 @@ const SIALMaterials = (() => {
       movimientos: "Buscar movimiento, material o usuario",
       recetas: "Buscar referencia, versión o material",
       proveedoresMaster: "Buscar proveedor, código o contacto",
+      materiales: "Buscar material, código SAP o categoría",
       reglas: "Buscar regla, código o resultado"
+    }[view];
+    const contextFilterLabel = {
+      pedidos: "Tipo de pedido", inventario: "Finca", pallets: "Tipo de pallet",
+      ordenes: "Documento", proveedores: "Proveedor", entregas: "Finca",
+      materiales: "Categoría", movimientos: "Tipo de movimiento",
+      recetas: "Referencia", proveedoresMaster: "Tipo de proveedor", reglas: "Resultado"
     }[view];
     return header(view) + tableShell({
       title: cfg[0],
       subtitle: cfg[1],
       countId: cfg[2],
       searchId: cfg[3],
+      searchLabel: `Buscar en ${cfg[0]}`,
       searchPlaceholder,
       statusId: cfg[4],
       contextId: cfg[5],
       contextLabel: cfg[6],
+      contextFilterLabel,
       contextOptions: cfg[7],
       headers: cfg[8],
       body: cfg[9],
@@ -667,7 +674,7 @@ const SIALMaterials = (() => {
 
   function detailRows(record) {
     return Object.entries(record || {}).filter(([key]) => !["audit"].includes(key)).map(([key, value]) => `
-      <div class="detail-group"><span class="detail-label">${esc(detailLabel(key))}</span><div class="detail-value">${Array.isArray(value) ? value.map((line) => `<div class="audit-item"><strong>${esc(line.sapMaterial)} · ${esc(line.name)}</strong><div class="muted">Cantidad sugerida por caja: ${esc(line.quantityPerBox)} ${esc(line.unit)}</div></div>`).join("") : key === "status" ? status(value) : value === "" || value == null ? status("REVISION") : esc(value)}</div></div>
+      <div class="detail-group"><span class="detail-label">${esc(detailLabel(key))}</span><div class="detail-value">${Array.isArray(value) ? value.map((line) => `<div class="audit-item"><strong>${esc(line.sapMaterial)} · ${esc(line.name)}</strong><div class="muted">Cantidad sugerida por caja: ${esc(line.quantityPerBox)} ${esc(line.unit)}</div></div>`).join("") : key === "status" ? status(value || "REVISION") : value === "" || value == null ? "No registrado" : esc(value)}</div></div>
     `).join("");
   }
 
@@ -845,10 +852,44 @@ const SIALMaterials = (() => {
         }
       });
     });
-    qsa("[data-material-form]").forEach((form) => {
+    qsa("[data-material-form]:not([data-hu826-form])").forEach((form) => {
+      const validate = () => {
+        let firstInvalid = null;
+        qsa("input, select, textarea", form).forEach((control) => {
+          if (control.disabled || control.type === "hidden") return;
+          const field = control.closest(".field");
+          if (!field) return;
+          const invalid = !control.checkValidity() || (control.matches("[data-search-select-input]") && !control.dataset.selectedValue);
+          control.setAttribute("aria-invalid", String(invalid));
+          let error = field.querySelector(`[data-field-error-for="${control.id}"]`);
+          if (invalid && !error) {
+            error = document.createElement("span");
+            error.className = "field-error";
+            error.dataset.fieldErrorFor = control.id;
+            field.append(error);
+          }
+          if (error) {
+            error.textContent = control.matches("[data-search-select-input]") ? "Selecciona una opción de la lista." : control.validationMessage || "Completa este campo.";
+            error.hidden = !invalid;
+          }
+          if (invalid && !firstInvalid) firstInvalid = control;
+        });
+        if (firstInvalid) {
+          const visibleControl = firstInvalid.closest(".field")?.querySelector(".sial-library-field input, .sial-library-field button, .sial-library-field [role=combobox]");
+          (visibleControl || firstInvalid).focus();
+        }
+        return !firstInvalid;
+      };
+      form.addEventListener("input", (event) => {
+        if (!event.target.matches("input, textarea")) return;
+        event.target.removeAttribute("aria-invalid");
+        const error = event.target.closest(".field")?.querySelector(`[data-field-error-for="${event.target.id}"]`);
+        if (error) error.hidden = true;
+      });
       form.addEventListener("submit", (event) => {
         event.preventDefault();
-        qs("#formOk")?.classList.remove("is-hidden");
+        if (!validate()) return;
+        showMaterialFeedback("Datos comprobados en la propuesta. Este formulario no guarda registros en el sistema real.");
       });
     });
   }
@@ -1001,26 +1042,23 @@ const SIALMaterials = (() => {
       reglas: ["#ruleSearch", "#ruleStatus", "#ruleContext", "#reglas-documentalesEmpty", "#ruleCount"]
     }[view];
     if (!cfg) return;
-    SIALCore.initTableFilters({ rowSelector: "tbody tr", search: cfg[0], status: cfg[1], context: cfg[2], empty: cfg[3], count: cfg[4] });
+    const dateFrom = view === "movimientos" ? qs("#movementDateFrom") : null;
+    const dateTo = view === "movimientos" ? qs("#movementDateTo") : null;
+    SIALCore.initTableFilters({
+      rowSelector: "tbody tr", search: cfg[0], status: cfg[1], context: cfg[2], empty: cfg[3], count: cfg[4],
+      ...(view === "movimientos" ? {
+        extraControls: ["#movementDateFrom", "#movementDateTo"],
+        rowPredicate: (row) => (!dateFrom?.value || row.dataset.movementDate >= dateFrom.value)
+          && (!dateTo?.value || row.dataset.movementDate <= dateTo.value)
+      } : {})
+    });
 
     if (view === "movimientos") {
-      const from = qs("#movementDateFrom");
-      const to = qs("#movementDateTo");
-      const applyDateRange = () => {
-        qsa("[data-movement-date]").forEach((row) => {
-          const date = row.dataset.movementDate;
-          const matchesDate = (!from?.value || date >= from.value) && (!to?.value || date <= to.value);
-          row.dataset.dateMatch = String(matchesDate);
-          row.classList.toggle("is-hidden", !matchesDate || row.dataset.filterMatch === "false");
-        });
-      };
-      [from, to].filter(Boolean).forEach((control) => control.addEventListener("change", applyDateRange));
       const material = new URLSearchParams(window.location.search).get("material");
       if (material) {
         const search = qs("#movementSearch");
         if (search) { search.value = material; search.dispatchEvent(new Event("input", { bubbles: true })); }
       }
-      applyDateRange();
     }
   }
 
@@ -1042,6 +1080,14 @@ const SIALMaterials = (() => {
     const root = qs("[data-material-root]");
     if (!root) return;
     root.innerHTML = `${renderView(view)}<div class="notice notice-success material-runtime-alert" data-material-runtime-alert hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span data-material-runtime-message></span></div>${detailShell()}`;
+    qsa("#materialInlineForm .field").forEach((field, index) => {
+      const control = field.querySelector(":scope > input.input, :scope > select.select");
+      const label = field.querySelector(":scope > label.label");
+      if (!control || !label || (control.tagName === "INPUT" && !["text", "email", "number", "date"].includes(control.type))) return;
+      if (!control.id) control.id = `material-${view}-field-${index}`;
+      label.htmlFor = control.id;
+      field.dataset.sialFormControl = "";
+    });
     try { const active = new Set(JSON.parse(localStorage.getItem("sial-order-categories") || "[]").filter((item) => item.status === "ACTIVO").map((item) => item.code)); const select = qs("#catalogMaterialCategory"); if (active.size && select) Array.from(select.options).forEach((option) => { if (option.value && !active.has(option.value)) option.remove(); }); } catch { /* Conserva las categorías semilla. */ }
     initFilters(view);
     SIALCore.initTableExport();

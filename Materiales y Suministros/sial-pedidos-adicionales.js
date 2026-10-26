@@ -33,6 +33,7 @@ const SIALAdditionalOrders = (() => {
   ];
 
   const model = { category: "", lines: [{ material: materials[0].code, quantity: 0 }], reason: "", observation: "" };
+  let reasonTouched = false;
   const listState = { page: 1, pageSize: 10 };
 
   function savedRequests() {
@@ -74,7 +75,7 @@ const SIALAdditionalOrders = (() => {
   }
 
   function deniedView() {
-    return `${header("Pedidos adicionales", "Consulta restringida al alcance de tu usuario.")}<div class="notice notice-error additional-denied" role="alert"><div><strong>Información no disponible</strong><span>No existen pedidos visibles dentro de tu compañía y fincas autorizadas.</span></div></div><a class="btn btn-secondary mt-24" href="gestion-pedidos-materiales.html">Volver a Pedidos</a>`;
+    return `${header("Pedidos adicionales", "Consulta restringida al alcance de tu usuario.")}<div class="notice notice-error additional-denied" role="alert" data-sial-notice-adapter><div><strong>Información no disponible</strong><span>No existen pedidos visibles dentro de tu compañía y fincas autorizadas.</span></div></div><a class="btn btn-secondary mt-24" href="gestion-pedidos-materiales.html">Volver a Pedidos</a>`;
   }
 
   function listView() {
@@ -87,11 +88,11 @@ const SIALAdditionalOrders = (() => {
         </div>
         <div class="card-body">
           <div class="toolbar additional-list-toolbar">
-          <input class="input additional-search" id="additionalSearch" type="search" aria-label="Buscar pedidos adicionales" placeholder="Buscar pedido, finca, aviso o motivo" />
-          <select class="select" id="additionalStatus" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option>Pendiente de validación</option><option>Aprobado</option><option>En preparación</option><option>Entregado</option></select>
+          <input class="input additional-search" id="additionalSearch" type="search" aria-label="Buscar pedidos adicionales" placeholder="Buscar pedido, finca, aviso o motivo" data-sial-search-adapter />
+          <select class="select" id="additionalStatus" aria-label="Estado"><option value="">Todos los estados</option><option>Pendiente de validación</option><option>Aprobado</option><option>En preparación</option><option>Entregado</option></select>
           </div>
         </div>
-        <div class="table-wrap"><table class="materials-table additional-list-table"><thead><tr><th>Pedido adicional</th><th>Pedido base</th><th>Solicitud</th><th>Motivo</th><th>Estado</th><th>Última actualización</th><th>Acciones</th></tr></thead><tbody data-additional-list></tbody></table></div>
+        <div class="table-wrap" data-sial-table-adapter="materials"><table class="materials-table additional-list-table"><thead><tr><th>Pedido adicional</th><th>Pedido base</th><th>Solicitud</th><th>Motivo</th><th>Estado</th><th>Última actualización</th><th>Acciones</th></tr></thead><tbody data-additional-list></tbody></table></div>
         <div class="card-body" data-additional-empty-wrap hidden><div class="empty-state" data-additional-empty><h3>Sin resultados</h3><p>Ajusta la búsqueda o el estado para consultar otras solicitudes.</p></div></div>
         <div class="table-pagination" data-additional-pagination aria-label="Paginación de pedidos adicionales"></div>
       </article>
@@ -152,7 +153,8 @@ const SIALAdditionalOrders = (() => {
   }
 
   function materialOptions(selected, index) {
-    return materials.map((item) => `<option value="${esc(item.code)}" ${item.code === selected ? "selected" : ""}>${esc(item.name)}</option>`).join("");
+    const usedElsewhere = new Set(model.lines.filter((_, lineIndex) => lineIndex !== index).map((line) => line.material));
+    return materials.map((item) => `<option value="${esc(item.code)}" ${item.code === selected ? "selected" : ""} ${usedElsewhere.has(item.code) ? "disabled" : ""}>${esc(item.name)}</option>`).join("");
   }
 
   function lineResult(line) {
@@ -169,7 +171,7 @@ const SIALAdditionalOrders = (() => {
   }
 
   function createView() {
-    if (params.get("base") && params.get("base") !== baseOrder.id) return `${header("Nuevo pedido adicional", "La solicitud debe partir de un pedido válido.", returnToAdditionalOrders(), "Materiales / Pedidos adicionales / Registro")}<div class="notice notice-error" role="alert"><div><strong>Pedido base no disponible</strong><span>No existe información para mostrar dentro de tu alcance autorizado.</span></div></div>`;
+    if (params.get("base") && params.get("base") !== baseOrder.id) return `${header("Nuevo pedido adicional", "La solicitud debe partir de un pedido válido.", returnToAdditionalOrders(), "Materiales / Pedidos adicionales / Registro")}<div class="notice notice-error" role="alert" data-sial-notice-adapter><div><strong>Pedido base no disponible</strong><span>No existe información para mostrar dentro de tu alcance autorizado.</span></div></div>`;
     loadDraft();
     return `
       ${header("Nuevo pedido adicional", "Registra solo la necesidad que no quedó cubierta por el pedido semanal.", returnToAdditionalOrders(), "Materiales / Pedidos adicionales / Registro")}
@@ -182,8 +184,8 @@ const SIALAdditionalOrders = (() => {
         <section class="additional-form-section additional-reason-section" aria-labelledby="additional-reason-title">
           <header class="additional-section-header"><div><h2 id="additional-reason-title" class="card-title">Motivo y detalle</h2><p class="card-subtitle">Explica por qué esta necesidad no quedó cubierta por el pedido base.</p></div></header>
           <div class="additional-reason-fields">
-            <div class="field"><label class="label" for="additionalCategory">Categoría del pedido <span class="required">*</span></label><select class="select" id="additionalCategory" required><option value="">Seleccionar categoría</option><option value="EMPA">EMPA · EMPAQUE</option><option value="ETIQ">ETIQ · ETIQUETA</option><option value="OPER">OPER · OPERATIVO</option></select><span class="field-error" data-category-error hidden>Selecciona una categoría activa.</span></div>
-            <div class="field"><label class="label" for="additionalReason">Motivo de la solicitud</label><select class="select" id="additionalReason" required><option value="">Seleccionar motivo</option><option value="incremento-corte">Incremento extraordinario del corte</option><option value="inventario">Diferencia de inventario</option><option value="entrega-incompleta">Entrega incompleta del proveedor</option><option value="dano">Material dañado o no utilizable</option><option value="otro">Otra necesidad operativa</option></select><span class="field-error" data-reason-error hidden>Selecciona el motivo de la solicitud.</span></div>
+            <div class="field" data-sial-form-control><label class="label" for="additionalCategory">Categoría del pedido <span class="required">*</span></label><select class="select" id="additionalCategory" required><option value="">Seleccionar categoría</option><option value="EMPA">EMPA · EMPAQUE</option><option value="ETIQ">ETIQ · ETIQUETA</option><option value="OPER">OPER · OPERATIVO</option></select><span class="field-error" data-category-error hidden>Selecciona una categoría activa.</span></div>
+            <div class="field" data-sial-form-control><label class="label" for="additionalReason">Motivo de la solicitud <span class="required">*</span></label><select class="select" id="additionalReason" required><option value="">Seleccionar motivo</option><option value="incremento-corte">Incremento extraordinario del corte</option><option value="inventario">Diferencia de inventario</option><option value="entrega-incompleta">Entrega incompleta del proveedor</option><option value="dano">Material dañado o no utilizable</option><option value="otro">Otra necesidad operativa</option></select><span class="field-error" data-reason-error hidden>Selecciona el motivo de la solicitud.</span></div>
             <div class="field"><label class="label" for="additionalObservation">Detalle <span class="additional-optional">Opcional</span></label><textarea class="input additional-textarea" id="additionalObservation" rows="3" placeholder="Agrega información útil para la validación."></textarea></div>
           </div>
         </section>
@@ -192,7 +194,7 @@ const SIALAdditionalOrders = (() => {
           <div class="additional-submit-actions"><button class="btn btn-secondary" type="button" data-save-draft>Guardar borrador</button><button class="btn btn-primary" type="submit" data-submit-additional>Enviar a validación</button></div>
         </footer>
       </form>
-      <div class="notice notice-success material-runtime-alert" data-additional-feedback hidden><span data-additional-feedback-message></span></div>
+      <div class="notice notice-success material-runtime-alert" data-additional-feedback data-sial-toast-adapter hidden><span data-additional-feedback-message></span></div>
     `;
   }
 
@@ -212,7 +214,7 @@ const SIALAdditionalOrders = (() => {
     if (!body) return;
     body.innerHTML = model.lines.map((line, index) => {
       const material = materials.find((item) => item.code === line.material) || materials[0];
-      return `<article class="additional-material-line"><div class="additional-material-line-main"><div class="field additional-material-field"><label class="label" for="lineMaterial${index}">Material</label><select class="select" id="lineMaterial${index}" data-line-material="${index}">${materialOptions(line.material, index)}</select><small>${esc(material.code)} · ${esc(material.unit)}</small><dl class="additional-material-facts"><div><dt>Pedido base</dt><dd>${format(material.base)} ${esc(material.unit)}</dd></div><div><dt>Stock visible</dt><dd>${format(material.stock)} ${esc(material.unit)}</dd></div></dl></div><div class="field additional-quantity-field"><label class="label" for="lineQuantity${index}">Cantidad adicional</label><input class="input additional-quantity" id="lineQuantity${index}" aria-label="Cantidad adicional de ${esc(material.name)}" type="number" min="1" step="1" inputmode="numeric" value="${line.quantity || ""}" data-line-quantity="${index}" /><div class="additional-line-result">${resultMarkup(lineResult(line))}</div></div><button class="icon-btn additional-remove" type="button" aria-label="Quitar ${esc(material.name)}" data-remove-line="${index}" ${model.lines.length === 1 ? "disabled" : ""}>${icon(icons.trash)}</button></div></article>`;
+      return `<article class="additional-material-line"><div class="additional-material-line-main"><div class="field additional-material-field" data-sial-form-control><label class="label" for="lineMaterial${index}">Material</label><select class="select" id="lineMaterial${index}" data-line-material="${index}">${materialOptions(line.material, index)}</select><small>${esc(material.code)} · ${esc(material.unit)}</small><dl class="additional-material-facts"><div><dt>Pedido base</dt><dd>${format(material.base)} ${esc(material.unit)}</dd></div><div><dt>Stock visible</dt><dd>${format(material.stock)} ${esc(material.unit)}</dd></div></dl></div><div class="field additional-quantity-field" data-sial-form-control><label class="label" for="lineQuantity${index}">Cantidad adicional <span class="required">*</span></label><input class="input additional-quantity" id="lineQuantity${index}" aria-label="Cantidad adicional de ${esc(material.name)}" type="number" min="1" step="1" inputmode="numeric" value="${line.quantity || ""}" data-line-quantity="${index}" required /><div class="additional-line-result">${resultMarkup(lineResult(line))}</div></div><button class="icon-btn additional-remove" type="button" aria-label="Quitar ${esc(material.name)}" data-remove-line="${index}" ${model.lines.length === 1 ? "disabled" : ""}>${icon(icons.trash)}</button></div></article>`;
     }).join("");
   }
 
@@ -223,14 +225,18 @@ const SIALAdditionalOrders = (() => {
     return { blocked, shortages, valid: !blocked && Boolean(model.reason) && Boolean(model.category) };
   }
 
-  function renderCreateState() {
-    renderLines();
+  function renderCreateState({ refreshLines = false, changedLine = null } = {}) {
+    if (refreshLines) renderLines();
+    if (changedLine !== null) {
+      const result = qs(`[data-line-quantity="${changedLine}"]`)?.closest(".additional-quantity-field")?.querySelector(".additional-line-result");
+      if (result) result.innerHTML = resultMarkup(lineResult(model.lines[changedLine]));
+    }
     const state = formState();
     const summary = qs("[data-additional-summary]");
     const submit = qs("[data-submit-additional]");
     const error = qs("[data-reason-error]");
     if (!summary || !submit) return;
-    error.hidden = Boolean(model.reason) || model.lines.every((line) => !line.quantity);
+    error.hidden = !reasonTouched || Boolean(model.reason);
     if (state.blocked) { summary.className = "additional-form-summary is-error"; summary.innerHTML = `${icon(icons.alert)}<div><strong>Completa las cantidades</strong><span>${state.blocked} ${state.blocked === 1 ? "línea necesita" : "líneas necesitan"} una cantidad válida.</span></div>`; }
     else if (!model.category) { summary.className = "additional-form-summary is-warning"; summary.innerHTML = `${icon(icons.alert)}<div><strong>Falta la categoría</strong><span>Selecciona cómo se clasifica el pedido.</span></div>`; }
     else if (!model.reason) { summary.className = "additional-form-summary is-warning"; summary.innerHTML = `${icon(icons.alert)}<div><strong>Falta el motivo</strong><span>Selecciona por qué necesitas este pedido adicional.</span></div>`; }
@@ -241,7 +247,7 @@ const SIALAdditionalOrders = (() => {
 
   function draft() {
     localStorage.setItem(draftKey, JSON.stringify({ category: model.category, lines: model.lines, reason: model.reason, observation: model.observation }));
-    feedback("El borrador quedó guardado en este dispositivo.");
+    feedback("El borrador quedó guardado en este dispositivo.", "Borrador guardado");
   }
 
   function submit(event) {
@@ -250,7 +256,7 @@ const SIALAdditionalOrders = (() => {
     if (!state.valid) { renderCreateState(); qs(state.blocked ? "[data-line-quantity]" : "#additionalReason")?.focus(); return; }
     const idempotencyKey = requestKey(model.lines, model.reason);
     const existing = savedRequests().find((item) => item.idempotencyKey === idempotencyKey);
-    if (existing) { feedback(`El pedido ${existing.id} ya fue registrado con la misma solicitud. No se creó un duplicado.`); return; }
+    if (existing) { feedback(`El pedido ${existing.id} ya fue registrado con la misma solicitud. No se creó un duplicado.`, "Solicitud existente", "info"); return; }
     const sequence = nextSequence();
     const total = model.lines.reduce((sum, line) => sum + Number(line.quantity || 0), 0);
     const now = new Date();
@@ -263,19 +269,19 @@ const SIALAdditionalOrders = (() => {
 
   function detailView(id) {
     const item = requests().find((request) => request.id === id);
-    if (!item) return `${header("Consultar pedido adicional", "La solicitud debe estar dentro de tu alcance.", returnToAdditionalOrders(), "Materiales / Pedidos adicionales / Detalle")}<div class="notice notice-error" role="alert"><div><strong>Pedido no disponible</strong><span>No existe información para mostrar dentro de tu compañía y fincas autorizadas.</span></div></div>`;
+    if (!item) return `${header("Consultar pedido adicional", "La solicitud debe estar dentro de tu alcance.", returnToAdditionalOrders(), "Materiales / Pedidos adicionales / Detalle")}<div class="notice notice-error" role="alert" data-sial-notice-adapter><div><strong>Pedido no disponible</strong><span>No existe información para mostrar dentro de tu compañía y fincas autorizadas.</span></div></div>`;
     const created = params.get("creado") === "1";
     const steps = timeline(item.status);
     const lines = item.detailLines || [{ name: item.quantity, code: "Detalle consolidado", unit: "", quantity: "—", stock: "—" }];
     return `
       ${header(item.id, "Consulta el origen, la validación y los hitos posteriores de la solicitud.", `<div class="card-actions">${statusChip(item.status)}${returnToAdditionalOrders()}</div>`, "Materiales / Pedidos adicionales / Detalle")}
       <div class="notice notice-info"><strong>Categoría del pedido:</strong>&nbsp; ${esc(item.category || baseOrder.category)}</div>
-      ${created ? `<div class="notice notice-success additional-created" role="status">${icon(icons.check)}<div><strong>Pedido adicional registrado</strong><span>La solicitud se creó una sola vez y quedó pendiente de validación.</span></div></div>` : ""}
+      ${created ? `<div class="notice notice-success additional-created" role="status" data-sial-notice-adapter>${icon(icons.check)}<div><strong>Pedido adicional registrado</strong><span>La solicitud se creó una sola vez y quedó pendiente de validación.</span></div></div>` : ""}
       <article class="card additional-detail-card">
         <div class="additional-chain" aria-label="Cadena de origen del pedido"><div><span>Aviso de corte</span><strong>${esc(item.notice)}</strong></div><i aria-hidden="true">→</i><div><span>Pedido base</span><strong>${esc(item.base)}</strong></div><i aria-hidden="true">→</i><div class="is-current"><span>Pedido adicional</span><strong>${esc(item.id)}</strong></div></div>
         <div class="additional-context"><div><span>Finca</span><strong>${esc(item.farm)}</strong></div><div><span>Semana</span><strong>${esc(item.week)}</strong></div><div><span>Motivo</span><strong>${esc(item.reason)}</strong></div><div><span>Documento</span><strong>${esc(item.document)}</strong></div><div><span>Actor / fecha</span><strong>${esc(item.actor || "Histórico")}</strong><small>${esc(item.createdAt || item.updated)}</small></div><div><span>Idempotencia</span><strong>${esc(item.idempotencyKey || "Histórico")}</strong></div></div>
         <div class="card-header"><div><h2 class="card-title">Materiales solicitados</h2><p class="card-subtitle">Valores registrados al crear la solicitud.</p></div></div>
-        <div class="table-wrap"><table class="materials-table additional-detail-table"><thead><tr><th>Material</th><th>Cantidad adicional</th><th>Stock consultado</th><th>Resultado inicial</th></tr></thead><tbody>${lines.map((line) => `<tr><td><div class="materials-record-main"><strong>${esc(line.name)}</strong><span>${esc(line.code || "")}</span></div></td><td>${line.quantity === "—" ? esc(item.quantity) : `${format(Number(line.quantity))} ${esc(line.unit)}`}</td><td>${line.stock === "—" ? "No detallado" : `${format(Number(line.stock))} ${esc(line.unit)}`}</td><td>${line.quantity === "—" ? statusChip("Registrado") : resultMarkup(lineResult({ material: line.code, quantity: line.quantity }))}</td></tr>`).join("")}</tbody></table></div>
+        <div class="table-wrap" data-sial-table-adapter="materials"><table class="materials-table additional-detail-table"><thead><tr><th>Material</th><th>Cantidad adicional</th><th>Stock consultado</th><th>Resultado inicial</th></tr></thead><tbody>${lines.map((line) => `<tr><td><div class="materials-record-main"><strong>${esc(line.name)}</strong><span>${esc(line.code || "")}</span></div></td><td>${line.quantity === "—" ? esc(item.quantity) : `${format(Number(line.quantity))} ${esc(line.unit)}`}</td><td>${line.stock === "—" ? "No detallado" : `${format(Number(line.stock))} ${esc(line.unit)}`}</td><td>${line.quantity === "—" ? statusChip("Registrado") : resultMarkup(lineResult({ material: line.code, quantity: line.quantity }))}</td></tr>`).join("")}</tbody></table></div>
         <div class="additional-detail-grid"><section><h2 class="card-title">Seguimiento</h2><div class="additional-timeline">${steps}</div></section><aside><h2 class="card-title">Condiciones de continuidad</h2><div class="additional-conditions"><div>${icon(icons.check)}<span>Origen y responsable registrados</span></div><div>${icon(item.status === "Entregado" ? icons.check : icons.alert)}<span>${item.status === "Entregado" ? "Entrega finalizada con soporte" : "Documento logístico y entrega aún no finalizados"}</span></div><div>${icon(icons.alert)}<span>No puede cerrarse con devolución, novedad o soporte pendiente</span></div></div></aside></div>
       </article>
     `;
@@ -287,11 +293,14 @@ const SIALAdditionalOrders = (() => {
     return order.map((label, index) => `<div class="additional-timeline-item ${index < current ? "is-done" : index === current ? "is-current" : ""}"><span>${index < current ? icon(icons.check) : ""}</span><div><strong>${esc(label)}</strong><p>${index === 0 ? "Solicitud vinculada al pedido base." : index === 1 ? "Revisión de cantidades, stock y motivo." : index === 2 ? "Decisión registrada por el responsable autorizado." : index === 3 ? "Clasificación documental y preparación logística." : "Entrega y soportes disponibles."}</p></div></div>`).join("");
   }
 
-  function feedback(message) {
+  function feedback(message, title, variant = "success") {
     const box = qs("[data-additional-feedback]");
     const text = qs("[data-additional-feedback-message]", box);
     if (!box || !text) return;
-    text.textContent = message; box.hidden = false;
+    text.textContent = message;
+    box.dataset.sialToastTitle = title;
+    box.dataset.sialToastVariant = variant;
+    box.hidden = false;
     clearTimeout(box.timer); box.timer = setTimeout(() => { box.hidden = true; }, 4200);
   }
 
@@ -322,27 +331,34 @@ const SIALAdditionalOrders = (() => {
     qs("[data-additional-lines]")?.addEventListener("input", (event) => {
       const input = event.target.closest("[data-line-quantity]");
       if (!input) return;
-      const index = Number(input.dataset.lineQuantity); model.lines[index].quantity = input.value === "" ? 0 : Number(input.value); renderCreateState(); qs(`[data-line-quantity="${index}"]`)?.focus({ preventScroll: true });
+      const index = Number(input.dataset.lineQuantity); model.lines[index].quantity = input.value === "" ? 0 : Number(input.value); renderCreateState({ changedLine: index });
     });
     qs("[data-additional-lines]")?.addEventListener("change", (event) => {
       const select = event.target.closest("[data-line-material]"); if (!select) return;
-      model.lines[Number(select.dataset.lineMaterial)].material = select.value; renderCreateState();
+      const index = Number(select.dataset.lineMaterial);
+      if (model.lines.some((line, lineIndex) => lineIndex !== index && line.material === select.value)) {
+        select.value = model.lines[index].material;
+        return;
+      }
+      model.lines[index].material = select.value;
+      renderCreateState({ refreshLines: true });
+      requestAnimationFrame(() => requestAnimationFrame(() => qs(`#sial-library-lineMaterial${index}`)?.focus()));
     });
     qs("[data-additional-lines]")?.addEventListener("click", (event) => {
       const remove = event.target.closest("[data-remove-line]"); if (!remove || model.lines.length === 1) return;
-      model.lines.splice(Number(remove.dataset.removeLine), 1); renderCreateState();
+      model.lines.splice(Number(remove.dataset.removeLine), 1); renderCreateState({ refreshLines: true });
     });
     qs("[data-add-line]")?.addEventListener("click", () => {
       const used = new Set(model.lines.map((line) => line.material));
       const next = materials.find((item) => !used.has(item.code)); if (!next) return;
-      model.lines.push({ material: next.code, quantity: 0 }); renderCreateState();
+      model.lines.push({ material: next.code, quantity: 0 }); renderCreateState({ refreshLines: true });
     });
-    qs("#additionalReason")?.addEventListener("change", (event) => { model.reason = event.target.value; renderCreateState(); });
+    qs("#additionalReason")?.addEventListener("change", (event) => { reasonTouched = true; model.reason = event.target.value; renderCreateState(); });
     qs("#additionalCategory")?.addEventListener("change", (event) => { model.category = event.target.value; renderCreateState(); });
     qs("#additionalObservation")?.addEventListener("input", (event) => { model.observation = event.target.value; });
     qs("[data-save-draft]")?.addEventListener("click", draft);
     qs("[data-additional-form]")?.addEventListener("submit", submit);
-    renderCreateState();
+    renderCreateState({ refreshLines: true });
   }
 
   function init() {

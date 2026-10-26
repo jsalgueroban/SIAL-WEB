@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button,
   CheckIcon,
   Chip,
   CloseIcon,
+  Drawer,
+  DrawerAuditList,
   EditIcon,
   IconButton,
   Pagination,
@@ -60,12 +63,6 @@ export function OrderCategories() {
   useEffect(() => {
     if (formMode) requestAnimationFrame(() => document.getElementById(formMode === "new" ? "categoryCode" : "categoryName")?.focus());
   }, [formMode]);
-  useEffect(() => {
-    if (!auditCode) return undefined;
-    const closeOnEscape = (event) => { if (event.key === "Escape") setAuditCode(null); };
-    document.addEventListener("keydown", closeOnEscape);
-    return () => document.removeEventListener("keydown", closeOnEscape);
-  }, [auditCode]);
 
   function persist(next) {
     setCategories(next);
@@ -141,7 +138,7 @@ export function OrderCategories() {
       <div className="card-body"><div className="sial-ui-category-toolbar">
         <div data-sial-component="TextInput" data-sial-source={source}><TextInput id="categorySearch" label="Buscar categoría" placeholder="Código o nombre" value={search} onChange={(value) => { setSearch(value); setPage(1); }} /></div>
         <div data-sial-component="SelectInput" data-sial-source={source}><SelectInput id="categoryStatus" label="Estado" value={statusFilter} options={[{ label: "Todos los estados", value: "" }, { label: "Activo", value: "ACTIVO" }, { label: "Inactivo", value: "INACTIVO" }]} onChange={(value) => { setStatusFilter(value); setPage(1); }} /></div>
-      </div></div>
+      <TableFilterReset active={Boolean(search.trim()) || Boolean(statusFilter)} onReset={() => { setSearch(""); setStatusFilter(""); setPage(1); }} /></div></div>
       {formMode && <div className="inline-form-panel inline-form-compact category-inline-form sial-ui-category-form" id="categoryInlineForm">
         <div className="form-heading"><h2>{formMode === "new" ? "Nueva categoría" : `Editar ${code}`}</h2><p>{formMode === "new" ? "El código será único y se guardará en mayúsculas." : "Actualiza el nombre sin alterar el código ni el histórico."}</p></div>
         <div className="form-body"><form onSubmit={submit} noValidate>
@@ -160,6 +157,20 @@ export function OrderCategories() {
       </TableRowActions>} /></div>
       <Pagination page={currentPage} pageSize={pageSize} total={filtered.length} pageSizeOptions={[5, 10, 20]} onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} data-sial-component="Pagination" data-sial-source={source} />
     </article>
-    {auditedItem && <><div className="drawer-backdrop show" onClick={() => setAuditCode(null)} role="presentation" /><aside className="drawer show" aria-label="Auditoría de categoría" aria-modal="true" role="dialog"><div className="drawer-head"><div><h3>Auditoría de categoría</h3><p>Historial de cambios y disponibilidad del registro.</p></div><button className="icon-btn" type="button" aria-label="Cerrar auditoría" onClick={() => setAuditCode(null)}>×</button></div><div className="drawer-body"><div className="detail-group"><span className="detail-label">Código</span><div className="detail-value">{auditedItem.code}</div></div><div className="detail-group"><span className="detail-label">Nombre</span><div className="detail-value">{auditedItem.name}</div></div><div className="detail-group"><span className="detail-label">Estado</span><div className="detail-value"><StateChip status={auditedItem.status} /></div></div><div className="detail-group"><span className="detail-label">Auditoría</span><div className="stack">{(auditedItem.history || [auditedItem.audit]).map((entry, index) => <div className="audit-item" key={`${entry}-${index}`}>{entry}</div>)}</div></div></div></aside></>}
+    {auditedItem && <Drawer
+      show
+      onClose={() => setAuditCode(null)}
+      title="Auditoría de categoría"
+      subtitle="Historial de cambios y disponibilidad del registro."
+      ariaLabel={`Auditoría de ${auditedItem.name}`}
+      data={[
+        { label: "Código", children: auditedItem.code },
+        { label: "Nombre", children: auditedItem.name },
+        { label: "Estado", children: <StateChip status={auditedItem.status} /> },
+        { label: "Auditoría", children: <DrawerAuditList items={(auditedItem.history || [auditedItem.audit]).map((entry) => ({ title: entry }))} /> }
+      ]}
+      data-sial-component="Drawer"
+      data-sial-source={source}
+    />}
   </>;
 }

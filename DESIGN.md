@@ -403,6 +403,7 @@ Usar texto breve y color semántico. No introducir colores por módulo. Un chip 
 - Filtros ordenados de general a específico.
 - Un mismo criterio no aparece simultáneamente como tabs y select.
 - Los filtros activos deben poder identificarse y restablecerse.
+- En bandejas con tabla, una acción compacta de escoba aparece al activar búsqueda o filtros. Su nombre accesible y ayuda son «Limpiar filtros»; restablece todos los criterios de esa tabla y vuelve a la primera página. Permanece oculta sin criterios activos y no sustituye las acciones de la bandeja.
 - En responsive, los filtros se apilan conservando su orden.
 
 ### 7.7 Paginación
@@ -517,7 +518,10 @@ Usar verbo + objeto y mantener el mismo término durante el flujo. Si el botón 
 
 - Explicar la acción, no la implementación.
 - Evitar nombres de variables, estados técnicos o códigos internos.
-- HU, evento y metadatos técnicos pueden aparecer en detalle o auditoría, no como instrucción principal.
+- La interfaz se redacta para quien opera SIAL y puede pasar a producto sin reescritura conceptual. No mostrar números de HU, nombres de capas técnicas, «propuesta», «demo», «esta sesión» ni decisiones del equipo en títulos, ayudas, estados, detalles, auditoría, notificaciones, exportaciones o nombres accesibles. Esos datos pertenecen a la documentación de trazabilidad, no a la pantalla.
+- Conservar códigos de negocio reales —por ejemplo, código SAP, SSCC, pedido o documento— cuando ayudan a identificar o completar una operación. No confundirlos con identificadores de desarrollo.
+- Cada nivel aporta información nueva: el título orienta, el subtítulo explica propósito o consecuencia, el label identifica, la ayuda aclara una restricción y el error indica cómo recuperarse. Si dos niveles dicen lo mismo, reducir o eliminar uno.
+- Los límites del prototipo se documentan fuera del texto destinado a producto. En una interacción que no guarda o envía realmente, no afirmar que la operación quedó persistida o notificada; mostrar su consecuencia cierta y marcar cualquier texto temporal como no promocionable en el handoff.
 - Las abreviaturas se expanden cuando el operador no puede inferirlas.
 
 ### Mensajes
@@ -661,6 +665,7 @@ Una pantalla maestra orienta la estructura; no autoriza copiar contenido o regla
 - [ ] Los errores corregibles aparecen inline.
 - [ ] Los estados persistentes no dependen de toast.
 - [ ] Publicado, guardado y sincronizado no se confunden.
+- [ ] Títulos, ayudas, vacíos, errores, toasts, cajones, auditoría, exportaciones y nombres accesibles hablan de la operación, sin HU ni lenguaje interno; cada nivel aporta información distinta.
 
 ### Accesibilidad y responsive
 

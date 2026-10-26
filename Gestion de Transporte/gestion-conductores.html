@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <div class="notice notice-info">
+        <div class="notice notice-info" data-sial-notice-adapter role="note">
           <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
           <span>Un conductor inactivo no puede ser asignado a operaciones. La auditoria base se consulta en el detalle: usuario, fecha/hora y accion realizada.</span>
         </div>
@@ -48,17 +48,15 @@
           <article class="stat"><label>ARL por revisar</label><strong>4</strong><span>Vigencias proximas a finalizar.</span></article>
         </div>
 
-        <div class="toolbar" aria-label="Filtros de conductores">
-          <input class="input" id="driverSearch" type="search" aria-label="Buscar por nombre, identificacion o celular" placeholder="Buscar por nombre, identificacion o celular" />
-          <select class="select" id="driverStatus" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="active">Activo</option><option value="inactive">Inactivo</option><option value="warning">Revision</option></select>
-          <select class="select" id="driverCompany" aria-label="Filtrar por empresa"><option value="all">Todas las empresas</option><option value="SIAL Central">SIAL Central</option><option value="Banapalma">Banapalma</option><option value="AgroCeiba">AgroCeiba</option></select>
-          <button class="btn btn-secondary" type="button" data-export-table data-export-filename="conductores-auditoria" aria-label="Exportar auditoria"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar auditoria</span></button>
-        </div>
-
-        <article class="card">
+        <article class="card driver-table-card">
           <div class="card-header">
-            <div><h2 class="card-title">Tabla maestra de conductores</h2><p class="card-subtitle">Incluye unicidad de tipo + identificacion, celular unico, estado, licencias activas y vigencia ARL.</p></div>
-            <div class="card-actions"><span class="chip" id="driverCount">0 registros visibles</span><a class="btn btn-primary" href="registro-conductor.html"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg><span>Registrar conductor</span></a></div>
+            <div><h2 class="card-title">Conductores registrados</h2><p class="card-subtitle">Consulta estado, licencias y vigencia ARL.</p></div>
+            <div class="card-actions"><span class="chip" id="driverCount">0 registros visibles</span><button class="btn btn-secondary" type="button" data-export-table data-export-filename="conductores-auditoria" aria-label="Exportar auditoria"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar auditoria</span></button><a class="btn btn-primary" href="registro-conductor.html"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg><span>Registrar conductor</span></a></div>
+          </div>
+          <div class="toolbar driver-toolbar" aria-label="Filtros de conductores">
+            <input class="input" id="driverSearch" type="search" data-sial-search-adapter aria-label="Buscar por nombre, identificacion o celular" placeholder="Buscar por nombre, identificacion o celular" />
+            <select class="select" id="driverStatus" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="active">Activo</option><option value="inactive">Inactivo</option><option value="warning">Revision</option></select>
+            <select class="select" id="driverCompany" aria-label="Filtrar por empresa"><option value="all">Todas las empresas</option><option value="SIAL Central">SIAL Central</option><option value="Banapalma">Banapalma</option><option value="AgroCeiba">AgroCeiba</option></select>
           </div>
           <div class="table-wrap">
             <table>

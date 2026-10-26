@@ -1276,6 +1276,12 @@ html[data-theme="dark"] .theme-icon-sun { opacity: 1; transform: scale(1); }
 .form-heading h2 { margin: 0; font-size: 18px; font-weight: 600; }
 .form-heading p { margin: 8px 0 0; color: var(--color-text-2); line-height: 1.6; }
 .form-body { padding: 32px; }
+.form-card .form-feedback {
+  margin-bottom: 20px;
+  color: var(--color-success-main);
+  font-size: 13px;
+  font-weight: 600;
+}
 .section { margin-bottom: 32px; }
 .section + .section { padding-top: 24px; border-top: 1px solid var(--color-border-subtle); }
 .section-title { margin: 0 0 16px; font-size: 14px; font-weight: 600; }
@@ -1370,6 +1376,8 @@ html:not([data-sial-library-controls="ready"]) .table-wrap[data-sial-table-adapt
 .sial-library-field-ready > .select,
 .sial-library-field-ready > .field-note { display: none !important; }
 .sial-library-field { min-width: 0; width: 100%; }
+.sial-library-toast { position: fixed; z-index: 1100; top: 20px; right: 20px; width: min(420px, calc(100vw - 32px)); pointer-events: none; }
+.sial-library-toast .bui-toast { pointer-events: auto; }
 .sial-library-table .bui-table-wrapper { border: 0; border-top: 1px solid var(--color-border-subtle); border-radius: 0; }
 .sial-library-table .bui-table-row-actions { justify-content: flex-start; }
 .sial-library-table .bui-icon-button svg { width: 18px; height: 18px; }

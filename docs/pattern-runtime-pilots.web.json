@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "platform": "web",
+  "viewports": [
+    { "width": 1280, "height": 800 },
+    { "width": 390, "height": 844 }
+  ],
+  "views": [
+    {
+      "route": "Gestion de Fincas/gestion-clases-referencia.html",
+      "pattern_id": "web-library-simple-catalog-table",
+      "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"],
+      "checkRecordCount": true,
+      "requireNavigation": true
+    },
+    {
+      "route": "Gestion de Fincas/gestion-fincas.html",
+      "pattern_id": "web-library-simple-catalog-table",
+      "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"],
+      "checkRecordCount": true,
+      "requireNavigation": true
+    },
+    {
+      "route": "Materiales y Suministros/categorias-pedido.html",
+      "pattern_id": "web-library-table-controls",
+      "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"],
+      "checkRecordCount": true,
+      "requireNavigation": true
+    },
+    { "route": "Materiales y Suministros/index.html", "pattern_id": "web-materials-dashboard", "expected": [], "checkRecordCount": false },
+    { "route": "Materiales y Suministros/gestion-materiales.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/gestion-proveedores.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/inventario-materiales-finca.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/inventario-pallets.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/movimientos-inventario.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/ordenes-transporte-insumos.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/recetas-materiales.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/resumen-proveedores.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/reglas-documentales.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/seguimiento-entregas.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/gestion-pedidos-materiales.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false },
+    { "route": "Materiales y Suministros/ajustar-pedido-sugerido.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false },
+    { "route": "Materiales y Suministros/aprobacion-pedidos-materiales.html", "pattern_id": "web-materials-approval-gallery", "expected": ["TextInput", "SelectInput", "Chip"], "checkRecordCount": false },
+    { "route": "Materiales y Suministros/pedidos-adicionales.html", "pattern_id": "web-materials-order-table", "expected": ["TextInput", "SelectInput", "Chip", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/pedidos-recurrentes.html", "pattern_id": "web-materials-order-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/seguimiento-pedidos-finca.html", "pattern_id": "web-materials-tracking-table", "expected": ["TextInput", "SelectInput", "Chip", "Table"], "checkRecordCount": false },
+    { "route": "Materiales y Suministros/trazabilidad-pedido.html", "pattern_id": "web-materials-trace", "expected": ["TextInput"], "checkRecordCount": false }
+  ]
+}

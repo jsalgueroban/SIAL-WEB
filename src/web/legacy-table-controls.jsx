@@ -10,14 +10,17 @@ import {
   EditIcon,
   Drawer,
   DrawerAuditList,
+  DateInput,
   IconButton,
   Notice,
   NotificationIcon,
+  NumberInput,
   Pagination,
   SelectInput,
   Table,
   TableRowActions,
   TextInput,
+  Toast,
   ViewIcon
 } from "@banasandev/banasan-ui";
 
@@ -45,7 +48,8 @@ function readOptions(select, label) {
     value: option.value,
     label: label === "Estado" && option.value === "all"
       ? "Todos los estados"
-      : option.textContent.trim()
+      : option.textContent.trim(),
+    disabled: option.disabled
   }));
 }
 
@@ -135,8 +139,28 @@ function LinkedNotice({ original }) {
   const variant = original.classList.contains("notice-warning") ? "warning"
     : original.classList.contains("notice-error") ? "error"
     : original.classList.contains("notice-success") ? "success" : "info";
-  const message = original.querySelector("span")?.textContent.trim() || original.textContent.trim();
-  return <Notice variant={variant} role={original.getAttribute("role") || undefined}>{message}</Notice>;
+  const title = original.querySelector("strong")?.textContent.trim();
+  const detail = original.querySelector("span")?.textContent.trim();
+  const message = detail || original.textContent.trim();
+  return <Notice variant={variant} role={original.getAttribute("role") || undefined}>
+    {title && detail ? <><strong>{title}</strong> {detail}</> : message}
+  </Notice>;
+}
+
+function LinkedToast({ original }) {
+  const read = () => ({
+    visible: !original.hidden,
+    title: original.dataset.sialToastTitle || "Notificación",
+    description: original.querySelector("[data-additional-feedback-message]")?.textContent.trim() || original.textContent.trim(),
+    variant: original.dataset.sialToastVariant || "success"
+  });
+  const [state, setState] = useState(read);
+  useEffect(() => {
+    const observer = new MutationObserver(() => setState(read()));
+    observer.observe(original, { attributes: true, attributeFilter: ["hidden", "data-sial-toast-title", "data-sial-toast-variant"], childList: true, characterData: true, subtree: true });
+    return () => observer.disconnect();
+  }, [original]);
+  return <Toast {...state} onClose={() => { original.hidden = true; }} />;
 }
 
 function readDrawer(native) {
@@ -203,6 +227,18 @@ function readFieldState(control, note) {
   };
 }
 
+function dateFromLocalValue(value) {
+  if (!value) return null;
+  const [year, month, day] = value.split("-").map(Number);
+  return year && month && day ? new Date(year, month - 1, day) : null;
+}
+
+function localValueFromDate(value) {
+  if (!(value instanceof Date) || Number.isNaN(value.getTime())) return "";
+  const pad = (part) => String(part).padStart(2, "0");
+  return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`;
+}
+
 function LinkedFormField({ control, label, note }) {
   const [state, setState] = useState(() => readFieldState(control, note));
   const sync = () => setState(readFieldState(control, note));
@@ -234,7 +270,7 @@ function LinkedFormField({ control, label, note }) {
     label: label.textContent.replace(/\*/g, "").trim(),
     value: state.value,
     disabled: state.disabled,
-    required: control.hasAttribute("data-required") || control.required,
+    required: control.hasAttribute("data-required") || control.required || label.querySelector(".required") !== null,
     helperText: state.error ? undefined : state.helper,
     validate: { status: state.error, message: state.message },
     onChange: (value) => {
@@ -247,7 +283,63 @@ function LinkedFormField({ control, label, note }) {
   if (control.tagName === "SELECT") {
     return <SelectInput {...common} options={readOptions(control, common.label)} />;
   }
-  return <TextInput {...common} placeholder={control.placeholder} maxLength={control.maxLength > 0 ? control.maxLength : undefined} />;
+  if (control.type === "date") {
+    return <DateInput {...common}
+      value={dateFromLocalValue(state.value)}
+      minDate={dateFromLocalValue(control.min) || undefined}
+      maxDate={dateFromLocalValue(control.max) || undefined}
+      onChange={(value) => {
+        control.value = localValueFromDate(value);
+        control.dispatchEvent(new Event("input", { bubbles: true }));
+        control.dispatchEvent(new Event("change", { bubbles: true }));
+        sync();
+      }} />;
+  }
+  if (control.type === "number") {
+    return <NumberInput {...common}
+      value={state.value === "" ? "" : Number(state.value)}
+      min={control.min === "" ? undefined : Number(control.min)}
+      max={control.max === "" ? undefined : Number(control.max)}
+      step={control.step === "any" || control.step === "" ? undefined : Number(control.step)}
+      onChange={(value) => {
+        control.value = value === null || value === undefined || Number.isNaN(value) ? "" : String(value);
+        control.dispatchEvent(new Event("input", { bubbles: true }));
+        control.dispatchEvent(new Event("change", { bubbles: true }));
+        sync();
+      }} />;
+  }
+  return <TextInput {...common} type={control.type === "email" ? "email" : "text"} placeholder={control.placeholder} maxLength={control.maxLength > 0 ? control.maxLength : undefined} />;
+}
+
+function LinkedBareNumber({ control }) {
+  const [state, setState] = useState(() => readFieldState(control, null));
+  useEffect(() => {
+    const sync = () => setState(readFieldState(control, null));
+    control.addEventListener("input", sync);
+    control.addEventListener("change", sync);
+    const observer = new MutationObserver(sync);
+    observer.observe(control, { attributes: true, attributeFilter: ["aria-invalid", "disabled", "max"] });
+    return () => {
+      control.removeEventListener("input", sync);
+      control.removeEventListener("change", sync);
+      observer.disconnect();
+    };
+  }, [control]);
+  return <NumberInput
+    id={`sial-library-${control.id}`}
+    value={state.value === "" ? "" : Number(state.value)}
+    min={control.min === "" ? undefined : Number(control.min)}
+    max={control.max === "" ? undefined : Number(control.max)}
+    step={control.step === "" ? undefined : Number(control.step)}
+    disabled={state.disabled}
+    validate={{ status: state.error, message: state.error ? "Ingresa una cantidad válida dentro del límite disponible." : "" }}
+    onChange={(value) => {
+      control.value = value === null || value === undefined || Number.isNaN(value) ? "" : String(value);
+      control.dispatchEvent(new Event("input", { bubbles: true }));
+      control.dispatchEvent(new Event("change", { bubbles: true }));
+      setState(readFieldState(control, null));
+    }}
+  />;
 }
 
 function LinkedCount({ count }) {
@@ -293,7 +385,7 @@ function actionIcon(label) {
   if (/^abrir\b/.test(action)) return <ViewIcon />;
   if (/^(continuar|ir a)\b/.test(action)) return <ArrowRightIcon />;
   if (/^notificar\b/.test(action)) return <NotificationIcon />;
-  if (/^(inactivar|eliminar|desactivar|remover)\b/.test(action)) return <CloseIcon />;
+  if (/^(inactivar|eliminar|desactivar|remover|quitar)\b/.test(action)) return <CloseIcon />;
   if (/^activar\b/.test(action)) return <CheckIcon />;
   if (/^copiar\b/.test(action)) return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="2" /><path d="M5 15V7a2 2 0 0 1 2-2h8" /></svg>;
   return null;
@@ -314,7 +406,7 @@ function LinkedAction({ original }) {
   }, [original]);
   const icon = actionIcon(state.label);
   if (!icon) return null;
-  const variant = /^(inactivar|eliminar|desactivar|remover)\b/i.test(state.label)
+  const variant = /^(inactivar|eliminar|desactivar|remover|quitar)\b/i.test(state.label)
     ? "sial-library-action-danger"
     : /^activar\b/i.test(state.label) ? "sial-library-action-success" : "";
   return <IconButton
@@ -349,7 +441,7 @@ function LinkedPagination({ native }) {
   };
   const [state, setState] = useState(read);
   useEffect(() => {
-    const sync = (event) => setState(event.detail || read());
+    const sync = (event) => setState(event?.detail || read());
     native.addEventListener("sial:table-page-state", sync);
     const observer = new MutationObserver(() => sync());
     if (!managed) observer.observe(native, { childList: true, subtree: true, characterData: true });
@@ -401,8 +493,42 @@ function tableCellText(node) {
   return Array.from(node.childNodes).map(tableCellText).join("");
 }
 
+function readMaterialCellNode(node) {
+  if (node.nodeType === Node.TEXT_NODE) return { text: node.textContent };
+  if (node.nodeType !== Node.ELEMENT_NODE) return null;
+  if (node.classList.contains("status")) {
+    const preset = node.classList.contains("status-active") ? "active"
+      : node.classList.contains("status-inactive") ? "inactive" : "warning";
+    return { status: preset, text: node.textContent.trim() };
+  }
+  const tag = node.tagName.toLowerCase();
+  if (!["div", "span", "strong", "small", "em", "b", "i", "time", "br"].includes(tag)) {
+    return { text: node.textContent };
+  }
+  return {
+    tag,
+    className: node.className || undefined,
+    title: node.getAttribute("title") || undefined,
+    ariaLabel: node.getAttribute("aria-label") || undefined,
+    children: Array.from(node.childNodes).map(readMaterialCellNode).filter(Boolean)
+  };
+}
+
+function renderMaterialCellNode(node, key) {
+  if (node.status) return <Chip key={key} preset={node.status}>{node.text}</Chip>;
+  if (!node.tag) return node.text;
+  if (node.tag === "br") return <br key={key} />;
+  return React.createElement(node.tag, {
+    key,
+    className: node.className,
+    title: node.title,
+    "aria-label": node.ariaLabel
+  }, node.children?.map((child, index) => renderMaterialCellNode(child, `${key}-${index}`)));
+}
+
 function readFamilyTable(native) {
   const table = native.querySelector("table");
+  const preserveMaterialCells = native.dataset.sialTableAdapter === "materials";
   const headers = Array.from(table?.tHead?.rows[0]?.cells || []).map((cell) => cell.textContent.trim());
   const actionIndex = headers.findIndex((header) => /^acciones?$/i.test(header));
   const rows = Array.from(table?.tBodies[0]?.rows || [])
@@ -411,6 +537,7 @@ function readFamilyTable(native) {
       key: row.dataset.code || `${index}-${row.textContent.trim()}`,
       cells: Array.from(row.cells).map((cell) => ({
         text: tableCellText(cell).trim(),
+        structure: preserveMaterialCells ? Array.from(cell.childNodes).map(readMaterialCellNode).filter(Boolean) : null,
         status: cell.querySelector(".status")?.classList.contains("status-active")
           ? "active"
           : cell.querySelector(".status")?.classList.contains("status-inactive") ? "inactive"
@@ -441,6 +568,9 @@ function LinkedFamilyTable({ native }) {
     width: index === 0 ? "15%" : undefined,
     render: (row) => {
       const cell = row.cells[index];
+      if (cell.structure) return <div className={cell.muted ? "sial-library-table-muted" : "sial-library-table-cell"}>
+        {cell.structure.map((node, nodeIndex) => renderMaterialCellNode(node, `cell-${index}-${nodeIndex}`))}
+      </div>;
       if (cell.status) return <Chip preset={cell.status}>{cell.text}</Chip>;
       return <span className={cell.muted ? "sial-library-table-muted" : "sial-library-table-cell"}>{cell.text}</span>;
     }
@@ -527,6 +657,18 @@ function mountNotice(original) {
   flushSync(() => createRoot(mount).render(<LinkedNotice original={original} />));
 }
 
+function mountToast(original) {
+  if (enhanced.has(original) || original.closest("[data-sial-react-view]")) return;
+  const mount = document.createElement("div");
+  mount.className = "sial-library-toast";
+  mount.dataset.sialComponent = "Toast";
+  mount.dataset.sialSource = source;
+  original.before(mount);
+  original.classList.add("sial-native-proxy");
+  enhanced.add(original);
+  flushSync(() => createRoot(mount).render(<LinkedToast original={original} />));
+}
+
 function mountDetailDrawer(native) {
   if (enhanced.has(native)) return;
   const mount = document.createElement("div");
@@ -544,16 +686,46 @@ function mountFormField(field) {
   const control = field.querySelector(":scope > input.input, :scope > select.select");
   const label = field.querySelector(":scope > label.label");
   if (!control || !label || !control.id || enhanced.has(control)) return;
-  if (control.tagName === "INPUT" && !["", "text"].includes(control.type)) return;
+  if (control.tagName === "INPUT" && !["", "text", "email", "number", "date"].includes(control.type)) return;
   const note = field.querySelector(":scope > .field-note");
   const mount = document.createElement("div");
   mount.className = "sial-library-field";
-  mount.dataset.sialComponent = control.tagName === "SELECT" ? "SelectInput" : "TextInput";
+  mount.dataset.sialComponent = control.tagName === "SELECT" ? "SelectInput" : control.type === "date" ? "DateInput" : control.type === "number" ? "NumberInput" : "TextInput";
   mount.dataset.sialSource = source;
   field.prepend(mount);
   enhanced.add(control);
   flushSync(() => createRoot(mount).render(<LinkedFormField control={control} label={label} note={note} />));
   field.classList.add("sial-library-field-ready");
+}
+
+function mountAdjustmentNumber(group) {
+  const control = group.querySelector('input[type="number"][data-requested]');
+  const label = group.querySelector('.adjust-request-label');
+  if (!control || !label || enhanced.has(control)) return;
+  const mount = document.createElement("div");
+  mount.className = "sial-library-adjust-number";
+  mount.dataset.sialComponent = "NumberInput";
+  mount.dataset.sialSource = source;
+  control.before(mount);
+  control.classList.add("sial-native-proxy");
+  enhanced.add(control);
+  flushSync(() => createRoot(mount).render(<LinkedFormField control={control} label={label} note={null} />));
+  mount.querySelector('input[type="number"]')?.setAttribute("aria-label", control.getAttribute("aria-label") || label.textContent.trim());
+  group.classList.add("sial-library-adjust-ready");
+}
+
+function mountApprovalNumber(control) {
+  if (enhanced.has(control)) return;
+  if (!control.id) control.id = `sial-approval-number-${++filterSequence}`;
+  const mount = document.createElement("div");
+  mount.className = "sial-library-approval-number";
+  mount.dataset.sialComponent = "NumberInput";
+  mount.dataset.sialSource = source;
+  control.before(mount);
+  control.classList.add("sial-native-proxy");
+  enhanced.add(control);
+  flushSync(() => createRoot(mount).render(<LinkedBareNumber control={control} />));
+  mount.querySelector('input[type="number"]')?.setAttribute("aria-label", control.getAttribute("aria-label") || "Cantidad entregable");
 }
 
 function mountCount(count) {
@@ -629,20 +801,24 @@ function mountFamilyTable(native) {
 export function mountLegacyTableControls() {
   if (document.querySelector("[data-sial-react-view]")) return;
   const scan = () => {
-    document.querySelectorAll('.table-wrap[data-sial-table-adapter="simple"], main[data-sial-catalog-actions] .table-wrap').forEach(mountFamilyTable);
-    document.querySelectorAll(".inline-form-panel .field[data-sial-form-control]").forEach(mountFormField);
-    document.querySelectorAll("main .toolbar input[data-sial-search-adapter], main[data-sial-catalog-actions] .toolbar input[type=search]").forEach(mountSearch);
-    document.querySelectorAll("article[data-sial-catalog-actions] .card-actions > button.btn, article[data-sial-catalog-actions] .inline-form-panel .form-actions > button.btn, main[data-sial-catalog-actions] .card-actions > button.btn").forEach(mountButton);
-    document.querySelectorAll("main .drawer[data-sial-drawer-adapter], main[data-sial-catalog-actions] .drawer").forEach(mountDetailDrawer);
+    document.querySelectorAll('.table-wrap[data-sial-table-adapter="simple"], .table-wrap[data-sial-table-adapter="materials"], main[data-sial-catalog-actions] .table-wrap').forEach(mountFamilyTable);
+    document.querySelectorAll(".inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .materials-date-range .field[data-sial-form-control]").forEach(mountFormField);
+    document.querySelectorAll(".adjust-request-group[data-sial-number-adapter]").forEach(mountAdjustmentNumber);
+    document.querySelectorAll(".approval-availability input[data-approved][type=number]").forEach(mountApprovalNumber);
+    document.querySelectorAll("main .toolbar input[data-sial-search-adapter], main .workflow-filters input[data-sial-search-adapter], main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar input[data-sial-search-adapter], main[data-sial-catalog-actions] .toolbar input[type=search]").forEach(mountSearch);
+    document.querySelectorAll("article[data-sial-catalog-actions] .card-actions > button.btn, article[data-sial-catalog-actions] .inline-form-panel .form-actions > button.btn, main[data-sial-catalog-actions] .card-actions > button.btn, .form-card[data-sial-form-adapter] .form-actions > button.btn, .permission-toolbar .permission-actions > button.btn").forEach(mountButton);
+    document.querySelectorAll(".drawer[data-sial-drawer-adapter], main[data-sial-catalog-actions] .drawer").forEach(mountDetailDrawer);
     document.querySelectorAll("main .page > .notice[data-sial-notice-adapter]").forEach(mountNotice);
-    document.querySelectorAll("main .toolbar select.select, main .workflow-filters select.select").forEach((select) => {
+    document.querySelectorAll("main .page > [data-sial-toast-adapter]").forEach(mountToast);
+    document.querySelectorAll("main .toolbar select.select, main .workflow-filters select.select, main .permission-toolbar select.select").forEach((select) => {
       if (!select.closest(".inline-form-panel, form")) mountFilter(select);
     });
     document.querySelectorAll(".card-actions .chip").forEach((count) => {
       if (count.dataset.sialRecordCount !== undefined || /\bregistros?\b/i.test(count.textContent)) mountCount(count);
     });
     document.querySelectorAll(".table-wrap:not(.sial-native-proxy) .status[data-sial-chip-adapter]").forEach(mountStatusChip);
-    document.querySelectorAll(".table-wrap:not([data-sial-table-adapter]):not(.sial-native-proxy) .row-actions > .icon-btn[aria-label]").forEach(mountAction);
+    document.querySelectorAll(".approval-order-card .status, .approval-context-head > .status, .approval-order-state-current > .status, .approval-order-state--closed > .status, .approval-decision > .status, .recurring-review-heading .status, .additional-source-header > .status, .additional-submit-status > .status, .additional-page-header .card-actions > .status, .additional-line-result > .status, .tracking-detail .card-header > .status, .tracking-detail .order-material-response > .status, .suggest-workspace-head > .status, [data-adjustment-root] > .card > .card-header > .status, [data-adjustment-root] [data-margin-state] > .status, #materialDetailDrawer .detail-value > .status").forEach(mountStatusChip);
+    document.querySelectorAll(".table-wrap:not([data-sial-table-adapter]):not(.sial-native-proxy) .row-actions > .icon-btn[aria-label], .additional-material-line-main > .additional-remove[aria-label]").forEach(mountAction);
     document.querySelectorAll(".table-pagination").forEach(mountPagination);
   };
   scan();

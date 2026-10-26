@@ -54,28 +54,28 @@
           <a class="btn btn-secondary" href="gestion-empresas.html">Volver a gestion</a>
         </div>
 
-        <article class="card form-card">
+        <article class="card form-card" data-sial-form-adapter>
           <div class="form-heading">
             <h2>Datos de empresa</h2>
             <p>El nombre y razon social se normalizan a mayusculas. El NIT debe conservar unicidad administrativa.</p>
           </div>
           <div class="form-body">
-            <div class="notice notice-success is-hidden" id="formOk">Empresa lista para guardar.</div>
+            <p class="field-note is-hidden" id="formOk" role="status">Datos de empresa revisados en esta propuesta; no se guardan en el sistema real.</p>
             <form data-company-form novalidate>
               <section class="section">
                 <h3 class="section-title">Identificacion</h3>
                 <div class="grid">
-                  <div class="field span-6">
+                  <div class="field span-6" data-sial-form-control>
                     <label class="label" for="companyName">Nombre comercial <span class="required">*</span></label>
                     <input class="input" id="companyName" data-required data-uppercase aria-describedby="companyNameNote" placeholder="BANAPALMA" />
                     <div class="field-note" id="companyNameNote">Obligatorio y visible en asignaciones.</div>
                   </div>
-                  <div class="field span-6">
+                  <div class="field span-6" data-sial-form-control>
                     <label class="label" for="nit">NIT <span class="required">*</span></label>
                     <input class="input" id="nit" data-required data-nit aria-describedby="nitNote" placeholder="901456789-4" />
                     <div class="field-note" id="nitNote">Debe ser unico y valido.</div>
                   </div>
-                  <div class="field span-12">
+                  <div class="field span-12" data-sial-form-control>
                     <label class="label" for="businessName">Razon social</label>
                     <input class="input" id="businessName" data-uppercase placeholder="BANAPALMA S.A.S." />
                   </div>

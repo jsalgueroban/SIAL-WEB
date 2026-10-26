@@ -23,12 +23,12 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">Editar usuario | m.garcia</h1>
-            <p class="page-subtitle">Edicion dedicada: los datos basicos se guardan por separado y la relacion empresa + roles se gestiona en una seccion amplia para evitar decisiones comprimidas.</p>
+            <p class="page-subtitle">Actualiza los datos básicos y revisa las relaciones de empresa y roles del usuario.</p>
           </div>
           <a class="btn btn-secondary" href="gestion-usuarios.html">Volver a gestion</a>
         </div>
 
-        <article class="card form-card">
+        <article class="card form-card" data-sial-form-adapter>
           <div class="form-heading">
             <h2>Informacion basica</h2>
             <p>Los campos bloqueados conservan identidad documental y credenciales controladas.</p>
@@ -36,15 +36,16 @@
           <div class="form-body">
             <form data-user-form novalidate>
               <div class="grid">
-                <div class="field span-6"><label class="label" for="editName">Nombres</label><input class="input" id="editName" value="MARIA" data-uppercase /></div>
-                <div class="field span-6"><label class="label" for="editLastName">Apellidos</label><input class="input" id="editLastName" value="GARCIA" data-uppercase /></div>
-                <div class="field span-6"><label class="label" for="editEmail">Correo</label><input class="input" id="editEmail" value="m.garcia@sial.com" disabled /></div>
-                <div class="field span-6"><label class="label" for="editAltEmail">Correo alternativo</label><input class="input" id="editAltEmail" value="m.garcia.respaldo@sial.com" /></div>
-                <div class="field span-4"><label class="label">Documento</label><input class="input" value="CC 1020304050" disabled /></div>
-                <div class="field span-4"><label class="label">Genero</label><input class="input" value="Femenino" disabled /></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="editName">Nombres</label><input class="input" id="editName" value="MARIA" data-uppercase /></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="editLastName">Apellidos</label><input class="input" id="editLastName" value="GARCIA" data-uppercase /></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="editEmail">Correo</label><input class="input" id="editEmail" value="m.garcia@sial.com" disabled /></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="editAltEmail">Correo alternativo</label><input class="input" id="editAltEmail" value="m.garcia.respaldo@sial.com" /></div>
+                <div class="field span-4" data-sial-form-control><label class="label" for="editDocument">Documento</label><input class="input" id="editDocument" value="CC 1020304050" disabled /></div>
+                <div class="field span-4" data-sial-form-control><label class="label" for="editGender">Género</label><input class="input" id="editGender" value="Femenino" disabled /></div>
                 <div class="field span-4"><label class="label">Estado</label><span class="status status-active">Activo</span></div>
               </div>
-              <div class="form-actions"><a class="btn btn-secondary" href="gestion-usuarios.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar formulario</button><button class="btn btn-primary" type="submit">Guardar datos basicos</button></div>
+              <p class="field-note is-hidden" id="formOk" role="status">Datos básicos revisados en esta propuesta; los cambios no se guardan en el sistema real.</p>
+              <div class="form-actions"><a class="btn btn-secondary" href="gestion-usuarios.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar formulario</button><button class="btn btn-primary" type="submit">Guardar datos básicos</button></div>
             </form>
           </div>
         </article>
@@ -55,7 +56,7 @@
             <p>Gestion relacional por empresa. Selecciona una empresa, revisa roles disponibles y guarda cambios solo para esa relacion.</p>
           </div>
           <div class="form-body stack">
-            <div class="notice notice-info"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>El usuario debe conservar al menos una empresa activa con uno o mas roles vigentes.</span></div>
+            <p class="field-note">El usuario debe conservar al menos una empresa activa con uno o más roles vigentes.</p>
             <div class="grid">
               <div class="field span-6"><label class="label" for="companyEdit">Empresa</label><select class="select" id="companyEdit"><option>SIAL Central</option><option>Banapalma</option><option>AgroCeiba</option></select><div class="field-note">Al cambiar la empresa se cargan sus roles disponibles y asignados.</div></div>
               <div class="field span-3"><label class="label">Estado relacion</label><span class="status status-active">Activo</span><div class="field-note">Asignable al usuario.</div></div>

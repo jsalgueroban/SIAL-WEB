@@ -32,7 +32,7 @@ const SIALOrderAdjustment = (() => {
       <div class="adjust-material-grid">
         <div class="adjust-material-identity"><div class="materials-record-main"><strong>${esc(row.name)}</strong><span>${esc(row.code)} · ${esc(row.unit)}</span></div></div>
         <div class="adjust-reference-group"><div><span>Sugerido</span><strong>${format(row.suggested)} <small>${esc(row.unit)}</small></strong></div><div><span>Margen</span><strong>${row.marginPercent}% · ${format(marginQuantity(row))} <small>${esc(row.unit)}</small></strong></div></div>
-        <div class="adjust-request-group"><label class="adjust-request-label" for="${requestedId}">Cantidad solicitada</label><div class="adjust-request-control"><input class="input adjust-quantity" id="${requestedId}" type="number" min="0" step="1" value="${esc(row.requested)}" data-requested aria-label="Cantidad solicitada de ${esc(row.name)}" ${submitted ? "disabled" : ""}><div class="adjust-inline-state" data-margin-state></div></div></div>
+        <div class="adjust-request-group" data-sial-number-adapter><label class="adjust-request-label" for="${requestedId}">Cantidad solicitada</label><div class="adjust-request-control"><input class="input adjust-quantity" id="${requestedId}" type="number" min="0" step="1" value="${esc(row.requested)}" data-requested aria-label="Cantidad solicitada de ${esc(row.name)}" ${submitted ? "disabled" : ""}><div class="adjust-inline-state" data-margin-state></div></div></div>
       </div>
       <div class="adjust-justification-panel" data-justification-panel hidden>
         <label class="label" for="${justificationId}">Justificación del cambio <span class="required">*</span></label>
@@ -55,10 +55,11 @@ const SIALOrderAdjustment = (() => {
   function validate(showErrors = false) {
     const errors = [];
     qsa("[data-adjust-line]").forEach((element) => {
-      const row = rowFromElement(element); const requested = Number(qs("[data-requested]", element).value); const justification = qs("[data-justification]", element).value.trim();
+      const row = rowFromElement(element); const quantityControl = qs("[data-requested]", element); const rawRequested = quantityControl.value.trim(); const requested = Number(rawRequested); const justification = qs("[data-justification]", element).value.trim();
       row.requested = requested; row.justification = justification;
-      const invalidQuantity = !Number.isFinite(requested) || requested < 0; const missingJustification = !invalidQuantity && changed(row) && !justification;
-      qs("[data-justification-panel]", element).hidden = !changed(row);
+      const invalidQuantity = rawRequested === "" || !Number.isInteger(requested) || requested < 0; const missingJustification = !invalidQuantity && changed(row) && !justification;
+      if (quantityControl.getAttribute("aria-invalid") !== String(invalidQuantity)) quantityControl.setAttribute("aria-invalid", String(invalidQuantity));
+      qs("[data-justification-panel]", element).hidden = invalidQuantity || !changed(row);
       element.classList.toggle("is-changed", !invalidQuantity && changed(row));
       element.classList.toggle("is-exception", !invalidQuantity && outside(row));
       if (invalidQuantity) errors.push(`${row.name}: ingrese una cantidad válida.`); if (missingJustification) errors.push(`${row.name}: falta la justificación del cambio.`);

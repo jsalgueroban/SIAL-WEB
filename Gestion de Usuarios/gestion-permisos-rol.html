@@ -50,20 +50,17 @@
 
         <section class="permission-admin-panel" aria-label="Administracion de permisos por rol">
           <div class="permission-toolbar">
-            <label class="permission-field">
-              <span>Rol</span>
+            <div class="permission-field">
               <select class="select" id="permissionRoleSelect" aria-label="Seleccionar rol"></select>
-            </label>
-            <label class="permission-field">
-              <span>Buscar</span>
-              <input class="input" id="permissionSearch" type="search" aria-label="Buscar permiso o modulo" placeholder="Permiso o modulo" />
-            </label>
-            <label class="permission-field">
-              <span>Modulo</span>
+            </div>
+            <div class="permission-field">
+              <input class="input" id="permissionSearch" type="search" data-sial-search-adapter aria-label="Buscar permiso o módulo" placeholder="Permiso o módulo" />
+            </div>
+            <div class="permission-field">
               <select class="select" id="permissionModuleFilter" aria-label="Filtrar permisos por modulo">
                 <option value="all">Todos los modulos</option>
               </select>
-            </label>
+            </div>
             <div class="permission-actions">
               <span class="chip" id="permissionStateChip">Sin cambios</span>
               <button class="btn btn-secondary" type="button" id="resetPermissions" disabled>Restablecer</button>

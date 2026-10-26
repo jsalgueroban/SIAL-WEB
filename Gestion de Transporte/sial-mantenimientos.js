@@ -64,7 +64,7 @@
       const files = Array.from(evidence.files || []);
       evidenceName.textContent = files.length === 0 ? "Ningún archivo seleccionado" : files.length === 1 ? files[0].name : `${files.length} archivos seleccionados`;
     });
-    form.addEventListener("reset", () => requestAnimationFrame(() => { updateContext(); if (evidenceName) evidenceName.textContent = "Ningún archivo seleccionado"; feedback.hidden = true; costNote.textContent = "Valor opcional en pesos colombianos."; qsa(".is-error", form).forEach(field => field.classList.remove("is-error")); }));
+    form.addEventListener("reset", () => requestAnimationFrame(() => { updateContext(); if (evidenceName) evidenceName.textContent = "Ningún archivo seleccionado"; feedback.hidden = true; costNote.textContent = "Valor opcional en pesos colombianos."; qsa(".is-error", form).forEach(field => { field.classList.remove("is-error"); field.removeAttribute("aria-invalid"); }); }));
     updateContext();
     form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -75,18 +75,20 @@
       required.forEach((field) => {
         const invalid = !field.checkValidity() || !String(field.value || "").trim();
         field.classList.toggle("is-error", invalid);
+        field.setAttribute("aria-invalid", String(invalid));
         if (invalid && !firstInvalid) firstInvalid = field;
       });
       const start = qs("#maintenanceStart");
       const expected = qs("#maintenanceExpected");
-      if (!firstInvalid && expected.value <= start.value) { expected.classList.add("is-error"); firstInvalid = expected; }
+      if (!firstInvalid && expected.value <= start.value) { expected.classList.add("is-error"); expected.setAttribute("aria-invalid", "true"); firstInvalid = expected; }
       const mileage = qs("#maintenanceMileage");
       const hours = qs("#maintenanceHours");
-      if (!firstInvalid && !mileage.value && !hours.value) { mileage.classList.add("is-error"); hours.classList.add("is-error"); firstInvalid = mileage; }
+      if (!firstInvalid && !mileage.value && !hours.value) { mileage.classList.add("is-error"); hours.classList.add("is-error"); mileage.setAttribute("aria-invalid", "true"); hours.setAttribute("aria-invalid", "true"); firstInvalid = mileage; }
       if (firstInvalid) {
         feedback.textContent = firstInvalid === evidence ? "Adjunta al menos un soporte de ingreso." : firstInvalid === expected ? "La salida estimada debe ser posterior al ingreso." : firstInvalid === mileage ? "Indica el kilometraje o el horómetro de ingreso." : "Completa los campos obligatorios para revisar el registro.";
         feedback.hidden = false;
-        firstInvalid.focus();
+        const visibleControl = firstInvalid.closest(".sial-library-field-ready")?.querySelector(".sial-library-field input, .sial-library-field button, .sial-library-field [role=combobox]");
+        (visibleControl || firstInvalid).focus();
         return;
       }
       feedback.textContent = "Datos completos para revisión. Esta propuesta visual todavía no guarda el mantenimiento.";

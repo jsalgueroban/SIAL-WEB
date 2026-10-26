@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button,
   CheckIcon,
@@ -198,7 +199,7 @@ export function TransportCatalog({ catalog }) {
         <div data-sial-component="TextInput" data-sial-source={source}><TextInput id={`${catalog}-search`} label="Buscar" placeholder={config.searchPlaceholder} value={search} onChange={(value) => { setSearch(value); setPage(1); }} /></div>
         <div data-sial-component="SelectInput" data-sial-source={source}><SelectInput id={`${catalog}-status`} label="Estado" value={status} options={[{ label: "Todos los estados", value: "" }, { label: "Activo", value: "active" }, { label: "Inactivo", value: "inactive" }]} onChange={(value) => { setStatus(value); setPage(1); }} /></div>
         {isVehicle && <div data-sial-component="SelectInput" data-sial-source={source}><SelectInput id={`${catalog}-usage`} label="Uso" value={usage} options={[{ label: "Todos", value: "" }, { label: "En uso", value: "used" }, { label: "Sin uso", value: "unused" }]} onChange={(value) => { setUsage(value); setPage(1); }} /></div>}
-      </div></div>
+      <TableFilterReset active={Boolean(search.trim()) || Boolean(status) || Boolean(usage)} onReset={() => { setSearch(""); setStatus(""); setUsage(""); setPage(1); }} /></div></div>
       {formMode && <div className="inline-form-panel inline-form-compact sial-ui-master-form" id={`${catalog}-form`}><div className="form-heading"><h2>{formMode === "new" ? config.newTitle : config.editTitle}</h2><p>{isVehicle ? "Identifica el tipo con código, nombre y descripción operativa." : "Define el código y la descripción que verá el equipo de transporte."}</p></div><div className="form-body"><form onSubmit={submit} noValidate><div className={`sial-ui-master-fields ${isVehicle ? "three-fields" : ""}`}>
         {formMode === "new" && <div data-sial-component="TextInput" data-sial-source={source}><TextInput id={`${catalog}-code`} label={config.codeLabel} required maxLength={isVehicle ? 50 : 6} value={form.code} placeholder={isVehicle ? "CAMION" : "C4"} helperText={isVehicle ? "Inicia con una letra; sin espacios." : "Alfanumérico, máximo 6 caracteres."} validate={{ status: Boolean(errors.code), message: errors.code }} onChange={(value) => setField("code", isVehicle ? value.replace(/\s+/g, "_") : value.replace(/[^A-Za-z0-9]/g, ""))} /></div>}
         {formMode === "edit" && <div className="sial-ui-master-code"><span className="sial-ui-master-field-label">{config.codeLabel}</span><strong>{form.code}</strong><small>El código no se modifica.</small></div>}

@@ -19,24 +19,22 @@
     <main class="main">
       <section class="page">
         <p class="page-eyebrow">Fincas / Registro</p>
-        <div class="page-header"><div><h1 class="page-title">Registro de finca</h1><p class="page-subtitle">Formulario administrativo extenso para crear o editar una finca. Al guardar, la vista debe retornar a la gestion conservando auditoria y estado.</p></div><a class="btn btn-secondary" href="gestion-fincas.html">Volver a gestion</a></div>
-        <div class="notice notice-info"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>El codigo de finca es definido por el usuario, no es autoincremental y no debe repetirse. Nombre y razon social se guardan en mayusculas sostenidas.</span></div>
-        <article class="card form-card">
-          <div class="form-heading"><h2>Formulario de finca</h2><p>Campos obligatorios, llaves foraneas a Company, Grupos y Sectores, estado activo inicial y trazabilidad completa.</p></div>
+        <div class="page-header"><div><h1 class="page-title">Registro de finca</h1><p class="page-subtitle">Identifica la finca y asigna su productor, grupo y sector.</p></div><a class="btn btn-secondary" href="gestion-fincas.html">Volver a gestion</a></div>
+        <article class="card form-card" data-sial-form-adapter>
+          <div class="form-heading"><h2>Datos de la finca</h2><p>Identifica la finca y asigna su productor, grupo y sector.</p></div>
           <div class="form-body">
-            <div class="notice notice-success is-hidden" id="formOk">Finca lista para guardar.</div>
+            <div class="form-feedback is-hidden" id="formOk" role="status">Finca lista para guardar.</div>
             <form data-generic-form novalidate>
               <section class="section"><h3 class="section-title">Identificacion</h3><div class="grid">
-                <div class="field span-4"><label class="label" for="farmCode">Codigo finca <span class="required">*</span></label><input class="input" id="farmCode" data-required data-unique-list="FIN-AC01|FIN-BP07" aria-describedby="farmCodeNote" placeholder="FIN-AC01" /><div class="field-note" id="farmCodeNote">Llave primaria alfanumerica definida por usuario.</div></div>
-                <div class="field span-4"><label class="label">Estado inicial</label><span class="status status-active">Activo</span><div class="field-note">El estado siempre debe tener valor.</div></div>
-                <div class="field span-4"><label class="label" for="nit">NIT finca</label><input class="input" id="nit" placeholder="900456123-8" /><div class="field-note">Opcional.</div></div>
-                <div class="field span-6"><label class="label" for="farmName">Nombre finca <span class="required">*</span></label><input class="input" id="farmName" data-required data-uppercase aria-describedby="farmNameNote" placeholder="FINCA LA ESPERANZA" /><div class="field-note" id="farmNameNote">Se guarda en mayusculas sostenidas.</div></div>
-                <div class="field span-6"><label class="label" for="legalName">Razon social</label><input class="input" id="legalName" data-uppercase aria-describedby="legalNameNote" placeholder="AGROCEIBA SAS" /><div class="field-note" id="legalNameNote">Opcional. Se guarda en mayusculas sostenidas.</div></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="farmCode">Codigo finca <span class="required">*</span></label><input class="input" id="farmCode" data-required data-unique-list="FIN-AC01|FIN-BP07" aria-describedby="farmCodeNote" placeholder="FIN-AC01" /><div class="field-note" id="farmCodeNote">Codigo unico definido por el usuario.</div></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="nit">NIT finca</label><input class="input" id="nit" placeholder="900456123-8" /><div class="field-note">Opcional.</div></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="farmName">Nombre finca <span class="required">*</span></label><input class="input" id="farmName" data-required data-uppercase aria-describedby="farmNameNote" placeholder="FINCA LA ESPERANZA" /><div class="field-note" id="farmNameNote">Se guarda en mayusculas sostenidas.</div></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="legalName">Razon social</label><input class="input" id="legalName" data-uppercase aria-describedby="legalNameNote" placeholder="AGROCEIBA SAS" /><div class="field-note" id="legalNameNote">Opcional. Se guarda en mayusculas sostenidas.</div></div>
               </div></section>
               <section class="section"><h3 class="section-title">Asignacion administrativa</h3><div class="grid">
-                <div class="field span-4"><label class="label" for="producer">Productor o cooperativa <span class="required">*</span></label><select class="select" id="producer" data-required aria-describedby="producerNote"><option value="">Selecciona productor</option><option>AgroCeiba</option><option>Banapalma</option></select><div class="field-note" id="producerNote">Llave foranea a Company.</div></div>
-                <div class="field span-4"><label class="label" for="group">Grupo <span class="required">*</span></label><select class="select" id="group" data-required aria-describedby="groupNote"><option value="">Selecciona grupo</option><option>GRUPO COSTA NORTE</option><option>GRUPO ORIENTE UNO</option></select><div class="field-note" id="groupNote">Una finca solo puede pertenecer a un grupo.</div></div>
-                <div class="field span-4"><label class="label" for="sector">Sector <span class="required">*</span></label><select class="select" id="sector" data-required aria-describedby="sectorNote"><option value="">Selecciona sector</option><option>SECTOR NORTE</option><option>SECTOR ORIENTE</option></select><div class="field-note" id="sectorNote">Una finca solo puede estar ubicada en un sector.</div></div>
+                <div class="field span-4" data-sial-form-control><label class="label" for="producer">Productor o cooperativa <span class="required">*</span></label><select class="select" id="producer" data-required aria-describedby="producerNote"><option value="">Selecciona productor</option><option>AgroCeiba</option><option>Banapalma</option></select><div class="field-note" id="producerNote">Selecciona la empresa productora.</div></div>
+                <div class="field span-4" data-sial-form-control><label class="label" for="group">Grupo <span class="required">*</span></label><select class="select" id="group" data-required aria-describedby="groupNote"><option value="">Selecciona grupo</option><option>GRUPO COSTA NORTE</option><option>GRUPO ORIENTE UNO</option></select><div class="field-note" id="groupNote">Una finca pertenece a un grupo.</div></div>
+                <div class="field span-4" data-sial-form-control><label class="label" for="sector">Sector <span class="required">*</span></label><select class="select" id="sector" data-required aria-describedby="sectorNote"><option value="">Selecciona sector</option><option>SECTOR NORTE</option><option>SECTOR ORIENTE</option></select><div class="field-note" id="sectorNote">Una finca se ubica en un sector.</div></div>
                 <div class="field span-12">
                   <label class="label" for="geo">Geolocalizacion</label>
                   <div class="geo-map-panel" data-geo-component>
@@ -66,12 +64,6 @@
                     </div>
                   </div>
                 </div>
-              </div></section>
-              <section class="section"><h3 class="section-title">Trazabilidad</h3><div class="grid">
-                <div class="field span-3"><label class="label">Fecha creacion</label><input class="input" value="Autogenerada" readonly /></div>
-                <div class="field span-3"><label class="label">Creado por</label><input class="input" value="Usuario actual" readonly /></div>
-                <div class="field span-3"><label class="label">Fecha modificacion</label><input class="input" value="Autogenerada al editar" readonly /></div>
-                <div class="field span-3"><label class="label">Modificado por</label><input class="input" value="Usuario actual" readonly /></div>
               </div></section>
               <div class="form-actions"><a class="btn btn-secondary" href="gestion-fincas.html">Cancelar</a><button class="btn btn-primary" type="submit">Guardar finca</button></div>
             </form>

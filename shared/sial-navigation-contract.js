@@ -121,6 +121,7 @@ window.SIALNavigationContract = Object.freeze({
             { id: "entregas", label: "Seguimiento entregas", href: "seguimiento-entregas.html" },
             { id: "trazabilidad-pedido", label: "Trazabilidad del pedido", href: "trazabilidad-pedido.html" },
             { id: "materiales", label: "Catálogo de materiales", href: "gestion-materiales.html" },
+            { id: "configuracionMateriales", label: "Configuraciones por referencia", href: "configuracion-materiales-referencia.html" },
             { id: "categoriasPedido", label: "Categorías de pedido", href: "categorias-pedido.html" },
             { id: "recetas", label: "Recetas de materiales", href: "recetas-materiales.html" },
             { id: "proveedoresMaster", label: "Gestion de proveedores", href: "gestion-proveedores.html" },

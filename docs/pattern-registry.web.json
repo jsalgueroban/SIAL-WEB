@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "platform": "web",
+  "patterns": [
+    {
+      "pattern_id": "web-short-embedded-form",
+      "family": "catalogos-y-relaciones-breves",
+      "lifecycle": "calibrated",
+      "applies_to": [
+        "Gestion de Empresas/gestion-dependencias.html",
+        "Gestion de Fincas/gestion-clases-referencia.html",
+        "Gestion de Fincas/gestion-grupos.html",
+        "Gestion de Fincas/gestion-productos.html",
+        "Gestion de Fincas/gestion-sectores.html",
+        "Gestion de Transporte/gestion-tipos-empresa.html",
+        "Gestion de Transporte/relacion-conductor-licencia.html",
+        "Gestion de Transporte/relacion-empresa-tipo.html",
+        "Gestion Operaciones Puerto/gestion-contenedores.html",
+        "Gestion Operaciones Puerto/gestion-etapas-contenedor.html",
+        "Gestion Operaciones Puerto/gestion-puertos.html",
+        "Gestion Operaciones Puerto/gestion-tipos-contenedor.html",
+        "Gestion de Planeacion/gestion-cintas.html",
+        "Gestion de Transporte/gestion-categorias-licencia.html",
+        "Gestion de Transporte/gestion-tipos-vehiculo.html",
+        "Materiales y Suministros/categorias-pedido.html"
+      ],
+      "component_ids": ["inline-form-panel", "form-actions"],
+      "rules": [
+        "Ubicar el formulario breve entre los filtros y la tabla, con panel sutil y sin aviso contextual dentro del formulario.",
+        "Distribuir las columnas según los campos reales; no reservar espacio para un estado automatico de alta.",
+        "Centrar las acciones al final del formulario y ubicar la accion primaria a su derecha.",
+        "Conservar las reglas de validacion y los estados editables propios de cada dominio."
+      ],
+      "exceptions": [
+        "No trasladar automaticamente a formularios medianos/grandes, transacciones ni edicion de pedidos.",
+        "La composicion calibrada en HTML estatico no implica consumo de componentes publicados de la libreria."
+      ],
+      "evidence": ["shared/sial-core.css", "docs/normalizacion-libreria-web-2026-10-13.md", "docs/mapeo-patrones-web-2026-10-13.md"],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "web-library-table-controls",
+      "family": "catalogos-y-relaciones-breves",
+      "lifecycle": "calibrated",
+      "applies_to": [
+        "Materiales y Suministros/categorias-pedido.html",
+        "Gestion de Transporte/gestion-categorias-licencia.html",
+        "Gestion de Transporte/gestion-tipos-vehiculo.html"
+      ],
+      "component_ids": ["Table", "TableRowActions", "IconButton", "Chip", "Pagination", "Button"],
+      "rules": [
+        "Consumir los componentes publicados, no imitar sus iconos o bordes con HTML local.",
+        "Mostrar el contador de registros filtrados arriba de la tabla; accion primaria en el extremo superior derecho.",
+        "Acciones por fila con IconButton ghost y semantica de cada accion; paginacion en el pie de la tabla."
+      ],
+      "exceptions": [
+        "No anadir acciones ni modo de cuadricula sin funcion real.",
+        "Las tablas HTML heredadas no se declaran Table publicado por usar controles de libreria a traves del adaptador."
+      ],
+      "evidence": ["src/web/main.jsx", "docs/normalizacion-libreria-web-2026-10-13.md"],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "web-library-simple-catalog-table",
+      "family": "catalogos-breves-con-formulario-embebido",
+      "lifecycle": "calibrated",
+      "applies_to": [
+        "Gestion de Fincas/gestion-clases-referencia.html",
+        "Gestion de Fincas/gestion-grupos.html",
+        "Gestion de Fincas/gestion-productos.html",
+        "Gestion de Fincas/gestion-sectores.html"
+      ],
+      "component_ids": ["Table", "TableRowActions", "IconButton", "Chip", "SelectInput", "Pagination"],
+      "rules": [
+        "Componer card-header, toolbar, formulario breve opcional, Table y paginacion en ese orden; accion principal arriba a la derecha y acciones del formulario centradas.",
+        "Usar componentes publicados para contador, filtros, filas, estados y acciones sin duplicar la tabla visible.",
+        "Preservar filas, filtros, exportacion y eventos existentes mediante el proxy HTML mientras la vista no tenga datos React propios.",
+        "Verificar con datos, sin resultados, filtro activo, contador, detalle y edicion antes de replicar en otra vista equivalente."
+      ],
+      "exceptions": [
+        "No aplicar el adaptador por tener una tabla HTML: matrices, aprobaciones, pedidos y otros flujos transaccionales exigen contrato propio.",
+        "La migracion del prototipo no prueba migracion del frontend productivo ni persistencia backend.",
+        "Paginacion de varias paginas, teclado y responsive profundo aun requieren validacion adicional."
+      ],
+      "evidence": ["src/web/legacy-table-controls.jsx", "shared/sial-core.js", "docs/mapeo-patrones-web-2026-10-13.md"],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "web-library-select-filter",
+      "family": "catalogos-y-relaciones-breves",
+      "lifecycle": "calibrated",
+      "applies_to": [
+        "Materiales y Suministros/categorias-pedido.html",
+        "Gestion de Transporte/gestion-categorias-licencia.html",
+        "Gestion de Transporte/gestion-tipos-vehiculo.html"
+      ],
+      "component_ids": ["SelectInput", "TextInput"],
+      "rules": [
+        "Usar SelectInput publicado para filtros de estado y conservar opciones y etiquetas del dominio.",
+        "Verificar apertura, foco, seleccion y cierre del menu, incluido el portal fuera de la cuadricula local."
+      ],
+      "exceptions": [
+        "Un select HTML nativo no se registra como instancia de SelectInput.",
+        "No sustituir estados especificos por Activo/Inactivo genericos."
+      ],
+      "evidence": ["src/web/main.jsx", "shared/sial-core.css", "docs/mapeo-patrones-web-2026-10-13.md"],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "web-library-legacy-table-controls",
+      "family": "bandejas-y-maestras-web-existentes",
+      "lifecycle": "calibrated",
+      "applies_to": [
+        "Gestion de Empresas/gestion-dependencias.html",
+        "Gestion de Empresas/gestion-notificaciones-contactos.html",
+        "Gestion de Planeacion/gestion-cintas.html",
+        "Gestion de Transporte/gestion-operaciones.html",
+        "Gestion Operaciones Puerto/programacion-contenedores.html",
+        "Gestion Operaciones Puerto/trazabilidad-pallets.html",
+        "Materiales y Suministros/pedidos-adicionales.html",
+        "Materiales y Suministros/pedidos-recurrentes.html"
+      ],
+      "component_ids": ["SelectInput", "Chip", "IconButton", "Pagination"],
+      "rules": [
+        "Aplicar a controles de bandeja por componente y semantica, incluso si aparecen tras el render inicial.",
+        "Preservar las opciones, el estado y los eventos funcionales originales mediante el proxy nativo.",
+        "Mantener la accion principal arriba a la derecha y las acciones del formulario centradas al final.",
+        "No limitar artificialmente la cantidad de acciones de cada fila."
+      ],
+      "exceptions": [
+        "No transformar selects dentro de formularios ni decisiones operativas por similitud de clase.",
+        "No declarar Table migrado por usar solo controles de libreria; las cuatro maestras simples de Fincas se documentan en un patron separado con Table real.",
+        "shared/componentes.html es catalogo tecnico y no valida cobertura funcional."
+      ],
+      "evidence": ["src/web/legacy-table-controls.jsx", "shared/sial-core.js", "docs/mapeo-patrones-web-2026-10-13.md"],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "web-materials-dynamic-line-controls",
+      "family": "captura-transaccional-de-materiales",
+      "lifecycle": "candidate",
+      "applies_to": ["Materiales y Suministros/pedidos-adicionales.html"],
+      "component_ids": ["SelectInput", "NumberInput", "Chip", "IconButton", "Notice", "Toast"],
+      "rules": [
+        "Mantener estable el control de cantidad durante cada entrada; actualizar solo el resultado de su linea y el resumen, no reconstruir todas las filas.",
+        "Sincronizar el componente publicado con el valor y las restricciones del proxy nativo, incluido el valor vacio y la validacion entera.",
+        "Deshabilitar en cada SelectInput los materiales ocupados por otras lineas y devolver el foco al selector publicado tras un cambio estructural.",
+        "Usar Chip publicado para el resultado semantico de cada linea e IconButton publicado para quitar una linea cuando haya mas de una.",
+        "Separar el Notice persistente de acceso/error/exito del Toast transitorio de borrador o solicitud repetida; no colocar un banner dentro del formulario.",
+        "Reconstruir filas solo ante cambios estructurales como agregar o quitar linea o cambiar material; verificar foco, valores y accion a 390 px y escritorio."
+      ],
+      "exceptions": [
+        "No aplicar a formularios breves de catalogo: este patron corresponde a lineas transaccionales dinamicas.",
+        "Un alta valida en el prototipo solo acredita persistencia local y navegacion al detalle; no implementa persistencia backend ni decisiones de aprobacion."
+      ],
+      "evidence": ["Materiales y Suministros/sial-pedidos-adicionales.js", "src/web/legacy-table-controls.jsx", "docs/matriz-normalizacion-materiales-web-2026-10-16.md"],
+      "confidence": "medium"
+    },
+    {
+      "pattern_id": "web-materials-order-detail-status",
+      "family": "estados-en-flujos-de-materiales",
+      "lifecycle": "candidate",
+      "applies_to": [
+        "Materiales y Suministros/aprobacion-pedidos-materiales.html",
+        "Materiales y Suministros/pedidos-adicionales.html",
+        "Materiales y Suministros/seguimiento-pedidos-finca.html",
+        "Materiales y Suministros/gestion-pedidos-materiales.html",
+        "Materiales y Suministros/ajustar-pedido-sugerido.html",
+        "Materiales y Suministros/gestion-materiales.html"
+      ],
+      "component_ids": ["Chip"],
+      "rules": [
+        "Inventariar estados en la vista inicial, el detalle y sus variantes dinamicas; la cobertura de la tabla no cubre automaticamente el detalle.",
+        "Renderizar el estado semantico con Chip publicado y ocultar el proxy HTML cuando se use adaptador, sin duplicar el texto visible.",
+        "Comprobar estado de cabecera, estado actual, decisiones por material y cambios posteriores con el pedido abierto, incluido viewport estrecho."
+      ],
+      "exceptions": [
+        "No convertir cualquier span.status en Chip sin comprobar si expresa estado de pedido, resultado por material o feedback de captura.",
+        "La evidencia de esta familia no promueve la regla a todas las vistas Web ni sustituye las pruebas de estados no recorridos."
+      ],
+      "evidence": ["src/web/legacy-table-controls.jsx", "docs/matriz-normalizacion-materiales-web-2026-10-16.md"],
+      "confidence": "medium"
+    }
+  ]
+}
