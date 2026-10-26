@@ -1,5 +1,7 @@
 # Matriz de normalización — Materiales Web
 
+**Corte de publicación 26/10/2026:** el código de este bloque está en `origin/main` (`0db2b04`); el estado funcional de las 19 rutas continúa **Parcial** según la evidencia por vista. Las menciones históricas a «no publicado» más abajo describen el momento de aquellas pasadas, no el estado de Git actual. Ver [traza de publicación](traza-normalizacion-web-2026-10-26.md).
+
 ## Bloque del 22–26/10/2026 — continuidad y migración de adicionales/aprobación
 
 **Estado técnico: 19/19 rutas con montaje React directo, 0/19 con cierre integral.** `pedidos-adicionales` consume directamente los controles publicados y ya no inicializa `sial-pedidos-adicionales.js` en esa ruta. Se corrigió la carga de `sial-ui-runtime.css`; el montaje inicial, filtro, tabla, paginación, alta, borrador persistente, envío, detalle y ausencia de desborde documental a 390 px se comprobaron en navegador. El pedido de prueba y su borrador se eliminaron del almacenamiento local después de la verificación. No se comprobó aún el conjunto completo de alternativas de stock, duplicados, teclado y lectura visual; por ello continúa **Parcial**.
