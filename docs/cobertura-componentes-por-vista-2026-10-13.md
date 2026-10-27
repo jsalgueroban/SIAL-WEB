@@ -1,5 +1,7 @@
 # Cobertura de componentes por vista Web — inventario inicial
 
+> **Inventario histórico (13–16/10).** Los totales estáticos de esta página no describen el estado actual. Consultar [estado-normalizacion-web-2026-10-26.md](estado-normalizacion-web-2026-10-26.md) y la [matriz vigente](matriz-vista-componente-web-2026-10-26.csv) para el alcance de 102 HTML y el seguimiento por componente.
+
 Fecha inicial: 2026-10-13. Alcance actualizado el 2026-10-16: 101 HTML de la propuesta, incluido el catálogo técnico `shared/componentes.html`. Los números originales son la línea base estática al abrir este inventario; las cuatro rutas incorporadas después se contaron al agregarlas, no equivalen a un recuento general tras cada edición. Los controles creados por JavaScript requieren revisión en runtime. La columna de estado sí recoge avances posteriores. «React» o «Table adaptada» identifica únicamente esa adopción, no la normalización completa de la vista.
 
 Criterio de terminado: cada vista debe tener inventario estático y runtime, equivalencia con la librería para cada componente aplicable, implementación o excepción justificada, y comprobación de estados/interacciones. «Sin componente aplicable» se documenta; no se deduce de la ausencia de marcadores.

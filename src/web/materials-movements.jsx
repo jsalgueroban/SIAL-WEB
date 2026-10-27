@@ -39,7 +39,7 @@ export function MaterialsMovements() {
     { key: "material", header: "Material" }, { key: "type", header: "Tipo" },
     { key: "quantity", header: "Cantidad" }, { key: "unit", header: "Unidad" },
     { key: "dateLabel", header: "Fecha" }, { key: "reason", header: "Motivo" },
-    { key: "user", header: "Usuario" }
+    { key: "user", header: "Usuario" }, { key: "status", header: "Estado" }
   ];
   const columns = [
     { key: "id", header: "Movimiento / SAP", render: (item) => <span className="materials-record-main"><strong>{item.id}</strong><span>{item.sapMaterial}</span></span> },
@@ -48,7 +48,8 @@ export function MaterialsMovements() {
     { key: "quantity", header: "Cantidad", render: (item) => <strong>{item.quantity} {item.unit}</strong> },
     { key: "dateLabel", header: "Fecha", render: (item) => item.dateLabel },
     { key: "reason", header: "Motivo", render: (item) => item.reason },
-    { key: "user", header: "Usuario", render: (item) => item.user }
+    { key: "user", header: "Usuario", render: (item) => item.user },
+    { key: "status", header: "Estado", render: (item) => <Chip preset={item.status === "ACTIVO" ? "active" : "warning"}>{item.status === "ACTIVO" ? "Activo" : "Revisión"}</Chip> }
   ];
   return <>
     <p className="page-eyebrow">Materiales / Inventario</p>
@@ -57,8 +58,8 @@ export function MaterialsMovements() {
     <article className="card mt-24 standard-master-card">
       <div className="card-header"><div><h2 className="card-title">Historial de movimientos</h2>
         <p className="card-subtitle">Entradas, salidas y ajustes por material, tipo y rango de fechas.</p></div>
-        <div className="card-actions"><span data-sial-component="Chip" data-sial-source="@banasandev/banasan-ui"><Chip preset="info" aria-live="polite">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip></span>
-          <span data-sial-component="Button" data-sial-source="@banasandev/banasan-ui"><Button variant="outlined" onClick={() => exportRows(filtered, exportColumns, "movimientos-inventario")}>Exportar</Button></span>
+        <div className="card-actions materials-inventory-actions"><span data-sial-component="Chip" data-sial-source="@banasandev/banasan-ui"><Chip preset="info" aria-live="polite">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip></span>
+          <span data-sial-component="Button" data-sial-source="@banasandev/banasan-ui"><Button variant="outlined" onClick={() => exportRows(filtered.map((item) => ({ ...item, status: item.status === "ACTIVO" ? "Activo" : "Revisión" })), exportColumns, "movimientos-inventario")}>Exportar</Button></span>
         </div></div>
       <div className="card-body"><div className="toolbar materials-toolbar">
         <div data-sial-component="TextInput" data-sial-source="@banasandev/banasan-ui"><TextInput id="movement-search" label="Buscar movimiento, material o usuario" placeholder="Movimiento, material o usuario"
@@ -85,9 +86,13 @@ export function MaterialsMovements() {
         onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} /></div>
     </article>
     {selected && <Drawer show onClose={() => setSelected(null)} title="Detalle de movimiento"
-      subtitle={selected.source} data={Object.entries(selected).map(([key, value]) => ({
-        label: exportColumns.find((item) => item.key === key)?.header || key,
-        children: String(value)
-      }))} />}
+      subtitle={`${selected.id} · ${selected.sapMaterial}`}
+      data={[
+        ["Movimiento", selected.id], ["Código SAP", selected.sapMaterial], ["Material", selected.material],
+        ["Tipo", selected.type], ["Cantidad", `${selected.quantity} ${selected.unit}`], ["Fecha", selected.dateLabel],
+        ["Finca", selected.finca], ["Motivo", selected.reason], ["Usuario", selected.user],
+        ["Estado", <Chip preset={selected.status === "ACTIVO" ? "active" : "warning"}>{selected.status === "ACTIVO" ? "Activo" : "Revisión"}</Chip>],
+        ["Fuente", selected.source], ["Auditoría", selected.audit?.replace("|", " · ")]
+      ].map(([label, value]) => ({ label, children: value || "No registrado" }))} />}
   </>;
 }

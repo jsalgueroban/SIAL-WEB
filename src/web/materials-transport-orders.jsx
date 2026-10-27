@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
-  Button, Chip, DateInput, IconButton, Pagination, SelectInput, Table,
+  Button, Chip, DateInput, Drawer, IconButton, Pagination, SelectInput, Table,
   TableRowActions, TextInput, Toast, ViewIcon
 } from "@banasandev/banasan-ui";
 
@@ -66,6 +66,19 @@ function localDate(value) {
 function statusPreset(value) { return value === "NOTIFICADO" ? "active" : value === "CREADO" ? "info" : "warning"; }
 function lineSummary(lines) {
   return lines.map((line) => `${line.material} · ${line.quantity.toLocaleString("es-CO")} ${line.unit}`).join(" / ");
+}
+function materialCount(item) {
+  return item.lines?.length ?? String(item.materials || "").split(",").filter((value) => value.trim()).length;
+}
+function exportTransportRows(rows, columns) {
+  const values = rows.map((item) => ({
+    ...item,
+    route: `${item.origin || "Origen no registrado"} → ${item.destination || item.finca} · ${item.window ? compactDate(item.window) : "Ventana no registrada"}`,
+    materials: `${materialCount(item)} ${materialCount(item) === 1 ? "ítem" : "ítems"} · ${item.materials}`,
+    status: statusLabels[item.status] || item.status,
+    audit: String(item.audit || "—").replace("|", " · ")
+  }));
+  exportRows(values, columns, "ordenes-transporte-insumos");
 }
 
 export function MaterialsTransportOrders() {
@@ -245,7 +258,7 @@ export function MaterialsTransportOrders() {
     { key: "id", header: "Orden de transporte", render: (item) => <span className="materials-record-main"><strong>{item.id}</strong><span>{item.parentOrderId ? `${item.parentOrderId} · Partición ${item.partition}` : "Registro anterior"}</span></span> },
     { key: "document", header: "Documento origen", render: (item) => item.document },
     { key: "route", header: "Trayecto", render: (item) => <span className="materials-record-main"><strong>{item.origin || "Origen no registrado"} → {item.destination || item.finca}</strong><span>{item.window ? compactDate(item.window) : "Ventana no registrada"}</span></span> },
-    { key: "materials", header: "Carga", render: (item) => <span className="materials-record-main"><strong>{item.lines?.length || 1} {item.lines?.length === 1 ? "ítem" : "ítems"}</strong><span>{item.materials}</span></span> },
+    { key: "materials", header: "Carga", render: (item) => <span className="materials-record-main"><strong>{materialCount(item)} {materialCount(item) === 1 ? "ítem" : "ítems"}</strong><span>{item.materials}</span></span> },
     { key: "status", header: "Estado", render: (item) => <Chip preset={statusPreset(item.status)}>{statusLabels[item.status] || item.status}</Chip> },
     { key: "audit", header: "Último evento", render: (item) => String(item.audit || "—").replace("|", " · ") }
   ];
@@ -256,7 +269,7 @@ export function MaterialsTransportOrders() {
     <div className="page-header"><div><h1 className="page-title">{mode === "list" ? "Órdenes de transporte de insumos" : "Particionar pedido de materiales"}</h1><p className="page-subtitle">{mode === "list" ? "Consulta las órdenes creadas a partir de pedidos de materiales y su estado operativo." : "Distribuye todos los ítems completos de un pedido aprobado entre las órdenes que atenderá Transporte."}</p></div></div>
     {feedback && <div className="transport-feedback-toast" role="status"><Toast visible variant="success" title="Órdenes registradas" description={feedback} onClose={() => setFeedback("")} /></div>}
     {mode === "list" ? <article className="card mt-24 standard-master-card">
-      <div className="card-header"><div><h2 className="card-title">Órdenes registradas</h2><p className="card-subtitle">Cada partición conserva el vínculo con su pedido y documento de origen.</p></div><div className="card-actions"><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button variant="outlined" onClick={() => exportRows(filtered, columns, "ordenes-transporte-insumos")}>Exportar</Button><Button onClick={openCreate}>Particionar pedido</Button></div></div>
+      <div className="card-header"><div><h2 className="card-title">Órdenes registradas</h2><p className="card-subtitle">Cada partición conserva el vínculo con su pedido y documento de origen.</p></div><div className="card-actions"><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button variant="outlined" onClick={() => exportTransportRows(filtered, columns)}>Exportar</Button><Button onClick={openCreate}>Particionar pedido</Button></div></div>
       <div className="card-body"><div className="toolbar materials-toolbar"><TextInput id="transportSearch" label="Buscar orden" placeholder="Orden, pedido, documento o material" value={search} onChange={(value) => { setSearch(value); setPage(1); }} /><SelectInput id="transportStatus" label="Estado" value={status} options={[{ value: "all", label: "Todos los estados" }, ...Object.entries(statusLabels).map(([value, label]) => ({ value, label }))]} onChange={(value) => { setStatus(value); setPage(1); }} /><TableFilterReset active={Boolean(search.trim()) || status !== "all"} onReset={() => { setSearch(""); setStatus("all"); setPage(1); }} /></div></div>
       <Table columns={columns} data={filtered.slice((current - 1) * size, current * size)} rowKey={(item) => item.id} minWidth="1040px" emptyState="No hay órdenes que coincidan con la búsqueda." actionsHeader="Acciones" actions={(item) => <TableRowActions label={`Acciones de ${item.id}`}><IconButton variant="ghost" aria-label={`Ver detalle de ${item.id}`} title="Ver detalle" onClick={() => setSelectedId(item.id)}><ViewIcon /></IconButton></TableRowActions>} />
       <Pagination page={current} pageSize={size} total={filtered.length} pageSizeOptions={[10, 20, 50]} onPageChange={setPage} onPageSizeChange={(value) => { setSize(value); setPage(1); }} />
@@ -304,6 +317,19 @@ export function MaterialsTransportOrders() {
       </>}
       <div className="transport-create-actions"><Button variant="outlined" type="button" onClick={() => { setMode("list"); setDraft(initialDraft()); setErrors({}); }}>Cancelar</Button><Button type="button" onClick={savePartition} disabled={!source}>Crear órdenes de transporte</Button></div>
     </div>}
-    {selected && <div className="transport-detail-overlay" role="presentation" onClick={() => setSelectedId(null)}><section className="transport-detail-panel" role="dialog" aria-modal="true" aria-labelledby="transportDetailTitle" onClick={(event) => event.stopPropagation()}><div className="transport-detail-header"><div><span>ORDEN DE TRANSPORTE</span><h2 id="transportDetailTitle">{selected.id}</h2><p>{selected.parentOrderId ? `${selected.parentOrderId} · Partición ${selected.partition}` : "Registro anterior a la partición"}</p></div><button type="button" aria-label="Cerrar detalle" onClick={() => setSelectedId(null)}>×</button></div><div className="transport-detail-body"><Chip preset={statusPreset(selected.status)}>{statusLabels[selected.status] || selected.status}</Chip><dl><div><dt>Documento origen</dt><dd>{selected.document}</dd></div><div><dt>Trayecto</dt><dd>{selected.origin || "No registrado"} → {selected.destination || selected.finca}</dd></div><div><dt>Fecha prevista</dt><dd>{selected.window ? compactDate(selected.window) : "No registrada"}</dd></div><div><dt>Modalidad</dt><dd>{selected.modality === "tercero" ? `Tercero · ${selected.carrier}` : selected.modality === "propio" ? "Transporte propio" : "No registrada"}</dd></div><div><dt>Responsable</dt><dd>{selected.responsible || "No registrado"}</dd></div><div><dt>Asignación</dt><dd>{selected.vehicle || "Pendiente"} · {selected.driver || "Pendiente"}</dd></div></dl><h3>Ítems de la orden</h3>{selected.lines?.length ? <ul className="transport-detail-lines">{selected.lines.map((line) => <li key={line.id}><strong>{line.material}</strong><span>{line.code} · {line.quantity.toLocaleString("es-CO")} {line.unit}</span></li>)}</ul> : <p>{selected.quantity || selected.materials}</p>}<h3>Último evento</h3><p>{String(selected.audit || "Sin evento").replace("|", " · ")}</p></div><div className="transport-detail-footer"><Button variant="outlined" onClick={() => setSelectedId(null)}>Cerrar</Button></div></section></div>}
+    {selected && <Drawer show onClose={() => setSelectedId(null)} title={selected.id} subtitle={selected.parentOrderId ? selected.parentOrderId + " · Partición " + selected.partition : "Registro anterior a la partición"} ariaLabel={"Detalle de " + selected.id} width="480px" data={[
+      { label: "Estado", children: <Chip preset={statusPreset(selected.status)}>{statusLabels[selected.status] || selected.status}</Chip> },
+      { label: "Documento origen", children: selected.document },
+      { label: "Trayecto", children: <>{selected.origin || "No registrado"} → {selected.destination || selected.finca}</> },
+      { label: "Fecha prevista", children: selected.window ? compactDate(selected.window) : "No registrada" },
+      { label: "Modalidad", children: selected.modality === "tercero" ? "Tercero · " + selected.carrier : selected.modality === "propio" ? "Transporte propio" : "No registrada" },
+      { label: "Responsable", children: selected.responsible || "No registrado" },
+      { label: "Asignación", children: (selected.vehicle || "Pendiente") + " · " + (selected.driver || "Pendiente") }
+    ]}>
+      <div className="transport-drawer-extra"><h3>Ítems de la orden</h3>
+        {selected.lines?.length ? <ul className="transport-detail-lines">{selected.lines.map((line) => <li key={line.id}><strong>{line.material}</strong><span>{line.code} · {line.quantity.toLocaleString("es-CO")} {line.unit}</span></li>)}</ul> : <p>{selected.quantity || selected.materials}</p>}
+        <h3>Último evento</h3><p>{String(selected.audit || "Sin evento").replace("|", " · ")}</p>
+      </div>
+    </Drawer>}
   </>;
 }

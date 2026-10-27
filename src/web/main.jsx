@@ -8,9 +8,10 @@ import { KnownDevices } from "./known-devices.jsx";
 import { mountShell } from "./shell-navigation.jsx";
 import { MaterialsInventory } from "./materials-inventory.jsx";
 import { MaterialsMovements } from "./materials-movements.jsx";
-import { MaterialsDashboard, MaterialsOperations } from "./materials-operations.jsx";
+import { MaterialsOperations } from "./materials-operations.jsx";
 import { MaterialsCatalog } from "./materials-catalogs.jsx";
 import { MaterialsOrderTracking, MaterialsRecurringOrders } from "./materials-order-followup.jsx";
+import { MaterialsOrderTraceAlternative } from "./materials-order-trace-alternative.jsx";
 import { MaterialsOrderTrace } from "./materials-order-trace.jsx";
 import { MaterialsOrderAdjustment } from "./materials-order-adjustment.jsx";
 import { MaterialsSuggestedOrder } from "./materials-suggested-order.jsx";
@@ -30,14 +31,14 @@ const mounts = {
   "materials-stock": () => <MaterialsInventory kind="stock" />,
   "materials-pallets": () => <MaterialsInventory kind="pallets" />,
   "materials-movements": MaterialsMovements,
-  "materials-dashboard": MaterialsDashboard,
   "materials-summaries": () => <MaterialsOperations kind="summaries" />,
   "materials-deliveries": () => <MaterialsOperations kind="deliveries" />,
   "materials-suppliers": () => <MaterialsCatalog kind="suppliers" />,
   "materials-rules": () => <MaterialsCatalog kind="rules" />,
   "materials-order-tracking": MaterialsOrderTracking,
   "materials-recurring-orders": MaterialsRecurringOrders,
-  "materials-order-trace": MaterialsOrderTrace,
+  "materials-order-trace": () => new URLSearchParams(location.search).get("composicion") === "alternativa"
+    ? <MaterialsOrderTraceAlternative /> : <MaterialsOrderTrace />,
   "materials-order-adjustment": MaterialsOrderAdjustment,
   "materials-suggested-order": MaterialsSuggestedOrder,
   "materials-recipes": MaterialsRecipes,

@@ -57,6 +57,29 @@ try {
     return result.result.value;
   };
   const reports = [];
+  for (const redirect of config.redirects || []) {
+    const url = new URL(redirect.route.split('/').map(encodeURIComponent).join('/'), baseUrl).href;
+    await send('Page.navigate', { url });
+    let result;
+    for (let attempt = 0; attempt < 100; attempt += 1) {
+      await delay(100);
+      result = await evaluate(`(() => {
+        const target = new URL(${JSON.stringify(redirect.target.split('/').map(encodeURIComponent).join('/'))}, ${JSON.stringify(baseUrl)});
+        const moduleLink = [...document.querySelectorAll('.nav-module-link')]
+          .find((link) => link.textContent.trim() === ${JSON.stringify(redirect.moduleLabel)});
+        return {
+          current: decodeURIComponent(location.pathname),
+          target: decodeURIComponent(target.pathname),
+          moduleHref: moduleLink ? decodeURIComponent(new URL(moduleLink.href).pathname) : null,
+          ready: document.readyState === 'complete'
+        };
+      })()`).catch(() => null);
+      if (result?.ready && result.current === result.target && result.moduleHref) break;
+    }
+    const passed = Boolean(result?.ready && result.current === result.target && result.moduleHref === result.target);
+    reports.push({ route: redirect.route, pattern_id: 'legacy-route-redirect', ...result,
+      issues: passed ? [] : ['la URL antigua o el enlace principal del módulo no abre Gestión de pedidos'], passed });
+  }
   for (const view of config.views) {
     const url = new URL(view.route.split('/').map(encodeURIComponent).join('/'), baseUrl).href;
     await send('Page.navigate', { url });
@@ -69,7 +92,7 @@ try {
         if (ready !== 'complete') continue;
         report = await evaluate(`(async () => {
           const { auditPatternRuntime } = await import('/scripts/pattern-runtime-gate.mjs');
-          return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: view.requireNavigation, checkRecordCount: view.checkRecordCount })});
+          return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: (view.route.startsWith('Materiales y Suministros/') && !view.route.endsWith('/ajustar-pedido-sugerido.html')) || view.requireNavigation, checkRecordCount: view.checkRecordCount })});
         })()`).catch(() => null);
         if (report?.components && Object.values(report.components).every((item) => item.mounted > 0)) break;
       }

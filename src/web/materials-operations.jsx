@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button, CheckIcon, Chip, CloseIcon, Drawer, IconButton, NotificationIcon, Pagination, SelectInput, Table,
@@ -19,13 +19,19 @@ const deliveries = [
 ];
 const statusLabels = { NOTIFICADO: "Notificado", LISTO_DESPACHO: "Listo despacho", PENDIENTE_VALIDACION: "Pendiente validación", ENTREGADA: "Entregada", EN_TRANSITO: "En tránsito", ASIGNADO: "Asignado", INACTIVO: "Inactivo" };
 const activeStatuses = new Set(["NOTIFICADO", "ENTREGADA"]);
+const summaryOverridesKey = "sial-materials-summary-overrides";
+function readSummaryOverrides() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(summaryOverridesKey) || "{}");
+    return saved && !Array.isArray(saved) && typeof saved === "object" ? saved : {};
+  } catch { return {}; }
+}
 function Status({ value }) {
   return <Chip preset={value === "INACTIVO" ? "inactive" : activeStatuses.has(value) ? "active" : "warning"}>{statusLabels[value] || value}</Chip>;
 }
 function RecordValue({ primary, secondary }) {
   return <span className="materials-record-main"><strong>{primary}</strong>{secondary && <span>{secondary}</span>}</span>;
 }
-
 const configs = {
   summaries: {
     eyebrow: "Materiales / Proveedores externos", title: "Resumen para proveedores externos",
@@ -64,10 +70,21 @@ export function MaterialsOperations({ kind }) {
   const [context, setContext] = useState("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [selected, setSelected] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [feedback, setFeedback] = useState("");
-  const [overrides, setOverrides] = useState({});
-  const records = config.data.map((item) => ({ ...item, status: overrides[item.id] || item.status }));
+  const [overrides, setOverrides] = useState(readSummaryOverrides);
+  const records = config.data.map((item) => ({
+    ...item,
+    status: overrides[item.id]?.status || item.status,
+    generated: overrides[item.id]?.generated || item.generated,
+    sent: overrides[item.id]?.sent || item.sent,
+  }));
+  const selected = records.find((item) => item.id === selectedId);
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const timer = window.setTimeout(() => setFeedback(""), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
   const contexts = [...new Set(config.data.map((item) => item[config.contextKey]))];
   const filtered = useMemo(() => records.filter((item) => {
     const match = Object.values(item).join(" ").toLocaleLowerCase("es-CO").includes(search.trim().toLocaleLowerCase("es-CO"));
@@ -78,18 +95,49 @@ export function MaterialsOperations({ kind }) {
   const rows = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const columns = config.columns.map((column) => ({ ...column, render: column.render || ((item) => item[column.key]) }));
   const statusOptions = [...new Set(records.map((item) => item.status))].map((value) => ({ value, label: statusLabels[value] || value }));
-  function communicate(record) {
-    setFeedback(record ? `Resumen ${record.id} generado y enviado.` : "Resumen digital generado y enviado.");
+  function saveOverrides(next) {
+    setOverrides(next);
+    localStorage.setItem(summaryOverridesKey, JSON.stringify(next));
   }
+  function communicate(record) {
+    const now = new Date().toLocaleString("es-CO");
+    saveOverrides({ ...overrides, [record.id]: {
+      ...overrides[record.id], status: "NOTIFICADO",
+      generated: record.generated === "Pendiente" ? now : record.generated,
+      sent: now,
+    } });
+    setFeedback(`Resumen ${record.id} generado y compartido.`);
+  }
+  function toggleSummary(record) {
+    const inactive = record.status === "INACTIVO";
+    const original = config.data.find((item) => item.id === record.id);
+    saveOverrides({ ...overrides, [record.id]: {
+      ...overrides[record.id],
+      status: inactive ? overrides[record.id]?.previousStatus || original.status : "INACTIVO",
+      previousStatus: inactive ? undefined : record.status,
+    } });
+    setFeedback(`Resumen ${record.id} ${inactive ? "activado" : "inactivado"}.`);
+  }
+  const exportVisibleRows = () => filtered.map((item) => kind === "summaries" ? {
+    ...item,
+    materials: `${item.materials} · ${item.quantities}`,
+    generated: `Generado: ${item.generated} · Enviado: ${item.sent}`,
+    status: statusLabels[item.status] || item.status,
+  } : {
+    ...item,
+    receiver: `${item.receiver} · ${item.deliveredAt}`,
+    evidence: `${item.evidence} · ${item.pod}`,
+    audit: item.audit.replace("|", " · "),
+    status: statusLabels[item.status] || item.status,
+  });
   return <>
     <p className="page-eyebrow">{config.eyebrow}</p>
     <div className="page-header"><div><h1 className="page-title">{config.title}</h1><p className="page-subtitle">{config.subtitle}</p></div></div>
-    <article className="card mt-24 standard-master-card">
+    <article className="card mt-24 standard-master-card materials-operations-card">
       <div className="card-header"><div><h2 className="card-title">{config.cardTitle}</h2><p className="card-subtitle">{config.cardSubtitle}</p></div>
         <div className="card-actions"><span data-sial-component="Chip" data-sial-source={source}><Chip preset="info" aria-live="polite">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip></span>
-          <span data-sial-component="Button" data-sial-source={source}><Button variant="outlined" onClick={() => exportRows(filtered, config.columns, config.exportName)}>Exportar</Button></span>
-          {kind === "summaries" ? <Button onClick={() => communicate(null)}>Generar resumen</Button>
-            : <Button variant="outlined" onClick={() => { location.href = "../Trazabilidad/auditoria-operativa.html"; }}>Ver auditoría</Button>}
+          <span data-sial-component="Button" data-sial-source={source}><Button variant="outlined" onClick={() => exportRows(exportVisibleRows(), config.columns, config.exportName)}>Exportar</Button></span>
+          {kind === "deliveries" && <Button variant="outlined" onClick={() => { location.href = "../Trazabilidad/auditoria-operativa.html"; }}>Ver auditoría</Button>}
         </div>
       </div>
       {feedback && <Toast visible variant="success" title="Resultado de la operación" description={feedback} onClose={() => setFeedback("")} />}
@@ -106,39 +154,26 @@ export function MaterialsOperations({ kind }) {
       <div data-sial-component="Table" data-sial-source={source}><Table columns={columns} data={rows} rowKey={(item) => item.id} minWidth="1050px"
         emptyState="No hay registros que coincidan con los filtros." actionsHeader="Acciones" actionsWidth="130px"
         actions={(item) => <TableRowActions label={`Acciones de ${item.id}`}>
-          <IconButton variant="ghost" aria-label={`Ver detalle de ${item.id}`} title="Ver detalle" onClick={() => setSelected(item)}><ViewIcon/></IconButton>
+          <IconButton variant="ghost" aria-label={`Ver detalle de ${item.id}`} title="Ver detalle" onClick={() => setSelectedId(item.id)}><ViewIcon/></IconButton>
           {kind === "summaries" && <IconButton variant="ghost" aria-label={`Generar y compartir ${item.id}`} title="Generar y compartir" onClick={() => communicate(item)}><NotificationIcon/></IconButton>}
           {kind === "summaries" && <IconButton variant="ghost" aria-label={`${item.status === "INACTIVO" ? "Activar" : "Inactivar"} resumen ${item.id}`}
             title={item.status === "INACTIVO" ? "Activar resumen" : "Inactivar resumen"}
-            onClick={() => { setOverrides((previous) => ({ ...previous, [item.id]: item.status === "INACTIVO" ? config.data.find((record) => record.id === item.id).status : "INACTIVO" }));
-              setFeedback(`Resumen ${item.id} ${item.status === "INACTIVO" ? "activado" : "inactivado"}.`); }}>
+            onClick={() => toggleSummary(item)}>
             {item.status === "INACTIVO" ? <CheckIcon/> : <CloseIcon/>}</IconButton>}
         </TableRowActions>} /></div>
       <div data-sial-component="Pagination" data-sial-source={source}><Pagination page={currentPage} pageSize={pageSize} total={filtered.length} pageSizeOptions={[2, 10, 20]}
         onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} /></div>
     </article>
-    {selected && <Drawer show onClose={() => setSelected(null)} title={kind === "summaries" ? "Detalle del resumen" : "Detalle de entrega"}
-      subtitle={selected.id} data={Object.entries(selected).map(([key, value]) => ({
-        label: config.columns.find((column) => column.key === key)?.header || key,
-        children: key === "status" ? <Status value={value} /> : String(value)
-      }))} />}
-  </>;
-}
-
-const dashboardGroups = [
-  { title: "Configuración", links: [["Catálogo de materiales", "gestion-materiales.html"], ["Categorías de pedido", "categorias-pedido.html"], ["Recetas de materiales", "recetas-materiales.html"], ["Proveedores", "gestion-proveedores.html"], ["Reglas documentales", "reglas-documentales.html"]] },
-  { title: "Pedidos e inventario", links: [["Gestionar pedidos", "gestion-pedidos-materiales.html"], ["Seguimiento de pedidos", "seguimiento-pedidos-finca.html"], ["Aprobar pedidos", "aprobacion-pedidos-materiales.html"], ["Pedidos recurrentes", "pedidos-recurrentes.html"], ["Inventario de materiales", "inventario-materiales-finca.html"], ["Movimientos de inventario", "movimientos-inventario.html"], ["Inventario de pallets", "inventario-pallets.html"]] },
-  { title: "Despacho y seguimiento", links: [["Órdenes de transporte", "ordenes-transporte-insumos.html"], ["Resumen para proveedores", "resumen-proveedores.html"], ["Entregas y evidencias", "seguimiento-entregas.html"], ["Trazabilidad de pedidos", "trazabilidad-pedido.html"]] }
-];
-export function MaterialsDashboard() {
-  return <>
-    <p className="page-eyebrow">Gestión / Materiales y suministros</p>
-    <div className="page-header"><div><h1 className="page-title">Materiales y suministros</h1>
-      <p className="page-subtitle">Centro operativo para pedidos, stock, órdenes, proveedores, entregas y trazabilidad documental.</p></div></div>
-    <article className="card materials-navigation-card"><div className="card-header"><div><h2 className="card-title">Operación de materiales</h2>
-      <p className="card-subtitle">Selecciona la actividad que necesitas gestionar o consultar.</p></div></div>
-      <div className="card-body materials-navigation-grid">{dashboardGroups.map((group, index) => <section className="materials-navigation-group" key={group.title} aria-labelledby={`materials-group-${index}`}>
-        <h3 id={`materials-group-${index}`}>{group.title}</h3>{group.links.map(([label, href]) => <a key={href} className={`btn ${label === "Gestionar pedidos" ? "btn-primary" : "btn-secondary"}`} href={href}>{label}</a>)}
-      </section>)}</div></article>
+    {selected && <Drawer show onClose={() => setSelectedId(null)} title={kind === "summaries" ? "Detalle del resumen" : "Detalle de entrega"}
+      subtitle={selected.id} data={(kind === "summaries" ? [
+        ["Proveedor", selected.provider], ["Periodo", selected.period], ["Órdenes", selected.ordersCount],
+        ["Materiales", selected.materials], ["Cantidades", selected.quantities], ["Destino", selected.destination],
+        ["Estado", <Status value={selected.status} />], ["Generado", selected.generated], ["Enviado", selected.sent]
+      ] : [
+        ["Orden", selected.order], ["Documento", selected.document], ["Finca", selected.finca],
+        ["Transportista", selected.driver], ["Receptor", selected.receiver], ["Entrega", selected.deliveredAt],
+        ["Evidencia", selected.evidence], ["POD", selected.pod], ["Estado", <Status value={selected.status} />],
+        ["Auditoría", selected.audit.replace("|", " · ")]
+      ]).map(([label, value]) => ({ label, children: value || "No registrado" }))} />}
   </>;
 }

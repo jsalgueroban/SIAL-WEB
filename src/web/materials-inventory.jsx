@@ -65,7 +65,7 @@ export function MaterialsInventory({ kind }) {
     { key: "material", header: "Material" }, { key: "unit", header: "Unidad" },
     { key: "available", header: "Disponible" }, { key: "reserved", header: "Reservado" },
     { key: "total", header: "Total" }, { key: "lastMovement", header: "Último movimiento" },
-    { key: "updated", header: "Actualización" }
+    { key: "updated", header: "Actualización" }, { key: "status", header: "Estado" }
   ] : [
     { key: "reference", header: "Referencia" }, { key: "type", header: "Tipo" },
     { key: "finca", header: "Finca origen" }, { key: "pallets", header: "Pallets" },
@@ -78,14 +78,15 @@ export function MaterialsInventory({ kind }) {
     { key: "available", header: "Disponible", render: (item) => <strong>{item.available}</strong> },
     { key: "reserved", header: "Reservado" },
     { key: "total", header: "Total", render: (item) => <><strong>{item.total}</strong><br/><span className="muted">Informado por saldo</span></> },
-    { key: "lastMovement", header: "Último movimiento / actualización", render: (item) => <>{item.lastMovement}<br/><span className="muted">{item.updated}</span></> }
+    { key: "lastMovement", header: "Último movimiento / actualización", render: (item) => <>{item.lastMovement}<br/><span className="muted">{item.updated}</span></> },
+    { key: "status", header: "Estado", render: (item) => <Status value={item.status} /> }
   ] : [
     { key: "reference", header: "Referencia", width: "17%", render: (item) => <strong>{item.reference}</strong> },
     { key: "type", header: "Tipo" }, { key: "finca", header: "Finca origen" },
     { key: "pallets", header: "Pallets" }, { key: "boxesLeft", header: "Cajas restantes" },
     { key: "destination", header: "Destino" },
     { key: "status", header: "Estado", render: (item) => <Status value={item.status} /> },
-    { key: "updated", header: "Auditoría", render: () => <span className="muted">Actualizar - operacion.movilidad<br/>28/06/2026 08:30</span> }
+    { key: "source", header: "Fuente", render: (item) => item.source }
   ];
 
   return <>
@@ -94,9 +95,8 @@ export function MaterialsInventory({ kind }) {
     <article className="card mt-24 standard-master-card">
       <div className="card-header"><div><h2 className="card-title">{isStock ? "Existencias de materiales" : "Pallets completos e incompletos"}</h2>
         <p className="card-subtitle">{isStock ? "Inventario por finca con saldo disponible, reservado y total informado." : "Inventario ZE para planificar cargue de contenedores y consolidación posterior."}</p></div>
-        <div className="card-actions"><span data-sial-component="Chip" data-sial-source={source}><Chip preset="info" aria-live="polite">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip></span>
-          <span data-sial-component="Button" data-sial-source={source}><Button variant="outlined" onClick={() => exportRows(filtered, exportColumns, isStock ? "inventario-materiales" : "inventario-pallets")}>Exportar</Button></span>
-          {!isStock && <Button variant="outlined" onClick={() => { location.href = "../pallets/armar-pallet.html"; }}>Ver flujo móvil</Button>}
+        <div className="card-actions materials-inventory-actions"><span data-sial-component="Chip" data-sial-source={source}><Chip preset="info" aria-live="polite">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip></span>
+          <span data-sial-component="Button" data-sial-source={source}><Button variant="outlined" onClick={() => exportRows(filtered.map((item) => ({ ...item, status: item.status === "ACTIVO" ? "Activo" : "Revisión" })), exportColumns, isStock ? "inventario-materiales" : "inventario-pallets")}>Exportar</Button></span>
         </div>
       </div>
       <div className="card-body"><div className="toolbar materials-toolbar">
@@ -121,10 +121,18 @@ export function MaterialsInventory({ kind }) {
       <div data-sial-component="Pagination" data-sial-source={source}><Pagination page={currentPage} pageSize={pageSize} total={filtered.length} pageSizeOptions={[2, 10, 20]}
         onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} /></div>
     </article>
-    {selected && <Drawer show onClose={() => setSelected(null)} title={isStock ? "Detalle de inventario" : "Detalle del registro"}
-      subtitle={selected.source} data={Object.entries(selected).map(([key, value]) => ({
-        label: exportColumns.find((item) => item.key === key)?.header || key,
-        children: key === "status" ? <Status value={value} /> : String(value)
-      }))} />}
+    {selected && <Drawer show onClose={() => setSelected(null)} title={isStock ? "Detalle de inventario" : "Detalle de pallet"}
+      subtitle={isStock ? `${selected.sapMaterial} · ${selected.finca}` : `${selected.reference} · ${selected.finca}`}
+      data={(isStock ? [
+        ["Código SAP", selected.sapMaterial], ["Material", selected.material], ["Finca", selected.finca],
+        ["Disponible", `${selected.available} ${selected.unit}`], ["Reservado", `${selected.reserved} ${selected.unit}`],
+        ["Total informado", `${selected.total} ${selected.unit}`], ["Dañado", `${selected.damaged} ${selected.unit}`],
+        ["Cobertura", selected.coverage], ["Último movimiento", selected.lastMovement],
+        ["Actualización", selected.updated], ["Estado", <Status value={selected.status} />], ["Fuente", selected.source]
+      ] : [
+        ["Referencia", selected.reference], ["Tipo de pallet", selected.type], ["Finca origen", selected.finca],
+        ["Pallets", selected.pallets], ["Cajas restantes", selected.boxesLeft], ["Destino", selected.destination],
+        ["Estado", <Status value={selected.status} />], ["Fuente", selected.source]
+      ]).map(([label, value]) => ({ label, children: value }))} />}
   </>;
 }

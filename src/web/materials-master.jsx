@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Button,
   Chip,
@@ -185,11 +185,17 @@ export function MaterialsMaster({ view = "catalog" }) {
   const [configForm, setConfigForm] = useState(blankConfig);
   const [error, setError] = useState("");
   const [feedback, setFeedback] = useState("");
+  const catalogTriggerRef = useRef(null);
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const timer = window.setTimeout(() => setFeedback(""), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
   const filtered = useMemo(
     () =>
       records.filter(
         (item) =>
-          `${item.sapMaterial} ${item.name} ${item.orderCategory} ${item.reference}`
+          `${item.sapMaterial} ${item.name} ${item.orderCategory} ${item.reference} ${item.recipeVersion || ""}`
             .toLocaleLowerCase("es")
             .includes(search.toLocaleLowerCase("es")) &&
           (status === "all" || item.status === status) &&
@@ -201,16 +207,42 @@ export function MaterialsMaster({ view = "catalog" }) {
     page,
     Math.max(1, Math.ceil(filtered.length / size)),
   );
-  function openCatalog(item = null) {
+  function openCatalog(item = null, trigger = null) {
+    catalogTriggerRef.current = trigger;
     setMode("catalog");
     setCatalogForm(item ? { ...item } : catalogEmpty);
     setError("");
+    requestAnimationFrame(() => document.getElementById(item ? "catalogCategory" : "catalogCode")?.focus());
+  }
+  function closeCatalog() {
+    setMode("");
+    setError("");
+    requestAnimationFrame(() => catalogTriggerRef.current?.focus());
+  }
+  function focusConfigField(name) {
+    document.getElementById(`config-${name}`)?.focus();
+  }
+  function updateConfig(patch) {
+    setConfigForm((previous) => ({ ...previous, ...patch }));
+    setError("");
+  }
+  function openConfig() {
+    setMode("config");
+    setConfigForm(blankConfig());
+    setError("");
+    requestAnimationFrame(() => focusConfigField("reference"));
+  }
+  function closeConfig() {
+    setMode("");
+    setError("");
+    requestAnimationFrame(() => document.getElementById("config-new-trigger")?.focus());
   }
   function saveCatalog(event) {
     event.preventDefault();
     const sourceMaterial = raw.find(([, code]) => code === catalogForm.sapMaterial);
     if (!sourceMaterial) {
       setError("Selecciona un código SAP de la fuente antes de guardar.");
+      document.getElementById("catalogCode")?.focus();
       return;
     }
     if (
@@ -223,6 +255,7 @@ export function MaterialsMaster({ view = "catalog" }) {
       setError(
         "Selecciona el material, la unidad y categoría; el margen debe estar entre 0 y 100%.",
       );
+      document.getElementById(!catalogForm.orderCategory ? "catalogCategory" : "catalogMargin")?.focus();
       return;
     }
     const existing = records.find(
@@ -242,10 +275,8 @@ export function MaterialsMaster({ view = "catalog" }) {
       : [item, ...records];
     localStorage.setItem(catalogKey, JSON.stringify(next));
     setRecords(next);
-    setMode("");
-    setFeedback(
-      `Material ${catalogForm.sapMaterial} actualizado.`,
-    );
+    closeCatalog();
+    setFeedback(`Material ${catalogForm.sapMaterial} ${existing ? "actualizado" : "registrado"}.`);
   }
   function saveConfig(event) {
     event.preventDefault();
@@ -260,11 +291,13 @@ export function MaterialsMaster({ view = "catalog" }) {
       .map(([, label]) => label);
     if (missing.length) {
       setError(`Completa: ${missing.join(", ")}.`);
+      focusConfigField(configFields.find(([name]) => !data[name])?.[0]);
       return;
     }
     const sourceMaterial = raw.find(([, code]) => code === data.sapMaterial);
     if (!sourceMaterial) {
       setError("Selecciona un material SAP registrado antes de guardar.");
+      focusConfigField("sapMaterial");
       return;
     }
     const recipe = recipeRecords.find(
@@ -272,6 +305,7 @@ export function MaterialsMaster({ view = "catalog" }) {
     );
     if (!recipe || !recipe.materials.some((item) => item.sapMaterial === data.sapMaterial)) {
       setError("Selecciona una referencia, versión y material asociados en la receta.");
+      focusConfigField("sapMaterial");
       return;
     }
     if (
@@ -279,10 +313,12 @@ export function MaterialsMaster({ view = "catalog" }) {
       num(data.waste) > 100
     ) {
       setError("El desperdicio debe estar entre 0 y 100%.");
+      focusConfigField("waste");
       return;
     }
     if (data.validityEnd <= data.validityStart) {
       setError("La vigencia hasta debe ser posterior a la vigencia desde.");
+      focusConfigField("validityEnd");
       return;
     }
     if (
@@ -296,6 +332,7 @@ export function MaterialsMaster({ view = "catalog" }) {
       setError(
         "Ya existe una configuración con la misma referencia, Material SAP y versión de receta.",
       );
+      focusConfigField("sapMaterial");
       return;
     }
     const idempotencyKey = [
@@ -308,6 +345,7 @@ export function MaterialsMaster({ view = "catalog" }) {
       setError(
         "La misma configuración ya fue registrada; no se duplicó la operación.",
       );
+      focusConfigField("sapMaterial");
       return;
     }
     const now = new Date();
@@ -336,6 +374,7 @@ export function MaterialsMaster({ view = "catalog" }) {
     setMode("");
     setConfigForm(blankConfig());
     setFeedback("Configuración guardada en revisión. Su uso en pedidos requiere validar la disponibilidad correspondiente.");
+    requestAnimationFrame(() => document.getElementById("config-new-trigger")?.focus());
   }
   const columns = [
     {
@@ -429,12 +468,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                   id={`config-${name}`}
                                   rows="3"
                                   value={configForm[name]}
-                                  onChange={(event) =>
-                                    setConfigForm((previous) => ({
-                                      ...previous,
-                                      [name]: event.target.value,
-                                    }))
-                                  }
+                                  onChange={(event) => updateConfig({ [name]: event.target.value })}
                                 />
                                 <span className="field-note">{configHelp[name]}</span>
                               </>
@@ -446,7 +480,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                 required
                                 value={configForm.reference}
                                 options={[...new Set(recipeRecords.map((item) => item.reference))].map((reference) => ({ value: reference, label: reference }))}
-                                onChange={(value) => setConfigForm((previous) => ({ ...previous, reference: value, recipeVersion: "", sapMaterial: "" }))}
+                                onChange={(value) => updateConfig({ reference: value, recipeVersion: "", sapMaterial: "" })}
                               />
                             ) : name === "recipeVersion" ? (
                               <SelectInput
@@ -456,7 +490,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                 required
                                 value={configForm.recipeVersion}
                                 options={[{ value: "", label: "Seleccionar" }, ...recipeRecords.filter((item) => item.reference === configForm.reference).map((item) => ({ value: item.version, label: item.version }))]}
-                                onChange={(value) => setConfigForm((previous) => ({ ...previous, recipeVersion: value, sapMaterial: "" }))}
+                                onChange={(value) => updateConfig({ recipeVersion: value, sapMaterial: "" })}
                               />
                             ) : name === "sapMaterial" ? (
                               <SearchSelectInput
@@ -466,7 +500,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                 required
                                 value={configForm.sapMaterial}
                                 options={(recipeRecords.find((item) => item.reference === configForm.reference && item.version === configForm.recipeVersion)?.materials || []).map(({ sapMaterial, name: materialName }) => ({ value: sapMaterial, label: `${sapMaterial} · ${materialName}` }))}
-                                onChange={(value) => setConfigForm((previous) => ({ ...previous, sapMaterial: value }))}
+                                onChange={(value) => updateConfig({ sapMaterial: value })}
                               />
                             ) : type === "date" ? (
                               <DateInput
@@ -475,12 +509,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                 helperText={configHelp[name]}
                                 required
                                 value={dateValue(configForm[name])}
-                                onChange={(value) =>
-                                  setConfigForm((previous) => ({
-                                    ...previous,
-                                    [name]: dateString(value),
-                                  }))
-                                }
+                                onChange={(value) => updateConfig({ [name]: dateString(value) })}
                               />
                             ) : options[type] ? (
                               <SelectInput
@@ -501,12 +530,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                           : value,
                                   })),
                                 ]}
-                                onChange={(value) =>
-                                  setConfigForm((previous) => ({
-                                    ...previous,
-                                    [name]: value,
-                                  }))
-                                }
+                                onChange={(value) => updateConfig({ [name]: value })}
                               />
                             ) : type === "number" ? (
                               <NumberInput
@@ -516,12 +540,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                 required
                                 min={0}
                                 value={numericFieldValue(configForm[name])}
-                                onChange={(value) =>
-                                  setConfigForm((previous) => ({
-                                    ...previous,
-                                    [name]: numericFormValue(value),
-                                  }))
-                                }
+                                onChange={(value) => updateConfig({ [name]: numericFormValue(value) })}
                               />
                             ) : (
                               <TextInput
@@ -530,12 +549,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                                 helperText={configHelp[name]}
                                 required
                                 value={configForm[name]}
-                                onChange={(value) =>
-                                  setConfigForm((previous) => ({
-                                    ...previous,
-                                    [name]: value,
-                                  }))
-                                }
+                                onChange={(value) => updateConfig({ [name]: value })}
                               />
                             )}
                           </div>
@@ -561,7 +575,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                 <Button
                   variant="outlined"
                   type="button"
-                  onClick={() => setMode("")}
+                  onClick={closeConfig}
                 >
                   Cancelar
                 </Button>
@@ -595,22 +609,22 @@ export function MaterialsMaster({ view = "catalog" }) {
             </div>
             <div className="card-actions">
               {mode === "config" ? (
-                <Button variant="outlined" onClick={() => { setMode(""); setError(""); }}>Volver a configuraciones</Button>
+                <Button variant="outlined" onClick={closeConfig}>Volver a configuraciones</Button>
               ) : (
                 <>
                   <Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip>
                   <Button variant="outlined" onClick={() => { window.location.href = "gestion-materiales.html"; }}>Volver al catálogo</Button>
-                  <Button onClick={() => { setMode("config"); setConfigForm(blankConfig()); setError(""); }}>Nueva configuración</Button>
+                  <Button id="config-new-trigger" onClick={openConfig}>Nueva configuración</Button>
                 </>
               )}
             </div>
           </div>
-          {feedback && <Toast visible variant="success" title="Resultado" description={feedback} onClose={() => setFeedback("")} />}
+          {feedback && <div className="materials-config-feedback"><Toast visible variant="success" title="Resultado" description={feedback} onClose={() => setFeedback("")} /></div>}
           {mode === "config" ? configPanel : (
             <>
               <div className="card-body">
                 <div className="toolbar materials-toolbar">
-                  <TextInput id="configSearch" label="Buscar configuración" placeholder="Buscar referencia o material SAP" value={search} onChange={(value) => { setSearch(value); setPage(1); }} />
+                  <TextInput id="configSearch" label="Buscar configuración" placeholder="Buscar referencia, versión o material SAP" value={search} onChange={(value) => { setSearch(value); setPage(1); }} />
                   <SelectInput id="configStatus" label="Estado" value={status} options={[{ value: "all", label: "Todos los estados" }, { value: "REVISION", label: "En revisión" }, { value: "ACTIVO", label: "Activo" }]} onChange={(value) => { setStatus(value); setPage(1); }} />
                   <TableFilterReset active={Boolean(search.trim()) || status !== "all"} onReset={() => { setSearch(""); setStatus("all"); setPage(1); }} />
                 </div>
@@ -635,23 +649,26 @@ export function MaterialsMaster({ view = "catalog" }) {
           </p>
         </div>
       </div>
-      <article className="card mt-24 standard-master-card">
-        <div className="card-header">
+      <article className="card mt-24 standard-master-card materials-catalog-card">
+        <div className="card-header materials-catalog-header">
           <div>
-            <h2 className="card-title">Materiales registrados</h2>
+            <div className="materials-catalog-heading"><h2 className="card-title">Materiales registrados</h2><Chip preset="info">
+              {filtered.length} {filtered.length === 1 ? "registro" : "registros"}
+            </Chip></div>
             <p className="card-subtitle">
               Consulta el código SAP, la categoría, la unidad y el estado de cada material.
             </p>
           </div>
-          <div className="card-actions">
-            <Chip preset="info">
-              {filtered.length}{" "}
-              {filtered.length === 1 ? "registro" : "registros"}
-            </Chip>
+          <div className="card-actions materials-catalog-actions">
             <Button
               variant="outlined"
               onClick={() =>
-                exportRows(filtered, columns, "catalogo-materiales")
+                exportRows(filtered.map((item) => ({
+                  ...item,
+                  safetyMargin: item.safetyMargin == null ? "No registrado" : `${item.safetyMargin}%`,
+                  status: ({ REVISION: "Revisión", ACTIVO: "Activo", INACTIVO: "Inactivo" })[item.status] || item.status,
+                  audit: item.audit?.replace("|", " · ") || "No registrada",
+                })), columns, "catalogo-materiales")
               }
             >
               Exportar
@@ -662,17 +679,17 @@ export function MaterialsMaster({ view = "catalog" }) {
             >
               Configuraciones por referencia
             </Button>
-            <Button onClick={() => openCatalog()}>Nuevo material</Button>
+            <Button onClick={(event) => openCatalog(null, event.currentTarget)}>Nuevo material</Button>
           </div>
         </div>
         {feedback && (
-          <Toast
+          <div className="materials-catalog-toast"><Toast
             visible
             variant="success"
-            title="Resultado"
+            title="Material guardado"
             description={feedback}
             onClose={() => setFeedback("")}
-          />
+          /></div>
         )}
         <div className="card-body">
           <div className="toolbar materials-toolbar">
@@ -747,6 +764,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                     }))}
                     onChange={(value) => {
                       const match = raw.find((row) => row[1] === value);
+                      setError("");
                       setCatalogForm((previous) => ({
                         ...previous,
                         sapMaterial: value,
@@ -776,12 +794,13 @@ export function MaterialsMaster({ view = "catalog" }) {
                         label: value,
                       })),
                     ]}
-                    onChange={(value) =>
+                    onChange={(value) => {
+                      setError("");
                       setCatalogForm((previous) => ({
                         ...previous,
                         orderCategory: value,
-                      }))
-                    }
+                      }));
+                    }}
                   />
                 </div>
                 <div className="field span-6">
@@ -793,12 +812,13 @@ export function MaterialsMaster({ view = "catalog" }) {
                     min={0}
                     max={100}
                     value={numericFieldValue(catalogForm.safetyMargin)}
-                    onChange={(value) =>
+                    onChange={(value) => {
+                      setError("");
                       setCatalogForm((previous) => ({
                         ...previous,
                         safetyMargin: numericFormValue(value),
-                      }))
-                    }
+                      }));
+                    }}
                   />
                 </div>
               </div>
@@ -811,7 +831,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                 <Button
                   variant="outlined"
                   type="button"
-                  onClick={() => setMode("")}
+                  onClick={closeCatalog}
                 >
                   Cancelar
                 </Button>
@@ -841,7 +861,7 @@ export function MaterialsMaster({ view = "catalog" }) {
                 variant="ghost"
                 aria-label={`Editar ${item.sapMaterial}`}
                 title="Editar"
-                onClick={() => openCatalog(item)}
+                onClick={(event) => openCatalog(item, event.currentTarget)}
               >
                 <EditIcon />
               </IconButton>
@@ -865,30 +885,18 @@ export function MaterialsMaster({ view = "catalog" }) {
           show
           title="Detalle de material"
           subtitle={selected.sapMaterial}
+          ariaLabel={`Detalle de material ${selected.sapMaterial}`}
           onClose={() => setSelected(null)}
-          data={Object.entries(selected)
-            .filter(([key]) => key !== "audit")
-            .map(([key, value]) => ({
-              label: key,
-              children:
-                key === "status" ? (
-                  <Chip
-                    preset={
-                      value === "ACTIVO"
-                        ? "active"
-                        : value === "INACTIVO"
-                          ? "inactive"
-                          : "warning"
-                    }
-                  >
-                    {value}
-                  </Chip>
-                ) : value === "" || value == null ? (
-                  "No registrado"
-                ) : (
-                  String(value)
-                ),
-            }))}
+          data={[
+            { label: "Código SAP", children: selected.sapMaterial },
+            { label: "Nombre del material", children: selected.name },
+            { label: "Unidad de medida", children: selected.unit || "No registrada" },
+            { label: "Categoría de pedido", children: selected.orderCategory || "No registrada" },
+            { label: "Margen de seguridad", children: `${selected.safetyMargin ?? 0}%` },
+            { label: "Estado", children: <Chip preset={selected.status === "ACTIVO" ? "active" : selected.status === "INACTIVO" ? "inactive" : "warning"}>{selected.status === "ACTIVO" ? "Activo" : selected.status === "INACTIVO" ? "Inactivo" : "Revisión"}</Chip> },
+            { label: "Fuente", children: selected.source || "No registrada" },
+            { label: "Último cambio", children: selected.audit?.replace("|", " · ") || "No registrado" },
+          ]}
         />
       )}
     </>

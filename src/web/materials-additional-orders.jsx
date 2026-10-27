@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
-import { Button, Chip, IconButton, Notice, NumberInput, Pagination, SelectInput, Table, TableRowActions, TextInput, Toast, ViewIcon } from "@banasandev/banasan-ui";
+import { Button, Card, Chip, IconButton, KeyValueGrid, NumberInput, Pagination, SelectInput, Table, TableRowActions, TextInput, Toast, ViewIcon } from "@banasandev/banasan-ui";
 
 const base = { id: "PED-SUG-2026-32-014", notice: "AC-2026-032", farm: "La Ceiba", farmCode: "FIN-014", reference: "AGSTDRA", week: "SEM-2026-32", status: "Validado", category: "EMPA" };
 const materials = [
@@ -25,6 +25,9 @@ const reasons = [
   { value: "otro", label: "Otra necesidad operativa" }
 ];
 const fmt = (value) => new Intl.NumberFormat("es-CO").format(value);
+const displayCreatedAt = (item) => item.createdAt
+  ? new Intl.DateTimeFormat("es-CO", { dateStyle: "medium", timeStyle: "short", timeZone: "America/Bogota" }).format(new Date(item.createdAt))
+  : item.updated;
 const empty = () => ({ category: "", lines: [{ material: materials[0].code, quantity: "" }], reason: "", observation: "" });
 function readJson(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; } catch { return fallback; } }
 function readSaved() { const value = readJson(saveKey, []); return Array.isArray(value) ? value : value ? [value] : []; }
@@ -39,18 +42,75 @@ function lineResult(line) {
   return { type: "ok", title: "Stock disponible", text: `Quedarían ${fmt(material.stock - quantity)} ${material.unit} visibles.` };
 }
 function Result({ result }) { return <div className="additional-line-result"><Chip preset={result.type === "ok" ? "active" : result.type === "warning" ? "warning" : "inactive"}>{result.title}</Chip><small>{result.text}</small></div>; }
-function Chain({ lastLabel, lastValue, notice = base.notice, baseId = base.id }) { return <div className="additional-chain" aria-label="Cadena de origen del pedido"><div><span>Aviso de corte</span><strong>{notice}</strong></div><i aria-hidden="true">→</i><div><span>Pedido base</span><strong>{baseId}</strong></div><i aria-hidden="true">→</i><div className="is-current"><span>{lastLabel}</span><strong>{lastValue}</strong></div></div>; }
-function Detail({ item, created }) {
-  const lines = item.detailLines || [{ name: item.quantity, code: "Detalle consolidado", unit: "", quantity: "—", stock: "—" }];
+function OriginTrail({ item }) {
+  return <ol className="additional-origin-trail" aria-label="Procedencia del pedido adicional">
+    <li><span>Aviso de corte</span><strong>{item.notice}</strong></li>
+    <li><span>Pedido base</span><strong>{item.base}</strong></li>
+    <li aria-current="step"><span>Pedido adicional</span><strong>{item.id}</strong></li>
+  </ol>;
+}
+function DetailReworked({ item }) {
+  const lines = item.detailLines || [];
   const steps = ["Registrado", "Pendiente de validación", "Aprobado", "En preparación", "Entregado"];
   const current = Math.max(1, steps.indexOf(item.status));
-  return <><Header title={item.id} subtitle="Consulta el origen, la validación y los hitos posteriores de la solicitud." eyebrow="Materiales / Pedidos adicionales / Detalle" action={<div className="card-actions"><Status value={item.status} /><a className="btn btn-secondary" href="pedidos-adicionales.html">Volver a pedidos adicionales</a></div>} />
-    {created && <Notice variant="success" heading="Pedido adicional registrado">La solicitud se creó una sola vez y quedó pendiente de validación.</Notice>}
-    <article className="card additional-detail-card"><Chain lastLabel="Pedido adicional" lastValue={item.id} notice={item.notice} baseId={item.base} /><div className="additional-context"><div><span>Finca</span><strong>{item.farm}</strong></div><div><span>Semana</span><strong>{item.week}</strong></div><div><span>Categoría</span><strong>{item.category || base.category}</strong></div><div><span>Motivo</span><strong>{item.reason}</strong></div><div><span>Documento</span><strong>{item.document}</strong></div><div><span>Registro</span><strong>{item.createdAt || item.updated}</strong></div></div><div className="card-header"><div><h2 className="card-title">Materiales solicitados</h2><p className="card-subtitle">Valores registrados al crear la solicitud.</p></div></div>
-      <Table columns={[{ key: "name", header: "Material", render: (line) => <div className="materials-record-main"><strong>{line.name}</strong><span>{line.code}</span></div> }, { key: "quantity", header: "Cantidad adicional", render: (line) => line.quantity === "—" ? item.quantity : `${fmt(Number(line.quantity))} ${line.unit}` }, { key: "stock", header: "Stock consultado", render: (line) => line.stock === "—" ? "No detallado" : `${fmt(Number(line.stock))} ${line.unit}` }, { key: "result", header: "Resultado inicial", render: (line) => line.quantity === "—" ? <Status value="Registrado" /> : <Result result={lineResult({ material: line.code, quantity: line.quantity })} /> }]} data={lines} rowKey={(line) => line.code} minWidth="680px" />
-      <div className="additional-detail-grid"><section><h2 className="card-title">Seguimiento</h2><div className="additional-timeline">{steps.map((label, index) => <div className={`additional-timeline-item ${index < current ? "is-done" : index === current ? "is-current" : ""}`} key={label}><span aria-hidden="true" /><div><strong>{label}</strong><p>{index === 0 ? "Solicitud vinculada al pedido base." : index === 1 ? "Revisión de cantidades, stock y motivo." : index === 2 ? "Decisión registrada por el responsable autorizado." : index === 3 ? "Clasificación documental y preparación logística." : "Entrega y soportes disponibles."}</p></div></div>)}</div></section><aside><h2 className="card-title">Condiciones de continuidad</h2><div className="additional-conditions"><div><span>Origen y responsable registrados</span></div><div><span>{item.status === "Entregado" ? "Entrega finalizada con soporte" : "Documento logístico y entrega aún no finalizados"}</span></div></div></aside></div>
-    </article></>;
+  const progress = steps.map((title, index) => ({
+    key: title, title,
+    status: index < current ? "completed" : index === current ? "active" : "pending",
+    description: index === current ? (
+      index === 0 ? "Solicitud vinculada al pedido base." :
+      index === 1 ? "Revisión de cantidades, stock y motivo." :
+      index === 2 ? "Decisión registrada por el responsable autorizado." :
+      index === 3 ? "Clasificación documental y preparación logística." :
+      "Entrega y soportes disponibles."
+    ) : undefined
+  }));
+  const facts = [
+    { label: "Motivo", value: item.reason },
+    { label: "Categoría", value: item.category || base.category },
+    { label: "Registrado", value: displayCreatedAt(item) },
+    { label: "Finca", value: item.farm },
+    { label: "Semana", value: item.week },
+    { label: "Documento", value: item.document }
+  ];
+  const quantityText = (line) => fmt(Number(line.quantity)) + " " + line.unit;
+  const stockText = (line) => fmt(Number(line.stock)) + " " + line.unit;
+  return <div className="additional-dossier-page">
+    <Header title={item.id} subtitle="Consulta la solicitud, su procedencia y estado." eyebrow="Materiales / Pedidos adicionales / Detalle" action={<div className="card-actions"><Status value={item.status} /><a className="btn btn-secondary" href="pedidos-adicionales.html">Volver a pedidos adicionales</a></div>} />
+    <Card className="additional-dossier">
+      <div className="additional-dossier-content">
+        <section className="additional-dossier-materials" aria-labelledby="additional-detail-materials">
+          <header className="additional-dossier-section-head"><h2 id="additional-detail-materials">Materiales solicitados</h2><p>Cantidades y disponibilidad consultada al registrar el pedido.</p></header>
+          {lines.length ? <>
+            <div className="additional-dossier-table"><Table columns={[
+              { key: "name", header: "Material", render: (line) => <div className="materials-record-main"><strong>{line.name}</strong><span>{line.code}</span></div> },
+              { key: "quantity", header: "Cantidad adicional", render: quantityText },
+              { key: "stock", header: "Stock consultado", render: stockText },
+              { key: "result", header: "Resultado inicial", render: (line) => <Result result={lineResult({ material: line.code, quantity: line.quantity })} /> }
+            ]} data={lines} rowKey={(line) => line.code} minWidth="680px" /></div>
+            <div className="additional-dossier-mobile-materials">{lines.map((line) => <article className="additional-dossier-material" key={line.code}>
+              <div className="materials-record-main"><strong>{line.name}</strong><span>{line.code}</span></div>
+              <dl><div><dt>Cantidad adicional</dt><dd>{quantityText(line)}</dd></div><div><dt>Stock consultado</dt><dd>{stockText(line)}</dd></div></dl>
+              <Result result={lineResult({ material: line.code, quantity: line.quantity })} />
+            </article>)}</div>
+          </> : <div className="additional-dossier-summary"><p>El desglose de materiales no está disponible para esta solicitud.</p><KeyValueGrid columns={2} items={[{ label: "Materiales", value: String(item.lines) }, { label: "Cantidad registrada", value: item.quantity }]} /></div>}
+        </section>
+        <aside className="additional-dossier-context" aria-labelledby="additional-detail-context">
+          <header className="additional-dossier-section-head"><h2 id="additional-detail-context">Datos de la solicitud</h2><p>Contexto necesario para revisar este adicional.</p></header>
+          <KeyValueGrid columns={2} items={facts} />
+          <div className="additional-dossier-origin"><h3>Procedencia</h3><OriginTrail item={item} /></div>
+        </aside>
+        <section className="additional-dossier-progress" aria-labelledby="additional-detail-progress">
+        <header className="additional-dossier-section-head"><h2 id="additional-detail-progress">Avance del pedido</h2><p>Etapa registrada para esta solicitud.</p></header>
+        <ol className="additional-process">{progress.map((step) => <li className={"is-" + step.status} key={step.key} aria-current={step.status === "active" ? "step" : undefined}><span className="additional-process-node" aria-hidden="true" /><strong>{step.title}</strong>{step.description && <p>{step.description}</p>}</li>)}</ol>
+        </section>
+      </div>
+    </Card>
+  </div>;
 }
+function AdditionalUnavailable({ title, description, href, action }) {
+  return <Card className="additional-state-card"><h2>{title}</h2><p>{description}</p><a className="btn btn-secondary" href={href}>{action}</a></Card>;
+}
+
 export function MaterialsAdditionalOrders() {
   const params = new URLSearchParams(location.search);
   const mode = params.get("access") === "denied" ? "denied" : params.get("pedido") ? "detail" : params.get("nuevo") === "1" ? "create" : "list";
@@ -72,12 +132,12 @@ export function MaterialsAdditionalOrders() {
     if (existing) { setFeedback({ title: "Solicitud existente", description: `El pedido ${existing.id} ya fue registrado. No se creó un duplicado.`, variant: "info" }); return; }
     const sequence = nextSequence(); const now = new Date();
     const item = { id: `PAD-2026-32-${String(sequence).padStart(3, "0")}`, base: base.id, notice: base.notice, farm: base.farm, farmCode: base.farmCode, week: base.week, reference: base.reference, sequence, lines: model.lines.length, quantity: model.lines.map((line) => { const material = materials.find((entry) => entry.code === line.material); return `${fmt(Number(line.quantity))} ${material?.unit || ""}`; }).join(" · "), reason: reasons.find((reason) => reason.value === model.reason)?.label || model.reason, reasonCode: model.reason, observation: model.observation, category: model.category, status: "Pendiente de validación", updated: "Ahora", createdAt: now.toISOString(), actor: "QA Materiales · Web", document: "Pendiente de clasificación", shortages, idempotencyKey, detailLines: model.lines.map((line) => ({ ...line, ...materials.find((material) => material.code === line.material) })) };
-    const next = [...saved, item]; localStorage.setItem(saveKey, JSON.stringify(next)); localStorage.removeItem(draftKey); setSaved(next); location.href = `pedidos-adicionales.html?pedido=${encodeURIComponent(item.id)}&creado=1`;
+    const next = [...saved, item]; localStorage.setItem(saveKey, JSON.stringify(next)); localStorage.removeItem(draftKey); setSaved(next); location.href = `pedidos-adicionales.html?pedido=${encodeURIComponent(item.id)}`;
   }
-  if (mode === "denied") return <><Header title="Pedidos adicionales" subtitle="Consulta restringida al alcance de tu usuario." /><Notice variant="error" heading="Información no disponible">No existen pedidos visibles dentro de tu compañía y fincas autorizadas.</Notice><a className="btn btn-secondary mt-24" href="gestion-pedidos-materiales.html">Volver a Pedidos</a></>;
-  if (mode === "detail") { const item = orders.find((order) => order.id === params.get("pedido")); return item ? <Detail item={item} created={params.get("creado") === "1"} /> : <><Header title="Consultar pedido adicional" subtitle="La solicitud debe estar dentro de tu alcance." eyebrow="Materiales / Pedidos adicionales / Detalle" /><Notice variant="error" heading="Pedido no disponible">No existe información para mostrar dentro de tu compañía y fincas autorizadas.</Notice><a className="btn btn-secondary" href="pedidos-adicionales.html">Volver a pedidos adicionales</a></>; }
+  if (mode === "denied") return <><Header title="Pedidos adicionales" subtitle="Consulta restringida al alcance de tu usuario." /><AdditionalUnavailable title="Información no disponible" description="No existen pedidos visibles dentro de tu compañía y fincas autorizadas." href="gestion-pedidos-materiales.html" action="Volver a Pedidos" /></>;
+  if (mode === "detail") { const item = orders.find((order) => order.id === params.get("pedido")); return item ? <DetailReworked item={item} /> : <><Header title="Consultar pedido adicional" subtitle="La solicitud debe estar dentro de tu alcance." eyebrow="Materiales / Pedidos adicionales / Detalle" /><AdditionalUnavailable title="Pedido no disponible" description="No existe información para mostrar dentro de tu compañía y fincas autorizadas." href="pedidos-adicionales.html" action="Volver a pedidos adicionales" /></>; }
   if (mode === "list") return <><Header title="Pedidos adicionales" subtitle="Consulta solicitudes excepcionales sin perder su relación con el pedido semanal." /><article className="card additional-list-card"><div className="card-header"><div><h2 className="card-title">Gestión de solicitudes</h2><p className="card-subtitle">Cada adicional conserva el pedido base, su motivo y el estado del procesamiento.</p></div><div className="card-actions"><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><a className="btn btn-primary" href={`pedidos-adicionales.html?nuevo=1&base=${encodeURIComponent(base.id)}`}>Nuevo pedido adicional</a></div></div><div className="card-body"><div className="toolbar additional-list-toolbar"><TextInput id="additionalSearch" label="Buscar pedidos adicionales" placeholder="Buscar pedido, finca, aviso o motivo" value={search} onChange={(value) => { setSearch(value); setPage(1); }} /><SelectInput id="additionalStatus" label="Estado" value={state} options={[{ value: "", label: "Todos los estados" }, ...Array.from(new Set(orders.map((item) => item.status))).map((value) => ({ value, label: value }))]} onChange={(value) => { setState(value); setPage(1); }} /><TableFilterReset active={Boolean(search.trim()) || Boolean(state)} onReset={() => { setSearch(""); setState(""); setPage(1); }} /></div></div><Table columns={[{ key: "id", header: "Pedido adicional", render: (item) => <div className="materials-record-main"><strong>{item.id}</strong><span>Adicional {item.sequence} de {item.week}</span></div> }, { key: "base", header: "Pedido base", render: (item) => <div className="materials-record-main"><strong>{item.base}</strong><span>{item.notice} · {item.farm}</span></div> }, { key: "quantity", header: "Solicitud", render: (item) => <><strong>{item.lines} {item.lines === 1 ? "material" : "materiales"}</strong><span className="muted block">{item.quantity}</span></> }, { key: "reason", header: "Motivo", render: (item) => item.reason }, { key: "status", header: "Estado", render: (item) => <Status value={item.status} /> }, { key: "updated", header: "Última actualización", render: (item) => item.updated }]} data={filtered.slice((current - 1) * size, current * size)} rowKey={(item) => item.id} minWidth="950px" emptyState="No hay pedidos para los filtros seleccionados." actionsHeader="Acciones" actions={(item) => <TableRowActions label={`Acciones de ${item.id}`}><a className="icon-btn" href={`pedidos-adicionales.html?pedido=${encodeURIComponent(item.id)}`} aria-label={`Consultar ${item.id}`} title="Consultar pedido"><ViewIcon /></a></TableRowActions>} /><Pagination page={current} pageSize={size} total={filtered.length} pageSizeOptions={[10, 30, 50]} onPageChange={setPage} onPageSizeChange={(value) => { setSize(value); setPage(1); }} /></article></>;
-  if (params.get("base") && params.get("base") !== base.id) return <><Header title="Nuevo pedido adicional" subtitle="La solicitud debe partir de un pedido válido." eyebrow="Materiales / Pedidos adicionales / Registro" /><Notice variant="error" heading="Pedido base no disponible">No existe información para mostrar dentro de tu alcance autorizado.</Notice><a className="btn btn-secondary" href="pedidos-adicionales.html">Volver a pedidos adicionales</a></>;
+  if (params.get("base") && params.get("base") !== base.id) return <><Header title="Nuevo pedido adicional" subtitle="La solicitud debe partir de un pedido válido." eyebrow="Materiales / Pedidos adicionales / Registro" /><AdditionalUnavailable title="Pedido base no disponible" description="No existe información para mostrar dentro de tu alcance autorizado." href="pedidos-adicionales.html" action="Volver a pedidos adicionales" /></>;
   let categoryOptions = [{ value: "EMPA", label: "EMPA · EMPAQUE" }, { value: "ETIQ", label: "ETIQ · ETIQUETA" }, { value: "OPER", label: "OPER · OPERATIVO" }];
   try { const active = new Set(readJson("sial-order-categories", []).filter((item) => item.status === "ACTIVO").map((item) => item.code)); if (active.size) categoryOptions = categoryOptions.filter((item) => active.has(item.value)); } catch { /* Conserva categorías iniciales. */ }
   const used = new Set(model.lines.map((line) => line.material)); const next = materials.find((item) => !used.has(item.code));

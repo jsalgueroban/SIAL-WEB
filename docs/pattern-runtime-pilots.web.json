@@ -5,6 +5,9 @@
     { "width": 1280, "height": 800 },
     { "width": 390, "height": 844 }
   ],
+  "redirects": [
+    { "route": "Materiales y Suministros/index.html", "target": "Materiales y Suministros/gestion-pedidos-materiales.html", "moduleLabel": "Materiales y Suministros" }
+  ],
   "views": [
     {
       "route": "Gestion de Fincas/gestion-clases-referencia.html",
@@ -27,8 +30,8 @@
       "checkRecordCount": true,
       "requireNavigation": true
     },
-    { "route": "Materiales y Suministros/index.html", "pattern_id": "web-materials-dashboard", "expected": [], "checkRecordCount": false },
     { "route": "Materiales y Suministros/gestion-materiales.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/configuracion-materiales-referencia.html", "pattern_id": "web-materials-reference-configuration", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": false },
     { "route": "Materiales y Suministros/gestion-proveedores.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/inventario-materiales-finca.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/inventario-pallets.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
@@ -38,12 +41,12 @@
     { "route": "Materiales y Suministros/resumen-proveedores.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/reglas-documentales.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/seguimiento-entregas.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
-    { "route": "Materiales y Suministros/gestion-pedidos-materiales.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false },
+    { "route": "Materiales y Suministros/gestion-pedidos-materiales.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false, "requireNavigation": true },
     { "route": "Materiales y Suministros/ajustar-pedido-sugerido.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false },
     { "route": "Materiales y Suministros/aprobacion-pedidos-materiales.html", "pattern_id": "web-materials-approval-gallery", "expected": ["TextInput", "SelectInput", "Chip"], "checkRecordCount": false },
     { "route": "Materiales y Suministros/pedidos-adicionales.html", "pattern_id": "web-materials-order-table", "expected": ["TextInput", "SelectInput", "Chip", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/pedidos-recurrentes.html", "pattern_id": "web-materials-order-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/seguimiento-pedidos-finca.html", "pattern_id": "web-materials-tracking-table", "expected": ["TextInput", "SelectInput", "Chip", "Table"], "checkRecordCount": false },
-    { "route": "Materiales y Suministros/trazabilidad-pedido.html", "pattern_id": "web-materials-trace", "expected": ["TextInput"], "checkRecordCount": false }
+    { "route": "Materiales y Suministros/trazabilidad-pedido.html", "pattern_id": "web-materials-trace", "expected": ["TextInput", "Button"], "checkRecordCount": false }
   ]
 }

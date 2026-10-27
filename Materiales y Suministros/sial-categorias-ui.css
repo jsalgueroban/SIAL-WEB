@@ -10,8 +10,10 @@
 .sial-ui-category-card .bui-icon-button svg { width: 18px; height: 18px; }
 .sial-ui-category-card .sial-ui-action-danger { color: var(--color-error-main); }
 .sial-ui-category-card .sial-ui-action-success { color: var(--color-success-main); }
+.sial-ui-category-toast { position: fixed; top: 24px; right: 24px; width: min(380px, calc(100vw - 32px)); z-index: 1200; }
 @media (max-width: 760px) {
   .sial-ui-category-toolbar, .sial-ui-category-fields { grid-template-columns: 1fr; }
   .sial-ui-category-card .card-header { align-items: stretch; }
   .sial-ui-category-card .card-actions { justify-content: flex-start; }
+  .sial-ui-category-toast { top: auto; bottom: 16px; right: 16px; }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button,
@@ -14,6 +14,7 @@ import {
   Table,
   TableRowActions,
   TextInput,
+  Toast,
   ViewIcon
 } from "@banasandev/banasan-ui";
 
@@ -50,6 +51,8 @@ export function OrderCategories() {
   const [name, setName] = useState("");
   const [formError, setFormError] = useState("");
   const [auditCode, setAuditCode] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  const formTriggerRef = useRef(null);
 
   const filtered = useMemo(() => categories.filter((item) => {
     const matchesText = `${item.code} ${item.name}`.toLowerCase().includes(search.trim().toLowerCase());
@@ -64,6 +67,12 @@ export function OrderCategories() {
     if (formMode) requestAnimationFrame(() => document.getElementById(formMode === "new" ? "categoryCode" : "categoryName")?.focus());
   }, [formMode]);
 
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const timer = window.setTimeout(() => setFeedback(null), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
+
   function persist(next) {
     setCategories(next);
     localStorage.setItem(storageKey, JSON.stringify(next));
@@ -73,14 +82,17 @@ export function OrderCategories() {
     setCode("");
     setName("");
     setFormError("");
+    requestAnimationFrame(() => formTriggerRef.current?.focus());
   }
-  function openNew() {
+  function openNew(event) {
+    formTriggerRef.current = event.currentTarget;
     setCode("");
     setName("");
     setFormError("");
     setFormMode("new");
   }
-  function openEdit(item) {
+  function openEdit(item, trigger) {
+    formTriggerRef.current = trigger;
     setCode(item.code);
     setName(item.name);
     setFormError("");
@@ -92,10 +104,12 @@ export function OrderCategories() {
     const normalizedName = name.trim().toUpperCase();
     if (!normalizedCode || !normalizedName) {
       setFormError("Completa el código y el nombre.");
+      document.getElementById(normalizedCode ? "categoryName" : "categoryCode")?.focus();
       return;
     }
     if (formMode === "new" && categories.some((item) => item.code === normalizedCode)) {
       setFormError(`El código ${normalizedCode} ya existe.`);
+      document.getElementById("categoryCode")?.focus();
       return;
     }
     const audit = `${formMode === "edit" ? "Editar" : "Crear"} - materiales.admin · ${new Date().toLocaleString("es-CO")}`;
@@ -103,8 +117,10 @@ export function OrderCategories() {
       persist(categories.map((item) => item.code === normalizedCode
         ? { ...item, name: normalizedName, audit, history: [audit, ...(item.history || [item.audit])] }
         : item));
+      setFeedback({ title: "Categoría actualizada", description: `${normalizedCode} · ${normalizedName}` });
     } else {
       persist([{ code: normalizedCode, name: normalizedName, status: "ACTIVO", audit, history: [audit] }, ...categories]);
+      setFeedback({ title: "Categoría registrada", description: `${normalizedCode} · ${normalizedName}` });
     }
     closeForm();
     setPage(1);
@@ -115,6 +131,7 @@ export function OrderCategories() {
     persist(categories.map((entry) => entry.code === item.code
       ? { ...entry, status: nextStatus, audit, history: [audit, ...(entry.history || [entry.audit])] }
       : entry));
+    setFeedback({ title: nextStatus === "ACTIVO" ? "Categoría activada" : "Categoría inactivada", description: `${item.code} · ${item.name}` });
   }
 
   const columns = [
@@ -143,8 +160,8 @@ export function OrderCategories() {
         <div className="form-heading"><h2>{formMode === "new" ? "Nueva categoría" : `Editar ${code}`}</h2><p>{formMode === "new" ? "El código será único y se guardará en mayúsculas." : "Actualiza el nombre sin alterar el código ni el histórico."}</p></div>
         <div className="form-body"><form onSubmit={submit} noValidate>
           <div className="sial-ui-category-fields">
-            <div data-sial-component="TextInput" data-sial-source={source}><TextInput id="categoryCode" label="Código" required maxLength={12} placeholder="ETIQ" value={code} disabled={formMode === "edit"} onChange={(value) => setCode(value.toUpperCase().replace(/[^A-Z0-9_-]/g, ""))} helperText="Único, sin espacios y en mayúsculas." /></div>
-            <div data-sial-component="TextInput" data-sial-source={source}><TextInput id="categoryName" label="Nombre" required maxLength={60} placeholder="ETIQUETA" value={name} onChange={(value) => setName(value.toUpperCase())} helperText="Nombre visible en pedidos y materiales." /></div>
+            <div data-sial-component="TextInput" data-sial-source={source}><TextInput id="categoryCode" label="Código" required maxLength={12} placeholder="ETIQ" value={code} disabled={formMode === "edit"} onChange={(value) => { setCode(value.toUpperCase().replace(/[^A-Z0-9_-]/g, "")); setFormError(""); }} helperText="Único, sin espacios y en mayúsculas." /></div>
+            <div data-sial-component="TextInput" data-sial-source={source}><TextInput id="categoryName" label="Nombre" required maxLength={60} placeholder="ETIQUETA" value={name} onChange={(value) => { setName(value.toUpperCase()); setFormError(""); }} helperText="Nombre visible en pedidos y materiales." /></div>
           </div>
           {formError && <p className="sial-ui-form-error" role="alert">{formError}</p>}
           <div className="form-actions"><Button variant="outlined" type="reset" onClick={closeForm} data-sial-component="Button" data-sial-source={source} data-sial-variant="outlined">Cancelar</Button><Button variant="filled" type="submit" data-sial-component="Button" data-sial-source={source} data-sial-variant="filled">Guardar categoría</Button></div>
@@ -152,7 +169,7 @@ export function OrderCategories() {
       </div>}
       <div data-sial-component="Table" data-sial-source={source} className="sial-ui-category-table"><Table columns={columns} data={rows} rowKey={(item) => item.code} minWidth="800px" emptyState="No hay categorías que coincidan con los filtros." actionsHeader="Acciones" actionsWidth="160px" actions={(item) => <TableRowActions label={`Acciones de ${item.name}`}>
         <IconButton variant="ghost" aria-label={`Ver auditoría de ${item.name}`} title="Ver auditoría" onClick={() => setAuditCode(item.code)}><ViewIcon /></IconButton>
-        <IconButton variant="ghost" aria-label={`Editar categoría ${item.name}`} title="Editar categoría" onClick={() => openEdit(item)}><EditIcon /></IconButton>
+        <IconButton variant="ghost" aria-label={`Editar categoría ${item.name}`} title="Editar categoría" onClick={(event) => openEdit(item, event.currentTarget)}><EditIcon /></IconButton>
         <IconButton variant="ghost" className={item.status === "ACTIVO" ? "sial-ui-action-danger" : "sial-ui-action-success"} aria-label={`${item.status === "ACTIVO" ? "Inactivar" : "Activar"} categoría ${item.name}`} title={item.status === "ACTIVO" ? "Inactivar categoría" : "Activar categoría"} onClick={() => toggleStatus(item)}>{item.status === "ACTIVO" ? <CloseIcon /> : <CheckIcon />}</IconButton>
       </TableRowActions>} /></div>
       <Pagination page={currentPage} pageSize={pageSize} total={filtered.length} pageSizeOptions={[5, 10, 20]} onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} data-sial-component="Pagination" data-sial-source={source} />
@@ -172,5 +189,6 @@ export function OrderCategories() {
       data-sial-component="Drawer"
       data-sial-source={source}
     />}
+    {feedback && <div className="sial-ui-category-toast"><Toast visible variant="success" title={feedback.title} description={feedback.description} onClose={() => setFeedback(null)} data-sial-component="Toast" data-sial-source={source} /></div>}
   </>;
 }

@@ -553,16 +553,6 @@ const SIALCatalog = (() => {
     {
       module: "materiales",
       moduleLabel: "Materiales y Suministros",
-      title: "Tablero materiales",
-      family: "analitica",
-      status: "implementada",
-      href: "Materiales%20y%20Suministros/index.html",
-      description: "Centro orquestador para pedidos sugeridos, stock por finca, ordenes, proveedores externos, entregas y POD.",
-      tags: ["HU659", "HU662", "HU666", "Orquestador"]
-    },
-    {
-      module: "materiales",
-      moduleLabel: "Materiales y Suministros",
       title: "Gestion de pedidos de materiales",
       family: "gestion",
       status: "implementada",

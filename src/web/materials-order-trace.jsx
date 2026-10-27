@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Notice, TextInput } from "@banasandev/banasan-ui";
 import { readSubmittedRequest } from "./materials-order-state.js";
 
-const stageNames = ["Preparación", "Creación", "Despacho", "En salida", "En tránsito", "En finca", "Entrega realizada"];
-const stagePaths = [
+export const stageNames = ["Preparación", "Creación", "Despacho", "En salida", "En tránsito", "En finca", "Entrega realizada"];
+export const stagePaths = [
   <><path d="m4 7 8-4 8 4-8 4Z" /><path d="M4 7v10l8 4 8-4V7M12 11v10" /></>,
   <><path d="M9 5h6M9 9h6M9 13h4" /><path d="M7 3h10a2 2 0 0 1 2 2v16H5V5a2 2 0 0 1 2-2Z" /></>,
   <><path d="M3 6h18v12H3Z" /><path d="m8 10 4 4 4-4M12 4v10" /></>,
@@ -12,9 +12,9 @@ const stagePaths = [
   <><path d="M4 9 12 4l8 5v11H4Z" /><path d="M8 20v-6h8v6M8 10h8" /></>,
   <><path d="m4 7 8-4 8 4-8 4Z" /><path d="M4 7v10l8 4 8-4V7M12 11v10" /><path d="m8 15 2 2 5-5" /></>
 ];
-const truck = <><g className="truck-body"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><path className="truck-light" d="M18 12h2" /></g><circle className="truck-wheel" cx="7" cy="18" r="2" /><circle className="truck-wheel truck-wheel-rear" cx="18" cy="18" r="2" /></>;
-const icon = (content) => <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{content}</svg>;
-const orders = {
+export const truck = <><g className="truck-body"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><path className="truck-light" d="M18 12h2" /></g><circle className="truck-wheel" cx="7" cy="18" r="2" /><circle className="truck-wheel truck-wheel-rear" cx="18" cy="18" r="2" /></>;
+export const icon = (content) => <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{content}</svg>;
+export const orders = {
   "PED-2026-10482": {
     type: "Pedido estándar", category: "EMPA · EMPAQUE", destination: "Finca Santa Isabel", requested: "1.480 unidades", document: "RPT-2026-0881", source: "Aviso de corte · Semana 39", current: 4,
     stages: [
@@ -56,13 +56,19 @@ export function MaterialsOrderTrace() {
     if (!orders[requested] && !readSubmittedRequest(requested)) { setError(`No se encontró el pedido ${requested}. Verifica el número e inténtalo de nuevo.`); return; }
     setInput(requested); setId(requested); if (orders[requested]) setCurrent(orders[requested].current);
   }, []);
+  function updateOrderQuery(orderId) {
+    const params = new URLSearchParams(location.search);
+    if (orderId) params.set("pedido", orderId);
+    else params.delete("pedido");
+    history.replaceState({}, "", `${location.pathname}${params.size ? `?${params}` : ""}`);
+  }
   function consult(event) {
     event.preventDefault();
     const normalized = input.trim().toUpperCase();
-    if (!normalized) { setId(""); setError(""); setInspected(null); history.replaceState({}, "", location.pathname); return; }
-    if (!orders[normalized] && !readSubmittedRequest(normalized)) { setId(""); setError(`No se encontró el pedido ${normalized}. Verifica el número e inténtalo de nuevo.`); setInspected(null); history.replaceState({}, "", location.pathname); return; }
+    if (!normalized) { setId(""); setError(""); setInspected(null); updateOrderQuery(""); return; }
+    if (!orders[normalized] && !readSubmittedRequest(normalized)) { setId(""); setError(`No se encontró el pedido ${normalized}. Verifica el número e inténtalo de nuevo.`); setInspected(null); updateOrderQuery(""); return; }
     setError(""); setId(normalized); if (orders[normalized]) setCurrent(orders[normalized].current); setInspected(null);
-    history.replaceState({}, "", `${location.pathname}?pedido=${encodeURIComponent(normalized)}`);
+    updateOrderQuery(normalized);
   }
   const context = order && [["Tipo de pedido", order.type], ["Categoría", order.category], ["Destino", order.destination], ["Cantidad solicitada", order.requested], ["Documento logístico", order.document], ["Origen", order.source]];
   const lastUpdate = stage?.[0];

@@ -57,7 +57,7 @@ const SIALCore = (() => {
         return;
       }
       const script = document.createElement("script");
-      script.src = getSharedAssetUrl("sial-navigation-contract.js");
+      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261026-materials-menu-final-1");
       script.dataset.sialNavigationContract = "true";
       script.onload = () => {
         if (!window.SIALNavigationContract?.areas) {
@@ -1736,12 +1736,52 @@ const SIALCore = (() => {
   }
 
   function initStateActionConfirm(config = {}) {
+    if (document.querySelector("[data-sial-react-view]")) return;
     const selector = config.selector || 'tbody button[aria-label^="Inactivar"], tbody button[aria-label^="Activar"]';
-    const buttons = qsa(selector).filter((button) => button.dataset.stateConfirmReady !== "true");
+    const allButtons = qsa(selector).filter((button) => !button.closest('[data-sial-component="Table"]'));
+    const buttons = allButtons.filter((button) => button.dataset.stateConfirmReady !== "true");
     if (!buttons.length) return;
 
     const inactiveIcon = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg>';
     const activeIcon = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>';
+    const storageKey = `sial-catalog-state:${location.pathname}`;
+    function readSavedStates() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        return saved && typeof saved === "object" && !Array.isArray(saved) ? saved : {};
+      } catch { return {}; }
+    }
+    function rowIdentity(row) {
+      return [row.dataset.id || row.dataset.code || row.cells[0]?.textContent?.trim(), row.dataset.version].filter(Boolean).join(":");
+    }
+    function restoreSavedStates() {
+      const saved = readSavedStates();
+      allButtons.forEach((button) => {
+        const row = button.closest("tr");
+        const entry = row && saved[rowIdentity(row)];
+        if (!entry || !["active", "inactive"].includes(entry.status)) return;
+        row.dataset.status = entry.status;
+        row.dataset.state = entry.status === "active" ? "Activo" : "Inactivo";
+        if (typeof entry.audit === "string") row.dataset.audit = entry.audit;
+        const status = qs(".status", row);
+        if (status) {
+          status.classList.remove("status-active", "status-warning", "status-inactive");
+          status.classList.add(entry.status === "active" ? "status-active" : "status-inactive");
+          status.textContent = row.dataset.state;
+        }
+        const audit = String(row.dataset.audit || "").split(";")[0]?.split("|") || [];
+        const actionCell = button.closest("td");
+        const cells = Array.from(row.children);
+        const auditCell = cells[cells.indexOf(actionCell) - 1];
+        if (auditCell?.classList.contains("muted") && audit[0]) {
+          const [actor, ...time] = String(audit[1] || "").split(" - ");
+          auditCell.replaceChildren(document.createTextNode(`${audit[0]} - ${actor}`));
+          if (time.length) auditCell.append(document.createElement("br"), document.createTextNode(time.join(" - ")));
+        }
+        const entityLabel = getEntityLabel(button);
+        syncButton(button, entry.status === "active" ? "active" : "inactive", entityLabel);
+      });
+    }
     let pending = null;
     let lastTrigger = null;
 
@@ -1890,12 +1930,21 @@ const SIALCore = (() => {
 
       updateVisibleAudit(row, auditAction, timestamp, button);
       syncButton(button, action, entityLabel);
+      const identity = rowIdentity(row);
+      if (identity) {
+        try {
+          const saved = readSavedStates();
+          saved[identity] = { status: nextStatus, audit: row.dataset.audit };
+          localStorage.setItem(storageKey, JSON.stringify(saved));
+        } catch { /* Prototype remains usable when storage is unavailable. */ }
+      }
       row.classList.add("state-updated");
       setTimeout(() => row.classList.remove("state-updated"), 1400);
       document.dispatchEvent(new CustomEvent("sial:table-state-change", { detail: { row, status: nextStatus } }));
       closeDialog();
     }
 
+    restoreSavedStates();
     buttons.forEach((button) => {
       button.dataset.stateConfirmReady = "true";
       button.dataset.stateAction = getButtonAction(button);

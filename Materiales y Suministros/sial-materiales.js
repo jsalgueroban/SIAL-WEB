@@ -126,7 +126,6 @@ const SIALMaterials = (() => {
   ];
 
   const viewConfig = {
-    dashboard: { title: "Materiales y suministros", eyebrow: "Gestion / Materiales y suministros", subtitle: "Centro operativo para pedidos, stock, ordenes, proveedores, entregas y trazabilidad documental.", hu: "HU659, HU660, HU662, HU666, HU667, HU826, HU546, HU668, HU681, HU682", channel: "Web gestiona y consulta · móvil ejecuta en campo cuando la HU lo requiere." },
     pedidos: { title: "Gestion de pedidos de materiales", eyebrow: "Materiales / Pedidos", subtitle: "Pedidos sugeridos, adicionales y estandar vinculados a finca, semana, stock y documento logistico.", hu: "HU659, HU660, HU666, HU667", channel: "Web: genera, ajusta y procesa · móvil: consulta o captura de campo solo cuando aplique." },
     inventario: { title: "Inventario de materiales", eyebrow: "Materiales / Inventario", subtitle: "Consulta existencias disponibles, reservadas y totales por material y finca.", hu: "HU662", channel: "Web: consulta de gestión · móvil: consulta complementaria, sin editar saldos." },
     pallets: { title: "Inventario de pallets", eyebrow: "Materiales / Pallets", subtitle: "Pallets completos y mochos para planificar cargues y consolidaciones.", hu: "HU559, HU560" },
@@ -386,26 +385,12 @@ const SIALMaterials = (() => {
   }
 
   function header(view) {
-    const cfg = viewConfig[view] || viewConfig.dashboard;
+    const cfg = viewConfig[view];
     return `
       <p class="page-eyebrow">${esc(cfg.eyebrow)}</p>
       <div class="page-header">
         <div><h1 class="page-title">${esc(cfg.title)}</h1><p class="page-subtitle">${esc(cfg.subtitle)}</p></div>
       </div>
-    `;
-  }
-
-  function dashboard() {
-    return `
-      ${header("dashboard")}
-      <article class="card materials-navigation-card">
-        <div class="card-header"><div><h2 class="card-title">Operación de materiales</h2><p class="card-subtitle">Selecciona la actividad que necesitas gestionar o consultar.</p></div></div>
-        <div class="card-body materials-navigation-grid">
-          <section class="materials-navigation-group" aria-labelledby="materialsSetupTitle"><h3 id="materialsSetupTitle">Configuración</h3><a class="btn btn-secondary" href="gestion-materiales.html">Catálogo de materiales</a><a class="btn btn-secondary" href="categorias-pedido.html">Categorías de pedido</a><a class="btn btn-secondary" href="recetas-materiales.html">Recetas de materiales</a><a class="btn btn-secondary" href="gestion-proveedores.html">Proveedores</a><a class="btn btn-secondary" href="reglas-documentales.html">Reglas documentales</a></section>
-          <section class="materials-navigation-group" aria-labelledby="materialsOrderTitle"><h3 id="materialsOrderTitle">Pedidos e inventario</h3><a class="btn btn-primary" href="gestion-pedidos-materiales.html">Gestionar pedidos</a><a class="btn btn-secondary" href="seguimiento-pedidos-finca.html">Seguimiento de pedidos</a><a class="btn btn-secondary" href="aprobacion-pedidos-materiales.html">Aprobar pedidos</a><a class="btn btn-secondary" href="pedidos-recurrentes.html">Pedidos recurrentes</a><a class="btn btn-secondary" href="inventario-materiales-finca.html">Inventario de materiales</a><a class="btn btn-secondary" href="movimientos-inventario.html">Movimientos de inventario</a><a class="btn btn-secondary" href="inventario-pallets.html">Inventario de pallets</a></section>
-          <section class="materials-navigation-group" aria-labelledby="materialsDeliveryTitle"><h3 id="materialsDeliveryTitle">Despacho y seguimiento</h3><a class="btn btn-secondary" href="ordenes-transporte-insumos.html">Órdenes de transporte</a><a class="btn btn-secondary" href="resumen-proveedores.html">Resumen para proveedores</a><a class="btn btn-secondary" href="seguimiento-entregas.html">Entregas y evidencias</a><a class="btn btn-secondary" href="trazabilidad-pedido.html">Trazabilidad de pedidos</a></section>
-        </div>
-      </article>
     `;
   }
 
@@ -591,7 +576,6 @@ const SIALMaterials = (() => {
   };
 
   function renderView(view) {
-    if (view === "dashboard") return dashboard();
     const map = {
       pedidos: ["Pedidos de materiales", "Listado operativo con stock consultado, categoría, origen del pedido y documento logistico.", "pedidoCount", "pedidoSearch", "pedidoStatus", "pedidoContext", "Todos los tipos", contextByView.pedidos, ["Pedido", "Tipo", "Categoría", "Finca / semana", "Material / cantidad", "Stock consultado", "Documento", "Estado", "Auditoria"], orderRows(), "pedidos-materiales", '<button class="btn btn-primary" type="button" data-open-inline-form>Pedido adicional</button>', "", "", inlineForm("pedido")],
       inventario: ["Existencias de materiales", "Inventario por finca con saldo disponible, reservado y total informado.", "stockCount", "stockSearch", "stockStatus", "stockContext", "Todas las fincas", contextByView.inventario, ["Código SAP / finca", "Material", "Unidad", "Disponible", "Reservado", "Total", "Último movimiento / actualización"], stockRows(), "inventario-materiales", "", ""],
@@ -1027,7 +1011,6 @@ const SIALMaterials = (() => {
   }
 
   function initFilters(view) {
-    if (view === "dashboard") return;
     const cfg = {
       pedidos: ["#pedidoSearch", "#pedidoStatus", "#pedidoContext", "#pedidos-materialesEmpty", "#pedidoCount"],
       inventario: ["#stockSearch", "#stockStatus", "#stockContext", "#inventario-fincaEmpty", "#stockCount"],
@@ -1075,7 +1058,7 @@ const SIALMaterials = (() => {
     `;
   }
 
-  function init(view = "dashboard") {
+  function init(view = "pedidos") {
     SIALCore.initShell({ area: "gestion", module: "materiales", view });
     const root = qs("[data-material-root]");
     if (!root) return;

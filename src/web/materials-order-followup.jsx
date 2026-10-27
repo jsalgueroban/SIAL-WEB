@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import { Button, Chip, DateInput, Drawer, IconButton, NumberInput, Pagination, SelectInput, Table, TableRowActions, TextInput, Toast, ViewIcon } from "@banasandev/banasan-ui";
 import { readSubmittedRequests } from "./materials-order-state.js";
@@ -42,6 +42,30 @@ const emptyForm = { farm: "", category: "", required: "", product: "", quantity:
 export function MaterialsRecurringOrders() {
   const key = "sial-recurring-orders";
   const [orders, setOrders] = useState(() => readStored(key, recurringSeed)); const [search, setSearch] = useState(""); const [status, setStatus] = useState("all"); const [page, setPage] = useState(1); const [size, setSize] = useState(10); const [panel, setPanel] = useState(null); const [form, setForm] = useState(emptyForm); const [error, setError] = useState(""); const [feedback, setFeedback] = useState("");
+  const previousPanel = useRef(null);
+  const panelTrigger = useRef(null);
+  useEffect(() => {
+    if (panel && previousPanel.current === null) panelTrigger.current = document.activeElement;
+    if (panel === "new") requestAnimationFrame(() => document.getElementById("recurring-farm")?.focus());
+    else if (panel) requestAnimationFrame(() => {
+      const review = document.querySelector('section[aria-label^="Revisión de "]');
+      review?.setAttribute("tabindex", "-1");
+      review?.focus();
+      const table = document.querySelector(".workflow-table-card .bui-table-wrapper");
+      if (table) table.scrollLeft = 0;
+    });
+    else if (previousPanel.current !== null) requestAnimationFrame(() => {
+      const trigger = panelTrigger.current;
+      if (trigger?.isConnected) trigger.focus();
+      else document.querySelector(".workflow-table-card .card-actions button")?.focus();
+    });
+    previousPanel.current = panel;
+  }, [panel]);
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const timer = window.setTimeout(() => setFeedback(""), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
   const categories = useMemo(() => readStored("sial-order-categories", []).filter((item) => item.status === "ACTIVO").map((item) => ({ value: item.code, label: `${item.code} · ${item.name}` })), []);
   const categoryOptions = categories.length ? categories : [{ value: "ETIQ", label: "ETIQ · ETIQUETA" }, { value: "OPER", label: "OPER · OPERATIVO" }, { value: "EMPA", label: "EMPA · EMPAQUE" }];
   const filtered = useMemo(() => orders.filter((item) => `${item.id} ${item.farm} ${item.reason} ${item.lines.map((line) => line.name).join(" ")}`.toLocaleLowerCase("es").includes(search.toLocaleLowerCase("es")) && (status === "all" || item.status === status)), [orders, search, status]);
@@ -49,7 +73,35 @@ export function MaterialsRecurringOrders() {
   const selected = orders.find((item) => item.id === panel);
   function save(next) { setOrders(next); localStorage.setItem(key, JSON.stringify(next)); }
   function changeStatus(value) { if (!selected || selected.status !== "Pendiente de aprobación") return; save(orders.map((item) => item.id === selected.id ? { ...item, status: value } : item)); setFeedback(`${selected.id}: ${value.toLocaleLowerCase("es")}.`); }
-  function submit(event) { event.preventDefault(); const quantity = Number(form.quantity); if (!form.farm || !form.category || !form.product.trim() || !form.required || !form.reason.trim()) { setError("Completa todos los campos obligatorios."); return; } if (!Number.isInteger(quantity) || quantity < 1) { setError("Ingresa una cantidad entera mayor que cero."); return; } const nextNumber = Math.max(0, ...orders.map((item) => Number(item.id.match(/(\d+)$/)?.[1] || 0))) + 1; const item = { id: `PRC-2026-${String(nextNumber).padStart(3, "0")}`, farm: form.farm, category: form.category, required: form.required, reason: form.reason.trim(), status: "Pendiente de aprobación", created: "Ahora", lines: [{ name: form.product.trim(), quantity, unit: form.unit }] }; save([item, ...orders]); setPanel(item.id); setError(""); setFeedback(`${item.id} fue enviado a aprobación de Materiales.`); }
+  function submit(event) {
+    event.preventDefault();
+    const required = [
+      ["farm", !form.farm], ["category", !form.category], ["required", !form.required],
+      ["product", !form.product.trim()], ["reason", !form.reason.trim()]
+    ];
+    const missing = required.find(([, invalid]) => invalid);
+    if (missing) {
+      setError("Completa todos los campos obligatorios.");
+      document.getElementById(`recurring-${missing[0]}`)?.focus();
+      return;
+    }
+    const quantity = Number(form.quantity);
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      setError("Ingresa una cantidad entera mayor que cero.");
+      document.getElementById("recurring-quantity")?.focus();
+      return;
+    }
+    const nextNumber = Math.max(0, ...orders.map((item) => Number(item.id.match(/(\d+)$/)?.[1] || 0))) + 1;
+    const item = {
+      id: `PRC-2026-${String(nextNumber).padStart(3, "0")}`, farm: form.farm,
+      category: form.category, required: form.required, reason: form.reason.trim(),
+      status: "Pendiente de aprobación", created: "Ahora",
+      lines: [{ name: form.product.trim(), quantity, unit: form.unit }]
+    };
+    save([item, ...orders]);
+    setPanel(item.id); setError("");
+    setFeedback(`${item.id} fue enviado a aprobación de Materiales.`);
+  }
   const update = (field, value) => { setForm((previous) => ({ ...previous, [field]: value })); setError(""); };
   return <><Header eyebrow="Materiales / Pedidos" title="Pedidos recurrentes" subtitle="Registra necesidades operativas sin aviso de corte ni pedido semanal base." /><article className="card workflow-table-card standard-master-card"><div className="card-header"><div><h2 className="card-title">Pedidos recurrentes registrados</h2><p className="card-subtitle">Consulta la finca, categoría, necesidad y estado de aprobación.</p></div><div className="card-actions"><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button onClick={() => { setForm(emptyForm); setPanel("new"); setError(""); }}>Nueva solicitud</Button></div></div>{feedback && <Toast visible variant="success" title="Resultado" description={feedback} onClose={() => setFeedback("")} />}<div className="card-body"><div className="toolbar materials-toolbar"><TextInput id="recurringSearch" label="Buscar pedidos recurrentes" placeholder="Buscar pedido, finca o necesidad" value={search} onChange={(value) => { setSearch(value); setPage(1); }} /><SelectInput id="recurringStatus" label="Estado" value={status} options={[{ value: "all", label: "Todos los estados" }, ...["Borrador", "Pendiente de aprobación", "En revisión", "Aprobado", "Rechazado"].map((value) => ({ value, label: value }))]} onChange={(value) => { setStatus(value); setPage(1); }} /><TableFilterReset active={Boolean(search.trim()) || status !== "all"} onReset={() => { setSearch(""); setStatus("all"); setPage(1); }} /></div></div>{panel === "new" && <section className="inline-form-panel materials-inline-form" aria-label="Nueva solicitud recurrente"><div className="form-heading"><h3>Nueva solicitud recurrente</h3><p>Registra una necesidad operativa sin aviso de corte ni pedido semanal base.</p></div><form className="form-body" onSubmit={submit} noValidate><div className="grid recurring-form-grid"><div className="field span-4"><SelectInput id="recurring-farm" label="Finca" required value={form.farm} options={[{ value: "", label: "Seleccionar" }, ...farms.map((value) => ({ value, label: value }))]} onChange={(value) => update("farm", value)} /></div><div className="field span-4"><SelectInput id="recurring-category" label="Categoría" required value={form.category} options={[{ value: "", label: "Seleccionar" }, ...categoryOptions]} onChange={(value) => update("category", value)} /></div><div className="field span-4"><DateInput id="recurring-required" label="Fecha requerida" required value={form.required ? new Date(`${form.required}T12:00:00`) : null} onChange={(value) => update("required", value ? `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}` : "")} /></div><div className="field span-6"><TextInput id="recurring-product" label="Producto" required value={form.product} onChange={(value) => update("product", value)} /></div><div className="field span-3"><NumberInput id="recurring-quantity" label="Cantidad" required min={1} value={form.quantity} onChange={(value) => update("quantity", value)} /></div><div className="field span-3"><SelectInput id="recurring-unit" label="Unidad" value={form.unit} options={["UN", "PAR", "CAJA", "L"].map((value) => ({ value, label: value }))} onChange={(value) => update("unit", value)} /></div><div className="field span-12"><label className="label" htmlFor="recurring-reason">Justificación <span className="required">*</span></label><textarea className="textarea" id="recurring-reason" rows="3" value={form.reason} onChange={(event) => update("reason", event.target.value)} /></div></div>{error && <p className="field-error" role="alert">{error}</p>}<div className="form-actions"><Button variant="outlined" type="button" onClick={() => setPanel(null)}>Cancelar</Button><Button type="submit">Enviar a aprobación</Button></div></form></section>}<Table columns={[{ key: "id", header: "Pedido", render: (item) => <span className="materials-record-main"><strong>{item.id}</strong><span>{item.created}</span></span> }, { key: "farm", header: "Finca", render: (item) => item.farm }, { key: "category", header: "Categoría", render: (item) => item.category }, { key: "lines", header: "Necesidad", render: (item) => item.lines.map((line) => <span className="block" key={`${line.name}-${line.unit}`}>{line.name} · {line.quantity} {line.unit}</span>) }, { key: "required", header: "Fecha requerida", render: (item) => item.required }, { key: "status", header: "Estado", render: (item) => <Status value={item.status} /> }]} data={filtered.slice((current - 1) * size, current * size)} rowKey={(item) => item.id} minWidth="900px" emptyState="No hay pedidos recurrentes para los filtros seleccionados." actionsHeader="Acciones" actions={(item) => <TableRowActions label={`Acciones de ${item.id}`}><IconButton variant="ghost" aria-label={`Abrir pedido ${item.id}`} title="Abrir solicitud" onClick={() => setPanel(item.id)}><ViewIcon /></IconButton></TableRowActions>} /><Pagination page={current} pageSize={size} total={filtered.length} pageSizeOptions={[2, 10, 20]} onPageChange={setPage} onPageSizeChange={(value) => { setSize(value); setPage(1); }} /></article>{selected && <section className="inline-form-panel materials-inline-form" aria-label={`Revisión de ${selected.id}`}><div className="form-heading recurring-review-heading"><div><p className="section-kicker">Solicitud recurrente</p><h2>Revisión de {selected.id}</h2><p>Consulta la necesidad y registra la decisión de Materiales.</p></div><Status value={selected.status} /></div><div className="form-body recurring-review-body"><div className="recurring-review-summary"><div><span className="detail-label">Finca</span><strong>{selected.farm}</strong></div><div><span className="detail-label">Categoría</span><strong>{selected.category}</strong></div><div><span className="detail-label">Fecha requerida</span><strong>{selected.required}</strong></div></div><div className="recurring-review-reason"><span className="detail-label">Necesidad</span>{selected.lines.map((line) => <p key={`${line.name}-${line.unit}`}>{line.name} · {line.quantity} {line.unit}</p>)}</div><div className="recurring-review-reason"><span className="detail-label">Justificación</span><p>{selected.reason}</p></div><div className="form-actions"><Button variant="outlined" onClick={() => setPanel(null)}>Cerrar</Button>{selected.status === "Pendiente de aprobación" && <><Button variant="outlined" onClick={() => changeStatus("Rechazado")}>Rechazar</Button><Button onClick={() => changeStatus("Aprobado")}>Aprobar directamente</Button></>}</div></div></section>}</>;
 }

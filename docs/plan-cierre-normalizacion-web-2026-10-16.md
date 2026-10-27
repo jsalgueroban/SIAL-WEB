@@ -1,5 +1,7 @@
 # Plan de cierre de normalización Web
 
+> **Documento histórico (16/10).** Sus conteos y referencias al tablero de Materiales describen la línea base de esa fecha. El inventario y estado vigentes están en [estado-normalizacion-web-2026-10-26.md](estado-normalizacion-web-2026-10-26.md) y [matriz-vista-componente-web-2026-10-26.csv](matriz-vista-componente-web-2026-10-26.csv).
+
 Fecha: 2026-10-16. Base: 101 HTML (100 vistas y un catálogo técnico). Este inventario mide estado de verificación, no porcentaje de implementación. «Por auditar» puede incluir componentes ya adaptados; «Parcial» confirma trabajo pendiente. Ninguna etiqueta acredita cierre visual o funcional por sí sola.
 
 ## Distribución actual

@@ -6,7 +6,7 @@
   <title>SIAL | Trazabilidad del pedido</title>
   <script>(function(){const t=localStorage.getItem("sial-theme");const d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light");})();</script>
   <link rel="stylesheet" href="../shared/vendor/sial-ui-runtime.css" />
-  <link rel="stylesheet" href="trazabilidad-pedido.css" />
+  <link rel="stylesheet" href="trazabilidad-pedido.css?v=20261026-trace-alternative-1" />
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
@@ -16,8 +16,8 @@
       <section class="page order-trace" data-sial-react-view="materials-order-trace"></section>
     </main>
   </div>
-  <script src="../shared/sial-core.js?v=20261016-material-normalized-4"></script>
-  <script>SIALCore.initShell({ area: "gestion", module: "materiales", view: "trazabilidadPedido" });</script>
-  <script defer src="../shared/vendor/sial-ui-runtime.js?v=20261026-notice"></script>
+  <script src="../shared/sial-core.js?v=20261026-materials-menu-final-1"></script>
+  <script>SIALCore.initShell({ area: "gestion", module: "materiales", view: new URLSearchParams(location.search).get("composicion") === "alternativa" ? "trazabilidad-pedido-alternativa" : "trazabilidad-pedido" });</script>
+  <script defer src="../shared/vendor/sial-ui-runtime.js?v=20261026-trace-alternative-1"></script>
 </body>
 </html>

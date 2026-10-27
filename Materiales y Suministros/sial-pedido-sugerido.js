@@ -193,7 +193,7 @@ const SIALSuggestedOrder = (() => {
   }
 
   function deniedShell() {
-    return `<p class="page-eyebrow">Materiales / Pedidos</p><div class="page-header"><div><h1 class="page-title">Pedido sugerido por finca</h1><p class="page-subtitle">Consulta restringida al alcance de tu usuario.</p></div><div class="card-actions"><a class="btn btn-secondary" href="index.html">Volver a materiales</a></div></div><div class="notice notice-error suggest-state" role="alert"><div><strong>Sin acceso</strong><span>No existe información disponible dentro de tu compañía y fincas autorizadas.</span></div></div>`;
+    return `<p class="page-eyebrow">Materiales / Pedidos</p><div class="page-header"><div><h1 class="page-title">Pedido sugerido por finca</h1><p class="page-subtitle">Consulta restringida al alcance de tu usuario.</p></div><div class="card-actions"><a class="btn btn-secondary" href="gestion-pedidos-materiales.html">Volver a pedidos</a></div></div><div class="notice notice-error suggest-state" role="alert"><div><strong>Sin acceso</strong><span>No existe información disponible dentro de tu compañía y fincas autorizadas.</span></div></div>`;
   }
 
   function init() {

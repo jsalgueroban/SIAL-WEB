@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Button, CheckIcon, Chip, CloseIcon, Drawer, EditIcon, IconButton,
   Pagination, SelectInput, Table, TableRowActions, TextInput, Toast, ViewIcon
@@ -36,10 +36,20 @@ const configs = {
   }
 };
 const initialForm = (config) => Object.fromEntries(config.fields.map(([key]) => [key, ""]));
+const storageKeys = { suppliers: "sial-materials-suppliers", rules: "sial-materials-document-rules" };
+
+function readRecords(kind, fallback) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(storageKeys[kind]) || "null");
+    return Array.isArray(stored) ? stored : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 export function MaterialsCatalog({ kind }) {
   const config = configs[kind];
-  const [records, setRecords] = useState(config.data);
+  const [records, setRecords] = useState(() => readRecords(kind, config.data));
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [context, setContext] = useState("all");
@@ -51,9 +61,15 @@ export function MaterialsCatalog({ kind }) {
   const [form, setForm] = useState(() => initialForm(config));
   const [errors, setErrors] = useState({});
   const [feedback, setFeedback] = useState("");
+  const formTriggerRef = useRef(null);
   useEffect(() => {
     if (formOpen) document.getElementById(`${kind}-${config.fields[0][0]}`)?.focus();
   }, [formOpen, config, kind]);
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const timer = window.setTimeout(() => setFeedback(""), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
   const contexts = [...new Set(records.map((item) => item[config.contextKey]))];
   const filtered = useMemo(() => records.filter((item) =>
     Object.values(item).join(" ").toLocaleLowerCase("es-CO").includes(search.trim().toLocaleLowerCase("es-CO"))
@@ -65,34 +81,59 @@ export function MaterialsCatalog({ kind }) {
   const columns = [...config.columns.map(([key, header]) => ({ key, header, render: (item) => item[key] })),
     { key: "status", header: "Estado", render: (item) => <Chip preset={item.status === "ACTIVO" ? "active" : item.status === "INACTIVO" ? "inactive" : "warning"}>{item.status === "ACTIVO" ? "Activo" : item.status === "INACTIVO" ? "Inactivo" : "Revisión"}</Chip> },
     { key: "audit", header: "Auditoría", render: (item) => item.audit.replace("|", " · ") }];
-  function openForm(item = null) {
+  function persist(next) {
+    setRecords(next);
+    localStorage.setItem(storageKeys[kind], JSON.stringify(next));
+  }
+  function openForm(item = null, trigger = null) {
+    formTriggerRef.current = trigger;
     setEditing(item?.id || null);
     setForm(item ? Object.fromEntries(config.fields.map(([key]) => [key, item[key]])) : initialForm(config));
     setErrors({});
     setFormOpen(true);
   }
-  function closeForm() { setFormOpen(false); setEditing(null); setErrors({}); }
+  function closeForm() {
+    setFormOpen(false);
+    setEditing(null);
+    setErrors({});
+    requestAnimationFrame(() => formTriggerRef.current?.focus());
+  }
   function submit(event) {
     event.preventDefault();
     const nextErrors = Object.fromEntries(config.fields.filter(([key]) => !String(form[key] || "").trim()).map(([key]) => [key, "El campo es requerido."]));
     if (Object.keys(nextErrors).length) { setErrors(nextErrors); document.getElementById(`${kind}-${Object.keys(nextErrors)[0]}`)?.focus(); return; }
-    // La propuesta conserva el comportamiento local: no persiste en el sistema real.
-    if (editing) setRecords((previous) => previous.map((item) => item.id === editing ? { ...item, ...form, audit: `Editar registro|${new Date().toLocaleString("es-CO")}` } : item));
-    setFeedback(`Datos de ${config.noun} actualizados.`);
+    const normalized = Object.fromEntries(Object.entries(form).map(([key, value]) => [key, String(value).trim()]));
+    normalized.code = normalized.code.toUpperCase();
+    if (records.some((item) => item.code === normalized.code && item.id !== editing)) {
+      setErrors({ code: "Este código ya existe." });
+      document.getElementById(`${kind}-code`)?.focus();
+      return;
+    }
+    const audit = `${editing ? "Editar" : "Crear"} registro|${new Date().toLocaleString("es-CO")}`;
+    const next = editing
+      ? records.map((item) => item.id === editing ? { ...item, ...normalized, audit } : item)
+      : [{ id: `${kind}-${Date.now()}`, ...normalized, status: "REVISION", audit }, ...records];
+    persist(next);
+    setPage(1);
+    const isRule = config.noun === "regla";
+    const action = editing ? (isRule ? "actualizada" : "actualizado") : (isRule ? "registrada" : "registrado");
+    setFeedback(`${isRule ? "Regla" : "Proveedor"} ${normalized.code} ${action}.`);
     closeForm();
   }
   function toggle(item) {
     const next = item.status === "INACTIVO" ? "ACTIVO" : "INACTIVO";
-    setRecords((previous) => previous.map((record) => record.id === item.id ? { ...record, status: next, audit: `${next === "ACTIVO" ? "Activar" : "Inactivar"} registro|${new Date().toLocaleString("es-CO")}` } : record));
-    setFeedback(`${config.noun === "regla" ? "Regla" : "Proveedor"} ${item.code} ${next === "ACTIVO" ? "activado" : "inactivado"}.`);
+    persist(records.map((record) => record.id === item.id ? { ...record, status: next, audit: `${next === "ACTIVO" ? "Activar" : "Inactivar"} registro|${new Date().toLocaleString("es-CO")}` } : record));
+    const isRule = config.noun === "regla";
+    const action = next === "ACTIVO" ? (isRule ? "activada" : "activado") : (isRule ? "inactivada" : "inactivado");
+    setFeedback(`${isRule ? "Regla" : "Proveedor"} ${item.code} ${action}.`);
   }
   return <>
     <p className="page-eyebrow">{config.eyebrow}</p><div className="page-header"><div><h1 className="page-title">{config.title}</h1><p className="page-subtitle">{config.subtitle}</p></div></div>
-    <article className="card mt-24 standard-master-card"><div className="card-header"><div><h2 className="card-title">{config.cardTitle}</h2><p className="card-subtitle">{config.cardSubtitle}</p></div>
+    <article className="card mt-24 standard-master-card materials-generic-catalog-card"><div className="card-header"><div><h2 className="card-title">{config.cardTitle}</h2><p className="card-subtitle">{config.cardSubtitle}</p></div>
       <div className="card-actions"><span data-sial-component="Chip" data-sial-source={source}><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip></span>
-        <span data-sial-component="Button" data-sial-source={source}><Button variant="outlined" onClick={() => exportRows(filtered, [...config.columns.map(([key, header]) => ({ key, header })), { key: "status", header: "Estado" }], config.filename)}>Exportar</Button></span>
-        <Button onClick={() => openForm()}>{config.button}</Button></div></div>
-      {feedback && <Toast visible variant="success" title="Resultado de la operación" description={feedback} onClose={() => setFeedback("")} />}
+        <span data-sial-component="Button" data-sial-source={source}><Button variant="outlined" onClick={() => exportRows(filtered.map((item) => ({ ...item, status: ({ ACTIVO: "Activo", INACTIVO: "Inactivo", REVISION: "Revisión" })[item.status] || item.status })), [...config.columns.map(([key, header]) => ({ key, header })), { key: "status", header: "Estado" }], config.filename)}>Exportar</Button></span>
+        <Button onClick={(event) => openForm(null, event.currentTarget)}>{config.button}</Button></div></div>
+      {feedback && <div className="materials-catalog-feedback"><Toast visible variant="success" title="Resultado de la operación" description={feedback} onClose={() => setFeedback("")} data-sial-component="Toast" data-sial-source={source} /></div>}
       <div className="card-body"><div className="toolbar materials-toolbar">
         <div data-sial-component="TextInput" data-sial-source={source}><TextInput id={`${kind}-search`} label={config.searchLabel} placeholder={config.searchLabel} value={search}
           onChange={(value) => { setSearch(value); setPage(1); }} /></div>
@@ -115,15 +156,18 @@ export function MaterialsCatalog({ kind }) {
       <div data-sial-component="Table" data-sial-source={source}><Table columns={columns} data={rows} rowKey={(item) => item.id} minWidth="960px" emptyState="No hay registros que coincidan con los filtros."
         actionsHeader="Acciones" actionsWidth="130px" actions={(item) => <TableRowActions label={`Acciones de ${item.code}`}>
           <IconButton variant="ghost" aria-label={`Ver detalle de ${item.code}`} title="Ver detalle" onClick={() => setSelected(item)}><ViewIcon/></IconButton>
-          <IconButton variant="ghost" aria-label={`Editar ${item.code}`} title="Editar" onClick={() => openForm(item)}><EditIcon/></IconButton>
+          <IconButton variant="ghost" aria-label={`Editar ${item.code}`} title="Editar" onClick={(event) => openForm(item, event.currentTarget)}><EditIcon/></IconButton>
           <IconButton variant="ghost" aria-label={`${item.status === "INACTIVO" ? "Activar" : "Inactivar"} ${item.code}`} title={item.status === "INACTIVO" ? "Activar" : "Inactivar"} onClick={() => toggle(item)}>
             {item.status === "INACTIVO" ? <CheckIcon/> : <CloseIcon/>}</IconButton>
         </TableRowActions>} /></div>
       <div data-sial-component="Pagination" data-sial-source={source}><Pagination page={currentPage} pageSize={pageSize} total={filtered.length} pageSizeOptions={[2, 10, 20]}
         onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} /></div>
     </article>
-    {selected && <Drawer show onClose={() => setSelected(null)} title={`Detalle de ${config.noun}`} subtitle={selected.code}
-      data={Object.entries(selected).map(([key, value]) => ({ label: columns.find((column) => column.key === key)?.header || key,
-        children: key === "status" ? <Chip preset={value === "ACTIVO" ? "active" : value === "INACTIVO" ? "inactive" : "warning"}>{value === "ACTIVO" ? "Activo" : value === "INACTIVO" ? "Inactivo" : "Revisión"}</Chip> : String(value) }))} />}
+    {selected && <Drawer show onClose={() => setSelected(null)} title={`Detalle de ${config.noun}`} subtitle={selected.code} ariaLabel={`Detalle de ${config.noun} ${selected.code}`}
+      data={[
+        ...config.columns.map(([key, header]) => ({ label: header, children: selected[key] || "No registrado" })),
+        { label: "Estado", children: <Chip preset={selected.status === "ACTIVO" ? "active" : selected.status === "INACTIVO" ? "inactive" : "warning"}>{selected.status === "ACTIVO" ? "Activo" : selected.status === "INACTIVO" ? "Inactivo" : "Revisión"}</Chip> },
+        { label: "Auditoría", children: selected.audit?.replace("|", " · ") || "No registrada" },
+      ]} />}
   </>;
 }

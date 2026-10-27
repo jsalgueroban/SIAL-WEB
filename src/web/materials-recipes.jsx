@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button,
@@ -146,6 +146,12 @@ export function MaterialsRecipes() {
   });
   const [errors, setErrors] = useState({});
   const [feedback, setFeedback] = useState("");
+  const formTriggerRef = useRef(null);
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const timer = window.setTimeout(() => setFeedback(""), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
   const filtered = useMemo(
     () =>
       records.filter(
@@ -168,7 +174,8 @@ export function MaterialsRecipes() {
       item.version === form.version.trim() &&
       item.id !== editing,
   );
-  function open(item = null) {
+  function open(item = null, trigger = null) {
+    formTriggerRef.current = trigger;
     setEditing(item?.id || "new");
     setForm(
       item
@@ -183,6 +190,12 @@ export function MaterialsRecipes() {
         : { reference: "", version: "", lines: [emptyLine()] },
     );
     setErrors({});
+    requestAnimationFrame(() => document.getElementById(item ? "recipe-line-0" : "recipe-form-reference")?.focus());
+  }
+  function closeForm() {
+    setEditing(null);
+    setErrors({});
+    requestAnimationFrame(() => formTriggerRef.current?.focus());
   }
   function updateLine(index, field, value) {
     setForm((previous) => ({
@@ -224,6 +237,9 @@ export function MaterialsRecipes() {
     }
     if (Object.keys(next).length) {
       setErrors(next);
+      const first = Object.keys(next)[0];
+      const id = first === "reference" ? "recipe-form-reference" : first === "version" ? "recipe-form-version" : first === "materials" ? "recipe-line-0" : first.startsWith("quantity-") ? `recipe-quantity-${first.slice(9)}` : `recipe-${first}`;
+      document.getElementById(id)?.focus();
       return;
     }
     const id = `REC-${form.reference.trim()}-${form.version.trim()}`;
@@ -245,7 +261,7 @@ export function MaterialsRecipes() {
         );
     saveRecipeRecords(updated);
     setRecords(updated);
-    setEditing(null);
+    closeForm();
     setFeedback(
       `Receta ${id} ${editing === "new" ? "creada" : "actualizada"}.`,
     );
@@ -295,17 +311,17 @@ export function MaterialsRecipes() {
               {filtered.length}{" "}
               {filtered.length === 1 ? "registro" : "registros"}
             </Chip>
-            <Button onClick={() => open()}>Nueva receta</Button>
+            <Button onClick={(event) => open(null, event.currentTarget)}>Nueva receta</Button>
           </div>
         </div>
         {feedback && (
-          <Toast
+          <div className="materials-recipe-feedback"><Toast
             visible
             variant="success"
             title="Resultado"
             description={feedback}
             onClose={() => setFeedback("")}
-          />
+          /></div>
         )}
         <div className="card-body">
           <div className="toolbar materials-toolbar">
@@ -505,7 +521,7 @@ export function MaterialsRecipes() {
                 <Button
                   variant="outlined"
                   type="button"
-                  onClick={() => setEditing(null)}
+                  onClick={closeForm}
                 >
                   Cancelar
                 </Button>
@@ -591,7 +607,7 @@ export function MaterialsRecipes() {
               <IconButton
                 variant="ghost"
                 aria-label={`Editar ${item.id}`}
-                onClick={() => open(item)}
+                onClick={(event) => open(item, event.currentTarget)}
               >
                 <EditIcon />
               </IconButton>
@@ -629,7 +645,7 @@ export function MaterialsRecipes() {
             {
               label: "Estado",
               children: (
-                <Chip preset={tone(selected.status)}>{selected.status}</Chip>
+                <Chip preset={tone(selected.status)}>{selected.status === "ACTIVO" ? "Activo" : selected.status === "INACTIVO" ? "Inactivo" : "Revisión"}</Chip>
               ),
             },
             {
