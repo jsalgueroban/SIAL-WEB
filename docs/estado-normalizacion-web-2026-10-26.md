@@ -1,6 +1,6 @@
 # Normalización visual Web — estado de ejecución
 
-Fecha: 2026-10-26. Alcance: propuesta Web local. Estado: **normalización global en curso; las 19 vistas funcionales de Materiales aprobadas visualmente por John y verificadas para publicación**. En Trazabilidad, John decidió que la composición anterior de siete etapas sea la principal; la alternativa aprobada, que separa datos, estado y evidencia, permanece disponible con `?composicion=alternativa`.
+Fecha: 2026-10-26. Alcance: propuesta Web local. Estado: **normalización global en curso; las 19 vistas funcionales de Materiales aprobadas visualmente por John y publicadas**. El bloque se subió el 27/10/2026 a `main` y `feature/web-proposal-normalizacion-20261026` en el commit `86bc29f`. En Trazabilidad, John decidió que la composición anterior de siete etapas sea la principal; la alternativa aprobada, que separa datos, estado y evidencia, permanece disponible con `?composicion=alternativa`.
 
 ## Inventario vigente
 
