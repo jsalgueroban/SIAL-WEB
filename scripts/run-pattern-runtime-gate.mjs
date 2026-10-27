@@ -92,7 +92,7 @@ try {
         if (ready !== 'complete') continue;
         report = await evaluate(`(async () => {
           const { auditPatternRuntime } = await import('/scripts/pattern-runtime-gate.mjs');
-          return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: (view.route.startsWith('Materiales y Suministros/') && !view.route.endsWith('/ajustar-pedido-sugerido.html')) || view.requireNavigation, checkRecordCount: view.checkRecordCount })});
+          return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: (view.route.startsWith('Materiales y Suministros/') && !view.route.endsWith('/ajustar-pedido-sugerido.html')) || view.requireNavigation, checkRecordCount: view.checkRecordCount, localExpandedTable: view.localExpandedTable })});
         })()`).catch(() => null);
         if (report?.components && Object.values(report.components).every((item) => item.mounted > 0)) break;
       }
@@ -110,6 +110,10 @@ try {
   socket?.close();
   child.kill();
   if (profile.startsWith(tmpdir()) && profile.includes('sial-pattern-gate-')) {
-    await rm(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+    await delay(1000);
+    await rm(profile, { recursive: true, force: true, maxRetries: 30, retryDelay: 200 }).catch((error) => {
+      if (error.code !== 'EBUSY' && error.code !== 'EPERM') throw error;
+      process.stderr.write(`No se pudo limpiar el perfil temporal de Chrome: ${error.code}\n`);
+    });
   }
 }

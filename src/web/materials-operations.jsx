@@ -12,7 +12,7 @@ const summaries = [
   { id: "RES-668-002", provider: "Estibas del Norte", period: "Semana 27 - 2026", ordersCount: 1, materials: "Estiba madera exportacion", quantities: "80 unidades", destination: "Finca Santa Isabel", status: "LISTO_DESPACHO", generated: "28/06/2026 13:10", sent: "Pendiente", source: "Resumen de pedidos" },
   { id: "RES-668-003", provider: "Suministros Banasan", period: "Semana 27 - 2026", ordersCount: 1, materials: "Separador de pallet", quantities: "35 paquetes", destination: "Finca Las Palmas", status: "PENDIENTE_VALIDACION", generated: "Pendiente", sent: "Pendiente", source: "Resumen de pedidos" }
 ];
-const deliveries = [
+export const deliveries = [
   { id: "ENT-681-001", order: "OTI-546-001", document: "RPT-2026-0881", finca: "Finca Santa Isabel", driver: "Carlos Mendoza", receiver: "Laura Pineda", deliveredAt: "28/06/2026 15:40", status: "ENTREGADA", evidence: "Foto receptor + firma digital", pod: "POD-682-001", source: "Entrega de insumos", audit: "Entregar - transportista.app|28/06/2026 15:40" },
   { id: "ENT-681-002", order: "OTI-546-002", document: "REM-2026-0184", finca: "Finca El Retiro", driver: "Ana Ramirez", receiver: "Pendiente", deliveredAt: "Pendiente", status: "EN_TRANSITO", evidence: "Requerida para cierre", pod: "Pendiente", source: "Entrega de insumos", audit: "Salida - transporte|28/06/2026 13:20" },
   { id: "ENT-547-001", order: "OTI-546-003", document: "RES-2026-0045", finca: "Finca Las Palmas", driver: "Sin asignar", receiver: "Pendiente", deliveredAt: "Pendiente", status: "ASIGNADO", evidence: "Foto obligatoria", pod: "Pendiente", source: "Entrega de insumos", audit: "Asignar - almacen.pedidos|28/06/2026 12:12" }
@@ -65,12 +65,13 @@ const configs = {
 
 export function MaterialsOperations({ kind }) {
   const config = configs[kind];
-  const [search, setSearch] = useState("");
+  const requestedDeliveryId = kind === "deliveries" ? new URLSearchParams(location.search).get("entrega") : null;
+  const [search, setSearch] = useState(() => requestedDeliveryId && deliveries.some((item) => item.id === requestedDeliveryId) ? requestedDeliveryId : "");
   const [status, setStatus] = useState("all");
   const [context, setContext] = useState("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(() => requestedDeliveryId && deliveries.some((item) => item.id === requestedDeliveryId) ? requestedDeliveryId : null);
   const [feedback, setFeedback] = useState("");
   const [overrides, setOverrides] = useState(readSummaryOverrides);
   const records = config.data.map((item) => ({

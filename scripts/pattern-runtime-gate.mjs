@@ -1,5 +1,5 @@
 // Browser-side audit of mounted SIAL components; it does not certify a HU.
-export function auditPatternRuntime({ expected = [], requireNavigation = false, checkRecordCount = false } = {}) {
+export function auditPatternRuntime({ expected = [], requireNavigation = false, checkRecordCount = false, localExpandedTable = false } = {}) {
   const visible = (element) => {
     const style = getComputedStyle(element);
     const box = element.getBoundingClientRect();
@@ -55,6 +55,13 @@ export function auditPatternRuntime({ expected = [], requireNavigation = false, 
   if (nativeDuplicates.length) issues.push(`${nativeDuplicates.length} control(es) nativo(s) duplicado(s) visibles`);
 
   const tableHeaders = [...document.querySelectorAll('.table-wrap thead, [role="table"] [role="rowgroup"]')].filter(visible);
+  if (localExpandedTable) {
+    const table = document.querySelector('.transport-orders-table');
+    const toggles = [...document.querySelectorAll('.transport-order-toggle')].filter(visible);
+    if (!table || !toggles.length || toggles.some((button) => !button.hasAttribute('aria-expanded'))) {
+      issues.push('tabla local HU546: faltan filas o controles de expansión accesibles');
+    }
+  }
   if (toolbars.length && tableHeaders.length) {
     const bottom = Math.max(...toolbars.map((element) => element.getBoundingClientRect().bottom));
     const top = Math.min(...tableHeaders.map((element) => element.getBoundingClientRect().top));
@@ -75,7 +82,10 @@ export function auditPatternRuntime({ expected = [], requireNavigation = false, 
       .filter(visible).map((element) => element.textContent.trim())[0] || '';
     const count = countText ? Number(countText.match(/^\d+/)[0]) : null;
     const total = Number(paginationText.match(/\bde\s+(\d+)\s+registros?/i)?.[1]);
-    const rows = [...document.querySelectorAll('[data-sial-component="Table"] tbody tr, [data-sial-react-view] .bui-table tbody tr')].filter(visible).length;
+    const rowSelector = localExpandedTable
+      ? '.transport-orders-table tbody tr.transport-order-row'
+      : '[data-sial-component="Table"] tbody tr, [data-sial-react-view] .bui-table tbody tr';
+    const rows = [...document.querySelectorAll(rowSelector)].filter(visible).length;
     recordCount = { count, total: Number.isNaN(total) ? null : total, visibleRows: rows };
     if (count === null || Number.isNaN(total)) issues.push('contador o total de paginación no legible');
     else if (count !== total || rows > total) issues.push('contador, paginación y filas visibles no concuerdan');

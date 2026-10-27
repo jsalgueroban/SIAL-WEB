@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TableFilterReset } from "./table-filter-reset.jsx";
+import { deliveries } from "./materials-operations.jsx";
+import { createPrototypeDocumentPdf } from "./prototype-document-pdf.js";
 import {
-  Button, Chip, DateInput, Drawer, IconButton, Pagination, SelectInput, Table,
-  TableRowActions, TextInput, Toast, ViewIcon
+  ArrowRightIcon, Button, ChevronDownIcon, ChevronRightIcon, Chip, DateInput, DocumentFileIcon,
+  Drawer, IconButton, Pagination, SelectInput, TextInput, Toast, ViewIcon
 } from "@banasandev/banasan-ui";
 
 
@@ -70,6 +72,39 @@ function lineSummary(lines) {
 function materialCount(item) {
   return item.lines?.length ?? String(item.materials || "").split(",").filter((value) => value.trim()).length;
 }
+function relatedDocuments(item) {
+  const documents = [];
+  const delivery = deliveries.find((record) => record.order === item.id && record.document === item.document);
+  const deliveryHref = delivery ? `seguimiento-entregas.html?entrega=${encodeURIComponent(delivery.id)}` : null;
+  if (item.parentOrderId) {
+    documents.push({
+      kind: "Pedido aprobado", code: item.parentOrderId,
+      href: item.parentOrderId === "PED-2026-10482"
+        ? `aprobacion-pedidos-materiales.html?pedido=${encodeURIComponent(item.parentOrderId)}`
+        : "aprobacion-pedidos-materiales.html",
+      destination: "Aprobación de pedidos"
+    });
+  }
+  if (item.document) {
+    const isNotice = item.document.startsWith("AC-");
+    documents.push({
+      kind: isNotice ? "Aviso de corte" : "Documento de origen", code: item.document,
+      href: isNotice
+        ? item.document === "AC-2026-032"
+          ? `../Gestion%20de%20Planeacion/consultar-aviso-corte.html?aviso=${encodeURIComponent(item.document)}`
+          : "../Gestion%20de%20Planeacion/gestion-avisos-corte.html"
+        : deliveryHref,
+      destination: isNotice ? "Gestión de avisos de corte" : "Seguimiento de entregas y POD"
+    });
+  }
+  if (delivery) {
+    documents.push({ kind: "Entrega de insumos", code: delivery.id, href: deliveryHref, destination: "Seguimiento de entregas y POD" });
+    if (delivery.pod && delivery.pod !== "Pendiente") {
+      documents.push({ kind: "POD", code: delivery.pod, href: deliveryHref, destination: "Seguimiento de entregas y POD" });
+    }
+  }
+  return documents;
+}
 function exportTransportRows(rows, columns) {
   const values = rows.map((item) => ({
     ...item,
@@ -94,6 +129,15 @@ export function MaterialsTransportOrders() {
     return () => window.clearTimeout(timeout);
   }, [feedback]);
   const [selectedId, setSelectedId] = useState(null);
+  const [pdfPreview, setPdfPreview] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState("");
+  useEffect(() => {
+    if (!pdfPreview) { setPdfUrl(""); return undefined; }
+    const url = URL.createObjectURL(createPrototypeDocumentPdf(pdfPreview));
+    setPdfUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [pdfPreview]);
+  const [expandedId, setExpandedId] = useState(null);
   const [pickedLineId, setPickedLineId] = useState(null);
   const [dragLineId, setDragLineId] = useState(null);
   const [dropZone, setDropZone] = useState(null);
@@ -111,12 +155,23 @@ export function MaterialsTransportOrders() {
   const pending = source?.lines.filter((line) => !draft.allocation[line.id]) || [];
   const selected = records.find((item) => item.id === selectedId);
   const filtered = useMemo(() => records.filter((item) => {
-    const haystack = [item.id, item.parentOrderId, item.document, item.finca, item.destination, item.materials, item.vehicle].join(" ").toLocaleLowerCase("es");
+    const haystack = [item.id, item.parentOrderId, item.document, item.finca, item.destination, item.materials, item.vehicle,
+      ...relatedDocuments(item).map((document) => document.code)].join(" ").toLocaleLowerCase("es");
     return haystack.includes(search.toLocaleLowerCase("es")) && (status === "all" || item.status === status);
   }), [records, search, status]);
   const current = Math.min(page, Math.max(1, Math.ceil(filtered.length / size)));
+  const visibleRows = filtered.slice((current - 1) * size, current * size);
+
+  function openDocumentPdf(item, document) {
+    setPdfPreview({
+      kind: document.kind, code: document.code, orderId: item.id,
+      finca: item.finca, origin: item.document,
+      status: statusLabels[item.status] || item.status
+    });
+  }
 
   function openCreate() {
+    setExpandedId(null);
     setDraft(initialDraft());
     setErrors({});
     setPickedLineId(null);
@@ -254,13 +309,10 @@ export function MaterialsTransportOrders() {
     setMode("list");
     setFeedback(`${created.length} órdenes de transporte creadas desde ${source.id}. Todos los ítems quedaron asignados.`);
   }
-  const columns = [
-    { key: "id", header: "Orden de transporte", render: (item) => <span className="materials-record-main"><strong>{item.id}</strong><span>{item.parentOrderId ? `${item.parentOrderId} · Partición ${item.partition}` : "Registro anterior"}</span></span> },
-    { key: "document", header: "Documento origen", render: (item) => item.document },
-    { key: "route", header: "Trayecto", render: (item) => <span className="materials-record-main"><strong>{item.origin || "Origen no registrado"} → {item.destination || item.finca}</strong><span>{item.window ? compactDate(item.window) : "Ventana no registrada"}</span></span> },
-    { key: "materials", header: "Carga", render: (item) => <span className="materials-record-main"><strong>{materialCount(item)} {materialCount(item) === 1 ? "ítem" : "ítems"}</strong><span>{item.materials}</span></span> },
-    { key: "status", header: "Estado", render: (item) => <Chip preset={statusPreset(item.status)}>{statusLabels[item.status] || item.status}</Chip> },
-    { key: "audit", header: "Último evento", render: (item) => String(item.audit || "—").replace("|", " · ") }
+  const exportColumns = [
+    { key: "id", header: "Orden de transporte" }, { key: "document", header: "Documento origen" },
+    { key: "route", header: "Trayecto" }, { key: "materials", header: "Carga" },
+    { key: "status", header: "Estado" }, { key: "audit", header: "Último evento" }
   ];
 
   return <>
@@ -269,10 +321,30 @@ export function MaterialsTransportOrders() {
     <div className="page-header"><div><h1 className="page-title">{mode === "list" ? "Órdenes de transporte de insumos" : "Particionar pedido de materiales"}</h1><p className="page-subtitle">{mode === "list" ? "Consulta las órdenes creadas a partir de pedidos de materiales y su estado operativo." : "Distribuye todos los ítems completos de un pedido aprobado entre las órdenes que atenderá Transporte."}</p></div></div>
     {feedback && <div className="transport-feedback-toast" role="status"><Toast visible variant="success" title="Órdenes registradas" description={feedback} onClose={() => setFeedback("")} /></div>}
     {mode === "list" ? <article className="card mt-24 standard-master-card">
-      <div className="card-header"><div><h2 className="card-title">Órdenes registradas</h2><p className="card-subtitle">Cada partición conserva el vínculo con su pedido y documento de origen.</p></div><div className="card-actions"><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button variant="outlined" onClick={() => exportTransportRows(filtered, columns)}>Exportar</Button><Button onClick={openCreate}>Particionar pedido</Button></div></div>
-      <div className="card-body"><div className="toolbar materials-toolbar"><TextInput id="transportSearch" label="Buscar orden" placeholder="Orden, pedido, documento o material" value={search} onChange={(value) => { setSearch(value); setPage(1); }} /><SelectInput id="transportStatus" label="Estado" value={status} options={[{ value: "all", label: "Todos los estados" }, ...Object.entries(statusLabels).map(([value, label]) => ({ value, label }))]} onChange={(value) => { setStatus(value); setPage(1); }} /><TableFilterReset active={Boolean(search.trim()) || status !== "all"} onReset={() => { setSearch(""); setStatus("all"); setPage(1); }} /></div></div>
-      <Table columns={columns} data={filtered.slice((current - 1) * size, current * size)} rowKey={(item) => item.id} minWidth="1040px" emptyState="No hay órdenes que coincidan con la búsqueda." actionsHeader="Acciones" actions={(item) => <TableRowActions label={`Acciones de ${item.id}`}><IconButton variant="ghost" aria-label={`Ver detalle de ${item.id}`} title="Ver detalle" onClick={() => setSelectedId(item.id)}><ViewIcon /></IconButton></TableRowActions>} />
-      <Pagination page={current} pageSize={size} total={filtered.length} pageSizeOptions={[10, 20, 50]} onPageChange={setPage} onPageSizeChange={(value) => { setSize(value); setPage(1); }} />
+      <div className="card-header"><div><h2 className="card-title">Órdenes registradas</h2><p className="card-subtitle">Selecciona una orden para consultar los documentos de su proceso.</p></div><div className="card-actions"><Chip preset="info">{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button variant="outlined" onClick={() => exportTransportRows(filtered, exportColumns)}>Exportar</Button><Button onClick={openCreate}>Particionar pedido</Button></div></div>
+      <div className="card-body"><div className="toolbar materials-toolbar"><TextInput id="transportSearch" label="Buscar orden" placeholder="Orden, pedido, documento o material" value={search} onChange={(value) => { setSearch(value); setPage(1); setExpandedId(null); }} /><SelectInput id="transportStatus" label="Estado" value={status} options={[{ value: "all", label: "Todos los estados" }, ...Object.entries(statusLabels).map(([value, label]) => ({ value, label }))]} onChange={(value) => { setStatus(value); setPage(1); setExpandedId(null); }} /><TableFilterReset active={Boolean(search.trim()) || status !== "all"} onReset={() => { setSearch(""); setStatus("all"); setPage(1); setExpandedId(null); }} /></div></div>
+      <div className="table-wrap transport-orders-table-wrap" data-sial-component="feature-local-table" data-sial-source="HU546: fila expandible no soportada por Table 1.4.0"><table className="transport-orders-table"><thead><tr><th scope="col"><span className="sr-only">Desplegar</span></th><th scope="col">Orden de transporte</th><th scope="col">Finca</th><th scope="col">Documentos</th><th scope="col">Estado</th><th scope="col">Último evento</th><th scope="col">Acciones</th></tr></thead><tbody>
+        {visibleRows.length ? visibleRows.map((item) => {
+          const documents = relatedDocuments(item);
+          const expanded = expandedId === item.id;
+          const panelId = `transport-documents-${item.id}`;
+          return <React.Fragment key={item.id}>
+            <tr className={expanded ? "transport-order-row is-expanded" : "transport-order-row"} onClick={(event) => {
+              if (event.target instanceof Element && event.target.closest("button, a")) return;
+              setExpandedId(expanded ? null : item.id);
+            }}>
+              <td className="transport-disclosure-cell"><IconButton className="transport-order-toggle" variant="ghost" aria-expanded={expanded} aria-controls={expanded ? panelId : undefined} aria-label={`${expanded ? "Ocultar" : "Mostrar"} documentos de ${item.id}`} onClick={() => setExpandedId(expanded ? null : item.id)}>{expanded ? <ChevronDownIcon size={18} /> : <ChevronRightIcon size={18} />}</IconButton></td>
+              <td><span className="materials-record-main"><strong>{item.id}</strong><span>{item.parentOrderId ? `${item.parentOrderId} · Partición ${item.partition}` : "Registro anterior"}</span></span></td>
+              <td>{item.finca}</td><td>{documents.length} {documents.length === 1 ? "documento" : "documentos"}</td>
+              <td><Chip preset={statusPreset(item.status)}>{statusLabels[item.status] || item.status}</Chip></td>
+              <td>{String(item.audit || "—").replace("|", " · ")}</td>
+              <td><IconButton variant="ghost" aria-label={`Ver detalle de ${item.id}`} title="Ver detalle" onClick={() => setSelectedId(item.id)}><ViewIcon /></IconButton></td>
+            </tr>
+            {expanded && <tr className="transport-documents-row"><td colSpan={7}><section className="transport-documents-panel" id={panelId} aria-label={`Documentos asociados a ${item.id}`}><div className="transport-documents-head"><div><h3>Documentos del proceso</h3><p>Consulta el PDF de muestra o abre la vista que gestiona cada etapa.</p></div><span>{documents.length} {documents.length === 1 ? "documento" : "documentos"}</span></div><div className="transport-document-list">{documents.map((document) => <div className="transport-document" key={`${document.kind}-${document.code}`}><div className="transport-document-main"><span className="transport-document-icon" aria-hidden="true"><DocumentFileIcon size={18} /></span><div className="transport-document-copy"><span className="transport-document-kind">{document.kind}</span><strong>{document.code}</strong><small>{document.destination}</small></div></div><div className="transport-document-actions"><Button variant="outlined" onClick={() => openDocumentPdf(item, document)}><ViewIcon size={15} /> Ver PDF</Button>{document.href ? <a className="transport-document-open" href={document.href} aria-label={`Abrir ${document.kind} ${document.code} en ${document.destination}`}>Abrir proceso <ArrowRightIcon size={14} aria-hidden="true" /></a> : <span className="transport-document-unavailable">Sin vista vinculada</span>}</div></div>)}</div></section></td></tr>}
+          </React.Fragment>;
+        }) : <tr><td colSpan={7} className="transport-orders-empty">No hay órdenes que coincidan con la búsqueda.</td></tr>}
+      </tbody></table></div>
+      <Pagination page={current} pageSize={size} total={filtered.length} pageSizeOptions={[10, 20, 50]} onPageChange={(value) => { setPage(value); setExpandedId(null); }} onPageSizeChange={(value) => { setSize(value); setPage(1); setExpandedId(null); }} />
     </article> : <div className="transport-create">
       <section className="card transport-source-card"><div className="card-body">
         <div className="transport-section-head"><h2>Pedido de origen</h2><span className="transport-section-note">Solo pedidos aprobados sin partición previa</span></div>
@@ -331,5 +403,6 @@ export function MaterialsTransportOrders() {
         <h3>Último evento</h3><p>{String(selected.audit || "Sin evento").replace("|", " · ")}</p>
       </div>
     </Drawer>}
+    {pdfPreview && <Drawer show onClose={() => setPdfPreview(null)} title={`PDF · ${pdfPreview.code}`} subtitle={pdfPreview.kind} ariaLabel={`Vista previa PDF de ${pdfPreview.code}`} width="1000px"><div className="transport-pdf-preview"><p>Vista de muestra generada con datos de la propuesta. El PDF original no está adjunto.</p>{pdfUrl ? <><iframe title={`PDF de muestra ${pdfPreview.code}`} src={pdfUrl} /><a href={pdfUrl} target="_blank" rel="noopener noreferrer">Abrir PDF en otra pestaña <ArrowRightIcon size={14} aria-hidden="true" /></a></> : <p role="status">Preparando vista previa…</p>}</div></Drawer>}
   </>;
 }

@@ -23,7 +23,7 @@ $materials = @{
   'inventario-materiales-finca.html' = @{ shape='bandeja de consulta'; direct='TextInput,SelectInput,Chip,Button,Table,Pagination,Drawer'; local='consulta por material y finca' }
   'inventario-pallets.html' = @{ shape='bandeja de consulta'; direct='TextInput,SelectInput,Chip,Button,Table,Pagination,Drawer'; local='detalle de pallet' }
   'movimientos-inventario.html' = @{ shape='bandeja de consulta'; direct='TextInput,SelectInput,DateInput,Chip,Button,Table,Pagination,Drawer'; local='rango de fechas y detalle' }
-  'ordenes-transporte-insumos.html' = @{ shape='bandeja y mesa de partición'; direct='TextInput,SelectInput,DateInput,Chip,Button,IconButton,Table,Pagination,Toast,Drawer'; local='mesa HU546 y asignación de ítems completos' }
+  'ordenes-transporte-insumos.html' = @{ shape='bandeja con documentos expandibles y mesa de partición'; direct='TextInput,SelectInput,DateInput,Chip,Button,IconButton,Pagination,Toast,Drawer'; local='documentos en dos columnas, PDF de muestra y mesa HU546 de asignación de ítems completos' }
   'pedidos-adicionales.html' = @{ shape='bandeja, registro y detalle'; direct='TextInput,SelectInput,NumberInput,Chip,Button,IconButton,Toast,Table,Pagination,Card,KeyValueGrid'; local='líneas dinámicas, cadena de origen, progreso y borrador' }
   'pedidos-recurrentes.html' = @{ shape='bandeja y panel'; direct='TextInput,SelectInput,NumberInput,DateInput,Chip,Button,Toast,Table,TableRowActions,Pagination'; local='panel de registro y decisión recurrente' }
   'recetas-materiales.html' = @{ shape='bandeja y editor de receta'; direct='TextInput,SelectInput,SearchSelectInput,NumberInput,Chip,Button,IconButton,Table,TableRowActions,Pagination,Drawer,Toast'; local='composición de materiales por referencia y versión' }
@@ -77,8 +77,8 @@ foreach ($view in $inventory.views) {
       $base.visual_gate = 'approved-by-John-2026-10-26'
     }
     if ($materialName -eq 'ordenes-transporte-insumos.html') {
-      $base.functional_gate = 'partition-export-filters-and-detail-verified-2026-10-26'
-      $base.visual_gate = 'approved-by-John-2026-10-26'
+      $base.functional_gate = 'partition-verified-2026-10-26; expandable-documents-links-pdf-preview-keyboard-mobile-verified-2026-10-27'
+      $base.visual_gate = 'action-and-separation-revision-approved-by-John-2026-10-27; prior-document-layout-approved-2026-10-27'
     }
     if ($materialName -eq 'categorias-pedido.html') {
       $base.functional_gate = 'crud-toasts-filters-pagination-and-audit-verified-2026-10-26'
@@ -142,7 +142,7 @@ foreach ($view in $inventory.views) {
       $rows.Add([pscustomobject]$entry)
     }
     $base.component = $decision.local; $base.component_state = 'feature-local; visual-review-pending'
-    $base.evidence = 'docs/matriz-normalizacion-materiales-web-2026-10-16.md; plan acordado 2026-10-26'; $rows.Add([pscustomobject]$base)
+    $base.evidence = if ($materialName -eq 'ordenes-transporte-insumos.html') { 'docs/decision-hu546-documentos-2026-10-27.md' } else { 'docs/matriz-normalizacion-materiales-web-2026-10-16.md; plan acordado 2026-10-26' }; $rows.Add([pscustomobject]$base)
     continue
   }
   $html = [IO.File]::ReadAllText((Join-Path $ProposalRoot $route))

@@ -57,3 +57,21 @@ Se inventariaron nueve rutas: seis bandejas de catálogo, dos registros y la ent
 En la bandeja de Fincas se comprobaron 1280 × 800 y 390 × 844 sin desborde, filtros combinados con uno y cero resultados, limpieza, cambio de estado, persistencia tras recarga, detalle con auditoría y cierre con Escape. Se corrigió el adaptador compartido de acciones de estado: solo el botón de la fila HTML de origen procesa el cambio, y el estado y la auditoría quedan guardados por ruta en el prototipo. La prueba local se retiró al finalizar. Este hallazgo no acredita todavía las otras ocho rutas ni su aprobación visual.
 
 Para Gestión de Fincas se mantiene **SELF**: las bandejas comparten el mismo adaptador y datos HTML locales, de modo que el coste de aislar un agente supera la independencia del trabajo. La matriz y los gates de las otras vistas se actualizarán al verificar cada ruta.
+
+## Revisión posterior de Órdenes de transporte de insumos · 27/10/2026
+
+La aprobación del 26/10 corresponde a la composición anterior. A solicitud de John, la bandeja HU546 ahora expande cada orden para consultar documentos del proceso y abrir la vista de gestión vinculada. «Carga» y «Trayecto» salen de las columnas de la bandeja y siguen disponibles en el detalle y el CSV. La mesa de partición permanece. La conciliación de criterios, vínculos y excepción del componente Table está en `decision-hu546-documentos-2026-10-27.md`.
+
+Implementación: terminada localmente. Verificación técnica: build UI, contexto e inventario, navegación de documentos, filtros, teclado, paginación y capturas a 1280 × 800 y 390 × 844 completados. La matriz regenerada registra 265 relaciones para las mismas 102 rutas. Revisión visual de esta versión: **pendiente de John**. Publicación: **pendiente**; la aprobación previa no se traslada automáticamente a la nueva composición.
+
+John pidió corregir espaciado, colores e iconos de selección. Se amplió el ritmo de la fila y las fichas documentales, se reforzó el estado expandido, se usaron iconos publicados y se ajustó el contraste azul en modo oscuro. Build y gate runtime 43/43 volvieron a aprobar. La vista corregida sigue esperando revisión visual.
+
+En la siguiente revisión John rechazó las tarjetas anidadas y la posición del icono. El despliegue muestra ahora una lista plana con separadores dentro de la tabla, y un `IconButton` publicado ocupa su propia columna con iconos distintos para cerrado y abierto. Build UI, teclado, escritorio, móvil y gate runtime 43/43 aprobaron de nuevo; la revisión visual continúa pendiente.
+
+John pidió después aprovechar el ancho con dos documentos lado a lado, permitir «Ver PDF» además de «Abrir proceso», y eliminar la raya azul junto al botón de expansión. La lista plana ahora ocupa dos columnas en escritorio y una en móvil; ambas acciones están disponibles por documento. Como no hay PDF originales adjuntos, la vista previa genera un PDF de muestra identificado como tal con datos del prototipo. La línea azul se retiró. Build, PDF en ambos tamaños, enlaces y gate runtime 43/43 aprobaron; la aprobación visual sigue pendiente.
+
+**Cierre visual del 27/10:** John aprobó expresamente esta última versión. Los estados «pendiente» de los párrafos anteriores registran las revisiones intermedias y quedan superados por esta decisión. La publicación de código se acredita por la referencia remota correspondiente; no se infiere despliegue visible ni disponibilidad de PDF originales.
+
+**Revisión posterior del 27/10:** John pidió mejorar los botones de acción internos y distinguir más la fila seleccionada del contenido documental. Se igualó la altura de «Ver PDF» y «Abrir proceso», se dio jerarquía primaria al enlace de gestión y se separó el bloque con fondo de superficie, divisor neutro y más espacio. La aprobación anterior queda como evidencia histórica; esta revisión espera una nueva decisión visual antes de publicar.
+
+**Aprobación final de la revisión HU546, 27/10:** John aprobó los botones y la separación. La evidencia técnica permanece en `decision-hu546-documentos-2026-10-27.md`; la publicación se confirma por el commit presente en las ramas remotas, no por este registro local.
