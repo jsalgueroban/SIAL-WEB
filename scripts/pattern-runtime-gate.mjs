@@ -1,5 +1,5 @@
 // Browser-side audit of mounted SIAL components; it does not certify a HU.
-export function auditPatternRuntime({ expected = [], requireNavigation = false, checkRecordCount = false, localExpandedTable = false } = {}) {
+export function auditPatternRuntime({ expected = [], requireNavigation = false, checkRecordCount = false, localExpandedTable = false, responsiveCaseList = false } = {}) {
   const visible = (element) => {
     const style = getComputedStyle(element);
     const box = element.getBoundingClientRect();
@@ -36,7 +36,10 @@ export function auditPatternRuntime({ expected = [], requireNavigation = false, 
     const mounted = instances.filter((element) => element.matches('input, textarea, select') || element.childElementCount > 0 || element.textContent.trim());
     const shown = mounted.filter(visible);
     components[name] = { declared: instances.length, mounted: mounted.length, visible: shown.length };
-    if (!shown.length) issues.push(`${name}: no hay instancia publicada visible y montada`);
+    const mobileCaseList = responsiveCaseList && document.querySelector('.control-case-mobile-list');
+    if (!shown.length && !(name === 'Table' && innerWidth <= 640 && mobileCaseList && visible(mobileCaseList))) {
+      issues.push(`${name}: no hay instancia publicada visible y montada`);
+    }
   }
 
   const toolbars = [...document.querySelectorAll('.toolbar, [class*="-toolbar"]')]
@@ -77,14 +80,16 @@ export function auditPatternRuntime({ expected = [], requireNavigation = false, 
   if (checkRecordCount) {
     const countText = [...document.querySelectorAll('[data-sial-component="Chip"], [data-sial-react-view] .bui-base-chip')]
       .filter(visible).map((element) => element.textContent.trim())
-      .find((value) => /^\d+\s+registros?\b/i.test(value));
+      .find((value) => responsiveCaseList ? /^\d+\s+casos?\b/i.test(value) : /^\d+\s+registros?\b/i.test(value));
     const paginationText = [...document.querySelectorAll('[data-sial-component="Pagination"], [data-sial-react-view] .bui-pagination')]
       .filter(visible).map((element) => element.textContent.trim())[0] || '';
     const count = countText ? Number(countText.match(/^\d+/)[0]) : null;
     const total = Number(paginationText.match(/\bde\s+(\d+)\s+registros?/i)?.[1]);
     const rowSelector = localExpandedTable
       ? '.transport-orders-table tbody tr.transport-order-row'
-      : '[data-sial-component="Table"] tbody tr, [data-sial-react-view] .bui-table tbody tr';
+      : responsiveCaseList && innerWidth <= 640
+        ? '.control-case-mobile-list .control-case-mobile'
+        : '[data-sial-component="Table"] tbody tr, [data-sial-react-view] .bui-table tbody tr';
     const rows = [...document.querySelectorAll(rowSelector)].filter(visible).length;
     recordCount = { count, total: Number.isNaN(total) ? null : total, visibleRows: rows };
     if (count === null || Number.isNaN(total)) issues.push('contador o total de paginación no legible');

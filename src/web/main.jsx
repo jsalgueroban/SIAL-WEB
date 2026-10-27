@@ -20,6 +20,7 @@ import { MaterialsTransportOrders } from "./materials-transport-orders.jsx";
 import { MaterialsMaster } from "./materials-master.jsx";
 import { MaterialsAdditionalOrders } from "./materials-additional-orders.jsx";
 import { MaterialsApproval } from "./materials-approval.jsx";
+import { MaterialsDeliveryControl } from "./materials-delivery-control.jsx";
 
 export { mountShell };
 
@@ -46,7 +47,8 @@ const mounts = {
   "materials-master": MaterialsMaster,
   "materials-reference-config": () => <MaterialsMaster view="config" />,
   "materials-additional-orders": MaterialsAdditionalOrders,
-  "materials-approval": MaterialsApproval
+  "materials-approval": MaterialsApproval,
+  "materials-delivery-control": MaterialsDeliveryControl
 };
 
 function mountProposalViews() {
