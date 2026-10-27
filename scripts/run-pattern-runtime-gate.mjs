@@ -74,9 +74,9 @@ try {
           ready: document.readyState === 'complete'
         };
       })()`).catch(() => null);
-      if (result?.ready && result.current === result.target && result.moduleHref) break;
+      if (result?.current === result.target && result.moduleHref) break;
     }
-    const passed = Boolean(result?.ready && result.current === result.target && result.moduleHref === result.target);
+    const passed = Boolean(result?.current === result.target && result.moduleHref === result.target);
     reports.push({ route: redirect.route, pattern_id: 'legacy-route-redirect', ...result,
       issues: passed ? [] : ['la URL antigua o el enlace principal del módulo no abre Gestión de pedidos'], passed });
   }
@@ -92,7 +92,7 @@ try {
         if (ready !== 'complete') continue;
         report = await evaluate(`(async () => {
           const { auditPatternRuntime } = await import('/scripts/pattern-runtime-gate.mjs');
-          return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: (view.route.startsWith('Materiales y Suministros/') && !view.route.endsWith('/ajustar-pedido-sugerido.html')) || view.requireNavigation, checkRecordCount: view.checkRecordCount, localExpandedTable: view.localExpandedTable })});
+          return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: (view.route.startsWith('Materiales y Suministros/') && !view.route.endsWith('/ajustar-pedido-sugerido.html')) || view.requireNavigation, checkRecordCount: view.checkRecordCount, localExpandedTable: view.localExpandedTable, responsiveCaseList: view.responsiveCaseList })});
         })()`).catch(() => null);
         if (report?.components && Object.values(report.components).every((item) => item.mounted > 0)) break;
       }

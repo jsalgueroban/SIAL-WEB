@@ -41,6 +41,7 @@
     { "route": "Materiales y Suministros/resumen-proveedores.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/reglas-documentales.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
     { "route": "Materiales y Suministros/seguimiento-entregas.html", "pattern_id": "web-materials-table", "expected": ["TextInput", "SelectInput", "Chip", "Button", "Table", "Pagination"], "checkRecordCount": true },
+    { "route": "Materiales y Suministros/control-trazabilidad-entregas.html", "pattern_id": "web-hu1920-control-explore", "expected": ["TextInput", "SelectInput", "Chip", "Table", "Pagination"], "checkRecordCount": true, "responsiveCaseList": true, "requireNavigation": true },
     { "route": "Materiales y Suministros/gestion-pedidos-materiales.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false, "requireNavigation": true },
     { "route": "Materiales y Suministros/ajustar-pedido-sugerido.html", "pattern_id": "web-materials-recipe-flow", "expected": [], "checkRecordCount": false },
     { "route": "Materiales y Suministros/aprobacion-pedidos-materiales.html", "pattern_id": "web-materials-approval-gallery", "expected": ["TextInput", "SelectInput", "Chip"], "checkRecordCount": false },

@@ -119,6 +119,7 @@ window.SIALNavigationContract = Object.freeze({
             { id: "ordenes", label: "Órdenes de transporte de insumos", href: "ordenes-transporte-insumos.html" },
             { id: "proveedores", label: "Resumen para proveedores externos", href: "resumen-proveedores.html" },
             { id: "entregas", label: "Seguimiento de entregas y POD", href: "seguimiento-entregas.html" },
+            { id: "controlEntregas", label: "Control de trazabilidad y estado de entregas", href: "control-trazabilidad-entregas.html" },
             { id: "trazabilidad-pedido", label: "Trazabilidad del pedido", href: "trazabilidad-pedido.html" },
             { id: "trazabilidad-pedido-alternativa", label: "Trazabilidad del pedido alternativa", href: "trazabilidad-pedido.html?composicion=alternativa" },
             { id: "materiales", label: "Catálogo de materiales", href: "gestion-materiales.html" },
