@@ -145,7 +145,7 @@ export function MaterialsCatalog({ kind }) {
           onChange={(value) => { setContext(value); setPage(1); }} /></div>
         <TableFilterReset active={Boolean(search.trim()) || status !== "all" || context !== "all"} onReset={() => { setSearch(""); setStatus("all"); setContext("all"); setPage(1); }} />
       </div>
-      {formOpen && <section className="inline-form-panel materials-inline-form" aria-label={editing ? `Editar ${config.noun}` : config.button}>
+      {formOpen && <section className="inline-form-panel inline-form-compact materials-inline-form" aria-label={editing ? `Editar ${config.noun}` : config.button}>
         <div className="form-heading"><h3>{editing ? `Editar ${config.noun}` : config.button}</h3><p>Completa los datos requeridos y conserva el contexto de la bandeja.</p></div>
         <div className="form-body"><form onSubmit={submit} noValidate><div className="grid">{config.fields.map(([key, label, placeholder]) => <div className="field span-3" key={key}>
           <TextInput id={`${kind}-${key}`} label={label} placeholder={placeholder} value={form[key]} required

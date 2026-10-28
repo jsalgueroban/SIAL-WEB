@@ -255,7 +255,7 @@ function LinkedFormField({ control, label, note }) {
     control.addEventListener("change", sync);
     form?.addEventListener("reset", onReset);
     const observer = new MutationObserver(sync);
-    observer.observe(control, { attributes: true, attributeFilter: ["aria-invalid", "disabled"] });
+    observer.observe(control, { attributes: true, attributeFilter: ["aria-invalid", "disabled"], childList: control.tagName === "SELECT", subtree: control.tagName === "SELECT" });
     if (note) observer.observe(note, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ["class"] });
     return () => {
       control.removeEventListener("input", sync);
@@ -441,7 +441,7 @@ function LinkedPagination({ native }) {
   };
   const [state, setState] = useState(read);
   useEffect(() => {
-    const sync = (event) => setState(event?.detail || read());
+    const sync = (event) => setState({ ...read(), ...(event?.detail || {}) });
     native.addEventListener("sial:table-page-state", sync);
     const observer = new MutationObserver(() => sync());
     if (!managed) observer.observe(native, { childList: true, subtree: true, characterData: true });
@@ -806,8 +806,8 @@ export function mountLegacyTableControls() {
     document.querySelectorAll(".adjust-request-group[data-sial-number-adapter]").forEach(mountAdjustmentNumber);
     document.querySelectorAll(".approval-availability input[data-approved][type=number]").forEach(mountApprovalNumber);
     document.querySelectorAll("main .toolbar input[data-sial-search-adapter], main .workflow-filters input[data-sial-search-adapter], main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar input[data-sial-search-adapter], main[data-sial-catalog-actions] .toolbar input[type=search]").forEach(mountSearch);
-    document.querySelectorAll("article[data-sial-catalog-actions] .card-actions > button.btn, article[data-sial-catalog-actions] .inline-form-panel .form-actions > button.btn, main[data-sial-catalog-actions] .card-actions > button.btn, .form-card[data-sial-form-adapter] .form-actions > button.btn, .permission-toolbar .permission-actions > button.btn").forEach(mountButton);
-    document.querySelectorAll(".drawer[data-sial-drawer-adapter], main[data-sial-catalog-actions] .drawer").forEach(mountDetailDrawer);
+    document.querySelectorAll("button.btn[data-sial-button-adapter], article[data-sial-catalog-actions] .card-actions > button.btn, article[data-sial-catalog-actions] .inline-form-panel .form-actions > button.btn, main[data-sial-catalog-actions] .card-actions > button.btn, .form-card[data-sial-form-adapter] .form-actions > button.btn, .form-card[data-sial-form-adapter] [data-geo-locate], .form-card[data-sial-form-adapter] [data-sial-plan-action], .permission-toolbar .permission-actions > button.btn").forEach(mountButton);
+    document.querySelectorAll(".drawer[data-sial-drawer-adapter]:not([data-sial-drawer-local]), main[data-sial-catalog-actions] .drawer:not([data-sial-drawer-local])").forEach(mountDetailDrawer);
     document.querySelectorAll("main .page > .notice[data-sial-notice-adapter]").forEach(mountNotice);
     document.querySelectorAll("main .page > [data-sial-toast-adapter]").forEach(mountToast);
     document.querySelectorAll("main .toolbar select.select, main .workflow-filters select.select, main .permission-toolbar select.select").forEach((select) => {
@@ -816,7 +816,7 @@ export function mountLegacyTableControls() {
     document.querySelectorAll(".card-actions .chip").forEach((count) => {
       if (count.dataset.sialRecordCount !== undefined || /\bregistros?\b/i.test(count.textContent)) mountCount(count);
     });
-    document.querySelectorAll(".table-wrap:not(.sial-native-proxy) .status[data-sial-chip-adapter]").forEach(mountStatusChip);
+    document.querySelectorAll(".table-wrap:not(.sial-native-proxy) .status[data-sial-chip-adapter], main .page .status[data-sial-chip-adapter]:not(.sial-native-proxy)").forEach((status) => { if (!status.closest(".table-wrap.sial-native-proxy")) mountStatusChip(status); });
     document.querySelectorAll(".approval-order-card .status, .approval-context-head > .status, .approval-order-state-current > .status, .approval-order-state--closed > .status, .approval-decision > .status, .recurring-review-heading .status, .additional-source-header > .status, .additional-submit-status > .status, .additional-page-header .card-actions > .status, .additional-line-result > .status, .tracking-detail .card-header > .status, .tracking-detail .order-material-response > .status, .suggest-workspace-head > .status, [data-adjustment-root] > .card > .card-header > .status, [data-adjustment-root] [data-margin-state] > .status, #materialDetailDrawer .detail-value > .status").forEach(mountStatusChip);
     document.querySelectorAll(".table-wrap:not([data-sial-table-adapter]):not(.sial-native-proxy) .row-actions > .icon-btn[aria-label], .additional-material-line-main > .additional-remove[aria-label]").forEach(mountAction);
     document.querySelectorAll(".table-pagination").forEach(mountPagination);

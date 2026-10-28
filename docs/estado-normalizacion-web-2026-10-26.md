@@ -1,5 +1,11 @@
 # Normalización visual Web — estado de ejecución
 
+## Corte vigente · 28/10/2026
+
+Materiales: cerrado el pendiente técnico de Aprobación; corregidos feedback, vacío, controles y foco. Las 19 vistas mantienen aprobación histórica; el delta del 28/10 espera revisión visual y publicación. HU546 606fcf8 está contenido en origin/main 7267224. El catálogo actual suma 103 rutas por la entrega independiente HU1920.
+
+Siguiente módulo iniciado: Gestión de Fincas. Clases de referencia migró a React directo, con alta, edición, unicidad compuesta, estado, auditoría y persistencia local verificados. Las otras ocho rutas conservan sus pendientes. Build aprobado, runtime 45/45, 570 enlaces sin roturas. Matriz: 277 relaciones. Detalle y límites en [decisión del 28/10](decision-normalizacion-materiales-fincas-2026-10-28.md). Los apartados siguientes son cortes históricos.
+
 Fecha: 2026-10-26. Alcance: propuesta Web local. Estado: **normalización global en curso; las 19 vistas funcionales de Materiales aprobadas visualmente por John y publicadas**. El bloque se subió el 27/10/2026 a `main` y `feature/web-proposal-normalizacion-20261026` en el commit `86bc29f`. En Trazabilidad, John decidió que la composición anterior de siete etapas sea la principal; la alternativa aprobada, que separa datos, estado y evidencia, permanece disponible con `?composicion=alternativa`.
 
 ## Inventario vigente

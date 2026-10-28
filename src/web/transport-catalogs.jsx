@@ -83,7 +83,7 @@ function Audit({ item }) {
 function StatusConfirmation({ item, onCancel, onConfirm, label }) {
   const cancelRef = useRef(null);
   useEffect(() => {
-    cancelRef.current?.focus();
+    cancelRef.current?.querySelector("button")?.focus();
     const onEscape = (event) => { if (event.key === "Escape") onCancel(); };
     document.addEventListener("keydown", onEscape);
     return () => document.removeEventListener("keydown", onEscape);
@@ -93,7 +93,7 @@ function StatusConfirmation({ item, onCancel, onConfirm, label }) {
     <section className="sial-ui-master-confirm" role="alertdialog" aria-modal="true" aria-labelledby="status-confirm-title" aria-describedby="status-confirm-description">
       <h2 id="status-confirm-title">{verb} {label}</h2>
       <p id="status-confirm-description">{item.status ? "El registro seguirá disponible para consulta, pero no para nuevas asignaciones." : "El registro volverá a estar disponible para nuevas asignaciones."}</p>
-      <div className="sial-ui-master-confirm-actions"><Button ref={cancelRef} variant="outlined" onClick={onCancel}>Cancelar</Button><Button variant="filled" onClick={onConfirm}>{verb} {label}</Button></div>
+      <div className="sial-ui-master-confirm-actions"><span ref={cancelRef}><Button variant="outlined" onClick={onCancel}>Cancelar</Button></span><Button variant="filled" onClick={onConfirm}>{verb} {label}</Button></div>
     </section>
   </div>;
 }
@@ -112,6 +112,25 @@ export function TransportCatalog({ catalog }) {
   const [errors, setErrors] = useState({});
   const [detailCode, setDetailCode] = useState(null);
   const [confirmCode, setConfirmCode] = useState(null);
+  useEffect(() => {
+    if (!formMode) return;
+    for (const field of ["code", "name", "description"]) {
+      const input = document.getElementById(`${catalog}-${field}`);
+      if (!input) continue;
+      input.setAttribute("aria-required", "true");
+      const error = errors[field];
+      input.setAttribute("aria-invalid", error ? "true" : "false");
+      const messages = input.parentElement?.parentElement?.querySelectorAll(":scope > span");
+      const message = error && messages?.[messages.length - 1];
+      if (message) { message.id = `${catalog}-${field}-error`; message.setAttribute("role", "alert"); input.setAttribute("aria-describedby", message.id); }
+      else input.removeAttribute("aria-describedby");
+    }
+  }, [catalog, formMode, errors]);
+  const formTrigger = useRef(null);
+  const detailTrigger = useRef(null);
+  const confirmTrigger = useRef(null);
+  const historyOf = (item) => Array.isArray(item.history) ? item.history : item.audit ? [item.audit] : [];
+  const returnFocus = (ref) => requestAnimationFrame(() => (ref.current?.isConnected ? ref.current : document.getElementById(`${catalog}-search`))?.focus());
 
   const filtered = useMemo(() => rows.filter((item) => {
     const haystack = [item.code, item.name, item.description].filter(Boolean).join(" ").toLocaleLowerCase("es-CO");
@@ -133,8 +152,10 @@ export function TransportCatalog({ catalog }) {
     setFormMode(null);
     setForm({ code: "", name: "", description: "" });
     setErrors({});
+    returnFocus(formTrigger);
   }
-  function openForm(item) {
+  function openForm(item, opener) {
+    formTrigger.current = opener;
     setFormMode(item ? "edit" : "new");
     setForm(item ? { code: item.code, name: item.name || "", description: item.description } : { code: "", name: "", description: "" });
     setErrors({});
@@ -158,14 +179,19 @@ export function TransportCatalog({ catalog }) {
     if (isVehicle && (name.length < 3 || name.length > 100)) nextErrors.name = "Escribe un nombre de 3 a 100 caracteres.";
     if (isVehicle && rows.some((item) => item.name === name && item.code !== code)) nextErrors.name = "Este nombre ya existe.";
     if (description.length < 3 || description.length > (isVehicle ? 200 : 100)) nextErrors.description = `Escribe una descripción de 3 a ${isVehicle ? 200 : 100} caracteres.`;
-    if (Object.keys(nextErrors).length) { setErrors(nextErrors); return; }
+    if (Object.keys(nextErrors).length) {
+      setErrors(nextErrors);
+      const first = ["code", "name", "description"].find((field) => nextErrors[field]);
+      requestAnimationFrame(() => document.getElementById(`${catalog}-${first}`)?.focus());
+      return;
+    }
     const audit = `${formMode === "edit" ? "Actualizar" : "Crear"} · admin.transportes · ${new Date().toLocaleString("es-CO")}`;
     if (formMode === "edit") {
       const previous = rows.find((item) => item.code === code);
       if (previous.name === name && previous.description === description) { setErrors({ form: "No hay cambios para guardar." }); return; }
-      persist(rows.map((item) => item.code === code ? { ...item, name: isVehicle ? name : undefined, description: isVehicle ? description.toUpperCase() : description, audit } : item));
+      persist(rows.map((item) => item.code === code ? { ...item, name: isVehicle ? name : undefined, description: isVehicle ? description.toUpperCase() : description, audit, history: [...historyOf(item), audit] } : item));
     } else {
-      persist([{ code, ...(isVehicle ? { name, usageCount: 0 } : {}), description: isVehicle ? description.toUpperCase() : description, status: true, audit }, ...rows]);
+      persist([{ code, ...(isVehicle ? { name, usageCount: 0 } : {}), description: isVehicle ? description.toUpperCase() : description, status: true, audit, history: [audit] }, ...rows]);
       setPage(1);
     }
     closeForm();
@@ -173,8 +199,9 @@ export function TransportCatalog({ catalog }) {
   function confirmStatus() {
     if (!confirmation) return;
     const audit = `${confirmation.status ? "Inactivar" : "Activar"} · admin.transportes · ${new Date().toLocaleString("es-CO")}`;
-    persist(rows.map((item) => item.code === confirmation.code ? { ...item, status: !item.status, audit } : item));
+    persist(rows.map((item) => item.code === confirmation.code ? { ...item, status: !item.status, audit, history: [...historyOf(item), audit] } : item));
     setConfirmCode(null);
+    returnFocus(confirmTrigger);
   }
 
   const columns = isVehicle ? [
@@ -194,12 +221,12 @@ export function TransportCatalog({ catalog }) {
     <p className="page-eyebrow">{config.eyebrow}</p>
     <div className="page-header"><div><h1 className="page-title">{config.title}</h1><p className="page-subtitle">{config.subtitle}</p></div></div>
     <article className="card workflow-table-card standard-master-card sial-ui-master-card">
-      <div className="card-header"><div><h2 className="card-title">{config.listTitle}</h2><p className="card-subtitle">{config.listSubtitle}</p></div><div className="card-actions"><Chip preset="info" aria-live="polite" data-sial-component="Chip" data-sial-source={source}>{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button variant="filled" onClick={() => openForm(null)} aria-expanded={formMode !== null} aria-controls={`${catalog}-form`} data-sial-component="Button" data-sial-source={source}>{config.addLabel}</Button></div></div>
+      <div className="card-header"><div><h2 className="card-title">{config.listTitle}</h2><p className="card-subtitle">{config.listSubtitle}</p></div><div className="card-actions"><Chip preset="info" aria-live="polite" data-sial-component="Chip" data-sial-source={source}>{filtered.length} {filtered.length === 1 ? "registro" : "registros"}</Chip><Button variant="filled" onClick={(event) => openForm(null, event.currentTarget)} aria-expanded={formMode !== null} aria-controls={`${catalog}-form`} data-sial-component="Button" data-sial-source={source}>{config.addLabel}</Button></div></div>
       <div className="card-body"><div className={`sial-ui-master-toolbar ${isVehicle ? "has-usage" : ""}`}>
         <div data-sial-component="TextInput" data-sial-source={source}><TextInput id={`${catalog}-search`} label="Buscar" placeholder={config.searchPlaceholder} value={search} onChange={(value) => { setSearch(value); setPage(1); }} /></div>
         <div data-sial-component="SelectInput" data-sial-source={source}><SelectInput id={`${catalog}-status`} label="Estado" value={status} options={[{ label: "Todos los estados", value: "" }, { label: "Activo", value: "active" }, { label: "Inactivo", value: "inactive" }]} onChange={(value) => { setStatus(value); setPage(1); }} /></div>
         {isVehicle && <div data-sial-component="SelectInput" data-sial-source={source}><SelectInput id={`${catalog}-usage`} label="Uso" value={usage} options={[{ label: "Todos", value: "" }, { label: "En uso", value: "used" }, { label: "Sin uso", value: "unused" }]} onChange={(value) => { setUsage(value); setPage(1); }} /></div>}
-      <TableFilterReset active={Boolean(search.trim()) || Boolean(status) || Boolean(usage)} onReset={() => { setSearch(""); setStatus(""); setUsage(""); setPage(1); }} /></div></div>
+      <TableFilterReset active={Boolean(search.trim()) || Boolean(status) || Boolean(usage)} onReset={() => { setSearch(""); setStatus(""); setUsage(""); setPage(1); requestAnimationFrame(() => document.getElementById(`${catalog}-search`)?.focus()); }} /></div></div>
       {formMode && <div className="inline-form-panel inline-form-compact sial-ui-master-form" id={`${catalog}-form`}><div className="form-heading"><h2>{formMode === "new" ? config.newTitle : config.editTitle}</h2><p>{isVehicle ? "Identifica el tipo con código, nombre y descripción operativa." : "Define el código y la descripción que verá el equipo de transporte."}</p></div><div className="form-body"><form onSubmit={submit} noValidate><div className={`sial-ui-master-fields ${isVehicle ? "three-fields" : ""}`}>
         {formMode === "new" && <div data-sial-component="TextInput" data-sial-source={source}><TextInput id={`${catalog}-code`} label={config.codeLabel} required maxLength={isVehicle ? 50 : 6} value={form.code} placeholder={isVehicle ? "CAMION" : "C4"} helperText={isVehicle ? "Inicia con una letra; sin espacios." : "Alfanumérico, máximo 6 caracteres."} validate={{ status: Boolean(errors.code), message: errors.code }} onChange={(value) => setField("code", isVehicle ? value.replace(/\s+/g, "_") : value.replace(/[^A-Za-z0-9]/g, ""))} /></div>}
         {formMode === "edit" && <div className="sial-ui-master-code"><span className="sial-ui-master-field-label">{config.codeLabel}</span><strong>{form.code}</strong><small>El código no se modifica.</small></div>}
@@ -207,18 +234,18 @@ export function TransportCatalog({ catalog }) {
         <div data-sial-component="TextInput" data-sial-source={source}><TextInput id={`${catalog}-description`} label="Descripción" required maxLength={isVehicle ? 200 : 100} value={form.description} placeholder={isVehicle ? "VEHÍCULO PARA TRANSPORTE TERRESTRE" : "Alcance de la licencia"} helperText="Describe el alcance operativo." validate={{ status: Boolean(errors.description), message: errors.description }} onChange={(value) => setField("description", value)} /></div>
       </div>{errors.form && <p className="sial-ui-master-error" role="alert">{errors.form}</p>}<div className="form-actions"><Button variant="outlined" type="reset" onClick={closeForm}>Cancelar</Button><Button variant="filled" type="submit">Guardar {config.singular}</Button></div></form></div></div>}
       <div className="sial-ui-master-table" data-sial-component="Table" data-sial-source={source}><Table columns={columns} data={shown} rowKey={(item) => item.code} minWidth={isVehicle ? "950px" : "800px"} emptyState={`No hay ${config.plural} que coincidan con los filtros.`} actionsHeader="Acciones" actionsWidth="160px" actions={(item) => <TableRowActions label={`Acciones de ${item.code}`}>
-        <IconButton variant="ghost" aria-label={`Ver detalle de ${item.code}`} title="Ver detalle" onClick={() => setDetailCode(item.code)}><ViewIcon /></IconButton>
-        <IconButton variant="ghost" aria-label={`Editar ${config.singular} ${item.code}`} title="Editar" onClick={() => openForm(item)}><EditIcon /></IconButton>
-        <IconButton variant="ghost" className={item.status ? "sial-ui-action-danger" : "sial-ui-action-success"} aria-label={`${item.status ? "Inactivar" : "Activar"} ${config.singular} ${item.code}`} title={item.status ? "Inactivar" : "Activar"} onClick={() => setConfirmCode(item.code)}>{item.status ? <CloseIcon /> : <CheckIcon />}</IconButton>
+        <IconButton variant="ghost" aria-label={`Ver detalle de ${item.code}`} title="Ver detalle" onClick={(event) => { detailTrigger.current = event.currentTarget; setDetailCode(item.code); }}><ViewIcon /></IconButton>
+        <IconButton variant="ghost" aria-label={`Editar ${config.singular} ${item.code}`} title="Editar" onClick={(event) => openForm(item, event.currentTarget)}><EditIcon /></IconButton>
+        <IconButton variant="ghost" className={item.status ? "sial-ui-action-danger" : "sial-ui-action-success"} aria-label={`${item.status ? "Inactivar" : "Activar"} ${config.singular} ${item.code}`} title={item.status ? "Inactivar" : "Activar"} onClick={(event) => { confirmTrigger.current = event.currentTarget; setConfirmCode(item.code); }}>{item.status ? <CloseIcon /> : <CheckIcon />}</IconButton>
       </TableRowActions>} /></div>
       <Pagination page={currentPage} pageSize={pageSize} total={filtered.length} pageSizeOptions={[10, 30, 50]} onPageChange={setPage} onPageSizeChange={(size) => { setPageSize(size); setPage(1); }} data-sial-component="Pagination" data-sial-source={source} />
     </article>
-    {detail && <Drawer show onClose={() => setDetailCode(null)} title={isVehicle ? "Detalle del tipo" : "Detalle de la categoría"} subtitle="Consulta de estado y auditoría." ariaLabel={`Detalle de ${detail.code}`} data={[
+    {detail && <Drawer show onClose={() => { setDetailCode(null); returnFocus(detailTrigger); }} title={isVehicle ? "Detalle del tipo" : "Detalle de la categoría"} subtitle="Consulta de estado y auditoría." ariaLabel={`Detalle de ${detail.code}`} data={[
       { label: "Código", children: detail.code },
       ...(isVehicle ? [{ label: "Nombre", children: detail.name }, { label: "Descripción", children: detail.description }, { label: "Uso", children: `${detail.usageCount} vehículos` }] : [{ label: "Descripción", children: detail.description }]),
       { label: "Estado", children: <StatusChip active={detail.status} /> },
-      { label: "Auditoría", children: detail.audit }
+      { label: "Auditoría", children: <ul>{historyOf(detail).map((entry, index) => <li key={`${index}-${entry}`}>{entry}</li>)}</ul> }
     ]} />}
-    {confirmation && <StatusConfirmation item={confirmation} label={config.singular} onCancel={() => setConfirmCode(null)} onConfirm={confirmStatus} />}
+    {confirmation && <StatusConfirmation item={confirmation} label={config.singular} onCancel={() => { setConfirmCode(null); returnFocus(confirmTrigger); }} onConfirm={confirmStatus} />}
   </>;
 }

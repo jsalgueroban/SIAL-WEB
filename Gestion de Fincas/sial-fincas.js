@@ -272,6 +272,11 @@ const SIAL = (() => {
       });
       if (!validateLicenses()) fail = true;
       ok?.classList.toggle("is-hidden", fail);
+      if (fail) {
+        const firstInvalid = form.querySelector('[aria-invalid="true"]');
+        const field = firstInvalid?.closest('[data-sial-form-control]');
+        (field?.querySelector('.sial-library-field input, .sial-library-field select') || firstInvalid)?.focus();
+      }
       if (!fail) window.scrollTo({ top: 0, behavior: "smooth" });
     });
     form.addEventListener("reset", () => {
@@ -374,7 +379,7 @@ const SIAL = (() => {
       qsa("[data-unique-list]", form).forEach((input) => {
         const note = qs(`#${input.getAttribute("aria-describedby")}`);
         const values = input.dataset.uniqueList.split("|").map((v) => v.trim().toUpperCase());
-        const duplicate = input.value && values.includes(input.value.trim().toUpperCase());
+        const duplicate = input.value && values.includes(input.value.trim().toUpperCase()) && input.value.trim().toUpperCase() !== (input.dataset.originalValue || "");
         if (duplicate) {
           setFieldState(input, note, "El valor ya existe en la tabla maestra.", "");
           fail = true;
@@ -396,6 +401,11 @@ const SIAL = (() => {
         }
       });
       ok?.classList.toggle("is-hidden", fail);
+      if (fail) {
+        const firstInvalid = form.querySelector('[aria-invalid="true"]');
+        const field = firstInvalid?.closest('[data-sial-form-control]');
+        (field?.querySelector('.sial-library-field input, .sial-library-field select') || firstInvalid)?.focus();
+      }
       if (!fail) window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
@@ -408,7 +418,16 @@ const SIAL = (() => {
     const form = panel?.querySelector("form");
     if (!panel || !openButton) return;
 
-    const open = (mode = "new") => {
+    const open = (mode = "new", row = null) => {
+      if (config.prefillName) {
+        const input = form?.querySelector("[data-unique-list]");
+        if (input) {
+          input.value = mode === "edit" ? (row?.dataset.name || "") : "";
+          input.dataset.originalValue = input.value.trim().toUpperCase();
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+        qs("#formOk")?.classList.add("is-hidden");
+      }
       panel.classList.remove("is-hidden");
       openButton.setAttribute("aria-expanded", "true");
       if (title) title.textContent = mode === "edit" ? config.editTitle || "Editar registro" : config.newTitle || "Nuevo registro";
@@ -426,7 +445,7 @@ const SIAL = (() => {
     openButton.addEventListener("click", () => open("new"));
     cancelButton?.addEventListener("click", close);
     qsa(config.editButtons || "[data-edit-inline]").forEach((button) => {
-      button.addEventListener("click", () => open("edit"));
+      button.addEventListener("click", () => open("edit", button.closest("tr")));
     });
   }
 

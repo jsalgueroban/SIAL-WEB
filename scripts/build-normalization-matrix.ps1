@@ -14,7 +14,7 @@ if ($inventory.platform -ne 'web') { throw 'El inventario no pertenece a Web.' }
 # Una entrada aquí no acredita estados secundarios ni aprobación visual.
 $materials = @{
   'ajustar-pedido-sugerido.html' = @{ shape='ajuste por receta'; direct='NumberInput,Chip,Button,Toast'; local='filas y justificación por receta' }
-  'aprobacion-pedidos-materiales.html' = @{ shape='galería de decisión'; direct='TextInput,SelectInput,NumberInput,Chip,Button,Notice,Toast'; local='galería, decisión por material y auditoría' }
+  'aprobacion-pedidos-materiales.html' = @{ shape='galería de decisión'; direct='TextInput,SelectInput,NumberInput,Chip,Button,IconButton,Notice,Toast'; local='galería, decisión por material y auditoría' }
   'categorias-pedido.html' = @{ shape='catálogo breve'; direct='TextInput,SelectInput,Chip,Button,Table,Pagination,Drawer,DrawerAuditList,Toast'; local='estado de catálogo y formulario compacto' }
   'configuracion-materiales-referencia.html' = @{ shape='configuración por referencia'; direct='Table,Pagination,Chip,SearchSelectInput,SelectInput,DateInput,NumberInput,TextInput,Button,Toast,Drawer'; local='secciones de captura y dependencia receta-material' }
   'gestion-materiales.html' = @{ shape='catálogo y alta breve'; direct='TextInput,SelectInput,SearchSelectInput,NumberInput,Chip,Button,IconButton,Table,TableRowActions,Pagination,Drawer,Toast'; local='selección SAP y formulario breve' }
@@ -65,8 +65,8 @@ foreach ($view in $inventory.views) {
       $base.visual_gate = 'approved-by-John-2026-10-26'
     }
     if ($materialName -eq 'aprobacion-pedidos-materiales.html') {
-      $base.functional_gate = 'prior-functional-evidence-plus-visual-review'
-      $base.visual_gate = 'approved-by-John-2026-10-26'
+      $base.functional_gate = 'decisions-validation-save-send-cancel-txt-dedup-empty-toast-focus-verified-2026-10-28'
+      $base.visual_gate = 'composition-approved-2026-10-26; control-fixes-review-pending-2026-10-28'
     }
     if ($materialName -eq 'seguimiento-pedidos-finca.html') {
       $base.functional_gate = 'one-zero-results-and-detail-verified-2026-10-26'
@@ -143,6 +143,18 @@ foreach ($view in $inventory.views) {
     }
     $base.component = $decision.local; $base.component_state = 'feature-local; visual-review-pending'
     $base.evidence = if ($materialName -eq 'ordenes-transporte-insumos.html') { 'docs/decision-hu546-documentos-2026-10-27.md' } else { 'docs/matriz-normalizacion-materiales-web-2026-10-16.md; plan acordado 2026-10-26' }; $rows.Add([pscustomobject]$base)
+    continue
+  }
+  if ($route -eq 'Gestion de Fincas/gestion-clases-referencia.html') {
+    $base.shape = 'catálogo breve con formulario integrado'
+    $base.functional_gate = 'create-edit-composite-duplicate-status-persistence-filters-pagination-drawer-focus-readonly-verified-2026-10-28'
+    $base.visual_gate = 'review-pending-2026-10-28'
+    foreach ($name in @('TextInput','SelectInput','Chip','Button','IconButton','Table','TableRowActions','Pagination','Drawer','Toast','Notice')) {
+      $entry = [ordered]@{}; foreach ($key in $base.Keys) { $entry[$key] = $base[$key] }
+      $entry.component = $name; $entry.component_state = 'direct-in-proposal; verified-2026-10-28'
+      $entry.evidence = 'docs/decision-normalizacion-materiales-fincas-2026-10-28.md'
+      $rows.Add([pscustomobject]$entry)
+    }
     continue
   }
   $html = [IO.File]::ReadAllText((Join-Path $ProposalRoot $route))

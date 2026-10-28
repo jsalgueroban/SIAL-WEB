@@ -49,7 +49,7 @@
           </tbody></table></div>
           <div class="card-body"><div class="empty-state" id="relationEmpty">No hay relaciones que coincidan con los filtros.</div></div>
         </article>
-        <article class="card mt-24">
+        <article class="card mt-24" id="relationAccessExample" hidden>
           <div class="card-header"><div><h2 class="card-title">Estado sin permisos</h2><p class="card-subtitle">Representacion requerida por el documento para usuarios no administrativos.</p></div></div>
           <div class="card-body"><div class="notice notice-error"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>No tienes permisos administrativos para gestionar relaciones conductor + licencia. Puedes consultar los registros autorizados, pero no crear ni modificar asignaciones.</span></div></div>
         </article>
@@ -61,7 +61,7 @@
   <aside class="drawer" data-sial-drawer-adapter id="detailDrawer" aria-modal="true" role="dialog" aria-label="Detalle de relacion conductor licencia">
     <div class="drawer-head"><div><h3>Detalle relacion</h3><p>Consulta lateral de llave compuesta, vigencia y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
     <div class="drawer-body">
-      <div class="detail-group"><span class="detail-label">Codigo conductor</span><div class="detail-value" data-detail-target="code">-</div></div>
+      <div class="detail-group"><span class="detail-label">Codigo conductor</span><div class="detail-value" data-detail-target="driver">-</div></div>
       <div class="detail-group"><span class="detail-label">Conductor</span><div class="detail-value" data-detail-target="name">-</div></div>
       <div class="detail-group"><span class="detail-label">Categoria licencia</span><div class="detail-value" data-detail-target="license">-</div></div>
       <div class="detail-group"><span class="detail-label">Vencimiento</span><div class="detail-value" data-detail-target="expiration">-</div></div>
@@ -73,11 +73,12 @@
 
   <script src="../shared/sial-core.js"></script>
   <script src="sial-conductores.js"></script>
+  <script src="driver-detail-focus.js?v=20261028"></script>
+  <script src="driver-relations-prototype.js?v=20261028"></script>
   <script>
     SIAL.applyShell("relacion");
+    DriverRelations.init();
     SIAL.initDrawer();
-    SIAL.initEmbeddedForm({ newTitle: "Nueva relacion", editTitle: "Editar relacion" });
-    SIAL.initRelationForm();
     SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#relationSearch", status: "#relationStatus", context: "#relationContext", empty: "#relationEmpty", count: "#relationCount" });
   </script>
 </body>

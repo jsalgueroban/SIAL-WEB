@@ -36,10 +36,10 @@
                 <div class="field span-4" data-sial-form-control><label class="label" for="group">Grupo <span class="required">*</span></label><select class="select" id="group" data-required aria-describedby="groupNote"><option value="">Selecciona grupo</option><option>GRUPO COSTA NORTE</option><option>GRUPO ORIENTE UNO</option></select><div class="field-note" id="groupNote">Una finca pertenece a un grupo.</div></div>
                 <div class="field span-4" data-sial-form-control><label class="label" for="sector">Sector <span class="required">*</span></label><select class="select" id="sector" data-required aria-describedby="sectorNote"><option value="">Selecciona sector</option><option>SECTOR NORTE</option><option>SECTOR ORIENTE</option></select><div class="field-note" id="sectorNote">Una finca se ubica en un sector.</div></div>
                 <div class="field span-12">
-                  <label class="label" for="geo">Geolocalizacion</label>
                   <div class="geo-map-panel" data-geo-component>
                     <div class="geo-map-controls">
-                      <div class="field">
+                      <div class="field" data-sial-form-control>
+                        <label class="label" for="geo">Geolocalizacion</label>
                         <input class="input" id="geo" data-geo-input aria-describedby="geoNote" placeholder="10.965, -74.801" />
                         <div class="field-note" id="geoNote">Opcional. Ingresa latitud y longitud separadas por coma para ubicar la finca en el mapa.</div>
                       </div>
@@ -74,6 +74,7 @@
   </div>
   <script src="../shared/sial-core.js"></script>
   <script src="sial-fincas.js"></script>
-  <script>SIAL.applyShell("fincas"); SIAL.initGeoMap(); SIAL.initGenericForm();</script>
+  <script src="farm-prototype.js?v=20261028-farm-verification"></script>
+  <script>SIAL.applyShell("fincas"); SIAL.initGenericForm(); SIAL.initGeoMap(); FarmPrototype.form();</script>
 </body>
 </html>

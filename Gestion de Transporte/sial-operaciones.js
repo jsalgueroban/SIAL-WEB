@@ -10,11 +10,40 @@
     "CMN-204": { plate: "CMN-204", type: "CAMION", capacity: 18, company: "OPERADOR CARIBE SAS" }
   };
 
+  // El único vehículo de prueba adicional procede del escenario expresamente autorizado.
+  (window.TransportAvailability?.list() || []).filter(item => item.isDemo).forEach(item => {
+    vehicleData[item.plate] = { plate: item.plate, type: item.vehicleType, capacity: item.palletCapacity, company: item.carrierCompany };
+  });
+
   const driverData = {
     "DRV-001": { code: "DRV-001", name: "Carlos Mendez", license: "C2", licenseExp: "2026-12-15", arlExp: "2026-11-30", status: "Activo" },
     "DRV-003": { code: "DRV-003", name: "Ana Lucia Paz", license: "C3", licenseExp: "2026-10-20", arlExp: "2026-09-15", status: "Activo" },
     "DRV-005": { code: "DRV-005", name: "Pedro Rojas", license: "C2", licenseExp: "2027-01-10", arlExp: "2026-12-01", status: "Activo" }
   };
+
+  // Se reutilizan los catálogos locales; los DRV históricos no equivalen a un conductor vigente.
+  function validDateOnly(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
+    const date = new Date(`${value}T00:00:00Z`);
+    return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+  }
+  function eligibleDrivers(scheduledAt = "") {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+    const requested = scheduledAt.slice(0,10);
+    const requiredDate = requested && requested > today ? requested : today;
+    let categories;
+    try { categories = JSON.parse(localStorage.getItem("sial-proposal-license-categories-v2")); } catch { categories = null; }
+    const activeCategories = new Set((Array.isArray(categories) ? categories : [{code:"C2",status:true},{code:"C3",status:true},{code:"A1",status:false}]).filter(item => item.status === true).map(item => item.code));
+    const relations = typeof DriverRelations === "undefined" ? [] : DriverRelations.read();
+    const drivers = typeof DriverPrototype === "undefined" ? [] : DriverPrototype.read();
+    return drivers.flatMap(driver => {
+      if (driver.state !== "active" || !validDateOnly(driver.arlStart) || !validDateOnly(driver.arlEnd) || driver.arlStart > today || driver.arlEnd < requiredDate) return [];
+      const license = relations.filter(item => item.code === driver.code && item.state === "active" && activeCategories.has(item.license) && validDateOnly(item.expiration) && item.expiration >= requiredDate).sort((a,b) => b.expiration.localeCompare(a.expiration))[0];
+      return license ? [{code:driver.code,name:`${driver.firstName} ${driver.lastName}`.trim(),license:license.license,licenseExp:license.expiration,arlExp:driver.arlEnd,status:"Activo"}] : [];
+    });
+  }
+  eligibleDrivers().forEach(item => { driverData[item.code] = item; });
 
   const destinationsByType = {
     Finca: ["Finca El Rosario", "Finca San Jose", "Finca La Aurora"],
@@ -27,6 +56,46 @@
     "OP-003": { vehicle: "CMN-204", driver: "DRV-005", week: "2026-W26", date: "2026-06-22T09:00", destType: "Puerto", dest: "Puerto Cartagena", obs: "Programacion futura." },
     "OP-004": { vehicle: "CAM-102", driver: "", week: "2026-W23", date: "2026-06-08T08:00", destType: "Puerto", dest: "Puerto Cartagena", obs: "Operacion finalizada disponible para reprogramacion." }
   };
+
+  // Fuente local de la maqueta. La elegibilidad productiva sigue siendo del servicio.
+  const operationStorageKey = window.SIALOperationStore.key;
+  const readOperations = () => window.SIALOperationStore.read();
+  const savedOperations = () => {
+    try { const value = JSON.parse(localStorage.getItem(operationStorageKey)); return Array.isArray(value) ? value : []; } catch { return []; }
+  };
+  function hydrateOperationList() {
+    const body = qs("#operationTableBody"); if (!body) return;
+    const ids = { "TRK-421": "OP-001", "CAM-101": "OP-002", "CMN-204": "OP-003", "CAM-102": "OP-004" };
+    const records = readOperations();
+    const template = qs('tr[data-plate="TRK-421"]', body);
+    const rendered = new Set();
+    function hydrate(row, item, isNew) {
+      const driver = driverData[item.driver]?.name || item.driver || "--";
+      const state = item.state || "PROGRAMADO";
+      const status = state === "FINALIZADO" ? "inactive" : state === "DISPONIBLE" ? "active" : "warning";
+      const label = calculateOperationWeek(item.date)?.label || item.week;
+      const date = item.date ? `${item.date.slice(8,10)}/${item.date.slice(5,7)}/${item.date.slice(0,4)} ${item.date.slice(11,16)}` : "--";
+      const info = vehicleData[item.vehicle] || window.TransportAvailability?.get(item.vehicle)?.record || {};
+      if (isNew) row.dataset.traceability = `${item.origin ? `Reprogramada desde ${item.origin}|${date}|status-warning;` : ""}Programación creada|${date}|status-warning`;
+      Object.assign(row.dataset, { code: item.id, operationId: item.id, plate: item.vehicle, vehicleType: info.type || info.vehicleType || "Sin información", driver, destinationType: item.destType, destination: item.dest, context: item.destType.toLowerCase(), date, week: isFutureDate(item.date) ? "future" : item.week, weekLabel: label, state, status, audit: (item.audit || []).map(entry => `${entry}|`).join(";") });
+      const cells = qsa("td", row);
+      if (cells.length >= 8) {
+        [item.vehicle, driver, item.destType, item.dest, date, label].forEach((value, index) => { cells[index].textContent = value; });
+        const badge = qs(".status", cells[6]); if (badge) { badge.textContent = state; badge.className = `status status-${status}`; }
+        const link = qs("a", cells[7]);
+        if (link && isNew) { const scenario = new URLSearchParams(location.search).get("escenario"); link.href = `inicio-operacion.html?modo=editar&id=${encodeURIComponent(item.id)}${scenario === "disponible" ? "&escenario=disponible" : ""}`; }
+      }
+    }
+    qsa("tr[data-plate]", body).forEach(row => {
+      const id = ids[row.dataset.plate], item = records.find(record => record.id === id);
+      if (!item) return;
+      row.dataset.operationId = id; row.dataset.code = id; rendered.add(id);
+      if (savedOperations().some(saved => saved.id === id)) hydrate(row, item, false);
+    });
+    if (template) records.filter(item => !rendered.has(item.id)).reverse().forEach(item => {
+      const row = template.cloneNode(true); hydrate(row, item, true); body.prepend(row);
+    });
+  }
 
   function getUrlParams() {
     const params = {};
@@ -98,15 +167,19 @@
     };
   }
 
+  const escapeMarkup = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+
   function vehicleOptions(selected = "") {
-    return `<option value="">Vehiculo</option>${Object.values(vehicleData).map((item) =>
-      `<option value="${item.plate}" ${item.plate === selected ? "selected" : ""}>${item.plate} - ${item.type}</option>`
+    const items = Object.values(vehicleData).filter(item => window.TransportAvailability?.get(item.plate)?.eligible === "available" || item.plate === selected);
+    const placeholder = items.length ? "Vehículo" : "Sin vehículos con disponibilidad verificable";
+    return `<option value="">${placeholder}</option>${items.map((item) =>
+      `<option value="${escapeMarkup(item.plate)}" ${item.plate === selected ? "selected" : ""}>${escapeMarkup(item.plate)} - ${escapeMarkup(item.type)}</option>`
     ).join("")}`;
   }
 
   function driverOptions(selected = "") {
-    return `<option value="">Conductor</option>${Object.values(driverData).map((item) =>
-      `<option value="${item.code}" ${item.code === selected ? "selected" : ""}>${item.name}</option>`
+    return `<option value="">Conductor</option>${eligibleDrivers().map((item) =>
+      `<option value="${escapeMarkup(item.code)}" ${item.code === selected ? "selected" : ""}>${escapeMarkup(item.name)}</option>`
     ).join("")}`;
   }
 
@@ -160,9 +233,32 @@
     const isEdit = params.modo === "editar";
     const isReprogram = params.modo === "reprogramar";
     const opId = params.id || "";
+    const currentOperation = readOperations().find(item => item.id === opId);
+    if (currentOperation) {
+      operationData[opId] = currentOperation;
+      if (!vehicleData[currentOperation.vehicle]) vehicleData[currentOperation.vehicle] = { plate: currentOperation.vehicle, type: "Sin información", capacity: "", company: "Sin información" };
+    }
 
     const vehicleSelect = qs("#vehicleSelect");
+    if (vehicleSelect) {
+      const eligible = (window.TransportAvailability?.list() || []).filter(item => window.TransportAvailability.get(item.plate).eligible === "available");
+      vehicleSelect.replaceChildren(new Option("Selecciona vehículo disponible", ""));
+      eligible.forEach(item => vehicleSelect.add(new Option(item.isDemo ? `${item.plate} · Vehículo de demostración` : item.plate, item.plate)));
+      if (currentOperation && !Array.from(vehicleSelect.options).some(option => option.value === currentOperation.vehicle)) vehicleSelect.add(new Option(`${currentOperation.vehicle} · Asignación anterior`, currentOperation.vehicle));
+      const note = qs("#vehicleSelectNote");
+      if (note) note.textContent = eligible.length ? "Solo vehículos con disponibilidad verificada en este escenario." : "No hay vehículos con disponibilidad verificable. Consulta la vista de disponibilidad.";
+    }
     const driverSelect = qs("#driverSelect");
+    if (driverSelect) {
+      driverSelect.replaceChildren(new Option("Selecciona conductor activo", ""));
+      eligibleDrivers().forEach(item => { driverData[item.code] = item; driverSelect.add(new Option(item.name, item.code)); });
+      if (currentOperation && !Array.from(driverSelect.options).some(option => option.value === currentOperation.driver)) {
+        const historical = driverData[currentOperation.driver];
+        if (currentOperation.driver) { const item = new Option(`${historical?.name || currentOperation.driver} (histórico; selecciona un conductor vigente)`, currentOperation.driver); item.disabled = true; driverSelect.add(item); }
+      }
+      const note = qs("#driverSelectNote");
+      if (note) note.textContent = "Conductores activos con ARL y categoría de licencia vigentes en los datos locales.";
+    }
     const weekDisplay = qs("#weekDisplay");
     const operationWeek = qs("#operationWeek");
     const dateInput = qs("#dateOperative");
@@ -239,19 +335,26 @@
       }
     }
 
-    if (!isEdit && !isReprogram) {
+    if ((isEdit && (!currentOperation || !currentOperation.state.startsWith("PROGRAMADO"))) || (isReprogram && (!currentOperation || currentOperation.state !== "FINALIZADO"))) {
+      const submit = qs("#operationFormSubmit"); if (submit) submit.disabled = true;
+      ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error");
+      ok.textContent = currentOperation ? "Esta operación ya cambió de estado y no puede editarse." : "No se encontró la operación solicitada.";
+      ok.setAttribute("role", "alert");
+    }
+
+    if (!isEdit && !isReprogram && dateInput?.value) {
       updateWeekDisplay(dateInput, weekDisplay, operationWeek, dateNote);
     }
 
     const required = isEdit
       ? [
-          ["driverSelect", "Selecciona un conductor activo.", v => Boolean(v)],
+          ["driverSelect", "Selecciona un conductor activo con ARL y licencia vigentes para la fecha.", v => eligibleDrivers(dateInput?.value || "").some(item => item.code === v)],
           ["destinationType", "Selecciona el tipo de destino.", v => Boolean(v)],
           ["destinationSelect", "Selecciona el destino.", v => Boolean(v)]
         ]
       : [
           ["vehicleSelect", "Selecciona un vehiculo disponible.", v => Boolean(v)],
-          ["driverSelect", "Selecciona un conductor activo.", v => Boolean(v)],
+          ["driverSelect", "Selecciona un conductor activo con ARL y licencia vigentes para la fecha.", v => eligibleDrivers(dateInput?.value || "").some(item => item.code === v)],
           ["dateOperative", "Selecciona una fecha futura para planificar.", () => updateWeekDisplay(dateInput, weekDisplay, operationWeek, dateNote)],
           ["destinationType", "Selecciona el tipo de destino.", v => Boolean(v)],
           ["destinationSelect", "Selecciona el destino.", v => Boolean(v)]
@@ -278,34 +381,58 @@
         if (error) fail = true;
       });
       ok?.classList.toggle("is-hidden", fail);
+      if (fail) {
+        const first = form.querySelector('[aria-invalid="true"]');
+        const visible = first?.closest("[data-sial-form-control]")?.querySelector(".sial-library-field input, .sial-library-field button, .sial-library-field [role=combobox]");
+        (visible || first)?.focus();
+      }
       if (!fail) {
-        ok.classList.remove("is-hidden");
-        ok.classList.remove("notice-success", "notice-error");
-        ok.classList.add("notice-success");
-        if (isEdit) {
-          ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Programacion actualizada correctamente. Los cambios quedaron registrados en auditoria.</span>';
-        } else if (isReprogram) {
-          ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Vehiculo reprogramado correctamente. Se crea una nueva operacion vinculada al registro finalizado de origen.</span>';
-        } else {
-          const veh = qs("#vehicleSelect").value;
-          const drv = qs("#driverSelect").value;
-          const dest = qs("#destinationType").value;
-          const statusLabel = dest === "Finca" ? "PROGRAMADO A FINCA" : "PROGRAMADO A PUERTO";
-          const resultMsg = qs("#formResultMessage");
-          if (resultMsg) {
-            resultMsg.innerHTML = `<strong>Programacion creada:</strong> Vehiculo <strong>${veh}</strong> asignado a <strong>${driverData[drv]?.name || drv}</strong>. Semana: <strong>${weekDisplay?.value || "-"}</strong>. Estado: <span class="status status-warning">${statusLabel}</span>.`;
+        const vehicle = vehicleSelect.value;
+        if (!isEdit) {
+          const availability = window.TransportAvailability?.get(vehicle);
+          if (availability?.eligible !== "available") {
+            const message = availability?.eligible === "blocked"
+              ? `El vehículo no puede programarse: ${(availability.signals || []).join(" ")}`
+              : "No se pudo verificar que el vehículo esté disponible. La programación requiere una fuente de elegibilidad confirmada.";
+            ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error");
+            ok.setAttribute("role", "alert"); ok.textContent = message;
+            (qs("#sial-library-vehicleSelect") || vehicleSelect)?.focus();
+            return;
           }
-          ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Vehiculo programado correctamente. El registro queda listo para seguimiento operativo.</span>';
+          const current = readOperations();
+          if (isReprogram && current.some(item => item.vehicle === vehicle && item.id !== opId && item.state?.startsWith("PROGRAMADO") && new Date(item.date).getTime() > Date.now())) {
+            ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error"); ok.setAttribute("role", "alert");
+            ok.textContent = "El vehículo ya tiene una programación futura vigente; no puede reprogramarse en este escenario."; return;
+          }
+          const next = Math.max(0, ...current.map(item => Number(item.id.replace("OP-", "")) || 0)) + 1;
+          const id = `OP-${String(next).padStart(3, "0")}`;
+          const created = { id, vehicle, driver: driverSelect.value, week: operationWeek.value, date: dateInput.value,
+            destType: destType.value, dest: destSelect.value, obs: qs("#operationObservations").value.trim(),
+            state: `PROGRAMADO A ${destType.value.toUpperCase()}`, audit: [`Crear programación · ${new Date().toLocaleString("es-CO")}`],
+            ...(isReprogram ? { origin: opId } : {}), ...(availability.record?.isDemo ? { isDemo: true } : {}) };
+          try { window.SIALOperationStore.write([created, ...current]); }
+          catch { ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error"); ok.setAttribute("role", "alert"); ok.textContent = "No fue posible guardar la programación en este navegador."; return; }
+          window.location.href = `gestion-operaciones.html${params.escenario === "disponible" ? "?escenario=disponible" : ""}`;
+          return;
         }
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        qs("#operationFormSubmit")?.setAttribute("disabled", "disabled");
-        qs("#operationFormSubmit")?.classList.add("is-loading");
+        const current = readOperations().find(item => item.id === opId);
+        if (!current || !current.state.startsWith("PROGRAMADO")) {
+          ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error");
+          ok.setAttribute("role", "alert"); ok.textContent = "Esta operación ya cambió de estado y no puede editarse."; return;
+        }
+        const updated = { ...current, driver: driverSelect.value, destType: destType.value, dest: destSelect.value,
+          obs: qs("#operationObservations").value.trim(), audit: [...(current.audit || []), `Editar programación · ${new Date().toLocaleString("es-CO")}`] };
+        try {
+          const changes = readOperations().map(item => item.id === opId ? updated : item);
+          window.SIALOperationStore.write(changes);
+        } catch { ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error"); ok.setAttribute("role", "alert"); ok.textContent = "No fue posible guardar los cambios en este navegador."; return; }
+        window.location.href = `gestion-operaciones.html${params.escenario === "disponible" ? "?escenario=disponible" : ""}`;
       }
     });
 
     form.addEventListener("reset", () => {
       setTimeout(() => {
-        qsa(".is-error", form).forEach((node) => node.classList.remove("is-error"));
+        qsa(".is-error", form).forEach((node) => { node.classList.remove("is-error"); node.removeAttribute("aria-invalid"); });
         qsa(".field-note", form).forEach((note) => {
           note.classList.remove("error", "success");
           if (note.dataset.base) note.textContent = note.dataset.base;
@@ -412,7 +539,9 @@
 
         [vehicle, driver, date].forEach((input) => input?.classList.remove("is-error"));
         if (!vehicle?.value) rowErrors.push("vehiculo");
+        if (vehicle?.value && window.TransportAvailability?.get(vehicle.value)?.eligible !== "available") rowErrors.push("disponibilidad no verificada");
         if (!driver?.value) rowErrors.push("conductor");
+        else if (!eligibleDrivers(date?.value || "").some(item => item.code === driver.value)) rowErrors.push("conductor sin vigencia verificable");
         if (!date?.value || !week || !isFutureDate(date.value)) rowErrors.push("fecha futura");
         if (vehicle?.value && vehicles.has(vehicle.value)) rowErrors.push("vehiculo duplicado");
         if (driver?.value && drivers.has(driver.value)) rowErrors.push("conductor duplicado");
@@ -447,7 +576,7 @@
       }
       if (ok) ok.classList.add("is-hidden");
       if (saveButton) saveButton.disabled = !valid;
-      if (statusChip) statusChip.textContent = valid ? `${payload.length} filas validadas` : "Requiere ajustes";
+      if (statusChip) statusChip.textContent = valid ? `${payload.length} ${payload.length === 1 ? "fila validada" : "filas validadas"}` : "Requiere ajustes";
       return { valid, payload, errors };
     };
 
@@ -461,12 +590,19 @@
     saveButton?.addEventListener("click", () => {
       const result = validateRows();
       if (!result.valid) return;
-      if (ok) {
-        ok.classList.remove("is-hidden");
-        ok.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>${result.payload.length} programaciones listas para enviar al backend. Payload esperado: <strong>items[]</strong> con vehiculo, conductor, fecha, semana calculada y destino.</span>`;
-      }
-      if (statusChip) statusChip.textContent = "Guardado simulado";
-      if (saveButton) saveButton.disabled = true;
+      const current = readOperations();
+      let counter = Math.max(0, ...current.map(item => Number(item.id.replace("OP-", "")) || 0));
+      const created = result.payload.map(item => ({
+        id: `OP-${String(++counter).padStart(3, "0")}`,
+        vehicle: item.vehicleId, driver: item.driverId, date: item.scheduledAt, week: item.operationWeek,
+        destType: item.destinationType, dest: item.destinationId, obs: item.observations,
+        state: `PROGRAMADO A ${item.destinationType.toUpperCase()}`,
+        audit: [`Crear programación · ${new Date().toLocaleString("es-CO")}`],
+        ...(window.TransportAvailability?.get(item.vehicleId)?.record?.isDemo ? { isDemo: true } : {})
+      }));
+      try { window.SIALOperationStore.write([...created, ...current]); }
+      catch { if (warning) { warning.classList.remove("is-hidden"); warning.textContent = "No fue posible guardar el lote en este navegador."; } return; }
+      window.location.reload();
     });
 
     rowsContainer.addEventListener("input", (event) => {
@@ -514,6 +650,20 @@
     };
     let currentRow = null;
     let lastTrigger = null;
+    let visibleTrigger = null;
+    document.addEventListener("click", (event) => {
+      const target = event.target.closest?.('[data-sial-component="Table"] button[aria-label="Visualizar programacion"]');
+      if (target) visibleTrigger = target;
+    }, true);
+    let wasOpen = drawer.classList.contains("show");
+    new MutationObserver(() => {
+      const isOpen = drawer.classList.contains("show");
+      if (wasOpen && !isOpen && visibleTrigger?.isConnected) {
+        const target = visibleTrigger;
+        requestAnimationFrame(() => requestAnimationFrame(() => target.focus()));
+      }
+      wasOpen = isOpen;
+    }).observe(drawer, { attributes: true, attributeFilter: ["class"] });
 
     const Ticket = window.SIALPrintableTicket;
     if (!Ticket) return;
@@ -622,17 +772,29 @@
         });
         const trace = qs("#detailTraceability");
         if (trace) {
-          trace.innerHTML = (row.dataset.traceability || "").split(";").filter(Boolean).map((item) => {
+          const entries = (row.dataset.traceability || "").split(";").filter(Boolean).map(item => {
             const [title, meta, statusClass] = item.split("|");
-            return `<div class="license-item"><strong>${title || "-"}</strong><div class="muted">${meta || ""}</div>${statusClass ? `<span class="status ${statusClass}">${statusClass.replace("status-", "")}</span>` : ""}</div>`;
-          }).join("");
+            const wrapper = document.createElement("div"); wrapper.className = "license-item";
+            const heading = document.createElement("strong"); heading.textContent = title || "-";
+            const detail = document.createElement("div"); detail.className = "muted"; detail.textContent = meta || "";
+            wrapper.append(heading, detail);
+            if (["status-active", "status-inactive", "status-warning"].includes(statusClass)) {
+              const status = document.createElement("span"); status.className = `status ${statusClass}`; status.textContent = statusClass.replace("status-", ""); wrapper.append(status);
+            }
+            return wrapper;
+          });
+          trace.replaceChildren(...entries);
         }
         const audit = qs("#detailAudit");
         if (audit) {
-          audit.innerHTML = (row.dataset.audit || "").split(";").filter(Boolean).map((item) => {
+          const entries = (row.dataset.audit || "").split(";").filter(Boolean).map(item => {
             const [title, meta] = item.split("|");
-            return `<div class="audit-item"><strong>${title || "-"}</strong><div class="muted">${meta || ""}</div></div>`;
-          }).join("");
+            const wrapper = document.createElement("div"); wrapper.className = "audit-item";
+            const heading = document.createElement("strong"); heading.textContent = title || "-";
+            const detail = document.createElement("div"); detail.className = "muted"; detail.textContent = meta || "";
+            wrapper.append(heading, detail); return wrapper;
+          });
+          audit.replaceChildren(...entries);
         }
         const ticketAvailable = Boolean(getOperationId(row) && row.dataset.date && row.dataset.date !== "--");
         ticketActions.setAvailability(
@@ -647,7 +809,7 @@
     closeButton?.addEventListener("click", close);
     backdrop.addEventListener("click", close);
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape" && drawer.classList.contains("show")) close();
     });
   }
 
@@ -690,7 +852,7 @@
     filterRows();
   }
 
-  return { applyShell, initOperationForm, initBulkVehicleScheduling, initOperationDrawer, initTableFilters, setFieldState, calculateOperationWeek };
+  return { applyShell, initOperationForm, initBulkVehicleScheduling, initOperationDrawer, initTableFilters, hydrateOperationList, setFieldState, calculateOperationWeek };
 })();
 
 

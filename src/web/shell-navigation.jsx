@@ -1,6 +1,8 @@
+import { SialIsotype } from "./christmas-isotype/sial_isotype";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { createPortal } from "react-dom";
+import { CloseIcon, IconButton, TextInput } from "@banasandev/banasan-ui";
 
 const roots = new WeakMap();
 const normalized = (value) => String(value || "").trim().toLowerCase();
@@ -27,11 +29,20 @@ function destination(module, view, registry) {
     : `../${encodeURI(folder)}/${href}`;
 }
 
-function Navigation({ config, registry, nav }) {
+const searchable = (value) => normalized(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+function Navigation({ config, registry, nav, compact, onExpandSearch }) {
   const areaId = config.area || "gestion";
   const group = registry[areaId];
   const activeModuleId = config.module || group?.modules?.[0]?.id;
   const activeViewId = config.view || group?.modules?.find((item) => item.id === activeModuleId)?.views?.[0]?.id;
+  const [viewQuery, setViewQuery] = useState("");
+  const terms = searchable(viewQuery).split(/\s+/).filter(Boolean);
+  const searching = terms.length > 0;
+  const modules = (group?.modules || []).map((module) => ({ ...module,
+    views: module.views.filter((view) => terms.every((term) => searchable(`${module.label} ${view.label}`).includes(term)))
+  })).filter((module) => module.views.length > 0);
+  const matches = modules.reduce((total, module) => total + module.views.length, 0);
   const [expanded, setExpanded] = useState(() => Object.fromEntries((group?.modules || []).map((module) => {
     const key = `sial-nav-views:${areaId}:${module.id}`;
     const saved = localStorage.getItem(key);
@@ -52,22 +63,34 @@ function Navigation({ config, registry, nav }) {
     const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
     nav.querySelectorAll(".nav-tree-list").forEach((list) => observer?.observe(list));
     return () => observer?.disconnect();
-  }, [expanded, group, nav]);
+  }, [expanded, group, nav, viewQuery, compact]);
 
   if (!group) return null;
-  return group.modules.map((module) => {
+  return <>
+    <div className={`sidebar-view-search${compact ? " is-compact" : ""}`} onKeyDown={(event) => {
+      if (event.key === "Escape" && viewQuery) { event.stopPropagation(); setViewQuery(""); }
+    }}>
+      {compact ? <IconButton variant="ghost" aria-label="Buscar vistas" title="Buscar vistas" onClick={onExpandSearch}>
+        <svg className="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </IconButton> : <>
+        <TextInput id="sidebarViewSearch" label="Buscar vistas" placeholder="Nombre de vista o módulo" value={viewQuery} onChange={setViewQuery} />
+        {viewQuery && <IconButton className="sidebar-view-search-clear" variant="ghost" aria-label="Limpiar búsqueda de vistas" onClick={() => { setViewQuery(""); document.getElementById("sidebarViewSearch")?.focus(); }}><CloseIcon /></IconButton>}
+      </>}
+    </div>
+    {!compact && searching && <p className="sidebar-search-result" role="status">{matches ? `${matches} ${matches === 1 ? "vista encontrada" : "vistas encontradas"}` : "No se encontraron vistas. Prueba con otro nombre."}</p>}
+    {modules.map((module) => {
     const activeModule = module.id === activeModuleId;
-    const open = expanded[module.id];
+    const open = searching || expanded[module.id];
     const sublistId = `nav-${areaId}-${module.id}-views`;
     const storageKey = `sial-nav-views:${areaId}:${module.id}`;
-    return <div className={`nav-module${activeModule ? " is-active" : ""}`} key={module.id}>
+    return <div className={`nav-module${activeModule ? " is-active" : ""}${searching ? " is-search-result" : ""}`} key={module.id}>
       <div className="nav-module-head">
         <a className={`nav-link nav-module-link${activeModule ? " active" : ""}`}
           href={destination(module, module.views[0], registry)} title={module.label}>
           <svg className="icon" viewBox="0 0 24 24" aria-hidden="true">{iconPaths[module.icon] || <path d="M5 12h14m-7-7 7 7-7 7" />}</svg>
           <span className="nav-text">{module.label}</span>
         </a>
-        <button className="nav-module-toggle" type="button" aria-controls={sublistId}
+        <button className="nav-module-toggle" type="button" aria-controls={sublistId} disabled={searching}
           aria-expanded={Boolean(open)} aria-label={`${open ? "Contraer" : "Expandir"} ${module.label}`}
           title={`${open ? "Contraer" : "Expandir"} ${module.label}`}
           onClick={() => {
@@ -100,7 +123,7 @@ function Navigation({ config, registry, nav }) {
         </div>
       </div>
     </div>;
-  });
+  })}</>;
 }
 
 function Shell({ nav, config, registry, headerLeft, themeRoot, sidebar }) {
@@ -158,7 +181,11 @@ function Shell({ nav, config, registry, headerLeft, themeRoot, sidebar }) {
 
   const toggleLabel = small ? overlay ? "Cerrar menú" : "Abrir menú" : collapsed ? "Expandir menú" : "Contraer menú";
   return <>
-    <Navigation nav={nav} config={config} registry={registry} />
+    {sidebar?.querySelector(".brand-badge") && createPortal(<SialIsotype variant="christmas" motion="festive" size={44} aria-hidden="true" />, sidebar.querySelector(".brand-badge"))}
+    <Navigation nav={nav} config={config} registry={registry} compact={!small && collapsed} onExpandSearch={() => {
+      setCollapsed(false);
+      requestAnimationFrame(() => document.getElementById("sidebarViewSearch")?.focus());
+    }} />
     {headerLeft && createPortal(<>
       <button className="icon-btn" type="button" data-sidebar-toggle aria-label={toggleLabel}
         aria-expanded={small ? overlay : !collapsed} title={toggleLabel}
@@ -193,6 +220,8 @@ export function mountShell(nav, config, registry) {
   nav.classList.add("sidebar-nav");
   nav.setAttribute("aria-label", `${registry[config.area || "gestion"]?.label || "Gestión"}: módulos y vistas`);
   const shell = nav.closest(".app-shell");
+  const brandBadge = shell?.querySelector(".brand-badge");
+  if (brandBadge) brandBadge.replaceChildren();
   const headerLeft = shell?.querySelector(".header-left");
   if (headerLeft) headerLeft.replaceChildren();
   const themeButton = shell?.querySelector(".header-right [data-theme-toggle]");

@@ -1,0 +1,8 @@
+/* La tabla resume el motivo; el detalle conserva todas las señales y el texto accesible. */
+body[data-transport-availability] [data-sial-component="Table"] tbody td:nth-child(6) .sial-library-table-cell {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}

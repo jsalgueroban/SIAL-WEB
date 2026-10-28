@@ -399,7 +399,7 @@ const SIALCore = (() => {
         style.dataset.sialLibraryRuntime = "true";
         document.head.appendChild(style);
         script = document.createElement("script");
-        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js");
+        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas");
         script.dataset.sialLibraryRuntime = "true";
         document.body.appendChild(script);
       }
@@ -1078,7 +1078,7 @@ const SIALCore = (() => {
         }
         if (action === "view") {
           event.preventDefault();
-          openProfileView(profile);
+          window.location.href = getSharedAssetUrl("../mi-perfil.html");
           return;
         }
         if (action === "settings") {
@@ -1563,7 +1563,8 @@ const SIALCore = (() => {
       });
       page = 1;
       filterRows();
-      search?.focus();
+      const visibleSearch = search?.id ? document.getElementById(`sial-library-${search.id}`) : null;
+      (visibleSearch || search)?.focus();
     });
 
     pagination?.addEventListener("click", (event) => {
@@ -2162,7 +2163,9 @@ function mountCustomTableFilterResets() {
         control.dispatchEvent(new Event(control.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
       });
       sync();
-      controls.find((control) => control.type === 'search')?.focus();
+      const search = controls.find((control) => control.type === 'search');
+      const visibleSearch = search?.id ? document.getElementById(`sial-library-${search.id}`) : null;
+      (visibleSearch || search)?.focus();
     });
     host.appendChild(button);
     markFilterToolbar(host, button);
@@ -2178,7 +2181,7 @@ function loadLibraryTableControls() {
     return;
   }
   if (document.querySelector('script[data-sial-library-runtime]')) return;
-  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page > .notice[data-sial-notice-adapter]")) {
+  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page .status[data-sial-chip-adapter], button.btn[data-sial-button-adapter], main .page > .notice[data-sial-notice-adapter]")) {
     document.documentElement.dataset.sialLibraryControls = "ready";
     return;
   }
@@ -2189,7 +2192,7 @@ function loadLibraryTableControls() {
   style.dataset.sialLibraryRuntime = "true";
   document.head.appendChild(style);
   const script = document.createElement("script");
-  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261016-material-normalized-15");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas");
   script.dataset.sialLibraryRuntime = "true";
   document.body.appendChild(script);
   window.setTimeout(() => {

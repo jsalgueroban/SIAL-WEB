@@ -33,8 +33,8 @@
                   <div class="field span-6" data-sial-form-control><label class="label" for="firstName">Nombres <span class="required">*</span></label><input class="input" id="firstName" placeholder="CARLOS ANDRES" aria-describedby="firstNameNote" /><div class="field-note" id="firstNameNote">Se guarda en mayusculas sostenidas.</div></div>
                   <div class="field span-6" data-sial-form-control><label class="label" for="lastName">Apellidos <span class="required">*</span></label><input class="input" id="lastName" placeholder="MEJIA PEREZ" aria-describedby="lastNameNote" /><div class="field-note" id="lastNameNote">Se guarda en mayusculas sostenidas.</div></div>
                   <div class="field span-4" data-sial-form-control><label class="label" for="idType">Tipo identificacion <span class="required">*</span></label><select class="select" id="idType" aria-describedby="idTypeNote"><option value="">Selecciona un tipo</option><option value="CC">Cedula de ciudadania</option><option value="CE">Cedula de extranjeria</option><option value="TI">Tarjeta de identidad</option></select><div class="field-note" id="idTypeNote">Hace parte de la llave unica con numero identificacion.</div></div>
-                  <div class="field span-4"><label class="label" for="idNumber">Numero identificacion <span class="required">*</span></label><input class="input" id="idNumber" inputmode="numeric" placeholder="1032456789" aria-describedby="idNumberNote" /><div class="field-note" id="idNumberNote">Tipo + numero debe ser unico.</div></div>
-                  <div class="field span-4"><label class="label" for="phone">Numero celular <span class="required">*</span></label><input class="input" id="phone" inputmode="numeric" placeholder="3001234567" aria-describedby="phoneNote" /><div class="field-note" id="phoneNote">Debe ser unico.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="idNumber">Numero identificacion <span class="required">*</span></label><input class="input" id="idNumber" inputmode="numeric" placeholder="1032456789" aria-describedby="idNumberNote" /><div class="field-note" id="idNumberNote">Tipo + numero debe ser unico.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="phone">Numero celular <span class="required">*</span></label><input class="input" id="phone" inputmode="numeric" placeholder="3001234567" aria-describedby="phoneNote" /><div class="field-note" id="phoneNote">Debe ser unico.</div></div>
                   <div class="field span-6" data-sial-form-control><label class="label" for="email">Correo electronico</label><input class="input" id="email" type="email" placeholder="nombre@empresa.com" aria-describedby="emailNote" /><div class="field-note" id="emailNote">Opcional. Si se diligencia, debe tener formato valido.</div></div>
                   <div class="field span-6" data-sial-form-control><label class="label" for="licenseNumber">Numero licencia <span class="required">*</span></label><input class="input" id="licenseNumber" placeholder="Numero de licencia" aria-describedby="licenseNumberNote" /><div class="field-note" id="licenseNumberNote">Dato obligatorio de control documental.</div></div>
                 </div>
@@ -43,8 +43,8 @@
                 <h3 class="section-title">Cobertura ARL</h3>
                 <div class="grid">
                   <div class="field span-4" data-sial-form-control><label class="label" for="arlCompany">Empresa ARL <span class="required">*</span></label><select class="select" id="arlCompany" aria-describedby="arlCompanyNote"><option value="">Selecciona una ARL</option><option>SURA</option><option>COLMENA</option><option>SEGUROS BOLIVAR</option></select><div class="field-note" id="arlCompanyNote">Selecciona la ARL vigente.</div></div>
-                  <div class="field span-4"><label class="label" for="arlStart">Fecha inicio ARL <span class="required">*</span></label><input class="input" id="arlStart" type="date" aria-describedby="arlStartNote" /><div class="field-note" id="arlStartNote">Inicio de vigencia obligatoria.</div></div>
-                  <div class="field span-4"><label class="label" for="arlEnd">Fecha fin ARL <span class="required">*</span></label><input class="input" id="arlEnd" type="date" aria-describedby="arlEndNote" /><div class="field-note" id="arlEndNote">No puede ser anterior al inicio.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="arlStart">Fecha inicio ARL <span class="required">*</span></label><input class="input" id="arlStart" type="date" aria-describedby="arlStartNote" /><div class="field-note" id="arlStartNote">Inicio de vigencia obligatoria.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="arlEnd">Fecha fin ARL <span class="required">*</span></label><input class="input" id="arlEnd" type="date" aria-describedby="arlEndNote" /><div class="field-note" id="arlEndNote">No puede ser anterior al inicio.</div></div>
                 </div>
               </section>
               <section class="section">
@@ -65,6 +65,7 @@
   </div>
   <script src="../shared/sial-core.js"></script>
   <script src="sial-conductores.js"></script>
-  <script>SIAL.applyShell("gestion"); SIAL.initDriverForm();</script>
+  <script src="driver-prototype.js?v=20261028"></script>
+  <script>SIAL.applyShell("gestion"); SIAL.initDriverForm(); DriverPrototype.form();</script>
 </body>
 </html>

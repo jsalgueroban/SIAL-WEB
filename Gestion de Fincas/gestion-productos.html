@@ -10,51 +10,16 @@
       const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
-  </script>  <link rel="stylesheet" href="sial-referencias.css" />
+  </script>  <link rel="stylesheet" href="../shared/vendor/sial-ui-runtime.css" /><link rel="stylesheet" href="sial-fincas.css?v=20261028-compact" />
 </head>
 <body data-view-family="configuracion">
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegacion principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Referencias</p><nav data-nav></nav></aside>
     <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
-    <main class="main">
-      <section class="page">
-        <p class="page-eyebrow">Referencias / Productos</p>
-        <div class="page-header"><div><h1 class="page-title">Gestion de productos</h1><p class="page-subtitle">Catalogo de productos agricolas asociados a cultivos. Cada producto puede asignarse a una o varias fincas para su produccion y trazabilidad.</p></div></div>
-        <article class="card" data-sial-catalog-actions>
-          <div class="card-header"><div><h2 class="card-title">Productos registrados</h2><p class="card-subtitle">Los productos asociados se inactivan conservando su trazabilidad.</p></div><div class="card-actions"><span class="chip" id="productCount">0 registros visibles</span><button class="btn btn-primary" type="button" data-open-inline-form aria-expanded="false" aria-controls="productInlineForm">Nuevo producto</button></div></div>
-          <div class="card-body"><div class="toolbar compact"><input class="input" id="productSearch" type="search" aria-label="Buscar producto" placeholder="Buscar producto" data-sial-search-adapter /><select class="select" id="productStatus"><option value="all">Todos</option><option value="active">Activo</option><option value="inactive">Inactivo</option></select></div></div>
-          <div class="inline-form-panel inline-form-compact is-hidden" id="productInlineForm" data-inline-form-panel>
-            <div class="form-heading"><h2 data-inline-form-title>Nuevo producto</h2><p>El nombre se guarda en mayuscula sostenida y debe ser unico.</p></div>
-            <div class="form-body">
-              <div class="form-feedback is-hidden" id="formOk" role="status">Producto listo para guardar.</div>
-              <form data-generic-form novalidate>
-                <section class="section"><div class="grid">
-                  <div class="field span-12" data-sial-form-control><label class="label" for="productName">Nombre producto <span class="required">*</span></label><input class="input" id="productName" data-required data-uppercase data-unique-list="BANANO|AGUACATE|PLATANO" aria-describedby="productNameNote" placeholder="BANANO" /><div class="field-note" id="productNameNote">Mayuscula sostenida. No duplicado.</div></div>
-                </div></section>
-                <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">Guardar producto</button></div>
-              </form>
-            </div>
-          </div>
-          <div class="table-wrap" data-sial-table-adapter="simple"><table><thead><tr><th>Codigo</th><th>Nombre producto</th><th>Estado</th><th>Auditoria</th><th>Acciones</th></tr></thead><tbody>
-            <tr data-status="active" data-code="PROD-001" data-name="BANANO" data-state="Activo" data-audit="Crear - calidad|20/04/2026 08:00"><td>PROD-001</td><td>BANANO</td><td><span class="status status-active">Activo</span></td><td class="muted">Crear - calidad<br />20/04/2026 08:00</td><td><div class="row-actions"><button class="icon-btn" type="button" aria-label="Visualizar producto" data-open-detail><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" aria-label="Editar" data-edit-inline><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button><button class="icon-btn" aria-label="Inactivar"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div></td></tr>
-            <tr data-status="active" data-code="PROD-002" data-name="AGUACATE" data-state="Activo" data-audit="Crear - calidad|20/04/2026 09:30"><td>PROD-002</td><td>AGUACATE</td><td><span class="status status-active">Activo</span></td><td class="muted">Crear - calidad<br />20/04/2026 09:30</td><td><div class="row-actions"><button class="icon-btn" type="button" aria-label="Visualizar producto" data-open-detail><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="icon-btn" aria-label="Editar" data-edit-inline><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></button><button class="icon-btn" aria-label="Inactivar"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div></td></tr>
-          </tbody></table></div><div class="card-body"><div class="empty-state" id="productEmpty">No hay productos que coincidan con los filtros.</div></div>
-        </article>
-      </section>
-      <div class="drawer-backdrop" id="detailBackdrop" aria-hidden="true"></div>
-      <aside class="drawer" id="detailDrawer" aria-label="Detalle de producto" aria-modal="true" role="dialog" data-sial-drawer-adapter>
-        <div class="drawer-head"><div><h3>Detalle de producto</h3><p>Visualizacion del producto y auditoria.</p></div><button class="icon-btn" id="closeDetail" type="button" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
-        <div class="drawer-body">
-          <div class="detail-group"><span class="detail-label">Codigo</span><div class="detail-value" data-detail-target="code">-</div></div>
-          <div class="detail-group"><span class="detail-label">Nombre producto</span><div class="detail-value" data-detail-target="name">-</div></div>
-          <div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div>
-          <div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div>
-        </div>
-      </aside>
-    </main>
+    <main class="main"><section class="page" data-sial-react-view="farm-productos" data-sial-source="@banasandev/banasan-ui"></section></main>
   </div>
   <script src="../shared/sial-core.js"></script>
-  <script src="sial-referencias.js"></script>
-  <script>SIAL.applyShell("productos"); SIAL.initDrawer(); SIAL.initEmbeddedForm({ newTitle: "Nuevo producto", editTitle: "Editar producto" }); SIAL.initGenericForm(); SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#productSearch", status: "#productStatus", empty: "#productEmpty", count: "#productCount" });</script>
+  <script>SIALCore.initShell({ area: "gestion", module: "referencias", view: "productos" });</script>
+  <script src="../shared/vendor/sial-ui-runtime.js?v=20261028-catalogs"></script>
 </body>
 </html>

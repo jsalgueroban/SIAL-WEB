@@ -10,13 +10,23 @@
     own: ["TRK-421 · TRANSLOGISTICA SAS", "CAM-102 · Carga Pesada Ltda.", "CMN-204 · OPERADOR CARIBE SAS"],
     external: ["EXT-014 · Transportadora Caribe", "EXT-021 · Carga Sierra"]
   };
-  const programs = [
+  const seedPrograms = [
     { id: "POM-2026-014", driver: "Carlos Méndez", vehicle: "TRK-421 · TRANSLOGISTICA SAS", trips: [{ documentId: "REM-2026-0184", date: "2026-10-14T07:30" }], status: "Programado" },
     { id: "POM-2026-013", driver: "Ana Lucía Paz", vehicle: "CMN-204 · OPERADOR CARIBE SAS", trips: [{ documentId: "RTP-2026-0881", date: "2026-10-13T08:00" }], status: "En curso" }
   ];
+  const storageKey = "sial-transport-operational-plan";
+  let programs;
+  try { const saved = JSON.parse(localStorage.getItem(storageKey)); programs = Array.isArray(saved) ? saved : seedPrograms; }
+  catch { programs = seedPrograms; }
+  const focusControl = (id) => (byId(`sial-library-${id}`) || byId(id))?.focus();
   let trips = [];
   let pendingDocument = "";
   let detailTrigger = null;
+  let visibleDetailTrigger = null;
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest?.('[data-sial-component="Table"] button[aria-label^="Ver viajes de "]');
+    if (button) visibleDetailTrigger = button;
+  }, true);
 
   function option(value, label) {
     const item = document.createElement("option");
@@ -111,6 +121,7 @@
     const status = byId("programStatus").value;
     const visible = programs.filter((program) => (status === "all" || program.status === status) &&
       [program.id, program.driver, program.vehicle, ...program.trips.map((trip) => trip.documentId)].join(" ").toLocaleLowerCase("es").includes(search));
+    byId("clearProgramFilters").hidden = !search && status === "all";
     const body = byId("programRows");
     body.replaceChildren();
     visible.forEach((program) => {
@@ -180,7 +191,8 @@
     byId("detailBackdrop").classList.remove("show");
     byId("detailDrawer").classList.remove("show");
     byId("detailDrawer").setAttribute("aria-hidden", "true");
-    detailTrigger?.focus();
+    const target = visibleDetailTrigger?.isConnected ? visibleDetailTrigger : detailTrigger;
+    requestAnimationFrame(() => requestAnimationFrame(() => target?.focus()));
   }
   function openForm() {
     byId("programPanel").classList.remove("is-hidden");
@@ -197,22 +209,25 @@
     renderVehicleOptions();
     renderTrips();
     clearMessage();
-    byId("newProgram").focus();
+    (byId("newProgram").previousElementSibling?.querySelector("button") || byId("newProgram")).focus();
   }
   function save(event) {
     event.preventDefault();
-    if (!byId("driver").value) { showMessage("Selecciona el conductor."); byId("driver").focus(); return; }
-    if (!byId("vehicle").value) { showMessage("Selecciona el vehículo antes de agregar documentos."); byId("vehicle").focus(); return; }
-    if (!trips.length) { showMessage("Agrega al menos un documento para programar un viaje."); byId("sourceDocument").focus(); return; }
+    if (!byId("driver").value) { showMessage("Selecciona el conductor."); focusControl("driver"); return; }
+    if (!byId("vehicle").value) { showMessage("Selecciona el vehículo antes de agregar documentos."); focusControl("vehicle"); return; }
+    if (!trips.length) { showMessage("Agrega al menos un documento para programar un viaje."); focusControl("sourceDocument"); return; }
     if (trips.some((trip) => !trip.date)) { showMessage("Indica fecha y hora para cada viaje."); byId("tripRows").querySelectorAll("input")[trips.findIndex((trip) => !trip.date)].focus(); return; }
     for (let index = 1; index < trips.length; index += 1) {
       if (trips[index].date <= trips[index - 1].date) { showMessage("Las fechas deben seguir el orden de los viajes."); byId("tripRows").querySelectorAll("input")[index].focus(); return; }
     }
-    const next = Math.max(...programs.map((item) => Number(item.id.split("-").pop()))) + 1;
+    const next = Math.max(0, ...programs.map((item) => Number(item.id.split("-").pop()) || 0)) + 1;
     programs.unshift({ id: `POM-2026-${String(next).padStart(3, "0")}`, driver: byId("driver").value, vehicle: byId("vehicle").value,
       trips: trips.map((item) => ({ ...item })), status: "Programado", observations: byId("operationObservations").value.trim() });
+    localStorage.setItem(storageKey, JSON.stringify(programs));
     byId("programSearch").value = "";
     byId("programStatus").value = "all";
+    byId("programSearch").dispatchEvent(new Event("input", { bubbles: true }));
+    byId("programStatus").dispatchEvent(new Event("change", { bubbles: true }));
     renderPrograms();
     closeForm();
   }
@@ -226,7 +241,7 @@
     byId("vehicle").addEventListener("change", () => { renderDocumentOptions(); clearMessage(); });
     byId("addDocument").addEventListener("click", () => {
       const id = byId("sourceDocument").value;
-      if (!id) { showMessage("Selecciona un documento disponible."); byId("sourceDocument").focus(); return; }
+      if (!id) { showMessage("Selecciona un documento disponible."); focusControl("sourceDocument"); return; }
       trips.push({ documentId: id, date: defaultDate(trips.length) });
       renderTrips();
       clearMessage();
@@ -246,6 +261,13 @@
     byId("materialTransferForm").addEventListener("submit", save);
     byId("programSearch").addEventListener("input", renderPrograms);
     byId("programStatus").addEventListener("change", renderPrograms);
+    byId("clearProgramFilters").addEventListener("click", () => {
+      byId("programSearch").value = "";
+      byId("programStatus").value = "all";
+      byId("programSearch").dispatchEvent(new Event("input", { bubbles: true }));
+      byId("programStatus").dispatchEvent(new Event("change", { bubbles: true }));
+      focusControl("programSearch");
+    });
     byId("closeDetail").addEventListener("click", closeDetail);
     byId("detailBackdrop").addEventListener("click", closeDetail);
     document.addEventListener("keydown", (event) => { if (event.key === "Escape" && byId("detailDrawer").classList.contains("show")) closeDetail(); });

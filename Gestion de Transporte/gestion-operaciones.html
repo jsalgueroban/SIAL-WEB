@@ -68,14 +68,20 @@
     </main>
   </div>
   <div class="drawer-backdrop" id="detailBackdrop"></div>
-  <aside class="drawer" data-sial-drawer-adapter id="detailDrawer" aria-label="Detalle de programacion" aria-modal="true" role="dialog">
+  <aside class="drawer" data-sial-drawer-local id="detailDrawer" aria-label="Detalle de programacion" aria-modal="true" role="dialog">
     <div class="drawer-head"><div><h3>Detalle de programacion</h3><p>Consulta lateral de asignacion, destino, semana calculada, trazabilidad y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
     <div class="drawer-body"><div class="detail-group"><span class="detail-label">Vehiculo</span><div class="detail-value" data-detail-target="plate">-</div></div><div class="detail-group"><span class="detail-label">Conductor</span><div class="detail-value" data-detail-target="driver">-</div></div><div class="detail-group"><span class="detail-label">Tipo vehiculo</span><div class="detail-value" data-detail-target="vehicle-type">-</div></div><div class="detail-group"><span class="detail-label">Tipo destino</span><div class="detail-value" data-detail-target="destination-type">-</div></div><div class="detail-group"><span class="detail-label">Destino</span><div class="detail-value" data-detail-target="destination">-</div></div><div class="detail-group"><span class="detail-label">Fecha programada</span><div class="detail-value" data-detail-target="date">-</div></div><div class="detail-group"><span class="detail-label">Semana</span><div class="detail-value" data-detail-target="week-label">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Trazabilidad</span><div class="stack" id="detailTraceability"></div></div><div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div></div>
   </aside>
   <script src="../shared/sial-core.js"></script>
   <script src="../shared/sial-printable-ticket.js"></script>
-  <script src="sial-operaciones.js"></script>
-  <script>SIAL.applyShell("operaciones"); SIAL.initBulkVehicleScheduling(); SIAL.initOperationDrawer(); SIAL.initTableFilters({ rowSelector: "#operationTableBody tr", search: "#operationSearch", status: "#operationStatus", context: "#operationContext", extraFilters: [{ select: "#operationWeekFilter", datasetKey: "week" }], empty: "#operationEmpty", count: "#operationCount" });</script>
+  <script src="vehicle-prototype.js?v=20261028"></script>
+  <script src="maintenance-store.js?v=20261028"></script>
+  <script src="driver-prototype.js?v=20261028"></script>
+  <script src="driver-relations-prototype.js?v=20261028"></script>
+  <script src="operation-store.js?v=20261028"></script>
+  <script src="transport-availability.js?v=20261028"></script>
+  <script src="sial-operaciones.js?v=20261028-availability"></script>
+  <script>SIAL.hydrateOperationList(); SIAL.applyShell("operaciones"); SIAL.initBulkVehicleScheduling(); SIAL.initOperationDrawer(); SIAL.initTableFilters({ rowSelector: "#operationTableBody tr", search: "#operationSearch", status: "#operationStatus", context: "#operationContext", extraFilters: [{ select: "#operationWeekFilter", datasetKey: "week" }], empty: "#operationEmpty", count: "#operationCount" });</script>
 </body>
 </html>
 

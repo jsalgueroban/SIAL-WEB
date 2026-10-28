@@ -23,19 +23,19 @@
         <div class="page-header"><div><h1 class="page-title">Programar vehiculo</h1><p class="page-subtitle">Formulario para planificar una asignacion futura de vehiculo, conductor, destino y fecha operativa. La semana operativa se calcula automaticamente.</p></div><a class="btn btn-secondary" href="gestion-operaciones.html">Volver a programacion</a></div>
         <div class="notice notice-info"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>El sistema solo permite programar vehiculos disponibles y conductores activos. La fecha debe ser futura para planificacion.</span></div>
         <div class="notice notice-success is-hidden" id="formOk"></div>
-        <article class="card form-card">
+        <article class="card form-card" data-sial-form-adapter>
           <div class="form-heading"><h2>Formulario de programacion</h2><p>Asignacion de vehiculo, conductor, fecha libre futura, semana calculada y destino operativo.</p></div>
           <div class="form-body">
             <form id="operationForm" novalidate>
               <section class="section"><h3 class="section-title">Asignacion de vehiculo</h3><div class="grid">
-                <div class="field span-3"><label class="label" for="vehicleSelect">Vehiculo <span class="required">*</span></label><select class="select" id="vehicleSelect" aria-describedby="vehicleSelectNote"><option value="">Selecciona vehiculo disponible</option><option value="TRK-421">TRK-421 (TRACTOMULA - TRANSLOGISTICA SAS)</option><option value="CAM-101">CAM-101 (CAMION - Transportes del Valle)</option><option value="TRK-422">TRK-422 (TRACTOMULA - Flota Oriente S.A.S.)</option><option value="CAM-102">CAM-102 (CAMION RIGIDO - Carga Pesada Ltda.)</option><option value="CMN-204">CMN-204 (CAMION - OPERADOR CARIBE SAS)</option></select><div class="field-note" id="vehicleSelectNote">Solo vehiculos en estado DISPONIBLE.</div></div>
+                <div class="field span-3" data-sial-form-control><label class="label" for="vehicleSelect">Vehiculo <span class="required">*</span></label><select class="select" id="vehicleSelect" aria-describedby="vehicleSelectNote"><option value="">Selecciona vehiculo disponible</option><option value="TRK-421">TRK-421 (TRACTOMULA - TRANSLOGISTICA SAS)</option><option value="CAM-101">CAM-101 (CAMION - Transportes del Valle)</option><option value="TRK-422">TRK-422 (TRACTOMULA - Flota Oriente S.A.S.)</option><option value="CAM-102">CAM-102 (CAMION RIGIDO - Carga Pesada Ltda.)</option><option value="CMN-204">CMN-204 (CAMION - OPERADOR CARIBE SAS)</option></select><div class="field-note" id="vehicleSelectNote">Solo vehiculos en estado DISPONIBLE.</div></div>
                 <div class="field span-3"><label class="label">Placa</label><input class="input" id="plateDisplay" readonly /><div class="field-note">&nbsp;</div></div>
                 <div class="field span-3"><label class="label">Tipo</label><input class="input" id="vehicleTypeDisplay" readonly /><div class="field-note">&nbsp;</div></div>
                 <div class="field span-3"><label class="label">Capacidad pallets</label><input class="input" id="capacityDisplay" readonly /><div class="field-note">&nbsp;</div></div>
                 <div class="field span-6"><label class="label">Empresa transportadora</label><input class="input" id="companyDisplay" readonly /><div class="field-note">&nbsp;</div></div>
               </div></section>
               <section class="section"><h3 class="section-title">Asignacion de conductor</h3><div class="grid">
-                <div class="field span-3"><label class="label" for="driverSelect">Conductor <span class="required">*</span></label><select class="select" id="driverSelect" aria-describedby="driverSelectNote"><option value="">Selecciona conductor disponible</option><option value="DRV-001">Carlos Mendez</option><option value="DRV-003">Ana Lucia Paz</option><option value="DRV-005">Pedro Rojas</option></select><div class="field-note" id="driverSelectNote">Conductor activo, licencia vigente y ARL al dia.</div></div>
+                <div class="field span-3" data-sial-form-control><label class="label" for="driverSelect">Conductor <span class="required">*</span></label><select class="select" id="driverSelect" aria-describedby="driverSelectNote"><option value="">Selecciona conductor disponible</option><option value="DRV-001">Carlos Mendez</option><option value="DRV-003">Ana Lucia Paz</option><option value="DRV-005">Pedro Rojas</option></select><div class="field-note" id="driverSelectNote">Conductor activo, licencia vigente y ARL al dia.</div></div>
                 <div class="field span-3"><label class="label">Nro licencia</label><input class="input" id="licenseDisplay" readonly /><div class="field-note">&nbsp;</div></div>
                 <div class="field span-3"><label class="label">Vencimiento licencia</label><input class="input" id="licenseExpDisplay" readonly /><div class="field-note">&nbsp;</div></div>
                 <div class="field span-3"><label class="label">ARL vigente hasta</label><input class="input" id="arlExpDisplay" readonly /><div class="field-note">&nbsp;</div></div>
@@ -43,8 +43,8 @@
               <section class="section"><h3 class="section-title">Programacion operativa</h3><div class="grid">
                 <div class="field span-3"><label class="label" for="dateOperative">Fecha operativa programada <span class="required">*</span></label><input class="input" id="dateOperative" type="datetime-local" aria-describedby="dateOperativeNote" /><div class="field-note" id="dateOperativeNote">Fecha/hora futura para la programacion.</div></div>
                 <div class="field span-3"><label class="label" for="weekDisplay">Semana operativa</label><input class="input" id="weekDisplay" readonly /><input id="operationWeek" type="hidden" /><div class="field-note" id="weekDisplayNote">Se calcula desde la fecha programada.</div></div>
-                <div class="field span-3"><label class="label" for="destinationType">Tipo de destino <span class="required">*</span></label><select class="select" id="destinationType" aria-describedby="destinationTypeNote"><option value="">Selecciona tipo</option><option value="Finca">Finca</option><option value="Puerto">Puerto</option></select><div class="field-note" id="destinationTypeNote">Finca para camiones, Puerto para contenedores.</div></div>
-                <div class="field span-3"><label class="label" for="destinationSelect">Destino <span class="required">*</span></label><select class="select" id="destinationSelect" aria-describedby="destinationSelectNote"><option value="">Primero selecciona tipo de destino</option></select><div class="field-note" id="destinationSelectNote">Filtrado por tipo de destino seleccionado.</div></div>
+                <div class="field span-3" data-sial-form-control><label class="label" for="destinationType">Tipo de destino <span class="required">*</span></label><select class="select" id="destinationType" aria-describedby="destinationTypeNote"><option value="">Selecciona tipo</option><option value="Finca">Finca</option><option value="Puerto">Puerto</option></select><div class="field-note" id="destinationTypeNote">Finca para camiones, Puerto para contenedores.</div></div>
+                <div class="field span-3" data-sial-form-control><label class="label" for="destinationSelect">Destino <span class="required">*</span></label><select class="select" id="destinationSelect" aria-describedby="destinationSelectNote"><option value="">Primero selecciona tipo de destino</option></select><div class="field-note" id="destinationSelectNote">Filtrado por tipo de destino seleccionado.</div></div>
                 <div class="field span-12"><label class="label" for="operationObservations">Observaciones</label><textarea class="textarea" id="operationObservations" rows="3" placeholder="Notas opcionales sobre la programacion..."></textarea><div class="field-note">Opcional. Texto abierto para notas operativas.</div></div>
               </div></section>
               <section class="section"><h3 class="section-title">Trazabilidad</h3><div class="grid">
@@ -60,7 +60,13 @@
     </main>
   </div>
   <script src="../shared/sial-core.js"></script>
-  <script src="sial-operaciones.js"></script>
+  <script src="vehicle-prototype.js?v=20261028"></script>
+  <script src="maintenance-store.js?v=20261028"></script>
+  <script src="driver-prototype.js?v=20261028"></script>
+  <script src="driver-relations-prototype.js?v=20261028"></script>
+  <script src="operation-store.js?v=20261028"></script>
+  <script src="transport-availability.js?v=20261028"></script>
+  <script src="sial-operaciones.js?v=20261028-availability"></script>
   <script>SIAL.applyShell("operaciones"); SIAL.initOperationForm();</script>
 </body>
 </html>

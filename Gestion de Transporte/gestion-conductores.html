@@ -41,13 +41,6 @@
           <span>Un conductor inactivo no puede ser asignado a operaciones. La auditoria base se consulta en el detalle: usuario, fecha/hora y accion realizada.</span>
         </div>
 
-        <div class="stats">
-          <article class="stat"><label>Activos</label><strong>84</strong><span>Conductores habilitados para asignacion operativa.</span></article>
-          <article class="stat"><label>Inactivos</label><strong>6</strong><span>No elegibles para nuevas operaciones.</span></article>
-          <article class="stat"><label>Licencias por vencer</label><strong>9</strong><span>Vencimiento en los proximos 30 dias.</span></article>
-          <article class="stat"><label>ARL por revisar</label><strong>4</strong><span>Vigencias proximas a finalizar.</span></article>
-        </div>
-
         <article class="card driver-table-card">
           <div class="card-header">
             <div><h2 class="card-title">Conductores registrados</h2><p class="card-subtitle">Consulta estado, licencias y vigencia ARL.</p></div>
@@ -58,7 +51,7 @@
             <select class="select" id="driverStatus" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="active">Activo</option><option value="inactive">Inactivo</option><option value="warning">Revision</option></select>
             <select class="select" id="driverCompany" aria-label="Filtrar por empresa"><option value="all">Todas las empresas</option><option value="SIAL Central">SIAL Central</option><option value="Banapalma">Banapalma</option><option value="AgroCeiba">AgroCeiba</option></select>
           </div>
-          <div class="table-wrap">
+          <div class="table-wrap" data-sial-table-adapter="simple">
             <table>
               <thead>
                 <tr><th>Codigo</th><th>Conductor</th><th>Identificacion</th><th>Licencias</th><th>ARL</th><th>Empresa</th><th>Celular</th><th>Estado</th><th>Acciones</th></tr>
@@ -86,12 +79,12 @@
   </div>
 
   <div class="drawer-backdrop" id="detailBackdrop"></div>
-  <aside class="drawer" id="detailDrawer" aria-label="Detalle de conductor">
+  <aside class="drawer" id="detailDrawer" data-sial-drawer-adapter aria-label="Detalle de conductor">
     <div class="drawer-head"><div><h3>Detalle conductor</h3><p>Consulta lateral para auditoria, licencias activas y reglas de elegibilidad.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
     <div class="drawer-body">
       <div class="detail-group"><span class="detail-label">Codigo conductor</span><div class="detail-value" data-detail-target="code">-</div></div>
       <div class="detail-group"><span class="detail-label">Conductor</span><div class="detail-value" data-detail-target="name">-</div></div>
-      <div class="detail-group"><span class="detail-label">Identificacion</span><div class="detail-value" data-detail-target="id">-</div></div>
+      <div class="detail-group"><span class="detail-label">Identificacion</span><div class="detail-value" data-detail-target="identity">-</div></div>
       <div class="detail-group"><span class="detail-label">Empresa</span><div class="detail-value" data-detail-target="company">-</div></div>
       <div class="detail-group"><span class="detail-label">Celular</span><div class="detail-value" data-detail-target="phone">-</div></div>
       <div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div>
@@ -102,7 +95,10 @@
 
   <script src="../shared/sial-core.js"></script>
   <script src="sial-conductores.js"></script>
+  <script src="driver-detail-focus.js?v=20261028"></script>
+  <script src="driver-prototype.js?v=20261028"></script>
   <script>
+    DriverPrototype.list();
     SIAL.applyShell("gestion");
     SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#driverSearch", status: "#driverStatus", context: "#driverCompany", empty: "#driverEmpty", count: "#driverCount" });
     SIAL.initDrawer();

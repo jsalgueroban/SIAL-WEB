@@ -11,6 +11,7 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>  <link rel="stylesheet" href="sial-fincas.css" />
+<style>.form-card .reference-form-error, .reference-list-error { color: var(--color-error-main); } .reference-list-error { padding: 16px 24px; }</style>
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
@@ -25,19 +26,19 @@
           <form data-generic-form novalidate>
             <section class="section"><h3 class="section-title">Identificacion y version</h3><div class="grid">
               <div class="field span-6" data-sial-form-control><label class="label" for="refCode">Codigo referencia <span class="required">*</span></label><input class="input" id="refCode" data-required data-uppercase aria-describedby="refCodeNote" placeholder="REF-BAN-001" /><div class="field-note" id="refCodeNote">Valor alfanumerico definido por usuario.</div></div>
-              <div class="field span-6"><label class="label" for="refVersion">Version referencia <span class="required">*</span></label><input class="input" id="refVersion" data-required aria-describedby="refVersionNote" type="number" placeholder="1" /><div class="field-note" id="refVersionNote">Debe ser superior a la version anterior si aplica.</div></div>
+              <div class="field span-6" data-sial-form-control><label class="label" for="refVersion">Version referencia <span class="required">*</span></label><input class="input" id="refVersion" min="1" step="1" data-required aria-describedby="refVersionNote" type="number" placeholder="1" /><div class="field-note" id="refVersionNote">Debe ser superior a la version anterior si aplica.</div></div>
               <div class="field span-6" data-sial-form-control><label class="label" for="refName">Nombre <span class="required">*</span></label><input class="input" id="refName" data-required data-uppercase aria-describedby="refNameNote" placeholder="BANANO EXPORTACION 54 CAJAS" /><div class="field-note" id="refNameNote">Nombre obligatorio.</div></div>
               <div class="field span-6" data-sial-form-control><label class="label" for="copyFrom">Crear desde copia</label><select class="select" id="copyFrom"><option value="">Crear desde cero</option><option>REF-BAN-001 v3</option><option>REF-PLT-008 v1</option></select><div class="field-note">Opcional. Precarga datos desde otra referencia sin omitir validacion.</div></div>
               <div class="field span-6" data-sial-form-control><label class="label" for="fruitType">Tipo de fruta <span class="required">*</span></label><select class="select" id="fruitType" data-required aria-describedby="fruitTypeNote"><option value="">Selecciona tipo</option><option>BANANO</option><option>PLATANO</option></select><div class="field-note" id="fruitTypeNote">Selecciona el tipo de fruta.</div></div>
-              <div class="field span-6" data-sial-form-control><label class="label" for="classRef">Clase referencia <span class="required">*</span></label><select class="select" id="classRef" data-required aria-describedby="classRefNote"><option value="">Selecciona clase</option><option>EXPORTACION LARGA</option><option>INDUSTRIAL CORTA</option></select><div class="field-note" id="classRefNote">Selecciona una clase activa.</div></div>
+              <div class="field span-6" data-sial-form-control><label class="label" for="classRef">Clase referencia <span class="required">*</span></label><select class="select" id="classRef" data-required aria-describedby="classRefNote"><option value="">Selecciona clase</option><option>EXPORTACION LARGA</option><option>INDUSTRIAL CORTA</option></select><div class="field-note" id="classRefNote">Selecciona una clase activa. Al versionar se conserva la asignación anterior.</div></div>
             </div></section>
             <section class="section"><h3 class="section-title">Pesos y conversion</h3><div class="grid">
-              <div class="field span-3"><label class="label" for="grossMin">Peso bruto minimo <span class="required">*</span></label><input class="input" id="grossMin" data-required data-less-than="grossMax" aria-describedby="grossMinNote" type="number" step="0.01" placeholder="22.8" /><div class="field-note" id="grossMinNote">Debe ser menor o igual al maximo.</div></div>
-              <div class="field span-3"><label class="label" for="grossMax">Peso bruto maximo <span class="required">*</span></label><input class="input" id="grossMax" data-required type="number" step="0.01" placeholder="24.0" /></div>
-              <div class="field span-3"><label class="label" for="netMin">Peso neto minimo <span class="required">*</span></label><input class="input" id="netMin" data-required data-less-than="netMax" aria-describedby="netMinNote" type="number" step="0.01" placeholder="18.5" /><div class="field-note" id="netMinNote">Debe ser menor o igual al maximo.</div></div>
-              <div class="field span-3"><label class="label" for="netMax">Peso neto maximo <span class="required">*</span></label><input class="input" id="netMax" data-required type="number" step="0.01" placeholder="19.2" /></div>
-              <div class="field span-6"><label class="label" for="factor">Factor de conversion <span class="required">*</span></label><input class="input" id="factor" data-required type="number" step="0.01" placeholder="1.18" /></div>
-              <div class="field span-6"><label class="label" for="boxes">Cantidad cajas por pallet <span class="required">*</span></label><input class="input" id="boxes" data-required type="number" placeholder="54" /></div>
+              <div class="field span-3" data-sial-form-control><label class="label" for="grossMin">Peso bruto minimo <span class="required">*</span></label><input class="input" id="grossMin" data-required data-less-than="grossMax" aria-describedby="grossMinNote" type="number" step="0.01" placeholder="22.8" /><div class="field-note" id="grossMinNote">Debe ser menor o igual al maximo.</div></div>
+              <div class="field span-3" data-sial-form-control><label class="label" for="grossMax">Peso bruto maximo <span class="required">*</span></label><input class="input" id="grossMax" data-required aria-describedby="grossMaxNote" type="number" step="0.01" placeholder="24.0" /><div class="field-note" id="grossMaxNote">Campo obligatorio.</div></div>
+              <div class="field span-3" data-sial-form-control><label class="label" for="netMin">Peso neto minimo <span class="required">*</span></label><input class="input" id="netMin" data-required data-less-than="netMax" aria-describedby="netMinNote" type="number" step="0.01" placeholder="18.5" /><div class="field-note" id="netMinNote">Debe ser menor o igual al maximo.</div></div>
+              <div class="field span-3" data-sial-form-control><label class="label" for="netMax">Peso neto maximo <span class="required">*</span></label><input class="input" id="netMax" data-required aria-describedby="netMaxNote" type="number" step="0.01" placeholder="19.2" /><div class="field-note" id="netMaxNote">Campo obligatorio.</div></div>
+              <div class="field span-6" data-sial-form-control><label class="label" for="factor">Factor de conversion <span class="required">*</span></label><input class="input" id="factor" data-required aria-describedby="factorNote" type="number" step="0.01" placeholder="1.18" /><div class="field-note" id="factorNote">Campo obligatorio.</div></div>
+              <div class="field span-6" data-sial-form-control><label class="label" for="boxes">Cantidad cajas por pallet <span class="required">*</span></label><input class="input" id="boxes" data-required aria-describedby="boxesNote" type="number" placeholder="54" /><div class="field-note" id="boxesNote">Campo obligatorio.</div></div>
             </div></section>
             <div class="form-actions"><a class="btn btn-secondary" href="gestion-referencias.html">Cancelar</a><button class="btn btn-primary" type="submit">Guardar referencia</button></div>
           </form>
@@ -46,7 +47,8 @@
     </main>
   </div>
   <script src="../shared/sial-core.js"></script>
-  <script src="sial-fincas.js"></script>
-  <script>SIAL.applyShell("referencias"); SIAL.initGenericForm();</script>
+  <script src="sial-fincas.js?v=20261028-validation"></script>
+  <script src="reference-prototype.js?v=20261028-ref-4"></script>
+  <script>SIAL.applyShell("referencias"); SIAL.initGenericForm(); ReferencePrototype.form();</script>
 </body>
 </html>

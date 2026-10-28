@@ -1,0 +1,66 @@
+/* Composición local de perfil; superficies, lectura y formulario consumen el core SIAL. */
+.account-profile { min-width: 0; color: var(--color-text); }
+.account-surface { min-width: 0; }
+.account-identity { display: flex; align-items: center; gap: 16px; padding: 24px; border-bottom: 1px solid var(--color-border-subtle); }
+.account-identity > div { min-width: 0; }
+.account-avatar { display: grid; place-items: center; flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: var(--color-primary-50); color: var(--color-primary-500); font-size: 20px; font-weight: 600; }
+.account-identity h2 { margin: 0 0 4px; font-size: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.account-identity p, .account-section p { margin: 0; color: var(--color-text-2); font-size: 13px; line-height: 1.6; }
+.account-section { min-width: 0; padding: 24px; }
+.account-section + .account-section { border-top: 1px solid var(--color-border-subtle); }
+.account-section-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.account-section-heading svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--color-text-2); }
+.account-section h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.account-section h3 { margin: 0 0 6px; font-size: 14px; font-weight: 500; }
+.account-section dl { margin: 0; }
+.account-data { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 32px; }
+.account-data > div { min-width: 0; }
+.account-data dt { margin: 0 0 6px; color: var(--color-text-2); font-size: 12px; }
+.account-data dd { margin: 0; color: var(--color-text); font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.account-data-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.account-section .account-contact { margin-top: 24px; }
+.account-farms { margin-top: 20px; }
+.account-security-summary { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.account-security .account-section-heading { margin-bottom: 8px; }
+.account-security .account-password { margin: 20px 0 0; }
+.account-password > p { margin: 8px 0 20px; }
+.account-password-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.account-feedback { margin-top: 16px !important; }
+.account-demo { margin: 0; color: var(--color-text-2); font-size: 12px; }
+@media (max-width: 760px) {
+  .account-identity, .account-section { padding: 20px; }
+  .account-identity h2 { font-size: 18px; }
+  .account-data, .account-password-fields { grid-template-columns: 1fr; }
+  .account-security-summary { align-items: flex-start; flex-direction: column; gap: 16px; }
+}
+
+/* Datos personales y compañía comparten la superficie; fincas ocupa toda la fila. */
+.account-overview { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+.account-overview .account-reading-section { padding: 28px 24px; }
+.account-overview .account-reading-section + .account-reading-section { border-top: 0; border-left: 1px solid var(--color-border-subtle); }
+.account-reading-section .account-data-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.account-reading-section .account-contact { grid-template-columns: 1fr; margin-top: 20px; }
+.account-reading-section .account-section-heading { margin-bottom: 24px; }
+.account-surface > .account-farms { margin: 0; border-top: 1px solid var(--color-border-subtle); }
+.account-farms h2 { margin-bottom: 8px; }
+.account-security-card { margin-top: 24px; }
+@media (max-width: 900px) {
+  .account-overview { grid-template-columns: 1fr; }
+  .account-overview .account-reading-section + .account-reading-section { border-left: 0; border-top: 1px solid var(--color-border-subtle); }
+}
+@media (max-width: 520px) {
+  .account-reading-section .account-data-three { grid-template-columns: 1fr; }
+  .account-overview .account-reading-section { padding: 20px; }
+}
+/* Equilibrar tres filas de lectura en ambas columnas. */
+.account-overview .account-reading-section:first-child .account-data-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.account-overview .account-reading-section:last-child .account-data-three { grid-template-columns: 1fr; }
+@media (max-width: 520px) {
+  .account-overview .account-reading-section:first-child .account-data-three { grid-template-columns: 1fr; }
+}
+
+
+.account-farms-heading { display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
+.account-farms-heading span { color:var(--color-text-2); font-size:12px; }
+.account-farms-list { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:0 24px; margin:8px 0 12px; padding:0; }
+.account-farms-list li { padding:10px 0; border-bottom:1px solid var(--color-border-subtle); font-size:13px; overflow-wrap:anywhere; }

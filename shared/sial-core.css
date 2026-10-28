@@ -261,6 +261,12 @@ html[data-sidebar-state="collapsed"] .app-shell {
   display: grid;
   gap: 4px;
 }
+.sidebar-view-search { position: relative; min-width: 0; margin: 8px 4px 12px; }
+.sidebar-view-search:not(.is-compact) input { padding-right: 38px; }
+.sidebar-view-search.is-compact { display: flex; justify-content: center; margin-inline: 0; }
+.sidebar-view-search .sidebar-view-search-clear { position: absolute; right: 3px; bottom: 4px; }
+.is-search-result .nav-tree-link { height: auto; min-height: 36px; padding-block: 7px; }
+.sidebar-search-result { margin: 0 12px 12px; color: var(--color-text-2); font-size: 12px; line-height: 1.5; }
 .nav-module {
   display: grid;
   gap: 4px;
@@ -6909,3 +6915,11 @@ html[data-theme="dark"] {
   }
 }
 /* === SIAL Planning Calendar Components Centralized END === */
+
+/* Isotipo temporal de Navidad en la propuesta. */
+.brand-badge:has([data-sial-variant="christmas"]) { background-image: none; overflow: visible; }
+.brand-badge [data-sial-variant="christmas"] { display: block; max-width: none; }
+/* La variante en prueba respeta movimiento reducido con la misma especificidad. */
+@media (prefers-reduced-motion: reduce) {
+  .brand-badge [data-sial-variant="christmas"][data-sial-motion="welcome"] .bui-sial-christmas-crown { animation: none; }
+}

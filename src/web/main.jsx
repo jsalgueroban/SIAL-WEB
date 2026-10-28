@@ -21,10 +21,23 @@ import { MaterialsMaster } from "./materials-master.jsx";
 import { MaterialsAdditionalOrders } from "./materials-additional-orders.jsx";
 import { MaterialsApproval } from "./materials-approval.jsx";
 import { MaterialsDeliveryControl } from "./materials-delivery-control.jsx";
+import { FarmReferenceClasses } from "./farm-reference-classes.jsx";
+
+import { AccountProfile } from "./account-profile.jsx";
+
+import { FarmCatalog_grupos } from "./farm-catalog-grupos.jsx";
+import { FarmCatalog_productos } from "./farm-catalog-productos.jsx";
+import { FarmCatalog_sectores } from "./farm-catalog-sectores.jsx";
 
 export { mountShell };
 
 const mounts = {
+  "farm-grupos": FarmCatalog_grupos,
+  "farm-productos": FarmCatalog_productos,
+  "farm-sectores": FarmCatalog_sectores,
+
+  "account-profile": AccountProfile,
+  "farm-reference-classes": FarmReferenceClasses,
   "order-categories": OrderCategories,
   "transport-licenses": () => <TransportCatalog catalog="licenses" />,
   "transport-vehicle-types": () => <TransportCatalog catalog="vehicleTypes" />,

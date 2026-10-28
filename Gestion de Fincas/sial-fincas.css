@@ -1,3 +1,12 @@
 @import url("../shared/sial-core.css");
 
 /* Estilos especificos del modulo. Mantener aqui solo excepciones justificadas al core SIAL. */
+
+.reference-classes-toolbar { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(180px, 1fr)); align-items: end; gap: 16px; }
+.reference-classes-toolbar > * { min-width: 0; }
+.reference-classes-form .form-heading { margin-bottom: 16px; }
+.reference-classes-feedback { position: fixed; top: 24px; right: 24px; width: min(380px, calc(100vw - 32px)); z-index: 1200; }
+@media (max-width: 720px) {
+  .reference-classes-toolbar { grid-template-columns: 1fr; }
+  .reference-classes-feedback { top: auto; bottom: 16px; right: 16px; }
+}

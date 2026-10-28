@@ -1,0 +1,60 @@
+[data-sial-variant="christmas"] .bui-sial-christmas-crown {
+  transform-origin: 150px 270px;
+}
+
+[data-sial-variant="christmas"][data-sial-motion="welcome"] .bui-sial-christmas-crown {
+  animation: bui-sial-christmas-rock 3.6s cubic-bezier(.42, 0, .35, 1) 1;
+}
+
+@keyframes bui-sial-christmas-rock {
+  0%, 100% { transform: rotate(0deg); }
+  22% { transform: rotate(-3deg); }
+  46% { transform: rotate(2deg); }
+  68% { transform: rotate(-1.7deg); }
+  84% { transform: rotate(.7deg); }
+}
+
+[data-sial-variant="christmas"][data-sial-motion="festive"] .bui-sial-christmas-crown {
+  animation: bui-sial-christmas-festive 6s cubic-bezier(.42, 0, .35, 1) infinite;
+}
+
+@keyframes bui-sial-christmas-festive {
+  0%, 46%, 100% { transform: rotate(0deg); }
+  8% { transform: rotate(-6deg); }
+  18% { transform: rotate(4.5deg); }
+  28% { transform: rotate(-2.5deg); }
+  38% { transform: rotate(1deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-sial-variant="christmas"][data-sial-motion] .bui-sial-christmas-crown {
+    animation: none;
+  }
+}
+[data-sial-variant="christmas"],
+[data-sial-variant="new-year"] {
+  overflow: visible;
+}
+
+.bui-sial-new-year-crown { transform-origin: 600px 260px; }
+[data-sial-variant="new-year"][data-sial-motion="welcome"] .bui-sial-new-year-crown {
+  animation: bui-sial-new-year-rock 3.6s ease-in-out 1;
+}
+[data-sial-variant="new-year"][data-sial-motion="welcome"] .bui-sial-new-year-star {
+  animation: bui-sial-new-year-glint 3.6s ease-in-out 1;
+}
+@keyframes bui-sial-new-year-rock {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  50% { transform: rotate(1.5deg); }
+  75% { transform: rotate(-.6deg); }
+}
+@keyframes bui-sial-new-year-glint {
+  0%, 100% { opacity: 1; }
+  20%, 60% { opacity: .55; }
+  40%, 80% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-sial-variant="new-year"] .bui-sial-new-year-crown,
+  [data-sial-variant="new-year"] .bui-sial-new-year-star { animation: none; }
+}
