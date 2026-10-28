@@ -6923,3 +6923,10 @@ html[data-theme="dark"] {
 @media (prefers-reduced-motion: reduce) {
   .brand-badge [data-sial-variant="christmas"][data-sial-motion="welcome"] .bui-sial-christmas-crown { animation: none; }
 }
+
+/* Las marcas fuera del shell usan el mismo isotipo de temporada. */
+.brand-mark:has([data-sial-variant="christmas"]) { background-image: none; overflow: visible; }
+.brand-mark [data-sial-variant="christmas"] { display: block; max-width: none; }
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark [data-sial-variant="christmas"][data-sial-motion] .bui-sial-christmas-crown { animation: none; }
+}

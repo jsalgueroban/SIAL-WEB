@@ -395,11 +395,11 @@ const SIALCore = (() => {
       if (!script) {
         const style = document.createElement("link");
         style.rel = "stylesheet";
-        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css");
+        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261028-christmas-global");
         style.dataset.sialLibraryRuntime = "true";
         document.head.appendChild(style);
         script = document.createElement("script");
-        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas");
+        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas-global");
         script.dataset.sialLibraryRuntime = "true";
         document.body.appendChild(script);
       }
@@ -2176,23 +2176,23 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 else mountCustomTableFilterResets();
 
 function loadLibraryTableControls() {
-  if (/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname) || document.querySelector("[data-sial-react-view]")) {
+  if (document.querySelector("[data-sial-react-view]")) {
     document.documentElement.dataset.sialLibraryControls = "ready";
     return;
   }
   if (document.querySelector('script[data-sial-library-runtime]')) return;
-  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page .status[data-sial-chip-adapter], button.btn[data-sial-button-adapter], main .page > .notice[data-sial-notice-adapter]")) {
+  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page .status[data-sial-chip-adapter], button.btn[data-sial-button-adapter], main .page > .notice[data-sial-notice-adapter], .brand-badge, .brand-mark")) {
     document.documentElement.dataset.sialLibraryControls = "ready";
     return;
   }
   document.documentElement.dataset.sialLibraryControls = "loading";
   const style = document.createElement("link");
   style.rel = "stylesheet";
-  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css");
+  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261028-christmas-global");
   style.dataset.sialLibraryRuntime = "true";
   document.head.appendChild(style);
   const script = document.createElement("script");
-  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas-global");
   script.dataset.sialLibraryRuntime = "true";
   document.body.appendChild(script);
   window.setTimeout(() => {
@@ -2203,10 +2203,6 @@ function loadLibraryTableControls() {
 }
 
 function watchLibraryTableControls() {
-  if (/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname)) {
-    document.documentElement.dataset.sialLibraryControls = "ready";
-    return;
-  }
   loadLibraryTableControls();
   if (document.querySelector('script[data-sial-library-runtime], [data-sial-react-view]')) return;
   const observer = new MutationObserver(() => {

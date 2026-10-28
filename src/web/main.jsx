@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { SialIsotype } from "./christmas-isotype/sial_isotype";
 import "@banasandev/banasan-ui/style.css";
 import { OrderCategories } from "./order-categories.jsx";
 import { TransportCatalog } from "./transport-catalogs.jsx";
@@ -64,8 +65,19 @@ const mounts = {
   "materials-delivery-control": MaterialsDeliveryControl
 };
 
+function mountStandaloneBrands() {
+  document.querySelectorAll(".brand-badge, .brand-mark").forEach((element) => {
+    // El menú operativo ya monta su isotipo desde Shell.
+    if (element.closest(".sidebar")?.querySelector("[data-nav]") || element.dataset.sialBrandMounted === "true") return;
+    element.dataset.sialBrandMounted = "true";
+    element.replaceChildren();
+    createRoot(element).render(<SialIsotype variant="christmas" motion="festive" size={element.classList.contains("brand-mark") ? 48 : 44} aria-hidden="true" />);
+  });
+}
+
 function mountProposalViews() {
-  mountLegacyTableControls();
+  mountStandaloneBrands();
+  if (!/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname)) mountLegacyTableControls();
   document.querySelectorAll("[data-sial-react-view]").forEach((element) => {
     const View = mounts[element.dataset.sialReactView];
     if (!View || element.dataset.sialMounted === "true") return;
