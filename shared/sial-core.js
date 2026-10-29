@@ -395,11 +395,11 @@ const SIALCore = (() => {
       if (!script) {
         const style = document.createElement("link");
         style.rel = "stylesheet";
-        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261028-christmas-global");
+        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-notice-slim");
         style.dataset.sialLibraryRuntime = "true";
         document.head.appendChild(style);
         script = document.createElement("script");
-        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas-global");
+        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-notice-slim");
         script.dataset.sialLibraryRuntime = "true";
         document.body.appendChild(script);
       }
@@ -2188,11 +2188,11 @@ function loadLibraryTableControls() {
   document.documentElement.dataset.sialLibraryControls = "loading";
   const style = document.createElement("link");
   style.rel = "stylesheet";
-  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261028-christmas-global");
+  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-notice-slim");
   style.dataset.sialLibraryRuntime = "true";
   document.head.appendChild(style);
   const script = document.createElement("script");
-  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261028-christmas-global");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-notice-slim");
   script.dataset.sialLibraryRuntime = "true";
   document.body.appendChild(script);
   window.setTimeout(() => {

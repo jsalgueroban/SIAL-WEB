@@ -240,8 +240,10 @@
 
   <script src="../shared/sial-core.js"></script>
   <script src="sial-empresas.js"></script>
+  <script src="role-prototype.js"></script>
   <script>
     SIAL.applyShell("paramRoles");
+    RolePrototype.init();
     SIAL.initDrawer();
     SIAL.initTableFilters({
       rowSelector: "tbody tr",
@@ -352,7 +354,7 @@
               code: row.dataset.code || "",
               name: row.dataset.roleName || "",
               companies: row.dataset.companies || "",
-              description: row.dataset.audit || ""
+              description: row.dataset.description || ""
             });
           });
         }
@@ -360,19 +362,19 @@
         if (viewButton) {
           viewButton.addEventListener("click", () => {
             const companies = (row.dataset.companies || "").split("|").join(", ");
-            SIAL.fillDrawer({
-              code: row.dataset.code,
-              name: row.dataset.roleName,
-              companies: companies,
-              state: row.dataset.state
-            });
+            const values = {code: row.dataset.code, name: row.dataset.roleName, companies, state: row.dataset.state};
+            document.querySelectorAll('[data-detail-target]').forEach(node => { node.textContent = values[node.dataset.detailTarget] || '-'; });
 
             const auditStack = document.querySelector("#detailAudit");
             if (auditStack) {
-              auditStack.innerHTML = (row.dataset.audit || "").split(";").filter(Boolean).map((item) => {
+              auditStack.replaceChildren();
+              (row.dataset.audit || "").split(";").filter(Boolean).forEach((item) => {
                 const [title, meta] = item.split("|");
-                return `<div class="audit-item"><strong>${title || "-"}</strong><div class="muted">${meta || ""}</div></div>`;
-              }).join("");
+                const entry = document.createElement("div"), heading = document.createElement("strong"), detail = document.createElement("div");
+                entry.className = "audit-item"; detail.className = "muted";
+                heading.textContent = title || "-"; detail.textContent = meta || "";
+                entry.append(heading, detail); auditStack.append(entry);
+              });
             }
           });
         }
@@ -390,6 +392,7 @@
           }
           return;
         }
+        if (!RolePrototype.save(form)) return;
         if (okMessage) {
           okMessage.classList.remove("is-hidden", "notice-error");
           okMessage.classList.add("notice-success");

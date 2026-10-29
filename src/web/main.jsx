@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { SialIsotype } from "./christmas-isotype/sial_isotype";
 import "@banasandev/banasan-ui/style.css";
+import "./notice-preview.css";
 import { OrderCategories } from "./order-categories.jsx";
 import { TransportCatalog } from "./transport-catalogs.jsx";
 import { mountLegacyTableControls } from "./legacy-table-controls.jsx";

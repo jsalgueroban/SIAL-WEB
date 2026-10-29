@@ -35,6 +35,10 @@ export const deliveryControlCases = [
     vehicleAssignments: [{ trip: "VIA-2026-044-A", vehicle: "VHC-018", quantity: 35 }],
     updated: "28 jun 2026 · 17:12"
   }
+  ,{ id: "AG-2026-008", document: "AGRO-2026-008", order: "OTI-2026-045", delivery: "ENT-2026-045", pod: null,
+    farm: "Finca Las Palmas", notice: null, noticeVersion: null, materialCode: "AG-101", material: "Fertilizante", unit: "KG",
+    approved: 100, programmed: 100, dispatched: 100, delivered: null, receivedReported: 100,
+    vehicleAssignments: [{ trip: "VIA-2026-045-A", vehicle: "VHC-033", quantity: 100 }], updated: "28 jun 2026 · 17:30" }
 ];
 
 export const deliveryStages = [
@@ -57,7 +61,7 @@ export function getCaseReading(item) {
   if (item.programmed > item.approved) return { label: "Sobreprogramado", preset: "warning" };
   if (item.dispatched === null) return { label: "Sin despacho confirmado", preset: "info" };
   if (item.dispatched > item.programmed) return { label: "Sobre-despacho", preset: "warning" };
-  if (item.delivered === null) return { label: "POD sin validar", preset: "info" };
+  if (item.delivered === null || (item.delivered > 0 && !item.pod)) return { label: "POD sin validar", preset: "info" };
   if (item.delivered > item.dispatched) return { label: "Entrega por revisar", preset: "warning" };
   if (item.delivered < item.dispatched) return { label: "Entrega por conciliar", preset: "warning" };
   if (item.programmed < item.approved) return { label: "Por programar", preset: "info" };

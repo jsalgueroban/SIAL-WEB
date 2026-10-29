@@ -53,7 +53,8 @@
     </div>
   </aside>
   <script src="../shared/sial-core.js"></script>
+  <script src="contact-prototype.js"></script>
   <script src="sial-empresas.js"></script>
-  <script>SIAL.applyShell("contactos"); SIAL.initDrawer(); SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#contactSearch", status: "#contactStatus", context: "#contactContext", empty: "#contactEmpty", count: "#contactCount" });</script>
+  <script>SIAL.applyShell("contactos"); ContactPrototype.initList(); SIAL.initDrawer(); SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#contactSearch", status: "#contactStatus", context: "#contactContext", empty: "#contactEmpty", count: "#contactCount" });</script>
 </body>
 </html>

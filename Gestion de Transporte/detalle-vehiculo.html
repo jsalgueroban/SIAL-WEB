@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIAL | Detalle de vehículo</title>
+  <script>(function(){const t=localStorage.getItem("sial-theme"),d=matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light")})();</script>
+  <link rel="stylesheet" href="sial-mantenimientos.css">
+  <link rel="stylesheet" href="detalle-vehiculo.css">
+</head>
+<body data-view-family="detalle">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Transporte</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input aria-label="Búsqueda principal" placeholder="Buscar..."></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main"><section class="page detail-vehicle">
+      <p class="page-eyebrow"><a href="gestion-vehiculos.html">Transporte / Vehículos</a> / Detalle</p>
+      <div class="page-header"><div><h1 class="page-title">Expediente del vehículo</h1><p class="page-subtitle">Consulta la información del vehículo, sus documentos y su operación de transporte.</p></div><a class="btn btn-secondary" href="gestion-vehiculos.html">Volver a vehículos</a></div>
+      <div id="vehicleNotFound" class="card detail-message" hidden><h2>Vehículo no encontrado</h2><p>Selecciona un vehículo desde la gestión de vehículos.</p><a class="btn btn-primary" href="gestion-vehiculos.html">Ir a vehículos</a></div>
+      <div id="vehicleDetail" hidden>
+        <section class="detail-hero" aria-labelledby="vehiclePlate">          <div class="vehicle-hero-layout"><div class="detail-profile"><div class="vehicle-profile-art"><img id="vehicleProfile" alt=""><span id="vehiclePlateOverlay" class="vehicle-plate-overlay" aria-hidden="true" hidden></span></div><p id="vehicleProfileFallback" hidden>Representación no disponible para este tipo de vehículo.</p></div><article class="card detail-card vehicle-summary"><div class="detail-hero-head"><div><p class="detail-overline">Expediente de transporte</p><div class="detail-title-row"><h2 id="vehiclePlate"></h2></div><p id="vehicleCompany" class="detail-company"></p><div class="vehicle-operational"><span class="vehicle-operational-label">Estado operativo</span><span id="vehicleOperationalStatus" class="status" data-sial-chip-adapter></span></div></div></div>
+          <div class="detail-facts"><div><span>Tipo de vehículo</span><strong id="vehicleType"></strong></div><div><span>Flota</span><strong id="vehicleFleet"></strong></div><div><span>Capacidad</span><strong id="vehicleCapacity"></strong></div><div><span>Estado</span><span id="vehicleStatus" class="status" data-sial-chip-adapter></span></div></div><dl id="generalFields" class="detail-fields"></dl><a id="generalEdit" class="btn btn-secondary">Editar información</a></article></div>
+        </section>
+        <div class="detail-tabs" role="tablist" aria-label="Secciones del expediente"><button role="tab" id="tab-general" aria-controls="panel-general" aria-selected="true" tabindex="0">Datos generales</button><button role="tab" id="tab-documents" aria-controls="panel-documents" aria-selected="false" tabindex="-1">Documentos</button><button role="tab" id="tab-operation" aria-controls="panel-operation" aria-selected="false" tabindex="-1">Operación</button><button role="tab" id="tab-loading" aria-controls="panel-loading" aria-selected="false" tabindex="-1">Cargue</button><button role="tab" id="tab-audit" aria-controls="panel-audit" aria-selected="false" tabindex="-1">Auditoría</button></div>
+
+        <section role="tabpanel" id="panel-general" aria-labelledby="tab-general"><div class="detail-grid"><article class="card detail-card"><div class="detail-section-heading"><h2>Estado de documentos</h2><button class="detail-text-button" type="button" data-select-tab="documents">Ver detalle</button></div><div id="documentSummary" class="document-list"></div></article></div><article class="card detail-card detail-activity"><div class="detail-section-heading"><div><h2>Recorrido de la operación</h2><p>Etapas y movimientos de la operación seleccionada.</p></div><button class="detail-text-button" type="button" data-select-tab="operation">Ver operación →</button></div><div id="overviewTimeline"></div></article></section>
+        <section role="tabpanel" id="panel-documents" aria-labelledby="tab-documents" hidden><article class="card detail-card"><h2>Documentos del vehículo</h2><dl id="documentFields" class="detail-fields"></dl><a class="detail-text-button" href="matriz-documental-vehiculos.html">Ir a matriz documental →</a></article></section>
+        <section role="tabpanel" id="panel-operation" aria-labelledby="tab-operation" hidden><article class="card detail-card"><div class="detail-section-heading"><div><h2>Operación de transporte</h2><p>Datos asociados al radicado y no al vehículo de forma permanente.</p></div></div><div id="operationContent"></div></article></section>
+        <section role="tabpanel" id="panel-loading" aria-labelledby="tab-loading" hidden><article class="card detail-card"><div class="detail-section-heading"><div><h2>Cargue del vehículo</h2><p>Consulta los pallets registrados en la operación seleccionada.</p></div></div><div id="loadingContent"></div></article></section>
+        <section role="tabpanel" id="panel-audit" aria-labelledby="tab-audit" hidden><article class="card detail-card"><h2>Auditoría</h2><div id="auditEntries" class="detail-audit"></div></article></section>
+      </div>
+    </section></main></div>
+  <script src="../shared/sial-core.js"></script><script src="sial-conductores.js"></script><script src="vehicle-prototype.js"></script><script src="detalle-vehiculo.js"></script><script>SIAL.applyShell("vehiculos"); VehicleDetail.init();</script>
+</body></html>

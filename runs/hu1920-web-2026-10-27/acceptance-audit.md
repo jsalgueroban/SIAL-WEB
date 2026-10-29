@@ -26,3 +26,7 @@ Así, la **fidelidad visual del escenario central** queda representada. La detec
 La pantalla **sirve como propuesta visual operativa de la comparación**: indica qué revisar, permite localizar el caso y explica cómo se formó la programación en vehículos. **No acredita cumplimiento funcional de HU1920**: las cifras provienen de `materials-delivery-control-data.js`, la fecha de ejemplo es fija y los enlaces llevan a la vista de proceso sin abrir el registro sintético correspondiente.
 
 Para cerrar la HU en producto se requiere acordar un contrato de agregación por compañía, finca, pedido/versión, documento, material y unidad; identificar el evento que confirma salida y sus cantidades; obtener la programación por vehículo/viaje; validar recepción y POD por línea; y definir frescura, permisos y comportamiento ante fuentes no disponibles. La propuesta puede entonces sustituir el fixture por datos verificables y probar desviaciones simultáneas, parciales y cero resultados. La fase móvil sigue separada según la secuencia de trabajo.
+
+## Ajuste del 29 de octubre de 2026
+
+Se incorpora un caso ilustrativo Agros con 100 KG reportados como recibidos, sin POD. La recepción reportada se muestra en el detalle y no se contabiliza como entrega con POD; la alerta también detecta una cantidad positiva sin identificador de soporte. La comparación cuantitativa de Avisos de Corte permanece pendiente de definición funcional: la HU no establece su unidad ni correspondencia por línea. El prototipo sigue sin conexión productiva.
