@@ -71,6 +71,7 @@ function CaseDetail({ item, onClose, detailRef }) {
       <div><dt>Origen</dt><dd>{item.document}</dd></div>
       <div><dt>Aviso de Corte</dt><dd>{item.notice ? `${item.notice} · ${item.noticeVersion}` : "Sin aviso de corte"}</dd></div>
       <div><dt>Orden de transporte</dt><dd>{item.order}</dd></div>
+      {item.receivedReported != null && <div><dt>Recepción reportada sin POD</dt><dd>{fmt(item.receivedReported)} {item.unit} · pendiente de soporte</dd></div>}
       <div><dt>Entrega / POD</dt><dd>{item.delivery || "Sin entrega"} · {item.pod || "Sin POD validado"}</dd></div>
     </dl>
     <div className="control-vehicle-plan">
@@ -127,7 +128,7 @@ export function MaterialsDeliveryControl() {
   const filtersActive = farm !== "all" || notice !== "all" || material !== "101279|UN" || Boolean(search.trim());
   const alerts = [
     { key: "overprogrammed", label: "Sobreprogramados", short: ["sobreprogramado", "sobreprogramados"], cases: scopeCases.filter((item) => item.programmed > item.approved) },
-    { key: "pendingPod", label: "Entrega / POD por conciliar", short: ["entrega/POD por conciliar", "entregas/POD por conciliar"], cases: scopeCases.filter((item) => item.dispatched !== null && (item.delivered === null || item.delivered < item.dispatched)) },
+    { key: "pendingPod", label: "Entrega / POD por conciliar", short: ["entrega/POD por conciliar", "entregas/POD por conciliar"], cases: scopeCases.filter((item) => item.dispatched !== null && (item.delivered === null || item.delivered < item.dispatched || (item.delivered > 0 && !item.pod))) },
     { key: "noDeparture", label: "Sin despacho confirmado", short: ["sin despacho confirmado", "sin despacho confirmado"], cases: scopeCases.filter((item) => item.dispatched === null) }
   ];
   const openAlert = alerts.find((alert) => alert.key === activeAlert);

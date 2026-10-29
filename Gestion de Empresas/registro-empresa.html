@@ -60,7 +60,7 @@
             <p>El nombre y razon social se normalizan a mayusculas. El NIT debe conservar unicidad administrativa.</p>
           </div>
           <div class="form-body">
-            <p class="field-note is-hidden" id="formOk" role="status">Datos de empresa revisados en esta propuesta; no se guardan en el sistema real.</p>
+            <p class="field-note is-hidden" id="formOk" role="status">Datos guardados en este navegador; no se guardan en el sistema real.</p>
             <form data-company-form novalidate>
               <section class="section">
                 <h3 class="section-title">Identificacion</h3>
@@ -114,7 +114,8 @@
     </main>
   </div>
   <script src="../shared/sial-core.js"></script>
+  <script src="company-prototype.js"></script>
   <script src="sial-empresas.js"></script>
-  <script>SIAL.applyShell("registro"); SIAL.initCompanyTypeAssignment(); SIAL.initBasicFormValidation();</script>
+  <script>SIAL.applyShell("registro"); CompanyPrototype.initForm(); SIAL.initCompanyTypeAssignment(); SIAL.initBasicFormValidation();</script>
 </body>
 </html>

@@ -39,7 +39,7 @@
                     <div class="field span-3" data-sial-form-control><label class="label" for="clientType">Tipo comercial <span class="required">*</span></label><select class="select" id="clientType" data-required aria-describedby="clientTypeNote"><option value="">Seleccionar tipo</option><option value="exportador">Exportador</option><option value="cliente">Cliente comercial</option><option value="mixto">Cliente + exportador</option></select><div class="field-note" id="clientTypeNote">Clasifica el uso operativo.</div></div>
                     <div class="field span-3" data-sial-form-control><label class="label" for="clientCountry">Pais <span class="required">*</span></label><input class="input" id="clientCountry" data-required data-uppercase aria-describedby="clientCountryNote" placeholder="COLOMBIA" /><div class="field-note" id="clientCountryNote">Pais fiscal o comercial.</div></div>
                     <div class="field span-3" data-sial-form-control><label class="label" for="clientContact">Contacto principal</label><input class="input" id="clientContact" data-uppercase placeholder="ANA PEREZ" /><div class="field-note">Contacto operativo o comercial.</div></div>
-                    <div class="field span-3" data-sial-form-control><label class="label" for="clientEmail">Correo</label><input class="input" id="clientEmail" type="email" placeholder="cliente@dominio.com" /><div class="field-note">Correo para comunicaciones.</div></div>
+                    <div class="field span-3" data-sial-form-control><label class="label" for="clientEmail">Correo</label><input class="input" id="clientEmail" type="email" aria-describedby="clientEmailNote" placeholder="cliente@dominio.com" /><div class="field-note" id="clientEmailNote">Correo para comunicaciones.</div></div>
                   </div>
                 </section>
                 <div class="form-actions"><button class="btn btn-secondary" type="button" data-cancel-inline-form>Cancelar</button><button class="btn btn-primary" type="submit">Guardar cliente</button></div>
@@ -73,6 +73,7 @@
   </div>
   <script src="../shared/sial-core.js"></script>
   <script src="sial-empresas.js"></script>
-  <script>SIAL.applyShell("clientes"); SIAL.initDrawer(); SIAL.initEmbeddedForm({ newTitle: "Nuevo cliente", editTitle: "Editar cliente" }); SIAL.initGenericForm(); SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#clientSearch", status: "#clientStatus", context: "#clientContext", empty: "#clientEmpty", count: "#clientCount" });</script>
+  <script src="client-prototype.js"></script>
+  <script>SIAL.applyShell("clientes"); SIAL.initDrawer(); SIAL.initEmbeddedForm({ newTitle: "Nuevo cliente", editTitle: "Editar cliente" }); SIAL.initTableFilters({ rowSelector: "tbody tr", search: "#clientSearch", status: "#clientStatus", context: "#clientContext", empty: "#clientEmpty", count: "#clientCount" });</script>
 </body>
 </html>

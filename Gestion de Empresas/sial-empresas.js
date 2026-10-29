@@ -116,10 +116,16 @@ const SIAL = (() => {
         });
         const audit = qs("#detailAudit");
         if (audit) {
-          audit.innerHTML = (row.dataset.audit || "").split(";").filter(Boolean).map((item) => {
+          audit.replaceChildren();
+          (row.dataset.audit || "").split(";").filter(Boolean).forEach((item) => {
             const [title, meta] = item.split("|");
-            return `<div class="audit-item"><strong>${title || "-"}</strong><div class="muted">${meta || ""}</div></div>`;
-          }).join("");
+            const entry = document.createElement("div");
+            const heading = document.createElement("strong");
+            const detail = document.createElement("div");
+            entry.className = "audit-item"; detail.className = "muted";
+            heading.textContent = title || "-"; detail.textContent = meta || "";
+            entry.append(heading, detail); audit.append(entry);
+          });
         }
         drawer.classList.add("show");
         backdrop.classList.add("show");
@@ -136,6 +142,25 @@ const SIAL = (() => {
   function initBasicFormValidation(formSelector = "[data-company-form]") {
     const form = qs(formSelector);
     if (!form) return;
+    const result = qs("#formOk");
+    const hideResult = () => result?.classList.add("is-hidden");
+    form.addEventListener("input", hideResult);
+    form.addEventListener("change", hideResult);
+    form.addEventListener("click", (event) => {
+      if (event.target.closest("#addCompanyTypeAssignment, [data-remove-company-type]")) hideResult();
+    });
+    form.addEventListener("reset", () => {
+      hideResult();
+      qsa("[data-required], [data-nit]", form).forEach((input) => {
+        const note = qs(`#${input.getAttribute("aria-describedby")}`);
+        input.classList.remove("is-error");
+        input.removeAttribute("aria-invalid");
+        if (note) {
+          note.classList.remove("error", "success");
+          if (note.dataset.base) note.textContent = note.dataset.base;
+        }
+      });
+    });
     qsa("[data-uppercase]", form).forEach((input) => {
       input.addEventListener("input", (event) => { event.target.value = event.target.value.toUpperCase(); });
     });
@@ -155,6 +180,10 @@ const SIAL = (() => {
           setFieldState(input, note, "El NIT debe tener formato numerico valido.", "");
           fail = true;
         }
+        if (input.value && window.CompanyPrototype?.isDuplicate(input.value)) {
+          setFieldState(input, note, "Ya existe una empresa con este NIT.", "");
+          fail = true;
+        }
       });
       const companyTypeNote = qs("#companyTypeAssignmentNote", form);
       if (companyTypeNote) {
@@ -164,7 +193,8 @@ const SIAL = (() => {
         companyTypeNote.textContent = assignments < 1 ? "Agrega al menos un tipo de empresa antes de guardar." : "Tipos de empresa listos para guardar.";
         if (assignments < 1) fail = true;
       }
-      qs("#formOk")?.classList.toggle("is-hidden", fail);
+      if (!fail && window.CompanyPrototype && !window.CompanyPrototype.save(form)) fail = true;
+      result?.classList.toggle("is-hidden", fail);
     });
   }
 
@@ -177,7 +207,7 @@ const SIAL = (() => {
     const addButton = qs("#addCompanyTypeAssignment");
     if (!form || !typeGrid || !assignmentList) return;
 
-    let assignments = [];
+    let assignments = window.CompanyPrototype?.current()?.types?.slice() || [];
 
     const typeLabel = (value) => companyTypes.find(([typeValue]) => typeValue === value)?.[1] || value;
     const selectedTypes = () => qsa("input[type='checkbox']:checked", typeGrid).map((input) => input.value);
@@ -258,6 +288,23 @@ const SIAL = (() => {
     const save = qs("#saveRoles");
     const note = qs("#rolesTransferNote");
     if (!included || !excluded) return;
+    const company = qs("#companyRole");
+    const key = "sial-proposal-company-roles-v1";
+    const options = [...qsa(".role-option", included), ...qsa(".role-option", excluded)];
+    const initial = qsa(".role-option", included).map(option => qs("strong", option).textContent.trim());
+    function loadAssignments() {
+      try { const value = JSON.parse(localStorage.getItem(key) || "{}"); if (!value || Array.isArray(value) || typeof value !== "object") throw new Error(); return value; }
+      catch { if (note) { note.textContent = "No se pudieron leer las asignaciones guardadas."; note.classList.add("error"); } save.disabled = true; return null; }
+    }
+    function loadCompany() {
+      const data = loadAssignments(); if (!data) return;
+      const assigned = data[company.value]?.roles || (company.selectedIndex === 0 ? initial : []);
+      options.forEach(option => { const label = qs("strong", option).textContent.trim(); (assigned.includes(label) ? included : excluded).appendChild(option); qs("input", option).checked = false; });
+      save.disabled = true;
+      note.classList.remove("error", "success");
+      note.textContent = "Sin cambios pendientes.";
+    }
+    company?.addEventListener("change", loadCompany);
     const move = (from, to) => {
       qsa("input:checked", from).forEach((input) => {
         const option = input.closest(".role-option");
@@ -274,17 +321,35 @@ const SIAL = (() => {
     qs("#includeRole")?.addEventListener("click", () => move(excluded, included));
     qs("#excludeRole")?.addEventListener("click", () => move(included, excluded));
     save?.addEventListener("click", () => {
+      try {
+        const companies = JSON.parse(localStorage.getItem("sial-proposal-companies-v1") || "null");
+        const record = Array.isArray(companies) ? companies.find(item => item.name.toLocaleLowerCase("es") === company.value.toLocaleLowerCase("es")) : null;
+        if ((record ? record.status : company.value === "AgroCeiba" ? "inactive" : "active") === "inactive") {
+          note.classList.add("error"); note.textContent = "La empresa está inactiva; no se pueden guardar nuevas asignaciones."; return;
+        }
+      } catch { note.classList.add("error"); note.textContent = "No se pudo comprobar el estado de la empresa."; return; }
       const total = qsa(".role-option", included).length;
       if (total < 1) {
         note?.classList.add("error");
         if (note) note.textContent = "Debe seleccionar al menos un rol para la empresa.";
         return;
       }
+      const data = loadAssignments();
+      if (!data) return;
+      try {
+        const roles = qsa(".role-option strong", included).map(option => option.textContent.trim());
+        const previous = data[company.value]?.audit || [];
+        data[company.value] = { roles, audit: [{ action: "Asignación de roles", actor: "Propuesta local", date: new Date().toISOString() }, ...previous] };
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch {
+        note.classList.add("error"); note.textContent = "No se pudieron guardar los roles en este navegador."; return;
+      }
       note?.classList.remove("error");
       note?.classList.add("success");
-      if (note) note.textContent = "Roles actualizados correctamente.";
+      if (note) note.textContent = "Roles guardados en este navegador; no se actualizó el sistema real.";
       save.setAttribute("disabled", "disabled");
     });
+    loadCompany();
   }
 
   function initRoleAdminPanel() {
@@ -511,7 +576,7 @@ const SIAL = (() => {
       if (!fail) {
         ok.classList.remove("is-hidden", "notice-error");
         ok.classList.add("notice-success");
-        ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Registro guardado correctamente.</span>';
+        ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Datos revisados en la propuesta; todavía no se guardan.</span>';
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
@@ -572,11 +637,12 @@ const SIAL = (() => {
         setFieldState(input, note, error);
         if (error) fail = true;
       });
+      if (!fail && window.ContactPrototype && !window.ContactPrototype.save()) fail = true;
       ok?.classList.toggle("is-hidden", fail);
       if (!fail) {
         ok.classList.remove("is-hidden", "notice-error");
         ok.classList.add("notice-success");
-        ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Contacto guardado correctamente.</span>';
+        ok.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span>Datos revisados en la propuesta; el contacto todavía no se guarda.</span>';
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });

@@ -311,6 +311,29 @@
           despacho: "Despacho programado",
         };
       let row;
+      const alertsKey = "sial-proposal-contact-alerts-v1";
+      let savedAlerts = {};
+      try {
+        const saved = localStorage.getItem(alertsKey);
+        if (saved) {
+          savedAlerts = JSON.parse(saved);
+          if (!savedAlerts || Array.isArray(savedAlerts) || typeof savedAlerts !== "object") throw new Error();
+        }
+      } catch {
+        q("#context").textContent = "No se pudieron leer las alertas guardadas en este navegador.";
+        savedAlerts = null;
+      }
+      function renderAlerts(target, values) {
+        target.dataset.alerts = values.join(" ");
+        target.querySelector("[data-summary]").textContent = values.map((x) => labels[x]).join(", ") || "Sin alertas";
+        const badge = target.querySelector(".status");
+        badge.textContent = values.length ? "Con alertas" : "Sin alertas";
+        badge.className = "status " + (values.length ? "status-active" : "status-inactive");
+      }
+      if (savedAlerts) rows.forEach((target) => {
+        const value = savedAlerts[target.dataset.id];
+        if (Array.isArray(value)) renderAlerts(target, value.filter((item) => Object.hasOwn(labels, item)));
+      });
       function filter() {
         const s = q("#search").value.toLowerCase(),
           f = q("#farm").value,
@@ -368,13 +391,16 @@
         const a = [...document.querySelectorAll("#editor input:checked")].map(
           (x) => x.value,
         );
-        row.dataset.alerts = a.join(" ");
-        row.querySelector("[data-summary]").textContent =
-          a.map((x) => labels[x]).join(", ") || "Sin alertas";
-        const badge = row.querySelector(".status");
-        badge.textContent = a.length ? "Con alertas" : "Sin alertas";
-        badge.className =
-          "status " + (a.length ? "status-active" : "status-inactive");
+        if (!row || !savedAlerts) return;
+        try {
+          const next = { ...savedAlerts, [row.dataset.id]: a };
+          localStorage.setItem(alertsKey, JSON.stringify(next));
+          savedAlerts = next;
+        } catch {
+          q("#context").textContent = "No se pudieron guardar las alertas en este navegador. Inténtalo de nuevo.";
+          return;
+        }
+        renderAlerts(row, a);
         q("#editor").classList.add("is-hidden");
         filter();
       };
