@@ -57,7 +57,7 @@ const SIALCore = (() => {
         return;
       }
       const script = document.createElement("script");
-      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261026-materials-menu-final-1");
+      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261029-roles-menu-v2");
       script.dataset.sialNavigationContract = "true";
       script.onload = () => {
         if (!window.SIALNavigationContract?.areas) {
@@ -395,11 +395,11 @@ const SIALCore = (() => {
       if (!script) {
         const style = document.createElement("link");
         style.rel = "stylesheet";
-        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-notice-slim");
+        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-roles-v2");
         style.dataset.sialLibraryRuntime = "true";
         document.head.appendChild(style);
         script = document.createElement("script");
-        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-notice-slim");
+        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-roles-v2");
         script.dataset.sialLibraryRuntime = "true";
         document.body.appendChild(script);
       }
@@ -2188,11 +2188,11 @@ function loadLibraryTableControls() {
   document.documentElement.dataset.sialLibraryControls = "loading";
   const style = document.createElement("link");
   style.rel = "stylesheet";
-  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-notice-slim");
+  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-roles-v2");
   style.dataset.sialLibraryRuntime = "true";
   document.head.appendChild(style);
   const script = document.createElement("script");
-  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-notice-slim");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-roles-v2");
   script.dataset.sialLibraryRuntime = "true";
   document.body.appendChild(script);
   window.setTimeout(() => {
