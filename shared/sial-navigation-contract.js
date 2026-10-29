@@ -81,6 +81,7 @@ window.SIALNavigationContract = Object.freeze({
           localFolder: "Gestion de Usuarios",
           views: [
             { id: "usuarios", label: "Gestion de usuarios", href: "gestion-usuarios.html" },
+            { id: "rolesAsignaciones", label: "Roles y asignaciones", href: "roles-asignaciones.html" },
             { id: "registro", label: "Registro de usuario", href: "registro-usuario.html" },
             { id: "edicion", label: "Editar usuario", href: "editar-usuario.html" },
             { id: "permisosRol", label: "Permisos por rol", href: "gestion-permisos-rol.html" },

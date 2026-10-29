@@ -6,6 +6,7 @@ import {
   Button,
   CheckIcon,
   Chip,
+  CheckboxCard,
   CloseIcon,
   EditIcon,
   Drawer,
@@ -26,6 +27,37 @@ import {
 
 const source = "@banasandev/banasan-ui";
 const enhanced = new WeakSet();
+
+function LinkedRoleCard({ original }) {
+  const input = original.querySelector('input[type="checkbox"]');
+  const [checked, setChecked] = useState(input.checked);
+  useEffect(() => {
+    const sync = () => setChecked(input.checked);
+    input.addEventListener("change", sync);
+    return () => input.removeEventListener("change", sync);
+  }, [input]);
+  const title = original.querySelector("strong")?.textContent.trim() || "";
+  const description = original.querySelector("strong + span")?.textContent.trim() || "";
+  return <CheckboxCard value={title} title={title} isChecked={checked} onChecked={(_, next) => {
+    input.checked = next;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    setChecked(next);
+  }}>{description}</CheckboxCard>;
+}
+
+function mountRoleCard(original) {
+  if (enhanced.has(original)) return;
+  const mount = document.createElement("div");
+  mount.className = "sial-library-role-card";
+  mount.draggable = true;
+  mount.dataset.sialComponent = "CheckboxCard";
+  mount.dataset.sialSource = source;
+  original.before(mount);
+  original.classList.add("sial-native-proxy");
+  enhanced.add(original);
+  flushSync(() => createRoot(mount).render(<LinkedRoleCard original={original} />));
+  mount.querySelector('input[type="checkbox"]')?.setAttribute("aria-label", original.querySelector("strong")?.textContent.trim() || "Rol");
+}
 let filterSequence = 0;
 let tableSequence = 0;
 
@@ -805,6 +837,7 @@ export function mountLegacyTableControls() {
     document.querySelectorAll(".inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .materials-date-range .field[data-sial-form-control]").forEach(mountFormField);
     document.querySelectorAll(".adjust-request-group[data-sial-number-adapter]").forEach(mountAdjustmentNumber);
     document.querySelectorAll(".approval-availability input[data-approved][type=number]").forEach(mountApprovalNumber);
+    document.querySelectorAll("[data-sial-role-card-adapter] .role-option").forEach(mountRoleCard);
     document.querySelectorAll("main .toolbar input[data-sial-search-adapter], main .workflow-filters input[data-sial-search-adapter], main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar input[data-sial-search-adapter], main[data-sial-catalog-actions] .toolbar input[type=search]").forEach(mountSearch);
     document.querySelectorAll("button.btn[data-sial-button-adapter], article[data-sial-catalog-actions] .card-actions > button.btn, article[data-sial-catalog-actions] .inline-form-panel .form-actions > button.btn, main[data-sial-catalog-actions] .card-actions > button.btn, .form-card[data-sial-form-adapter] .form-actions > button.btn, .form-card[data-sial-form-adapter] [data-geo-locate], .form-card[data-sial-form-adapter] [data-sial-plan-action], .permission-toolbar .permission-actions > button.btn").forEach(mountButton);
     document.querySelectorAll(".drawer[data-sial-drawer-adapter]:not([data-sial-drawer-local]), main[data-sial-catalog-actions] .drawer:not([data-sial-drawer-local])").forEach(mountDetailDrawer);

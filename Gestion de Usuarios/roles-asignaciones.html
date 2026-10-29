@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIAL | Roles y asignaciones</title>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("sial-theme");
+      const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="sial-usuarios.css" />
+</head>
+<body data-view-family="gestion">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegacion principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Usuarios</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main">
+      <section class="page">
+        <p class="page-eyebrow">Usuarios / Roles y asignaciones</p>
+        <div class="page-header"><div><h1 class="page-title">Roles y asignaciones</h1><p class="page-subtitle">Consulta qué usuarios tienen cada rol y qué roles tiene cada usuario, por empresa.</p></div><a class="btn btn-secondary" href="gestion-usuarios.html">Volver a usuarios</a></div>
+        <article class="card form-card" data-sial-form-adapter>
+          <div class="form-heading"><h2>Explorar asignaciones</h2><p>Encuentra las relaciones de acceso por rol, usuario y empresa.</p></div>
+          <div class="form-body stack">
+            <div class="grid">
+              <div class="field span-4" data-sial-form-control><label class="label" for="assignmentView">Consultar por</label><select class="select" id="assignmentView"><option value="role">Rol</option><option value="user">Usuario</option></select></div>
+              <div class="field span-4" data-sial-form-control><label class="label" for="assignmentCompany">Empresa</label><select class="select" id="assignmentCompany"><option value="all">Todas las empresas</option><option>SIAL Central</option><option>Banapalma</option><option>AgroCeiba</option></select></div>
+              <div class="field span-4" data-sial-form-control><label class="label" for="assignmentSearch">Buscar</label><input class="input" id="assignmentSearch" type="text" placeholder="Buscar rol o usuario" /></div>
+            </div>
+            <div class="assignment-workspace">
+              <section class="assignment-master" aria-labelledby="assignmentResultsTitle">
+                <div class="assignment-master-heading"><h2 id="assignmentResultsTitle">Roles</h2><span id="assignmentCount" role="status" aria-live="polite"></span></div>
+                <div id="assignmentResults" class="assignment-master-list"></div>
+                <div class="assignment-pagination assignment-master-pagination"><span class="sr-only" id="assignmentRange" aria-live="polite"></span><div><button class="btn btn-secondary" type="button" id="assignmentPrevious" data-sial-button-adapter>Anterior</button><button class="btn btn-secondary" type="button" id="assignmentNext" data-sial-button-adapter>Siguiente</button></div></div>
+              </section>
+              <section class="assignment-detail" aria-labelledby="assignmentDetailTitle">
+                <h2 class="sr-only" id="assignmentDetailTitle">Selecciona un registro</h2><p class="sr-only" id="assignmentDetailSubtitle"></p>
+                <div class="assignment-detail-body"><p class="sr-only" id="detailCount" role="status" aria-live="polite"></p><div class="table-wrap"><table class="assignment-table"><thead><tr><th id="detailFirstHeading">Usuario</th><th id="detailSecondHeading">Identificación</th><th id="detailActionHeading">Acciones</th></tr></thead><tbody id="detailResults"></tbody></table></div><div class="assignment-pagination"><span id="detailRange" aria-live="polite"></span><div><button class="btn btn-secondary" id="detailPrevious" type="button" data-sial-button-adapter>Anterior</button><button class="btn btn-secondary" id="detailNext" type="button" data-sial-button-adapter>Siguiente</button></div></div></div>
+              </section>
+            </div>
+            <p class="field-note role-demo-note">Datos de demostración de la propuesta, incluidos los cambios guardados en este navegador. <a id="assignmentScenario" href="?escenario=volumen">Probar con 500 usuarios</a></p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="../shared/sial-core.js"></script>
+  <script src="sial-usuarios.js"></script>
+  <script src="roles-asignaciones.js"></script>
+  <script>SIAL.applyShell("rolesAsignaciones");</script>
+</body>
+</html>

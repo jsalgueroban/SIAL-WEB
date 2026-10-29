@@ -40,9 +40,8 @@
                 <div class="field span-6" data-sial-form-control><label class="label" for="editLastName">Apellidos</label><input class="input" id="editLastName" value="GARCIA" data-uppercase /></div>
                 <div class="field span-6" data-sial-form-control><label class="label" for="editEmail">Correo</label><input class="input" id="editEmail" value="m.garcia@sial.com" disabled /></div>
                 <div class="field span-6" data-sial-form-control><label class="label" for="editAltEmail">Correo alternativo</label><input class="input" id="editAltEmail" value="m.garcia.respaldo@sial.com" /></div>
-                <div class="field span-4" data-sial-form-control><label class="label" for="editDocument">Documento</label><input class="input" id="editDocument" value="CC 1020304050" disabled /></div>
-                <div class="field span-4" data-sial-form-control><label class="label" for="editGender">Género</label><input class="input" id="editGender" value="Femenino" disabled /></div>
-                <div class="field span-4"><label class="label">Estado</label><span class="status status-active">Activo</span></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="editDocument">Documento</label><input class="input" id="editDocument" value="CC 1020304050" disabled /></div>
+                <div class="field span-6" data-sial-form-control><label class="label" for="editGender">Género</label><input class="input" id="editGender" value="Femenino" disabled /></div>
               </div>
               <p class="field-note is-hidden" id="formOk" role="status">Datos básicos revisados en esta propuesta; los cambios no se guardan en el sistema real.</p>
               <div class="form-actions"><a class="btn btn-secondary" href="gestion-usuarios.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar formulario</button><button class="btn btn-primary" type="submit">Guardar datos básicos</button></div>
@@ -50,7 +49,7 @@
           </div>
         </article>
 
-        <article class="card form-card relation-wide">
+        <article class="card form-card relation-wide" data-sial-form-adapter>
           <div class="form-heading">
             <h2>Empresas y roles del usuario</h2>
             <p>Gestion relacional por empresa. Selecciona una empresa, revisa roles disponibles y guarda cambios solo para esa relacion.</p>
@@ -58,24 +57,26 @@
           <div class="form-body stack">
             <p class="field-note">El usuario debe conservar al menos una empresa activa con uno o más roles vigentes.</p>
             <div class="grid">
-              <div class="field span-6"><label class="label" for="companyEdit">Empresa</label><select class="select" id="companyEdit"><option>SIAL Central</option><option>Banapalma</option><option>AgroCeiba</option></select><div class="field-note">Al cambiar la empresa se cargan sus roles disponibles y asignados.</div></div>
-              <div class="field span-3"><label class="label">Estado relacion</label><span class="status status-active">Activo</span><div class="field-note">Asignable al usuario.</div></div>
-              <div class="field span-3"><label class="label">Ultima auditoria</label><input class="input" value="25/04/2026 14:12" disabled /></div>
+              <div class="field span-6" data-sial-form-control><label class="label" for="companyEdit">Empresa</label><select class="select" id="companyEdit"><option>SIAL Central</option><option>Banapalma</option><option>AgroCeiba</option></select><div class="field-note">Al cambiar la empresa se cargan sus roles disponibles y asignados.</div></div>
+              <div class="field span-6" data-sial-form-control><label class="label" for="relationAudit">Última auditoría</label><input class="input" id="relationAudit" value="25/04/2026 14:12" disabled /></div>
             </div>
 
-            <div class="role-management-grid">
-              <section class="role-box">
+            <div class="role-management-grid" data-sial-role-card-adapter>
+              <section class="role-box" id="availableRoles">
                 <p class="role-box-title">Roles disponibles en la empresa</p>
                 <label class="role-option"><input type="checkbox"><span><strong>Consulta auditoria</strong><span>Consulta trazabilidad y reportes.</span></span></label>
                 <label class="role-option"><input type="checkbox"><span><strong>Coordinador logistico</strong><span>Gestiona flujos operativos.</span></span></label>
                 <label class="role-option"><input type="checkbox"><span><strong>Gestor documental</strong><span>Administra soportes y documentos.</span></span></label>
               </section>
-              <section class="role-box">
+              <section class="role-box" id="assignedRoles">
                 <p class="role-box-title">Roles asignados al usuario</p>
                 <label class="role-option"><input type="checkbox" checked><span><strong>Administrador general</strong><span>Acceso administrativo completo.</span></span></label>
                 <label class="role-option"><input type="checkbox" checked><span><strong>Seguridad y roles</strong><span>Gestion de usuarios, roles y permisos.</span></span></label>
               </section>
             </div>
+            <p class="field-note">Selecciona uno o varios roles para moverlos, o arrástralos a la otra lista.</p>
+            <div class="form-actions"><button class="btn btn-secondary" data-sial-button-adapter id="addSelectedRoles" type="button">Agregar seleccionados</button><button class="btn btn-secondary" data-sial-button-adapter id="removeSelectedRoles" type="button">Quitar seleccionados</button></div>
+            <p class="field-note" id="roleEditFeedback" role="status" aria-live="polite"></p>
 
             <div class="assignment-summary">
               <div class="card-header relation-summary-head">
@@ -83,15 +84,15 @@
                   <h3 class="card-title">Relaciones actuales</h3>
                   <p class="card-subtitle">Resumen editable de empresas donde el usuario tiene acceso.</p>
                 </div>
-                <span class="chip">2 relaciones activas</span>
+                <span class="status status-info" data-sial-chip-adapter>2 relaciones activas</span>
               </div>
-              <div class="assignment-list">
-                <div class="assignment-item"><div><strong>SIAL Central</strong><div class="muted">Administrador general, Seguridad y roles</div></div><div class="assignment-actions"><button class="btn btn-secondary" type="button">Editar</button><button class="btn btn-secondary" type="button">Quitar</button></div></div>
-                <div class="assignment-item"><div><strong>Banapalma</strong><div class="muted">Supervisor campo</div></div><div class="assignment-actions"><button class="btn btn-secondary" type="button">Editar</button><button class="btn btn-secondary" type="button">Quitar</button></div></div>
+              <div class="assignment-list" id="userRelations">
+                <div class="assignment-item"><div><strong>SIAL Central</strong><div class="muted">Administrador general, Seguridad y roles</div></div><div class="assignment-actions"><button class="btn btn-secondary" data-sial-button-adapter type="button">Editar</button><button class="btn btn-secondary" data-sial-button-adapter type="button">Quitar</button></div></div>
+                <div class="assignment-item"><div><strong>Banapalma</strong><div class="muted">Supervisor campo</div></div><div class="assignment-actions"><button class="btn btn-secondary" data-sial-button-adapter type="button">Editar</button><button class="btn btn-secondary" data-sial-button-adapter type="button">Quitar</button></div></div>
               </div>
             </div>
 
-            <div class="form-actions"><a class="btn btn-secondary" href="gestion-usuarios.html">Cancelar</a><button class="btn btn-secondary" type="button">Restaurar roles</button><button class="btn btn-primary" type="button">Guardar roles de empresa</button></div>
+            <div class="form-actions"><a class="btn btn-secondary" href="gestion-usuarios.html">Cancelar</a><button class="btn btn-secondary" type="button" id="restoreUserRoles">Restaurar roles</button><button class="btn btn-primary" type="button" id="saveUserRoles">Guardar roles de empresa</button></div>
           </div>
         </article>
       </section>
@@ -99,6 +100,7 @@
   </div>
   <script src="../shared/sial-core.js"></script>
   <script src="sial-usuarios.js"></script>
+  <script src="user-role-prototype.js"></script>
   <script>SIAL.applyShell("edicion"); SIAL.initBasicFormValidation();</script>
 </body>
 </html>
