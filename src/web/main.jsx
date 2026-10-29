@@ -6,6 +6,7 @@ import "./notice-preview.css";
 import { OrderCategories } from "./order-categories.jsx";
 import { TransportCatalog } from "./transport-catalogs.jsx";
 import { mountLegacyTableControls } from "./legacy-table-controls.jsx";
+import { mountAssignmentComponents } from "./assignment-components.jsx";
 import { KnownDevices } from "./known-devices.jsx";
 import { mountShell } from "./shell-navigation.jsx";
 import { MaterialsInventory } from "./materials-inventory.jsx";
@@ -79,6 +80,7 @@ function mountStandaloneBrands() {
 function mountProposalViews() {
   mountStandaloneBrands();
   if (!/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname)) mountLegacyTableControls();
+  mountAssignmentComponents();
   document.querySelectorAll("[data-sial-react-view]").forEach((element) => {
     const View = mounts[element.dataset.sialReactView];
     if (!View || element.dataset.sialMounted === "true") return;

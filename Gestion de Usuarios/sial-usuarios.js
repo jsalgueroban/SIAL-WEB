@@ -502,8 +502,23 @@ const SIAL = (() => {
     const empty = qs("#permissionEmpty");
     if (!saveButton || !roleSelect || !matrix) return;
 
-    let activeRoleId = permissionRoles[0]?.id || "";
-    let originalPermissions = new Set(permissionRoles[0]?.permissions || []);
+    const permissionsKey = "sial-proposal-role-permissions-v1";
+    const persistenceStatus = qs("#permissionPersistenceStatus");
+    let storageAvailable = true;
+    try {
+      const stored = JSON.parse(localStorage.getItem(permissionsKey) || "{}");
+      if (!stored || typeof stored !== "object" || Array.isArray(stored)) throw new Error();
+      permissionRoles.forEach(role => {
+        if (stored[role.id] && Array.isArray(stored[role.id].permissions)) Object.assign(role, stored[role.id]);
+      });
+    } catch {
+      storageAvailable = false;
+      if (persistenceStatus) persistenceStatus.textContent = "No se pudieron leer los permisos guardados en este navegador.";
+    }
+
+    const requestedRole = new URLSearchParams(location.search).get("rol");
+    let activeRoleId = permissionRoles.some(role => role.id === requestedRole) ? requestedRole : (permissionRoles[0]?.id || "");
+    let originalPermissions = new Set(permissionRoles.find(role => role.id === activeRoleId)?.permissions || []);
     let workingPermissions = new Set(originalPermissions);
 
     const currentRole = () => permissionRoles.find((role) => role.id === activeRoleId) || permissionRoles[0];
@@ -559,6 +574,8 @@ const SIAL = (() => {
       if (selectedMeta) {
         selectedMeta.textContent = `${role.company} - ${role.users} usuario${role.users === 1 ? "" : "s"} - ${role.statusLabel} - ${activePermissionCount()} permisos activos`;
       }
+      const assignments = qs("#viewRoleAssignments");
+      if (assignments) assignments.href = `roles-asignaciones.html?empresa=${encodeURIComponent(role.company)}&rol=${encodeURIComponent(role.name)}`;
     }
 
     function renderChanges() {
@@ -664,6 +681,8 @@ const SIAL = (() => {
       const role = currentRole();
       const changes = getChanges();
       if (!role || changes.total === 0) return;
+      if (!storageAvailable) { if (persistenceStatus) persistenceStatus.textContent = "No se pueden guardar los cambios mientras el almacenamiento local no esté disponible."; return; }
+      const previous = {permissions: role.permissions, updatedBy: role.updatedBy, updatedAt: role.updatedAt, audit: role.audit};
       role.permissions = Array.from(workingPermissions);
       role.updatedBy = "prototipo.ui";
       role.updatedAt = new Date().toLocaleString("es-CO", {
@@ -677,6 +696,17 @@ const SIAL = (() => {
         [`${changes.total} cambio${changes.total === 1 ? "" : "s"} de permisos guardado${changes.total === 1 ? "" : "s"}`, `${role.updatedBy} - ${role.updatedAt}`],
         ...role.audit
       ].slice(0, 4);
+      try {
+        const all = JSON.parse(localStorage.getItem(permissionsKey) || "{}");
+        if (!all || typeof all !== "object" || Array.isArray(all)) throw new Error();
+        all[role.id] = {permissions:role.permissions, updatedBy:role.updatedBy, updatedAt:role.updatedAt, audit:role.audit};
+        localStorage.setItem(permissionsKey, JSON.stringify(all));
+        if (persistenceStatus) persistenceStatus.textContent = "Permisos guardados en este navegador; el sistema real no se modificó.";
+      } catch {
+        Object.assign(role, previous);
+        if (persistenceStatus) persistenceStatus.textContent = "No se pudieron guardar los permisos en este navegador.";
+        return;
+      }
       originalPermissions = new Set(role.permissions);
       workingPermissions = new Set(originalPermissions);
       renderAll();
