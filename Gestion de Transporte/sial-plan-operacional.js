@@ -10,6 +10,7 @@
     own: ["TRK-421 · TRANSLOGISTICA SAS", "CAM-102 · Carga Pesada Ltda.", "CMN-204 · OPERADOR CARIBE SAS"],
     external: ["EXT-014 · Transportadora Caribe", "EXT-021 · Carga Sierra"]
   };
+  if (new URLSearchParams(location.search).get("escenario") === "disponible") vehicles.own.push("DEMO-001 · DEMOSTRACIÓN");
   const seedPrograms = [
     { id: "POM-2026-014", driver: "Carlos Méndez", vehicle: "TRK-421 · TRANSLOGISTICA SAS", trips: [{ documentId: "REM-2026-0184", date: "2026-10-14T07:30" }], status: "Programado" },
     { id: "POM-2026-013", driver: "Ana Lucía Paz", vehicle: "CMN-204 · OPERADOR CARIBE SAS", trips: [{ documentId: "RTP-2026-0881", date: "2026-10-13T08:00" }], status: "En curso" }
@@ -215,15 +216,30 @@
     event.preventDefault();
     if (!byId("driver").value) { showMessage("Selecciona el conductor."); focusControl("driver"); return; }
     if (!byId("vehicle").value) { showMessage("Selecciona el vehículo antes de agregar documentos."); focusControl("vehicle"); return; }
+    const plate = byId("vehicle").value.split("·")[0].trim();
+    const availability = window.TransportAvailability?.get(plate);
+    if (!availability) { showMessage("No se pudo consultar la disponibilidad del vehículo."); focusControl("vehicle"); return; }
+    if (availability.eligible === "blocked") { showMessage(`El vehículo no está disponible: ${availability.signals.join(" ")}`); focusControl("vehicle"); return; }
     if (!trips.length) { showMessage("Agrega al menos un documento para programar un viaje."); focusControl("sourceDocument"); return; }
     if (trips.some((trip) => !trip.date)) { showMessage("Indica fecha y hora para cada viaje."); byId("tripRows").querySelectorAll("input")[trips.findIndex((trip) => !trip.date)].focus(); return; }
     for (let index = 1; index < trips.length; index += 1) {
       if (trips[index].date <= trips[index - 1].date) { showMessage("Las fechas deben seguir el orden de los viajes."); byId("tripRows").querySelectorAll("input")[index].focus(); return; }
     }
-    const next = Math.max(0, ...programs.map((item) => Number(item.id.split("-").pop()) || 0)) + 1;
-    programs.unshift({ id: `POM-2026-${String(next).padStart(3, "0")}`, driver: byId("driver").value, vehicle: byId("vehicle").value,
-      trips: trips.map((item) => ({ ...item })), status: "Programado", observations: byId("operationObservations").value.trim() });
-    localStorage.setItem(storageKey, JSON.stringify(programs));
+    let latest;
+    try {
+      const saved = localStorage.getItem(storageKey);
+      latest = saved === null ? programs : JSON.parse(saved);
+      if (!Array.isArray(latest)) throw new Error("invalid data");
+    } catch { showMessage("No se pudieron leer las programaciones guardadas. No se guardó el traslado."); return; }
+    const occupied = new Set(latest.filter(item => item.status !== "Finalizado").flatMap(item => (item.trips || []).map(trip => trip.documentId)));
+    if (trips.some(trip => occupied.has(trip.documentId))) { showMessage("Un documento ya fue programado en otra sesión. Actualiza la vista antes de continuar."); return; }
+    const next = Math.max(0, ...latest.map((item) => Number(item.id.split("-").pop()) || 0)) + 1;
+    const created = { id: `POM-2026-${String(next).padStart(3, "0")}`, driver: byId("driver").value, vehicle: byId("vehicle").value,
+      trips: trips.map((item) => ({ ...item })), status: "Programado", observations: byId("operationObservations").value.trim() };
+    try { localStorage.setItem(storageKey, JSON.stringify([created, ...latest])); }
+    catch { window.TransportFeedback?.show("No se pudo guardar", "error", "Intenta nuevamente. La programación no se guardó."); return; }
+    programs = [created, ...latest];
+    window.TransportFeedback?.show("Traslado programado");
     byId("programSearch").value = "";
     byId("programStatus").value = "all";
     byId("programSearch").dispatchEvent(new Event("input", { bubbles: true }));

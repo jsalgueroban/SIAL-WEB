@@ -1,4 +1,32 @@
+## Actualización vigente · 04/11/2026
+
+Inicio cerrado con aprobación visual explícita del usuario. Evidencia y alcance en [cierre de Inicio](cierre-inicio-2026-11-04.md). Se conserva bloque único de accesos, calendario compacto e isotipo3D. Siguiente pendiente documentado de Seguridad: Generar documento POMA y vista de documento; contrastar con proyecto real antes de evolucionar. La normalización global sigue abierta. Los cortes anteriores se conservan como históricos.
+
 # Normalización visual Web — estado de ejecución
+
+## Actualización vigente · 03/11/2026 — Seguridad adaptada al producto
+
+Base de las tres vistas lista para revisión visual, antes de iniciar evolución. Componentes y JSX contrastados con fe-sial-web 4dfeb23d; puente de datos simulado. Sustituye las conclusiones de normalización anteriores de Seguridad. [Mapeo, verificación y límites](adaptacion-seguridad-producto-2026-11-03.md). La normalización global sigue abierta.
+
+## Revisión de alcance · 03/11/2026 — Seguridad requiere alineación
+
+La comparación solicitada con `fe-sial-web` detectó diferencias de estructura y cobertura: seguimiento de contenedores con historial, etiquetas, sellos e informe; vista separada de vehículos ausente; POMA por cargue/tramo frente a la salida única de la propuesta. La aprobación de evidencias simulada no aparece en la feature real. El catálogo instalado sí incluye componentes de auditoría no usados. La entrega inferior acredita normalización visual local, no alineación con producto. Estado: **En Progreso**, preparando evolución basada en [análisis del proyecto real](analisis-seguridad-producto-2026-11-03.md).
+
+## Actualización · 03/11/2026 — Seguridad en revisión
+
+Siguiente bloque confirmado por navegación: Seguridad. Auditoría operativa, Generar POMA, entrada y vista auxiliar revisadas. Componentes publicados, filtros animados, confirmación/toast de aprobación y generación, tabla paginada y PDF de demostración. Build, gate y recorridos dirigidos completados; revisión visual de John pendiente. Detalles y excepciones en [decisión de Seguridad](decision-normalizacion-seguridad-2026-11-03.md). Puerto permanece cerrado; la tarea global continúa abierta.
+
+## Actualización · 03/11/2026 — cierre de Operaciones Puerto
+
+Operaciones Puerto queda cerrado en normalización visual con aprobación explícita de John en el chat, posterior al ajuste del chip «En finca». Cobertura: Contenedores, Programación, Trazabilidad de pallets, Tipos, Etapas y Puertos. Componentes, recorridos y evidencia en [decisión de Puerto](decision-normalizacion-puerto-2026-11-03.md). El cierre conserva el alcance de propuesta y no acredita publicación remota ni integraciones productivas.
+
+La tarea global permanece En Progreso. Continuidad acordada: terminar los bloques de normalización restantes antes de iniciar la mejora de vistas y flujos específicos. En esa segunda etapa, analizar la tarea de negocio y el recorrido de cada caso; distinguir decisiones específicas de vista, patrones de familia y criterios compartidos. Reutilizar componentes y comportamiento común donde corresponda, sin convertir automáticamente una solución local en regla global. Conservar los módulos aprobados como base y documentar cada evolución y su nueva revisión visual.
+
+SELF: cierre documental acotado y conciliación de la tarea existente; sin cambios de UI ni necesidad de delegación.
+
+## Actualización · 01/11/2026
+
+Gestión de Planeación: normalización visual cerrada con aprobación explícita de John. Incluye bandeja, creación/importación/corrección y consulta de avisos, semanas, generación y cintas. Evidencia y límites en [cierre de Planeación](cierre-tecnico-planeacion-2026-11-01.md). Build y gate 45/45 aprobados; sin publicación remota en este cierre. Siguiente bloque: Gestión de Operaciones Puerto, retomando su trabajo previo. La normalización global permanece abierta. Los cortes inferiores son históricos.
 
 ## Corte vigente · 28/10/2026
 
@@ -81,3 +109,4 @@ John pidió después aprovechar el ancho con dos documentos lado a lado, permiti
 **Revisión posterior del 27/10:** John pidió mejorar los botones de acción internos y distinguir más la fila seleccionada del contenido documental. Se igualó la altura de «Ver PDF» y «Abrir proceso», se dio jerarquía primaria al enlace de gestión y se separó el bloque con fondo de superficie, divisor neutro y más espacio. La aprobación anterior queda como evidencia histórica; esta revisión espera una nueva decisión visual antes de publicar.
 
 **Aprobación final de la revisión HU546, 27/10:** John aprobó los botones y la separación. La evidencia técnica permanece en `decision-hu546-documentos-2026-10-27.md`; la publicación se confirma por el commit presente en las ramas remotas, no por este registro local.
+

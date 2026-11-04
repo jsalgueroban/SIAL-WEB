@@ -1,0 +1,15 @@
+.metric-v2 .metric-example { grid-template-columns: repeat(2, minmax(0, 280px)); }
+.metric-v2 .metric-mini { min-height: 82px; padding: 13px 15px; }
+.metric-v2 .metric-mini-label { display: block; color: var(--color-text); font-size: 13px; line-height: 1.35; font-weight: 600; letter-spacing: 0; }
+.metric-v2 .metric-mini-note { color: var(--color-text-2); font-size: 12px; line-height: 1.4; font-weight: 400; }
+.metric-v2 .metric-mini-value { font-size: 24px; line-height: 1; font-weight: 600; color: var(--color-text); }
+.metric-a1 { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.metric-a1 .metric-mini-note { margin-top: 4px; }
+.metric-a2 { display: flex; align-items: center; gap: 14px; }
+.metric-a2 .metric-mini-value { min-width: 40px; }
+.metric-a2 .metric-mini-note { margin-top: 4px; }
+.metric-a3 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; align-content: center; align-items: baseline; }
+.metric-a3 .metric-mini-label { grid-column: 1 / -1; }
+.metric-a3 .metric-mini-value { grid-column: 1; grid-row: 2; }
+.metric-a3 .metric-mini-note { grid-column: 2; grid-row: 2; text-align: right; }
+@media (max-width: 560px) { .metric-v2 .metric-example { grid-template-columns: 1fr; } }

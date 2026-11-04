@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Gestion de usuarios</title>
+  <title>SIAL | Gestión de usuarios</title>
   <script>
     (function () {
       const savedTheme = localStorage.getItem("sial-theme");
@@ -11,26 +11,26 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-usuarios.css?v=20261029-roles-v2" />
+  <link rel="stylesheet" href="sial-usuarios.css?v=20261030-users2" />
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Navegacion principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Usuarios</p><nav data-nav></nav></aside>
-    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Usuarios</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
     <main class="main">
       <section class="page">
         <p class="page-eyebrow">HU / Usuarios</p>
-        <div class="page-header"><div><h1 class="page-title">Gestion de usuarios y roles por empresa</h1><p class="page-subtitle">Propuesta HTML funcional alineada al documento base. El registro conserva la relacion acumulativa empresa + roles requerida por el flujo actual del sistema.</p></div><a class="btn btn-primary" href="gestion-usuarios.html">Abrir gestion</a></div>
+        <div class="page-header"><div><h1 class="page-title">Gestión de usuarios y roles por empresa</h1><p class="page-subtitle">Propuesta HTML funcional alineada al documento base. El registro conserva la relación acumulativa empresa + roles requerida por el flujo actual del sistema.</p></div><a class="btn btn-primary" href="gestion-usuarios.html">Abrir gestión</a></div>
         <div class="stats">
           <article class="stat"><label>Familia principal</label><strong>Listado</strong><span>Tabla de usuarios con acciones, estado y detalle lateral.</span></article>
-          <article class="stat"><label>Registro</label><strong>Extenso</strong><span>Datos personales, acceso y asignacion operativa.</span></article>
+          <article class="stat"><label>Registro</label><strong>Extenso</strong><span>Datos personales, acceso y asignación operativa.</span></article>
           <article class="stat"><label>Relacion</label><strong>Empresa + roles</strong><span>Roles cargados segun empresa seleccionada.</span></article>
-          <article class="stat"><label>Permiso</label><strong>Admin</strong><span>Gestion restringida a perfiles administrativos.</span></article>
+          <article class="stat"><label>Permiso</label><strong>Admin</strong><span>Gestión restringida a perfiles administrativos.</span></article>
         </div>
         <article class="card">
-          <div class="card-header"><div><h2 class="card-title">Vistas generadas</h2><p class="card-subtitle">Navegacion local del modulo Usuarios.</p></div></div>
+          <div class="card-header"><div><h2 class="card-title">Vistas generadas</h2><p class="card-subtitle">Navegación local del módulo Usuarios.</p></div></div>
           <div class="card-body stack">
-            <a class="nav-link active" href="gestion-usuarios.html">Gestion de usuarios</a>
+            <a class="nav-link active" href="gestion-usuarios.html">Gestión de usuarios</a>
             <a class="nav-link" href="roles-asignaciones.html">Roles y asignaciones</a>
             <a class="nav-link" href="registro-usuario.html">Registro de usuario</a>
             <a class="nav-link" href="editar-usuario.html">Editar usuario</a>
@@ -40,8 +40,8 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js?v=20261029-roles-v2"></script>
-  <script src="sial-usuarios.js?v=20261029-roles-v2"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="sial-usuarios.js?v=20261030-users2"></script>
   <script>SIAL.applyShell("");</script>
 </body>
 </html>

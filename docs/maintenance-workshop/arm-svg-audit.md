@@ -1,0 +1,13 @@
+# Revisión por cuadros del brazo — 2026-10-30
+
+Petición: inspeccionar el brazo en todos los cuadros, especialmente golpe/carrera/soldadura. Perfil Web de revisión local de propuesta elegida, con Dona, sial-design-proposals y contrato maestro de sial-web-library. SELF: auditoría del renderer y estado locales, sin beneficio independiente de delegación. No se promociona código de librería ni se publica.
+
+Se añade mantenimiento-revision-brazo.html, accesible desde el pie del taller y con regreso a la animación. Monta el mismo MaintenanceWorker que la escena, sin duplicar sus paths ni su coreografía. El inspector ofrece selección de escena/cuadro, avance de uno en uno y ampliación opcional del personaje distante. Esa ampliación sólo afecta a la vista de inspección; las mediciones usan la escala, posición y giro reales de cada cuadro.
+
+El propio documento ejecuta getCTM/isPointInFill en el navegador. Así se supera la limitación del adaptador CUA, que no expone esas operaciones para evaluación externa. Se renderizan y miden lotes de24 SVG:1740 cuadros del taller y840 de soldadura. Cada uno comprueba centro y112 muestras de raíz dentro de los dos paths del cuerpo; igualdad de posiciones de muñeca de brazo/mano; intersección real de sus rellenos en132 puntos de la zona de agarre; matriz rígida relativa al torso; y trayectorias locales de codo/muñeca. Las manos transparentes se excluyen del solape.
+
+Resultado:2580 cuadros, cero cuadros con fallos detectados;288960 muestras de raíz, cobertura mínima96.43%; separación máxima de muñeca0px; al menos73 muestras de solape por cuadro. Distorsión máxima4.44e-16 (error numérico de punto flotante). No se modifica nuevamente la geometría del brazo porque no se encontró un fallo de estas uniones.
+
+Transiciones medidas respecto al torso:270–510 incluye el reflejo intencional de la explosión (máxima velocidad8.882 unidades/cuadro en310);760–1040 incluye frenado y vuelta a trabajo (3.601 en771);1000–1080 incluye cambio a soldadura (0.379 en1019). No se usan estos valores como certificación automática de naturalidad. Revisión visual representativa:474,494,779,804,1031; poses distantes ampliadas en494. La anatomía del maestro y el bucle elegido se conservan.
+
+Informe reproducible completo: arm-frame-audit.json, con resultados de cada cuadro, ventanas de transición y hash del maestro. 24 pruebas Node y build Vite aprobados. Estado de la tarea del taller: En Revisión, pendiente valoración estética. No se afirma que cada cuadro haya sido inspeccionado manualmente ni que la validación geométrica determine por sí sola la calidad expresiva.

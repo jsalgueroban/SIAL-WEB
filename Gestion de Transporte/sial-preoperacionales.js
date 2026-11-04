@@ -39,6 +39,18 @@
     "INSP-2026-039": { vehicle: "FLT-001", type: "Camión", driver: "Jorge López", date: "13/10/2026 · 07:10", status: "No apta", style: "status-inactive", program: "Sin programación cargada", findings: { "Frenos": "Respuesta irregular en prueba.", "Líquido de frenos": "Nivel por debajo del mínimo.", "Estado de llantas": "Desgaste visible." }, history: [["13/10 · 07:10", "Inspección registrada por Jorge López."], ["13/10 · 07:30", "Vehículo señalado como no apto para esta operación."]] },
     "INSP-2026-038": { vehicle: "TRK-422", type: "Tractomula", driver: "Luis Herrera", date: "13/10/2026 · 06:20", status: "Pendiente", style: "status-warning", program: "Sin programación cargada", findings: { "Extintor vigente": "Soporte de vigencia por confirmar." }, history: [["13/10 · 06:20", "Inspección registrada por Luis Herrera."]] }
   };
+  // Los ejemplos no contienen evento de resolución; no prueban una liberación.
+  window.SIALPreopEvidence = {
+    unresolvedForVehicle(plate) {
+      const value = String(plate || '').trim().toUpperCase();
+      return Object.entries(examples)
+        .filter(([, item]) => item.vehicle.toUpperCase() === value && item.status === 'No apta')
+        .map(([id]) => ({ id, status: 'No apta' }));
+    },
+    vehiclesWithUnresolved() {
+      return [...new Set(Object.values(examples).filter(item => item.status === 'No apta').map(item => item.vehicle))];
+    }
+  };
   const escape = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   function initDetail() {
     const id = new URLSearchParams(location.search).get("id") || "INSP-2026-041";

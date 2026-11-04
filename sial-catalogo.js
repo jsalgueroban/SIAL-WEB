@@ -1,5 +1,5 @@
 const SIALCatalog = (() => {
-  const views = [
+  const views = [{module:"inicio",moduleLabel:"Inicio",title:"Inicio SIAL",family:"inicio",status:"implementada",href:"inicio.html",description:"Base trasladada del inicio real: bienvenida, accesos, contexto y áreas disponibles.",tags:["Inicio","Base real"]},
     {
       module: "libreria",
       moduleLabel: "Libreria UI",

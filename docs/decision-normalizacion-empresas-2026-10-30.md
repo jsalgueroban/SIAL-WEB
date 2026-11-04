@@ -1,0 +1,18 @@
+# Normalización visual · Gestión de Empresas · 30/10/2026
+
+Alcance: propuesta Web, dirección visual y componentes existentes. Se incluyen las diez vistas de `Gestion de Empresas` y las dos vistas de tipos y relación empresa–tipo alojadas en Transporte. La animación de filtros se reutiliza desde el recurso compartido; no se cambió la librería publicada. Delegación: SELF, por interacción y estado compartidos en el entorno local.
+
+- Feedback de empresa, contacto, cliente, dependencia y roles: confirmación accesible con botones de librería, Toast posterior a guardar y mensaje de error ante fallo. Se eliminó una doble confirmación y se centró el diálogo. Se comprobaron inactivación en las cinco vistas, Escape y fallo de almacenamiento en empresa.
+- Asignación de roles y alertas por contacto: Toast tras guardar; se comprobó cada recorrido. La lectura de roles conserva asignaciones anteriores con y sin tildes.
+- Tipos de empresa y relación empresa–tipo: antes solo validaban una vista previa. Ahora permiten alta, edición, duplicados y cambio de estado en almacenamiento local, con confirmación y feedback. Se comprobaron alta y edición en ambas, duplicado en relación, cambio de estado y fallos de escritura.
+- Textos estáticos y etiquetas de navegación corregidos en el alcance revisado. Los datos de demostración y algunos textos dinámicos conservan contenido previo; no se certifica corrección ortográfica exhaustiva.
+- Ocho bandejas con búsqueda: limpieza comprobada a 390 px con movimiento reducido; animación de entrada observada en las seis bandejas principales. 12 rutas × 1280/390: sin fallos de carga, error JavaScript capturado ni desborde documental. Esta prueba no acredita todos los estados, modos de teclado ni una revisión visual humana completa.
+- Gate transversal previo 45/45 después del ajuste del core y antes de añadir el catálogo local; los flujos añadidos se verificaron por separado. Se comprobó regresión de cambio de estado en Conductores. La propuesta permanece local y pendiente de revisión visual de John.
+
+Continuación: se validaron el alta de empresa y contacto con Toast tras navegación, la edición de relación y la recuperación de estados de catálogo guardados previamente. Las etiquetas con tildes conservan el valor anterior de la dependencia del contacto y la comparación de roles normaliza acentos para no perder selecciones guardadas. El catálogo restaura los estados heredados y muestra la acción correcta; se probó activar y recargar. Las dos vistas añadidas se volvieron a abrir a 1280 y 390 sin errores ni desborde. Los recorridos son demostrativos y no se presume aprobación visual del usuario.
+
+## Cierre de Gestión de Empresas · 30/10/2026
+
+John revisó visualmente el módulo y solicitó cerrarlo con los ajustes de roles. Se alineó el botón Roles con los campos de filtros y se retiró el estado de empresa de la vista de asignación. Se incorporó en la propuesta el patrón GroupMove como copia local del candidato de librería, sin publicar ni modificar el paquete publicado.
+
+Se comprobó movimiento por arrastre, teclado y táctil; Escape, foco, estado vacío, guardado local, recarga, aviso y movimiento reducido. Las 12 rutas del módulo y Conductores cargaron a 1280 y 390 px sin errores JavaScript capturados ni desborde; el gate transversal pasó 45/45. La revisión visual de John precedió estos últimos ajustes, que se verificaron durante esta sesión. Por su instrucción se cierra la normalización UI del módulo; los cambios permanecen locales y sin publicar.

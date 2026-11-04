@@ -1,3 +1,5 @@
 @import url("../shared/sial-core.css");
 
 /* En empresas, este archivo conserva excepciones necesarias. */
+
+.company-toolbar > a[href="roles-empresa.html"] { align-self: end; }

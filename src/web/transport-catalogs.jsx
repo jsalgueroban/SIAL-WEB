@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { TableFilterReset } from "./table-filter-reset.jsx";
 import {
   Button,
@@ -13,6 +14,7 @@ import {
   Table,
   TableRowActions,
   TextInput,
+  Toast,
   ViewIcon
 } from "@banasandev/banasan-ui";
 
@@ -82,15 +84,24 @@ function Audit({ item }) {
 
 function StatusConfirmation({ item, onCancel, onConfirm, label }) {
   const cancelRef = useRef(null);
+  const dialogRef = useRef(null);
   useEffect(() => {
     cancelRef.current?.querySelector("button")?.focus();
-    const onEscape = (event) => { if (event.key === "Escape") onCancel(); };
-    document.addEventListener("keydown", onEscape);
-    return () => document.removeEventListener("keydown", onEscape);
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") { event.preventDefault(); onCancel(); return; }
+      if (event.key !== "Tab") return;
+      const controls = Array.from(dialogRef.current?.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])') || []);
+      if (!controls.length) { event.preventDefault(); return; }
+      const index = controls.indexOf(document.activeElement);
+      if (event.shiftKey && index <= 0) { event.preventDefault(); controls[controls.length - 1].focus(); }
+      else if (!event.shiftKey && (index < 0 || index === controls.length - 1)) { event.preventDefault(); controls[0].focus(); }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [onCancel]);
   const verb = item.status ? "Inactivar" : "Activar";
   return <div className="sial-ui-master-confirm-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onCancel(); }}>
-    <section className="sial-ui-master-confirm" role="alertdialog" aria-modal="true" aria-labelledby="status-confirm-title" aria-describedby="status-confirm-description">
+    <section ref={dialogRef} className="sial-ui-master-confirm" role="alertdialog" aria-modal="true" aria-labelledby="status-confirm-title" aria-describedby="status-confirm-description">
       <h2 id="status-confirm-title">{verb} {label}</h2>
       <p id="status-confirm-description">{item.status ? "El registro seguirá disponible para consulta, pero no para nuevas asignaciones." : "El registro volverá a estar disponible para nuevas asignaciones."}</p>
       <div className="sial-ui-master-confirm-actions"><span ref={cancelRef}><Button variant="outlined" onClick={onCancel}>Cancelar</Button></span><Button variant="filled" onClick={onConfirm}>{verb} {label}</Button></div>
@@ -112,6 +123,12 @@ export function TransportCatalog({ catalog }) {
   const [errors, setErrors] = useState({});
   const [detailCode, setDetailCode] = useState(null);
   const [confirmCode, setConfirmCode] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  useEffect(() => {
+    if (!feedback) return;
+    const timer = window.setTimeout(() => setFeedback(null), 5000);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
   useEffect(() => {
     if (!formMode) return;
     for (const field of ["code", "name", "description"]) {
@@ -145,8 +162,14 @@ export function TransportCatalog({ catalog }) {
   const confirmation = rows.find((item) => item.code === confirmCode);
 
   function persist(next) {
-    setRows(next);
-    localStorage.setItem(config.storage, JSON.stringify(next));
+    try {
+      localStorage.setItem(config.storage, JSON.stringify(next));
+      setRows(next);
+      return true;
+    } catch {
+      setFeedback({ variant: "error", title: "No se pudo guardar", description: "Intenta nuevamente. Los cambios no se guardaron." });
+      return false;
+    }
   }
   function closeForm() {
     setFormMode(null);
@@ -189,17 +212,19 @@ export function TransportCatalog({ catalog }) {
     if (formMode === "edit") {
       const previous = rows.find((item) => item.code === code);
       if (previous.name === name && previous.description === description) { setErrors({ form: "No hay cambios para guardar." }); return; }
-      persist(rows.map((item) => item.code === code ? { ...item, name: isVehicle ? name : undefined, description: isVehicle ? description.toUpperCase() : description, audit, history: [...historyOf(item), audit] } : item));
+      if (!persist(rows.map((item) => item.code === code ? { ...item, name: isVehicle ? name : undefined, description: isVehicle ? description.toUpperCase() : description, audit, history: [...historyOf(item), audit] } : item))) return;
     } else {
-      persist([{ code, ...(isVehicle ? { name, usageCount: 0 } : {}), description: isVehicle ? description.toUpperCase() : description, status: true, audit, history: [audit] }, ...rows]);
+      if (!persist([{ code, ...(isVehicle ? { name, usageCount: 0 } : {}), description: isVehicle ? description.toUpperCase() : description, status: true, audit, history: [audit] }, ...rows])) return;
       setPage(1);
     }
+    setFeedback({ variant: "success", title: formMode === "edit" ? "Cambios guardados" : isVehicle ? "Tipo registrado" : "Categoría registrada" });
     closeForm();
   }
   function confirmStatus() {
     if (!confirmation) return;
     const audit = `${confirmation.status ? "Inactivar" : "Activar"} · admin.transportes · ${new Date().toLocaleString("es-CO")}`;
-    persist(rows.map((item) => item.code === confirmation.code ? { ...item, status: !item.status, audit, history: [...historyOf(item), audit] } : item));
+    if (!persist(rows.map((item) => item.code === confirmation.code ? { ...item, status: !item.status, audit, history: [...historyOf(item), audit] } : item))) return;
+    setFeedback({ variant: "success", title: confirmation.status ? "Registro inactivado" : "Registro activado" });
     setConfirmCode(null);
     returnFocus(confirmTrigger);
   }
@@ -247,5 +272,6 @@ export function TransportCatalog({ catalog }) {
       { label: "Auditoría", children: <ul>{historyOf(detail).map((entry, index) => <li key={`${index}-${entry}`}>{entry}</li>)}</ul> }
     ]} />}
     {confirmation && <StatusConfirmation item={confirmation} label={config.singular} onCancel={() => { setConfirmCode(null); returnFocus(confirmTrigger); }} onConfirm={confirmStatus} />}
+    {feedback && createPortal(<div className="sial-ui-master-feedback" data-sial-component="Toast" data-sial-source={source}><Toast visible variant={feedback.variant} title={feedback.title} description={feedback.description} onClose={() => setFeedback(null)} /></div>, document.body)}
   </>;
 }

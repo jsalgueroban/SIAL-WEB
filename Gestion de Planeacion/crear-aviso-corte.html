@@ -11,7 +11,7 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-aviso-corte.css" />
+  <link rel="stylesheet" href="sial-aviso-corte.css?v=20261101-matrix1" />
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
@@ -23,7 +23,7 @@
 
     <header class="header">
       <div class="header-left">
-        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú">
+        <button data-sial-button-adapter class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
         <label class="search">
@@ -32,11 +32,11 @@
         </label>
       </div>
       <div class="header-right">
-        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false">
+        <button data-sial-button-adapter class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false">
           <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg>
           <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path><path d="m4.93 4.93 1.41 1.41m11.32 11.32 1.41 1.41m0-14.14-1.41 1.41M6.34 17.66l-1.41 1.41"></path></svg>
         </button>
-        <button class="icon-btn" type="button" aria-label="Notificaciones">
+        <button data-sial-button-adapter class="icon-btn" type="button" aria-label="Notificaciones">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg>
         </button>
         <span class="avatar">QA</span>
@@ -50,20 +50,20 @@
             <p class="page-eyebrow" data-create-eyebrow>Avisos de corte / Creación</p>
             <div class="cut-title-line">
               <h1 class="page-title" data-create-title>Nuevo aviso de corte</h1>
-              <span class="status status-warning" data-draft-state>Borrador sin guardar</span>
+              <span class="status status-warning" data-sial-chip-adapter data-draft-state>Borrador sin guardar</span>
             </div>
             <p class="page-subtitle" data-create-subtitle>Prepara el plan semanal, revisa las asignaciones y publica una única versión para las áreas involucradas.</p>
           </div>
           <div class="page-header-actions cut-create-actions">
             <a class="btn btn-secondary" href="gestion-avisos-corte.html">Volver</a>
-            <button class="btn btn-secondary" type="button" data-open-drafts>
+            <button data-sial-button-adapter class="btn btn-secondary" type="button" data-open-drafts>
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
               Borradores <span class="cut-button-count" data-draft-count>3</span>
             </button>
           </div>
         </div>
 
-        <div class="notice notice-info cut-create-note">
+        <div class="notice notice-info cut-create-note" data-sial-notice-adapter>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
           <span>El aviso se publicará como una sola versión. Después de publicarlo, cualquier corrección deberá crear una nueva versión.</span>
         </div>
@@ -77,7 +77,7 @@
               <h2 id="editContextTitle" data-edit-context-title>Preparar nueva versión</h2>
               <p data-edit-context-copy>La versión publicada se conserva. Solo puedes modificar los campos autorizados.</p>
             </div>
-            <span class="status status-active" data-edit-eligibility>Edición permitida</span>
+            <span class="status status-active" data-sial-chip-adapter data-edit-eligibility>Edición permitida</span>
           </div>
           <dl class="cut-edit-context-meta">
             <div><dt>Aviso</dt><dd data-edit-notice>—</dd></div>
@@ -96,7 +96,7 @@
           </div>
         </section>
 
-        <article class="card cut-header-card">
+        <article class="card form-card cut-header-card">
           <div class="card-header">
             <div>
               <h2 class="card-title">Datos del aviso</h2>
@@ -109,14 +109,14 @@
           </div>
           <div class="card-body">
             <div class="grid cut-header-grid">
-              <div class="field span-3">
+              <div class="field span-3" data-sial-form-control>
                 <label class="label" for="noticeWeek">Semana productiva <span class="required">*</span></label>
                 <select class="select" id="noticeWeek" data-header-field>
                   <option value="SEM-2026-32">SEM-2026-32</option>
                   <option value="SEM-2026-33">SEM-2026-33</option>
                 </select>
               </div>
-              <div class="field span-3">
+              <div class="field span-3" data-sial-form-control>
                 <label class="label" for="noticeType">Tipo de aviso <span class="required">*</span></label>
                 <select class="select" id="noticeType" data-header-field>
                   <option value="Inicial">Inicial</option>
@@ -124,11 +124,11 @@
                   <option value="Corrección">Corrección</option>
                 </select>
               </div>
-              <div class="field span-3">
+              <div class="field span-3" data-sial-form-control>
                 <label class="label" for="noticeVersion">Versión</label>
                 <input class="input" id="noticeVersion" value="Inicial" readonly />
               </div>
-              <div class="field span-3">
+              <div class="field span-3" data-sial-form-control>
                 <label class="label" for="noticeCompany">Empresa</label>
                 <input class="input" id="noticeCompany" value="Banasan" readonly />
                 <div class="field-note">Definida por la sesión activa.</div>
@@ -142,7 +142,7 @@
             <div>
               <div class="cut-card-title-row">
                 <h2 class="card-title">Fuentes de planeación</h2>
-                <span class="tag tag-info">Mejoras aprobadas</span>
+                <span class="tag tag-info" data-sial-chip-adapter data-sial-chip-tone="info">Mejoras aprobadas</span>
               </div>
               <p class="card-subtitle">Carga información existente sin publicar automáticamente. Todo resultado queda primero en el borrador.</p>
             </div>
@@ -181,8 +181,8 @@
                 <p class="card-subtitle">Cada fila asigna una referencia a una finca y un día de corte.</p>
               </div>
               <div class="card-actions">
-                <span class="chip" data-row-count>0 filas</span>
-                <button class="btn btn-secondary" type="button" data-add-assignment>
+                <span class="chip" data-sial-chip-adapter data-sial-chip-tone="info" data-row-count>0 filas</span>
+                <button data-sial-button-adapter class="btn btn-secondary" type="button" data-add-assignment>
                   <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
                   Agregar fila
                 </button>
@@ -192,7 +192,7 @@
             <div class="cut-validation-summary is-hidden" data-validation-summary tabindex="-1"></div>
             <div class="cut-change-summary is-hidden" data-change-summary aria-live="polite"></div>
 
-            <div class="table-wrap cut-create-scroll" tabindex="0" aria-label="Matriz de asignaciones del aviso">
+            <div class="table-wrap cut-create-scroll" data-planning-assignment-matrix tabindex="0" aria-label="Matriz de asignaciones del aviso">
               <table class="cut-create-table">
                 <colgroup>
                   <col class="cut-create-col-row" />
@@ -252,9 +252,9 @@
             </div>
 
             <div class="form-actions cut-create-form-actions">
-              <button class="btn btn-secondary" type="button" data-save-draft>Guardar borrador</button>
-              <button class="btn btn-secondary" type="button" data-validate-notice>Validar aviso</button>
-              <button class="btn btn-primary" type="button" data-open-publish disabled>Publicar aviso</button>
+              <button data-sial-button-adapter class="btn btn-secondary" type="button" data-save-draft>Guardar borrador</button>
+              <button data-sial-button-adapter class="btn btn-secondary" type="button" data-validate-notice>Validar aviso</button>
+              <button data-sial-button-adapter class="btn btn-primary" type="button" data-open-publish disabled>Publicar aviso</button>
             </div>
           </article>
 
@@ -287,7 +287,6 @@
           </aside>
         </div>
 
-        <div class="notice notice-success is-hidden" data-create-success role="status"></div>
       </section>
     </main>
   </div>
@@ -300,7 +299,7 @@
         <h2 id="sourceDialogTitle" data-source-title>Cargar información</h2>
         <p id="sourceDialogDescription" data-source-description>La información se agregará al borrador actual.</p>
       </div>
-      <button class="icon-btn" type="button" data-close-modal aria-label="Cerrar">
+      <button data-sial-button-adapter class="icon-btn" type="button" data-close-modal aria-label="Cerrar">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg>
       </button>
     </div>
@@ -330,21 +329,21 @@
         <div class="cut-file-summary is-hidden" data-excel-summary aria-live="polite"></div>
         <div class="cut-import-mapping is-hidden" data-excel-mapping>
           <div class="grid">
-            <div class="field span-6">
-              <label class="label" for="excelSheet">Hoja detectada</label>
-              <select class="select" id="excelSheet" data-excel-sheet>
+            <div class="field span-6" data-sial-form-control>
+              <label class="label" for="excelSheet">Hoja del ejemplo</label>
+              <select class="select" id="excelSheet" data-excel-sheet disabled>
                 <option>Resumen Pallets</option>
                 <option>Resumen Cajas</option>
                 <option>BD_Aviso</option>
               </select>
             </div>
-            <div class="field span-6">
+            <div class="field span-6" data-sial-form-control>
               <label class="label" for="excelHeader">Fila de encabezados</label>
-              <input class="input" id="excelHeader" type="number" min="1" value="11" />
+              <input class="input" id="excelHeader" type="number" min="1" value="11" readonly />
             </div>
           </div>
           <div class="cut-mapping-grid" data-mapping-grid></div>
-          <div class="notice notice-warning">
+          <div class="notice notice-warning" data-sial-notice-adapter>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 9v5M12 17h.01"></path></svg>
             <span>Las filas importadas se contrastarán con fincas, clientes, referencias y certificaciones activas.</span>
           </div>
@@ -353,7 +352,7 @@
       </div>
 
       <div data-source-paste class="cut-source-flow is-hidden">
-        <div class="notice notice-info">
+        <div class="notice notice-info" data-sial-notice-adapter>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
           <span>Copia: día, finca, grupo, sector, cliente, referencia, palés, cajas por palé y racimos.</span>
         </div>
@@ -363,8 +362,8 @@
       </div>
     </div>
     <div class="confirm-dialog-actions">
-      <button class="btn btn-secondary" type="button" data-close-modal>Cancelar</button>
-      <button class="btn btn-primary" type="button" data-source-next>Analizar archivo</button>
+      <button data-sial-button-adapter class="btn btn-secondary" type="button" data-close-modal>Cancelar</button>
+      <button data-sial-button-adapter class="btn btn-primary" type="button" data-source-next>Analizar archivo</button>
     </div>
   </section>
 
@@ -374,7 +373,7 @@
         <h2 id="draftsTitle">Borradores incompletos</h2>
         <p>Retoma avisos guardados sin afectar el borrador actual hasta que confirmes.</p>
       </div>
-      <button class="icon-btn" type="button" data-close-modal aria-label="Cerrar">
+      <button data-sial-button-adapter class="icon-btn" type="button" data-close-modal aria-label="Cerrar">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg>
       </button>
     </div>
@@ -382,7 +381,7 @@
       <div class="cut-drafts-list" data-drafts-list></div>
     </div>
     <div class="confirm-dialog-actions">
-      <button class="btn btn-secondary" type="button" data-close-modal>Cerrar</button>
+      <button data-sial-button-adapter class="btn btn-secondary" type="button" data-close-modal>Cerrar</button>
     </div>
   </section>
 
@@ -392,7 +391,7 @@
         <h2 id="publishTitle">Confirmar publicación</h2>
         <p id="publishDescription">Revisa el alcance antes de cerrar la versión actual.</p>
       </div>
-      <button class="icon-btn" type="button" data-close-modal aria-label="Cerrar">
+      <button data-sial-button-adapter class="icon-btn" type="button" data-close-modal aria-label="Cerrar">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg>
       </button>
     </div>
@@ -406,7 +405,7 @@
       </div>
       <div class="cut-publish-summary" data-publish-summary></div>
       <div class="cut-publish-changes is-hidden" data-publish-changes></div>
-      <div class="cut-publish-validation" data-publish-validation role="status"></div>
+      <div data-publish-validation data-sial-dynamic-notice role="status"></div>
       <div class="cut-publish-observation">
         <label for="publishObservation">Nota de publicación <span>Opcional</span></label>
         <textarea class="textarea" id="publishObservation" rows="2" placeholder="Escribe una indicación breve que deba acompañar esta versión"></textarea>
@@ -414,14 +413,15 @@
       </div>
     </div>
     <div class="confirm-dialog-actions">
-      <button class="btn btn-secondary" type="button" data-close-modal>Volver a revisar</button>
-      <button class="btn btn-primary" type="button" data-confirm-publish>Publicar versión</button>
+      <button data-sial-button-adapter class="btn btn-secondary" type="button" data-close-modal>Volver a revisar</button>
+      <button data-sial-button-adapter class="btn btn-primary" type="button" data-confirm-publish>Publicar versión</button>
     </div>
   </section>
 
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-aviso-corte.js"></script>
-  <script src="sial-aviso-corte-create.js"></script>
+  <script src="../shared/sial-core.js?v=20261101-import2"></script>
+  <script src="../Gestion de Empresas/company-feedback.js"></script>
+  <script src="sial-aviso-corte.js?v=20261031-planea8"></script>
+  <script src="sial-aviso-corte-create.js?v=20261101-import2"></script>
   <script>SIAL.applyShell("crearAviso"); window.SIALCutNoticeCreate.init();</script>
 </body>
 </html>

@@ -10,7 +10,7 @@
       const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
-  </script>  <link rel="stylesheet" href="sial-conductores.css" />
+  </script>  <link rel="stylesheet" href="sial-conductores.css?v=20261030-bulk4" />
 </head>
 <body data-view-family="registro-extenso">
   <div class="app-shell">
@@ -19,10 +19,10 @@
     <main class="main">
       <section class="page">
         <p class="page-eyebrow">Transporte / Conductores / Registro</p>
-        <div class="page-header"><div><h1 class="page-title">Registro de conductor</h1><p class="page-subtitle">Registra los datos del conductor, su cobertura ARL y las categorias de licencia.</p></div><a class="btn btn-secondary" href="gestion-conductores.html">Volver a gestion</a></div>
+        <div class="page-header"><div><h1 class="page-title">Registro de conductor</h1><p class="page-subtitle">Registra los datos del conductor, su cobertura ARL y las categorías de licencia.</p></div><a class="btn btn-secondary" href="gestion-conductores.html">Volver a gestión</a></div>
 
         <article class="card form-card" data-sial-form-adapter>
-          <div class="form-heading"><h2>Datos del conductor</h2><p>Completa los campos obligatorios y asigna al menos una categoria de licencia.</p></div>
+          <div class="form-heading"><h2>Datos del conductor</h2><p>Completa los campos obligatorios y asigna al menos una categoría de licencia.</p></div>
           <div class="form-body">
             <div class="form-feedback is-hidden" id="formOk" role="status">Conductor listo para guardar.</div>
             <form id="driverForm" novalidate>
@@ -32,11 +32,11 @@
                   <div class="field span-12" data-sial-form-control><label class="label" for="company">Empresa <span class="required">*</span></label><select class="select" id="company" aria-describedby="companyNote"><option value="">Selecciona una empresa</option><option>SIAL Central</option><option>Banapalma</option><option>AgroCeiba</option></select><div class="field-note" id="companyNote">Selecciona la empresa del conductor.</div></div>
                   <div class="field span-6" data-sial-form-control><label class="label" for="firstName">Nombres <span class="required">*</span></label><input class="input" id="firstName" placeholder="CARLOS ANDRES" aria-describedby="firstNameNote" /><div class="field-note" id="firstNameNote">Se guarda en mayusculas sostenidas.</div></div>
                   <div class="field span-6" data-sial-form-control><label class="label" for="lastName">Apellidos <span class="required">*</span></label><input class="input" id="lastName" placeholder="MEJIA PEREZ" aria-describedby="lastNameNote" /><div class="field-note" id="lastNameNote">Se guarda en mayusculas sostenidas.</div></div>
-                  <div class="field span-4" data-sial-form-control><label class="label" for="idType">Tipo identificacion <span class="required">*</span></label><select class="select" id="idType" aria-describedby="idTypeNote"><option value="">Selecciona un tipo</option><option value="CC">Cedula de ciudadania</option><option value="CE">Cedula de extranjeria</option><option value="TI">Tarjeta de identidad</option></select><div class="field-note" id="idTypeNote">Hace parte de la llave unica con numero identificacion.</div></div>
-                  <div class="field span-4" data-sial-form-control><label class="label" for="idNumber">Numero identificacion <span class="required">*</span></label><input class="input" id="idNumber" inputmode="numeric" placeholder="1032456789" aria-describedby="idNumberNote" /><div class="field-note" id="idNumberNote">Tipo + numero debe ser unico.</div></div>
-                  <div class="field span-4" data-sial-form-control><label class="label" for="phone">Numero celular <span class="required">*</span></label><input class="input" id="phone" inputmode="numeric" placeholder="3001234567" aria-describedby="phoneNote" /><div class="field-note" id="phoneNote">Debe ser unico.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="idType">Tipo identificación <span class="required">*</span></label><select class="select" id="idType" aria-describedby="idTypeNote"><option value="">Selecciona un tipo</option><option value="CC">Cedula de ciudadania</option><option value="CE">Cedula de extranjeria</option><option value="TI">Tarjeta de identidad</option></select><div class="field-note" id="idTypeNote">Hace parte de la llave unica con número identificación.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="idNumber">Número identificación <span class="required">*</span></label><input class="input" id="idNumber" inputmode="numeric" placeholder="1032456789" aria-describedby="idNumberNote" /><div class="field-note" id="idNumberNote">Tipo + número debe ser unico.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="phone">Número celular <span class="required">*</span></label><input class="input" id="phone" inputmode="numeric" placeholder="3001234567" aria-describedby="phoneNote" /><div class="field-note" id="phoneNote">Debe ser unico.</div></div>
                   <div class="field span-6" data-sial-form-control><label class="label" for="email">Correo electronico</label><input class="input" id="email" type="email" placeholder="nombre@empresa.com" aria-describedby="emailNote" /><div class="field-note" id="emailNote">Opcional. Si se diligencia, debe tener formato valido.</div></div>
-                  <div class="field span-6" data-sial-form-control><label class="label" for="licenseNumber">Numero licencia <span class="required">*</span></label><input class="input" id="licenseNumber" placeholder="Numero de licencia" aria-describedby="licenseNumberNote" /><div class="field-note" id="licenseNumberNote">Dato obligatorio de control documental.</div></div>
+                  <div class="field span-6" data-sial-form-control><label class="label" for="licenseNumber">Número licencia <span class="required">*</span></label><input class="input" id="licenseNumber" placeholder="Numero de licencia" aria-describedby="licenseNumberNote" /><div class="field-note" id="licenseNumberNote">Dato obligatorio de control documental.</div></div>
                 </div>
               </section>
               <section class="section">
@@ -44,17 +44,17 @@
                 <div class="grid">
                   <div class="field span-4" data-sial-form-control><label class="label" for="arlCompany">Empresa ARL <span class="required">*</span></label><select class="select" id="arlCompany" aria-describedby="arlCompanyNote"><option value="">Selecciona una ARL</option><option>SURA</option><option>COLMENA</option><option>SEGUROS BOLIVAR</option></select><div class="field-note" id="arlCompanyNote">Selecciona la ARL vigente.</div></div>
                   <div class="field span-4" data-sial-form-control><label class="label" for="arlStart">Fecha inicio ARL <span class="required">*</span></label><input class="input" id="arlStart" type="date" aria-describedby="arlStartNote" /><div class="field-note" id="arlStartNote">Inicio de vigencia obligatoria.</div></div>
-                  <div class="field span-4" data-sial-form-control><label class="label" for="arlEnd">Fecha fin ARL <span class="required">*</span></label><input class="input" id="arlEnd" type="date" aria-describedby="arlEndNote" /><div class="field-note" id="arlEndNote">No puede ser anterior al inicio.</div></div>
+                  <div class="field span-4" data-sial-form-control><label class="label" for="arlEnd">Fecha fin ARL <span class="required">*</span></label><input class="input" id="arlEnd" type="date" aria-describedby="arlEndNote" /><div class="field-note" id="arlEndNote">Debe ser posterior al inicio.</div></div>
                 </div>
               </section>
               <section class="section">
-                <h3 class="section-title">Categorias de licencia activas</h3>
+                <h3 class="section-title">Categorías de licencia activas</h3>
                 <div class="license-grid">
                   <label class="license-option"><input type="checkbox" name="licenseCategory" value="C2" checked /><span><strong>C2</strong><span>Camiones rigidos de servicio publico.</span></span><span class="field"><span class="label" for="expC2">Vencimiento</span><input class="input" id="expC2" type="date" value="2026-09-12" /></span></label>
-                  <label class="license-option"><input type="checkbox" name="licenseCategory" value="C3" /><span><strong>C3</strong><span>Vehiculos articulados y tractocamiones.</span></span><span class="field"><span class="label" for="expC3">Vencimiento</span><input class="input" id="expC3" type="date" /></span></label>
-                  <label class="license-option"><input type="checkbox" name="licenseCategory" value="B1" /><span><strong>B1</strong><span>Vehiculos livianos administrativos.</span></span><span class="field"><span class="label" for="expB1">Vencimiento</span><input class="input" id="expB1" type="date" /></span></label>
+                  <label class="license-option"><input type="checkbox" name="licenseCategory" value="C3" /><span><strong>C3</strong><span>Vehículos articulados y tractocamiones.</span></span><span class="field"><span class="label" for="expC3">Vencimiento</span><input class="input" id="expC3" type="date" /></span></label>
+                  <label class="license-option"><input type="checkbox" name="licenseCategory" value="B1" /><span><strong>B1</strong><span>Vehículos livianos administrativos.</span></span><span class="field"><span class="label" for="expB1">Vencimiento</span><input class="input" id="expB1" type="date" /></span></label>
                 </div>
-                <div class="field-note" id="licenseAssignmentNote">Debe existir al menos una categoria activa.</div>
+                <div class="field-note" id="licenseAssignmentNote">Debe existir al menos una categoría activa.</div>
               </section>
               <div class="form-actions"><a class="btn btn-secondary" href="gestion-conductores.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar formulario</button><button class="btn btn-primary" type="submit" aria-label="Guardar conductor"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg><span>Guardar conductor</span></button></div>
             </form>
@@ -63,9 +63,10 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-conductores.js"></script>
-  <script src="driver-prototype.js?v=20261028"></script>
+  <script src="transport-feedback.js?v=20261030-3"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="sial-conductores.js?v=20261030-arl1"></script>
+  <script src="driver-prototype.js?v=20261030-checkbox5"></script>
   <script>SIAL.applyShell("gestion"); SIAL.initDriverForm(); DriverPrototype.form();</script>
 </body>
 </html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>SIAL | Sesión en pausa</title>
+  <script>document.documentElement.dataset.theme=localStorage.getItem('sial-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');</script>
+  <link rel="stylesheet" href="../../shared/sial-core.css" />
+  <link rel="stylesheet" href="../../shared/vendor/sial-mascot-preview.css" />
+  <link rel="stylesheet" href="../401-scene.css" />
+  <link rel="stylesheet" href="./pausa.css?v=20261030-fit" />
+</head>
+<body class="pausa-page" data-view-family="sistema">
+  <div class="pausa-shell">
+    <header class="pausa-header">
+      <a class="pausa-brand" href="../../index.html" aria-label="Ir al catálogo SIAL"><span class="error401-brand-mark" aria-hidden="true"></span><span>SIAL</span></a>
+      <span class="pausa-location">Acceso a SIAL</span>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar tema">
+        <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </header>
+
+    <main class="pausa-workspace" aria-labelledby="pausa-title">
+      <section class="pausa-copy" aria-describedby="pausa-description">
+        <p class="pausa-state"><span aria-hidden="true"></span>Sesión no activa</p>
+        <h1 id="pausa-title">Vuelve a tu espacio<br class="pausa-desktop-break" /> de trabajo.</h1>
+        <p class="pausa-description" id="pausa-description">Tu sesión no está activa o ha vencido. Inicia sesión nuevamente para continuar en SIAL.</p>
+        <div class="pausa-actions">
+          <a class="btn btn-primary" href="../../Login/index.html">Iniciar sesión<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+          <a class="pausa-secondary" href="../../index.html">Volver al catálogo</a>
+        </div>
+      </section>
+      <div class="pausa-illustration" data-session-scene data-sial-mascot="forbidden" data-sial-component="SialMascot" data-sial-source="library-local-preview" data-sial-variant="forbidden"></div>
+    </main>
+
+    <footer class="pausa-footer">
+      <p><span class="pausa-code">401</span><span>Si el problema continúa, comparte este código con soporte.</span></p>
+      <a href="../mantenimiento-taller.html">Ver Bananito en mantenimiento</a>
+    </footer>
+  </div>
+  <script src="../../shared/sial-core.js"></script>
+  <script>window.SIALCore?.initThemeToggle?.();</script>
+  <script defer src="../../shared/vendor/sial-mascot-preview.js?v=20261030-strong-sign"></script>
+</body>
+</html>

@@ -39,7 +39,7 @@ window.CompanyPrototype = (() => {
       row.audit = [stamp(existing ? 'Edición de empresa' : 'Creación de empresa'), row.audit].filter(Boolean).join(';');
       if (!existing) rows.push(row);
       localStorage.setItem(key, JSON.stringify(rows));
-      location.href = 'gestion-empresas.html';
+      window.CompanyFeedback?.next('gestion-empresas.html', existing ? 'Cambios guardados' : 'Empresa registrada'); location.href = 'gestion-empresas.html';
       return true;
     } catch (error) { notice(error.message || 'No se pudo guardar la empresa en este navegador.'); return false; }
   }
@@ -78,16 +78,16 @@ window.CompanyPrototype = (() => {
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', status === 'inactive' ? 'M20 6 9 17l-5-5' : 'M18 6 6 18M6 6l12 12');
       icon.append(path);
-      toggle.addEventListener('click', () => {
+      toggle.dataset.stateConfirmReady = 'true'; toggle.addEventListener('click', async () => {
         const active = status === 'inactive';
-        if (!window.confirm(`¿${active ? 'Activar' : 'Inactivar'} ${row.name}?`)) return;
+        if (!await window.CompanyFeedback.confirm(`${active ? 'Activar' : 'Inactivar'} empresa`, `¿Deseas ${active ? 'activar' : 'inactivar'} ${row.name}?`, active ? 'Activar' : 'Inactivar')) return;
         try {
           const latest = read(); const target = latest.find(item => item.code === row.code);
           if (!target) throw new Error('La empresa ya no está disponible.');
           target.status = active ? 'active' : 'inactive';
           target.audit = [stamp(active ? 'Activación de empresa' : 'Inactivación de empresa'), target.audit].filter(Boolean).join(';');
-          localStorage.setItem(key, JSON.stringify(latest)); location.reload();
-        } catch (error) { notice(error.message || 'No se pudo guardar el estado.'); }
+          localStorage.setItem(key, JSON.stringify(latest)); window.CompanyFeedback?.next('gestion-empresas.html', active ? 'Empresa activada' : 'Empresa inactivada'); location.reload();
+        } catch (error) { window.CompanyFeedback?.show('No se pudo guardar', 'error', error.message || 'Intenta nuevamente.'); }
       });
       tbody.append(tr);
     });

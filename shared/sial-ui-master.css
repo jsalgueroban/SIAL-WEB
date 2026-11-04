@@ -26,3 +26,5 @@
   .sial-ui-master-card .card-header { align-items: stretch; }
   .sial-ui-master-card .card-actions { justify-content: flex-start; }
 }
+.sial-ui-master-feedback { position: fixed; top: 24px; right: 24px; width: min(380px, calc(100vw - 32px)); z-index: 1200; }
+@media (max-width: 680px) { .sial-ui-master-feedback { top: auto; bottom: 16px; right: 16px; } }

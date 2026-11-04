@@ -1,0 +1,68 @@
+/* PageLayout/PageContent geometry for the static proposal host.
+   Domain TSX and library props are retained from the product snapshot. */
+.security-product-page { display:grid; gap:24px; }
+.security-product-page > .page-eyebrow { margin-bottom:-16px; }
+.security-product-page > .page-header { margin-bottom:0; }
+.security-product-page .security-review-card { overflow:hidden; }
+.security-product-page .security-review-card > .card-header { gap:16px; }
+.security-product-page button { font-family:inherit; }
+.security-product-page [role="toolbar"] { flex-wrap:wrap; }
+.security-product-page h3 { margin-bottom:0; }
+/* Same closed-panel visibility protection used by the shared proposal adapter. */
+body[data-security-product] .bui-drawer-container[aria-hidden="true"] { visibility:hidden; }
+@media(max-width:720px) {
+  .security-product-page .card-actions { flex-wrap:wrap; }
+  .security-product-page [class*="min-w-[320px]"],
+  .security-product-page [class*="min-w-[300px]"] { min-width:0; }
+}
+
+/* Vehicle-specific composition: sizing belongs to input containers, not their inner controls. */
+body[data-security-product] .vehicle-filters { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; align-items:end; padding:0; }
+body[data-security-product] .vehicle-filters .vehicle-filter-search { grid-column:1 / -1; min-width:0; }
+body[data-security-product] .vehicle-filters > * { min-width:0; }
+body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:repeat(4,minmax(0,1fr)) 44px; }
+body[data-security-product] .vehicle-filters .sial-filter-reset { display:flex; margin:0; }
+body[data-security-product] .vehicle-filters .sial-filter-reset button { width:44px; height:44px; min-width:44px; padding:0; }
+@media(max-width:760px) {
+ body[data-security-product] .vehicle-filters, body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:440px) {
+ body[data-security-product] .vehicle-filters, body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:minmax(0,1fr); }
+}
+
+/* Correct host .grid reset interfering with the published SelectInput option layout. */
+body[data-security-product] [role="listbox"] > [role="option"] { grid-template-columns:minmax(0,1fr) 18px; }
+body[data-security-product] .vehicle-filters { grid-template-columns:minmax(250px,2fr) minmax(145px,.85fr) minmax(145px,1fr) minmax(170px,1.1fr) minmax(170px,1.1fr); gap:12px; }
+body[data-security-product] .vehicle-filters .vehicle-filter-search { grid-column:auto; }
+body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:minmax(250px,2fr) minmax(145px,.85fr) minmax(145px,1fr) minmax(170px,1.1fr) minmax(170px,1.1fr) 44px; }
+.vehicle-context { padding:20px; border:1px solid var(--color-border-subtle); border-radius:var(--radius-surface); }
+.vehicle-context-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:20px; }
+.vehicle-context h3 { font-weight:600; font-size:18px; line-height:1.4; }
+.vehicle-context-actions { display:flex; gap:12px; align-items:center; }
+.vehicle-hint { color:var(--color-text-2); font-size:13px; line-height:1.6; margin:6px 0 0; }
+.vehicle-workspace { display:grid; grid-template-columns:minmax(280px,.8fr) minmax(0,1.6fr); gap:20px; align-items:start; }
+.vehicle-journey { padding:0 20px 20px; border:1px solid var(--color-border-subtle); border-radius:var(--radius-surface); }
+@media(max-width:1200px) {
+ body[data-security-product] .vehicle-filters,body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:repeat(4,minmax(0,1fr)); }
+ body[data-security-product] .vehicle-filters .vehicle-filter-search { grid-column:1/-1; }
+ body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:repeat(4,minmax(0,1fr)) 44px; }
+}
+@media(max-width:900px) { .vehicle-workspace { grid-template-columns:minmax(0,1fr); } .vehicle-context-heading { align-items:flex-start; flex-direction:column; } }
+@media(max-width:760px) { body[data-security-product] .vehicle-filters,body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:440px) { body[data-security-product] .vehicle-filters,body[data-security-product] .vehicle-filters.has-active-filters { grid-template-columns:minmax(0,1fr); } .vehicle-context-actions { flex-wrap:wrap; } }
+
+/* Vehicle review: one surface; internal sections use spacing and separators. */
+.vehicle-review-content .vehicle-context { padding:4px 0 24px; border:0; border-bottom:1px solid var(--color-border-subtle); border-radius:0; }
+.vehicle-review-content .vehicle-journey { padding:0 24px 0 0; border:0; border-right:1px solid var(--color-border-subtle); border-radius:0; }
+.vehicle-detail-section { min-width:0; }
+.vehicle-evidence-section { min-width:0; padding-top:24px; border-top:1px solid var(--color-border-subtle); }
+.vehicle-evidence-section > .vehicle-hint { margin-bottom:16px; }
+@media(max-width:900px) { .vehicle-review-content .vehicle-journey { padding:0 0 24px; border-right:0; border-bottom:1px solid var(--color-border-subtle); } }
+
+/* Structural wrappers preserve the established composition outside exploration B. */
+.vehicle-selected-contents { display:contents; }
+.vehicle-review-content > .vehicle-selector-content { display:contents; }
+
+.container-audit-filters .container-filter-field {min-width:0;}
+.container-audit-dates {display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px;margin-top:8px;}
+@media(max-width:600px){.container-audit-dates {grid-template-columns:minmax(0,1fr);}}

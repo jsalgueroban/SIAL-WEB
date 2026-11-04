@@ -1,0 +1,212 @@
+[
+  {
+    "palletId": "snapshot-64-01",
+    "position": 1,
+    "sscc": "353970050177452727",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 983.4,
+    "composition": [
+      {
+        "referenceCode": "CLORFTFYMI13",
+        "referenceName": "CLORFTFYMI13",
+        "boxCode": "041910231057",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-02",
+    "position": 2,
+    "sscc": "353970050177493072",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 983.4,
+    "composition": [
+      {
+        "referenceCode": "CLORFTFYMI13",
+        "referenceName": "CLORFTFYMI13",
+        "boxCode": "041910231420",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-03",
+    "position": 3,
+    "sscc": "353970050177493034",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 983.4,
+    "composition": [
+      {
+        "referenceCode": "CLORFTFYMI13",
+        "referenceName": "CLORFTFYMI13",
+        "boxCode": "041910231103",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-04",
+    "position": 4,
+    "sscc": "353970050177452598",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 983.4,
+    "composition": [
+      {
+        "referenceCode": "CLORFTFYMI13",
+        "referenceName": "CLORFTFYMI13",
+        "boxCode": "041910230935",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-05",
+    "position": 5,
+    "sscc": "353970050177452796",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 983.4,
+    "composition": [
+      {
+        "referenceCode": "CLORFTFYMI13",
+        "referenceName": "CLORFTFYMI13",
+        "boxCode": "041910230809",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-06",
+    "position": 6,
+    "sscc": "353970050177452826",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 976.8,
+    "composition": [
+      {
+        "referenceCode": "COOFT20X5PB",
+        "referenceName": "COOFT20X5PB",
+        "boxCode": "041910231414",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-07",
+    "position": 7,
+    "sscc": "353970050177493133",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 976.8,
+    "composition": [
+      {
+        "referenceCode": "COOFT20X5PB",
+        "referenceName": "COOFT20X5PB",
+        "boxCode": "041910231116",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-08",
+    "position": 8,
+    "sscc": "353970050177452628",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 976.8,
+    "composition": [
+      {
+        "referenceCode": "COOFT20X5PB",
+        "referenceName": "COOFT20X5PB",
+        "boxCode": "041910231118",
+        "boxQuantity": 66
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-09",
+    "position": 9,
+    "sscc": "353970050177492945",
+    "boxQuantity": 54,
+    "estimatedWeightKg": 1083.24,
+    "composition": [
+      {
+        "referenceCode": "NETTOBIOBDOR",
+        "referenceName": "NETTOBIOBDOR",
+        "boxCode": "041910231656",
+        "boxQuantity": 54
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-10",
+    "position": 10,
+    "sscc": "353970050177452697",
+    "boxQuantity": 55,
+    "estimatedWeightKg": 1064.8,
+    "composition": [
+      {
+        "referenceCode": "ALU20X6EPSOF",
+        "referenceName": "ALU20X6EPSOF",
+        "boxCode": "041910230830",
+        "boxQuantity": 55
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-11",
+    "position": 11,
+    "sscc": "353970050177493140",
+    "boxQuantity": 54,
+    "estimatedWeightKg": 1083.24,
+    "composition": [
+      {
+        "referenceCode": "NETTOBIOBDOR",
+        "referenceName": "NETTOBIOBDOR",
+        "boxCode": "041910231530",
+        "boxQuantity": 54
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-12",
+    "position": 12,
+    "sscc": "353970050177492846",
+    "boxQuantity": 33,
+    "estimatedWeightKg": 661.98,
+    "composition": [
+      {
+        "referenceCode": "NETTOBIOBDOR",
+        "referenceName": "NETTOBIOBDOR",
+        "boxCode": "041910231645",
+        "boxQuantity": 33
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-13",
+    "position": 13,
+    "sscc": "353970050177492747",
+    "boxQuantity": 26,
+    "estimatedWeightKg": 387.4,
+    "composition": [
+      {
+        "referenceCode": "CLORFTFYMI13",
+        "referenceName": "CLORFTFYMI13",
+        "boxCode": "041910231601",
+        "boxQuantity": 26
+      }
+    ]
+  },
+  {
+    "palletId": "snapshot-64-14",
+    "position": 14,
+    "sscc": "353970050177493041",
+    "boxQuantity": 66,
+    "estimatedWeightKg": 976.8,
+    "composition": [
+      {
+        "referenceCode": "COOFT20X5PB",
+        "referenceName": "COOFT20X5PB",
+        "boxCode": "041910231628",
+        "boxQuantity": 66
+      }
+    ]
+  }
+]

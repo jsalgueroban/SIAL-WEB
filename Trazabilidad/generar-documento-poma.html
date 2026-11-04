@@ -11,117 +11,18 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-trazabilidad.css" />
-</head>
-<body data-view-family="registro">
+  <link rel="stylesheet" href="../shared/sial-core.css?v=20261104-poma-mobile" />
+
+
+<link rel="stylesheet" href="../shared/vendor/sial-ui-runtime.css?v=20261104-poma-mobile" /><link rel="stylesheet" href="security-product-utilities.css?v=3" /><link rel="stylesheet" href="security-product.css?v=2" /></head>
+<body data-security-product data-view-family="analitica">
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Seguridad</p><nav data-nav></nav></aside>
-    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
-    <main class="main">
-      <section class="page poma-generation-page">
-        <p class="page-eyebrow">Seguridad / Documento POMA</p>
-        <div class="page-header"><div><h1 class="page-title">Generar documento POMA</h1><p class="page-subtitle">Revisa los datos consolidados de la salida de finca antes de generar el PDF.</p></div></div>
-        <div class="notice notice-info"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>Solo aparecen salidas de finca confirmadas. El POMA se genera bajo demanda y no almacena el PDF; conserva fecha, versión de plantilla y cantidad de generaciones.</span></div>
-
-        <article class="card poma-operation-card">
-          <div class="card-header"><div><h2 class="card-title">1. Seleccionar salida confirmada</h2><p class="card-subtitle">Consulta por radicación, placa, contenedor o finca. La salida debe estar en estado DESPACHADO_DESDE_FINCA.</p></div><span class="status status-active">Salida confirmada</span></div>
-          <div class="card-body poma-operation-body"><label class="field poma-search-field" for="poma-operation"><span class="label">Radicación, placa o contenedor</span><input class="input" id="poma-operation" value="EXP-2026-0418" aria-describedby="poma-operation-note" /><span class="field-note" id="poma-operation-note">La implementación consulta únicamente operaciones autorizadas para la compañía y finca activas.</span></label><button class="btn btn-secondary poma-load-action" type="button">Cargar datos</button></div>
-        </article>
-
-        <article class="card poma-preview-card">
-          <div class="card-header"><div><span class="section-kicker">Vista previa</span><h2 class="card-title">Datos que se incluirán en la POMA</h2><p class="card-subtitle">Información de solo lectura obtenida de los flujos operativos ya cerrados.</p></div></div>
-          <div class="card-body">
-            <dl class="sial-key-value-grid poma-key-values poma-consolidated-key-values"><div><dt>Finca de salida</dt><dd>Finca Santa Isabel</dd></div><div><dt>Fecha y hora de salida</dt><dd>05/05/2026 · 15:12</dd></div><div><dt>Radicación / viaje</dt><dd>EXP-2026-0418</dd></div><div><dt>Tipo de vehículo</dt><dd>Tractocamión con contenedor</dd></div><div><dt>Placa</dt><dd>TUL458</dd></div><div><dt>Conductor</dt><dd>Carlos Mendoza</dd></div><div><dt>Contenedor</dt><dd>SIALU1234567</dd></div><div><dt>Tipo de contenedor</dt><dd>Refrigerado 40'</dd></div><div><dt>Cargue cerrado</dt><dd>05/05/2026 · 14:05</dd></div><div><dt>Precinto final</dt><dd>SEL-908172</dd></div><div><dt>Sincronización</dt><dd>Sincronizado</dd></div><div><dt>Pallets activos</dt><dd>12</dd></div><div><dt>SSCC trazados</dt><dd>12</dd></div><div><dt>Total cajas</dt><dd>1.056</dd></div><div><dt>Peso estimado</dt><dd>20.040 kg</dd></div><div><dt>Referencias</dt><dd>2</dd></div><div><dt>Pallets retirados</dt><dd>0</dd></div></dl>
-          </div>
-        </article>
-
-        <article class="card poma-load-detail-card"><div class="card-header"><div><h2 class="card-title">Detalle de pallets, SSCC y referencias</h2><p class="card-subtitle">El PDF incluirá el detalle completo; la propuesta presenta la estructura de consulta rápida.</p></div><span class="status status-neutral">12 pallets</span></div><div class="card-body table-wrap"><table class="poma-data-table"><thead><tr><th>Posición</th><th>SSCC</th><th>Referencia</th><th class="number">Cajas</th><th class="number">Peso estimado</th><th>Evidencia</th></tr></thead><tbody><tr><td>01</td><td>177012345678901234</td><td>REF-EXPORT-01 · V3</td><td class="number">88</td><td class="number">1.670 kg</td><td><span class="status status-active">Completa</span></td></tr><tr><td>02</td><td>177012345678901235</td><td>REF-EXPORT-01 · V3</td><td class="number">88</td><td class="number">1.670 kg</td><td><span class="status status-active">Completa</span></td></tr><tr><td>03</td><td>177012345678901236</td><td>REF-EXPORT-02 · V1</td><td class="number">88</td><td class="number">1.670 kg</td><td><span class="status status-active">Completa</span></td></tr><tr><td>…</td><td colspan="5">La implementación lista todos los pallets activos de la salida seleccionada.</td></tr></tbody></table></div></article>
-        <article class="card poma-document-card poma-emission-card"><div class="card-header"><div><span class="section-kicker">Emisión y auditoría</span><h2 class="card-title">Generar documento POMA</h2><p class="card-subtitle">Información que el backend asigna al generar el PDF.</p></div></div><div class="card-body"><dl class="poma-key-values poma-emission-values"><div><dt>Formato</dt><dd>PDF</dd></div><div><dt>Plantilla</dt><dd>POMA · versión vigente</dd></div><div><dt>Número de documento</dt><dd>Se asigna al generar</dd></div><div><dt>Fecha de generación</dt><dd>Se asigna al generar</dd></div><div><dt>Usuario emisor</dt><dd>Usuario autenticado</dd></div><div><dt>Generaciones previas</dt><dd>0</dd></div><div><dt>Persistencia del PDF</dt><dd>No se almacena</dd></div><div><dt>Auditoría</dt><dd>Fecha, usuario y versión</dd></div></dl><div class="poma-document-body"><div><span class="section-kicker">Documento POMA</span><h3>Generar PDF</h3><p>La acción solicitará al backend el documento bajo demanda con los datos visibles en esta vista. Al terminar, abrirá el visor integrado de la POMA digitalizada.</p></div><button class="btn btn-primary poma-generate-action" type="button" id="pomaGenerateButton">Generar POMA</button></div></div></article>
-      </section>
-    </main>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main" data-sial-react-view="security-poma"></main>
   </div>
-  <div class="poma-overlay" id="pomaGenerationOverlay" hidden>
-    <section class="poma-generation-dialog" role="dialog" aria-modal="true" aria-labelledby="pomaGenerationTitle">
-      <div class="poma-generation-spinner" aria-hidden="true"></div>
-      <span class="section-kicker">Generando documento</span>
-      <h2 id="pomaGenerationTitle">Preparando la POMA</h2>
-      <p>Consolidando la salida confirmada y validando la información de la operación.</p>
-      <ol class="poma-generation-steps" aria-label="Progreso de generación"><li class="is-active">Validar salida, cargue y seguridad</li><li>Consolidar pallets, SSCC y referencias</li><li>Construir PDF y registrar auditoría</li></ol>
-    </section>
-  </div>
-  <div class="poma-overlay" id="pomaPdfOverlay" hidden>
-    <section class="poma-pdf-dialog" role="dialog" aria-modal="true" aria-labelledby="pomaPdfTitle">
-      <header class="poma-pdf-header"><div><span class="section-kicker">Documento POMA</span><h2 id="pomaPdfTitle">Vista previa PDF</h2></div><button class="icon-btn" type="button" data-poma-close aria-label="Cerrar visor POMA">×</button></header>
-      <div class="poma-pdf-canvas" aria-label="Área reservada para el PDF POMA"><p>La poma digitalizada PODRIA ir aca</p></div>
-      <footer class="poma-pdf-footer"><span>La implementación cargará aquí el PDF recibido del backend.</span><button class="btn btn-secondary" type="button" data-poma-close>Cerrar</button></footer>
-    </section>
-  </div>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-trazabilidad.js"></script>
-  <script>
-    SIAL.applyShell("poma");
-    (function () {
-      const generateButton = document.querySelector("#pomaGenerateButton");
-      const generationOverlay = document.querySelector("#pomaGenerationOverlay");
-      const pdfOverlay = document.querySelector("#pomaPdfOverlay");
-      const stepItems = Array.from(document.querySelectorAll(".poma-generation-steps li"));
-      let timers = [];
-
-      const clearTimers = () => {
-        timers.forEach((timer) => window.clearTimeout(timer));
-        timers = [];
-      };
-      const openOverlay = (overlay) => {
-        overlay.hidden = false;
-        document.body.classList.add("poma-overlay-open");
-      };
-      const closeOverlay = (overlay) => {
-        overlay.hidden = true;
-        if (generationOverlay.hidden && pdfOverlay.hidden) document.body.classList.remove("poma-overlay-open");
-      };
-      const resetGeneration = () => {
-        stepItems.forEach((item, index) => item.classList.toggle("is-active", index === 0));
-        generateButton.disabled = false;
-        generateButton.textContent = "Generar POMA";
-      };
-
-      generateButton.addEventListener("click", () => {
-        clearTimers();
-        generateButton.disabled = true;
-        generateButton.textContent = "Generando...";
-        stepItems.forEach((item, index) => item.classList.toggle("is-active", index === 0));
-        openOverlay(generationOverlay);
-        timers.push(window.setTimeout(() => stepItems[1].classList.add("is-active"), 650));
-        timers.push(window.setTimeout(() => stepItems[2].classList.add("is-active"), 1250));
-        timers.push(window.setTimeout(() => {
-          closeOverlay(generationOverlay);
-          openOverlay(pdfOverlay);
-          resetGeneration();
-          pdfOverlay.querySelector("[data-poma-close]").focus();
-        }, 1900));
-      });
-
-      document.querySelectorAll("[data-poma-close]").forEach((button) => button.addEventListener("click", () => {
-        closeOverlay(pdfOverlay);
-        generateButton.focus();
-      }));
-      [generationOverlay, pdfOverlay].forEach((overlay) => overlay.addEventListener("click", (event) => {
-        if (event.target === overlay && overlay === pdfOverlay) {
-          closeOverlay(pdfOverlay);
-          generateButton.focus();
-        }
-      }));
-      document.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape") return;
-        clearTimers();
-        if (!generationOverlay.hidden) {
-          closeOverlay(generationOverlay);
-          resetGeneration();
-        }
-        if (!pdfOverlay.hidden) closeOverlay(pdfOverlay);
-        generateButton.focus();
-      });
-    })();
-  </script>
-</body>
-</html>
+  <script src="../shared/sial-core.js?v=20261104-poma-mobile"></script>
+  <script src="sial-trazabilidad.js?v=20261104-poma-mobile"></script>
+  <script>SIAL.applyShell("poma");</script>
+  <script src="../shared/vendor/sial-ui-runtime.js?v=20261104-poma-mobile"></script>
+</body></html>

@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
+import { mountPlanningAssignmentMatrix } from "./planning-assignment-matrix";
+import { mountPortContainerSelect } from "./port-container-select";
 import {
   ArrowRightIcon,
   Button,
   CheckIcon,
   Chip,
   CheckboxCard,
+  CheckboxInput,
   CloseIcon,
   EditIcon,
   Drawer,
@@ -27,6 +30,37 @@ import {
 
 const source = "@banasandev/banasan-ui";
 const enhanced = new WeakSet();
+
+function LinkedLicenseCheckbox({ original, text }) {
+  const [checked, setChecked] = useState(original.checked);
+  useEffect(() => {
+    const sync = () => setChecked(original.checked);
+    const reset = () => requestAnimationFrame(sync);
+    original.addEventListener("change", sync);
+    original.form?.addEventListener("reset", reset);
+    return () => { original.removeEventListener("change", sync); original.form?.removeEventListener("reset", reset); };
+  }, [original]);
+  return <CheckboxInput id={`sial-library-${original.id}`} label={text} value={checked} disabled={original.disabled} onChange={(value) => {
+    original.checked = value;
+    original.dispatchEvent(new Event("change", { bubbles: true }));
+    setChecked(value);
+  }} />;
+}
+
+function mountLicenseCheckbox(original) {
+  if (enhanced.has(original)) return;
+  const label = original.parentElement?.querySelector(`label[for="${original.id}"]`);
+  if (!label) return;
+  const mount = document.createElement("div");
+  mount.dataset.sialComponent = "CheckboxInput";
+  mount.dataset.sialSource = source;
+  original.before(mount);
+  original.classList.add("sial-native-proxy");
+  label.classList.add("sial-native-proxy");
+  enhanced.add(original);
+  const text = Array.from(label.children).map((item) => item.textContent.trim()).filter(Boolean).join(" · ") || label.textContent.trim();
+  flushSync(() => createRoot(mount).render(<LinkedLicenseCheckbox original={original} text={text} />));
+}
 
 function LinkedRoleCard({ original }) {
   const input = original.querySelector('input[type="checkbox"]');
@@ -146,14 +180,16 @@ function LinkedButton({ original }) {
   const read = () => ({
     label: original.textContent.trim(),
     disabled: original.disabled,
+    hidden: original.hidden,
     expanded: original.getAttribute("aria-expanded")
   });
   const [state, setState] = useState(read);
   useEffect(() => {
     const observer = new MutationObserver(() => setState(read()));
-    observer.observe(original, { attributes: true, attributeFilter: ["disabled", "aria-expanded"], childList: true, subtree: true, characterData: true });
+    observer.observe(original, { attributes: true, attributeFilter: ["disabled", "hidden", "aria-expanded"], childList: true, subtree: true, characterData: true });
     return () => observer.disconnect();
   }, [original]);
+  if (state.hidden) return null;
   return <Button
     variant={original.classList.contains("btn-primary") ? "filled" : "outlined"}
     disabled={state.disabled}
@@ -177,6 +213,23 @@ function LinkedNotice({ original }) {
   return <Notice variant={variant} role={original.getAttribute("role") || undefined}>
     {title && detail ? <><strong>{title}</strong> {detail}</> : message}
   </Notice>;
+}
+
+function LinkedDynamicNotice({ original }) {
+  const read = () => ({
+    visible: !original.hidden && !original.classList.contains("is-hidden"),
+    variant: original.classList.contains("notice-error") ? "error" : original.classList.contains("notice-success") ? "success" : original.classList.contains("notice-info") ? "info" : "warning",
+    text: original.textContent.trim(),
+    title: original.querySelector("strong")?.textContent.trim() || "",
+    detail: original.querySelector("strong") ? (original.querySelector("span")?.textContent.trim() || "") : ""
+  });
+  const [state, setState] = useState(read);
+  useEffect(() => {
+    const observer = new MutationObserver(() => setState(read()));
+    observer.observe(original, { attributes: true, attributeFilter: ["hidden", "class"], childList: true, subtree: true, characterData: true });
+    return () => observer.disconnect();
+  }, [original]);
+  return state.visible && state.text ? <Notice variant={state.variant} role={original.getAttribute("role") || "alert"}>{state.title && state.detail ? <><strong>{state.title}</strong> {state.detail}</> : state.text}</Notice> : null;
 }
 
 function LinkedToast({ original }) {
@@ -236,7 +289,7 @@ function LinkedDetailDrawer({ native }) {
     if (snapshot.show) requestAnimationFrame(() => panel?.querySelector(".bui-drawer-close")?.focus());
   }, [snapshot.show]);
   const close = () => {
-    native.querySelector("#closeDetail")?.click();
+    native.querySelector("#closeDetail, .drawer-head button[aria-label]")?.click();
     requestAnimationFrame(() => returnFocus.current?.focus());
   };
   const data = snapshot.details.map((detail) => ({
@@ -302,6 +355,7 @@ function LinkedFormField({ control, label, note }) {
     label: label.textContent.replace(/\*/g, "").trim(),
     value: state.value,
     disabled: state.disabled,
+    readonly: control.readOnly,
     required: control.hasAttribute("data-required") || control.required || label.querySelector(".required") !== null,
     helperText: state.error ? undefined : state.helper,
     validate: { status: state.error, message: state.message },
@@ -395,11 +449,25 @@ function LinkedCount({ count }) {
   return <Chip preset="info" aria-live="polite">{total} {total === 1 ? "registro" : "registros"}</Chip>;
 }
 
+// The published Chip has no neutral status preset. Keep its status anatomy
+// and supply neutral theme tokens only for explicitly neutral states.
+function StatusChip({ tone, children }) {
+  const neutral = tone === "neutral";
+  return <Chip preset={neutral ? "info" : tone === "default" ? undefined : tone}
+    tone={tone === "default" ? "default" : undefined}
+    style={neutral ? {
+      "--bui-chip-accent": "var(--color-text-2)",
+      "--bui-chip-text": "var(--color-text-2)",
+      "--bui-chip-bg": "var(--color-surface-raised)",
+      "--bui-chip-border": "var(--color-border-subtle)"
+    } : undefined}>{children}</Chip>;
+}
+
 function LinkedStatusChip({ original }) {
   const read = () => ({
     text: original.textContent.trim(),
-    preset: original.classList.contains("status-active") ? "active"
-      : original.classList.contains("status-inactive") ? "inactive" : "warning"
+    preset: original.dataset.sialChipTone || (original.classList.contains("status-active") ? "active"
+      : original.classList.contains("status-inactive") ? "inactive" : original.classList.contains("status-info") ? "info" : "warning")
   });
   const [state, setState] = useState(read);
   useEffect(() => {
@@ -407,7 +475,7 @@ function LinkedStatusChip({ original }) {
     observer.observe(original, { attributes: true, attributeFilter: ["class"], childList: true, characterData: true, subtree: true });
     return () => observer.disconnect();
   }, [original]);
-  return <Chip preset={state.preset}>{state.text}</Chip>;
+  return <StatusChip tone={state.preset}>{state.text}</StatusChip>;
 }
 
 function actionIcon(label) {
@@ -419,6 +487,7 @@ function actionIcon(label) {
   if (/^notificar\b/.test(action)) return <NotificationIcon />;
   if (/^(inactivar|eliminar|desactivar|remover|quitar)\b/.test(action)) return <CloseIcon />;
   if (/^activar\b/.test(action)) return <CheckIcon />;
+  if (/^cerrar\b/.test(action)) return <CloseIcon />;
   if (/^copiar\b/.test(action)) return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="2" /><path d="M5 15V7a2 2 0 0 1 2-2h8" /></svg>;
   return null;
 }
@@ -529,12 +598,12 @@ function readMaterialCellNode(node) {
   if (node.nodeType === Node.TEXT_NODE) return { text: node.textContent };
   if (node.nodeType !== Node.ELEMENT_NODE) return null;
   if (node.classList.contains("status")) {
-    const preset = node.classList.contains("status-active") ? "active"
-      : node.classList.contains("status-inactive") ? "inactive" : "warning";
+    const preset = node.dataset.sialChipTone || (node.classList.contains("status-active") ? "active"
+      : node.classList.contains("status-inactive") ? "inactive" : node.classList.contains("status-info") ? "info" : "warning");
     return { status: preset, text: node.textContent.trim() };
   }
   const tag = node.tagName.toLowerCase();
-  if (!["div", "span", "strong", "small", "em", "b", "i", "time", "br"].includes(tag)) {
+  if (!["div", "span", "strong", "small", "em", "b", "i", "time", "br", "del", "ins"].includes(tag)) {
     return { text: node.textContent };
   }
   return {
@@ -547,7 +616,7 @@ function readMaterialCellNode(node) {
 }
 
 function renderMaterialCellNode(node, key) {
-  if (node.status) return <Chip key={key} preset={node.status}>{node.text}</Chip>;
+  if (node.status) return <StatusChip key={key} tone={node.status}>{node.text}</StatusChip>;
   if (!node.tag) return node.text;
   if (node.tag === "br") return <br key={key} />;
   return React.createElement(node.tag, {
@@ -574,15 +643,19 @@ function readFamilyTable(native) {
           ? "active"
           : cell.querySelector(".status")?.classList.contains("status-inactive") ? "inactive"
             : cell.querySelector(".status")?.classList.contains("status-warning") ? "warning" : null,
-        muted: cell.classList.contains("muted")
+        muted: cell.classList.contains("muted"),
+        numeric: cell.classList.contains("is-number")
       })),
       actions: actionIndex < 0 ? [] : Array.from(row.cells[actionIndex]?.querySelectorAll(".row-actions > button[aria-label], .row-actions > a[aria-label]") || [])
     }));
-  return { headers, actionIndex, rows };
+  return { headers, actionIndex, rows, hidden: native.dataset.sialRespectVisibility !== undefined && (native.hidden || native.classList.contains("is-hidden")) };
 }
 
 function LinkedFamilyTable({ native }) {
   const [snapshot, setSnapshot] = useState(() => readFamilyTable(native));
+  const [localPage, setLocalPage] = useState(1);
+  const [localPageSize, setLocalPageSize] = useState(10);
+  const localPagination = native.dataset.sialLocalPagination !== undefined;
   useEffect(() => {
     const observer = new MutationObserver(() => setSnapshot(readFamilyTable(native)));
     observer.observe(native, {
@@ -594,10 +667,16 @@ function LinkedFamilyTable({ native }) {
     });
     return () => observer.disconnect();
   }, [native]);
+  const paginationKey = snapshot.rows.map((row) => row.key).join("|");
+  useEffect(() => { if (localPagination) setLocalPage(1); }, [localPagination, paginationKey]);
+  if (snapshot.hidden) return null;
+  const safePage = Math.max(1, Math.min(localPage, Math.ceil(snapshot.rows.length / localPageSize) || 1));
+  const shownRows = localPagination ? snapshot.rows.slice((safePage - 1) * localPageSize, safePage * localPageSize) : snapshot.rows;
   const columns = snapshot.headers.flatMap((header, index) => index === snapshot.actionIndex ? [] : [{
     key: `column-${index}`,
     header,
     width: index === 0 ? "15%" : undefined,
+    align: native.dataset.sialPreserveNumeric !== undefined && snapshot.rows.some((row) => row.cells[index]?.numeric) ? "right" : undefined,
     render: (row) => {
       const cell = row.cells[index];
       if (cell.structure) return <div className={cell.muted ? "sial-library-table-muted" : "sial-library-table-cell"}>
@@ -609,11 +688,12 @@ function LinkedFamilyTable({ native }) {
   }]);
   const emptyText = native.parentElement?.querySelector(".empty-state")?.textContent?.trim()
     || "No hay registros que coincidan con los filtros.";
-  return <Table
+  return <><Table
     columns={columns}
-    data={snapshot.rows}
+    data={shownRows}
     rowKey={(row) => row.key}
-    minWidth={columns.length >= 8 ? "1180px" : columns.length > 4 ? "900px" : "760px"}
+    minWidth={native.dataset.sialTableMinWidth || (columns.length >= 8 ? "1180px" : columns.length > 4 ? "900px" : "760px")}
+    tableClassName={native.dataset.sialTableClass || undefined}
     emptyState={emptyText}
     actionsHeader={snapshot.actionIndex >= 0 ? snapshot.headers[snapshot.actionIndex] : undefined}
     actionsWidth={snapshot.rows.some((row) => row.actions.length > 3) ? "190px" : "160px"}
@@ -636,7 +716,7 @@ function LinkedFamilyTable({ native }) {
         >{icon}</IconButton>;
       })}
     </TableRowActions>}
-  />;
+  />{localPagination && <div data-sial-component="Pagination" data-sial-source={source}><Pagination page={safePage} pageSize={localPageSize} total={snapshot.rows.length} pageSizeOptions={[10, 30, 50]} onPageChange={setLocalPage} onPageSizeChange={(size) => { setLocalPageSize(size); setLocalPage(1); }} /></div>}</>;
 }
 
 function mountFilter(select) {
@@ -687,6 +767,18 @@ function mountNotice(original) {
   original.classList.add("sial-native-proxy");
   enhanced.add(original);
   flushSync(() => createRoot(mount).render(<LinkedNotice original={original} />));
+}
+
+function mountDynamicNotice(original) {
+  if (enhanced.has(original) || original.closest("[data-sial-react-view]")) return;
+  const mount = document.createElement("div");
+  mount.dataset.sialComponent = "Notice";
+  mount.dataset.sialSource = source;
+  mount.className = "sial-library-dynamic-notice";
+  original.before(mount);
+  original.classList.add("sial-native-proxy");
+  enhanced.add(original);
+  flushSync(() => createRoot(mount).render(<LinkedDynamicNotice original={original} />));
 }
 
 function mountToast(original) {
@@ -833,25 +925,31 @@ function mountFamilyTable(native) {
 export function mountLegacyTableControls() {
   if (document.querySelector("[data-sial-react-view]")) return;
   const scan = () => {
+    mountPortContainerSelect();
+    mountPlanningAssignmentMatrix();
     document.querySelectorAll('.table-wrap[data-sial-table-adapter="simple"], .table-wrap[data-sial-table-adapter="materials"], main[data-sial-catalog-actions] .table-wrap').forEach(mountFamilyTable);
-    document.querySelectorAll(".inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .materials-date-range .field[data-sial-form-control]").forEach(mountFormField);
+    document.querySelectorAll(".inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .materials-date-range .field[data-sial-form-control], .bulk-toolbar .field[data-sial-form-control], #containerScheduleForm .field[data-sial-form-control], .cut-source-dialog .field[data-sial-form-control]").forEach(mountFormField);
     document.querySelectorAll(".adjust-request-group[data-sial-number-adapter]").forEach(mountAdjustmentNumber);
     document.querySelectorAll(".approval-availability input[data-approved][type=number]").forEach(mountApprovalNumber);
     document.querySelectorAll("[data-sial-role-card-adapter] .role-option").forEach(mountRoleCard);
     document.querySelectorAll("main .toolbar input[data-sial-search-adapter], main .workflow-filters input[data-sial-search-adapter], main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar input[data-sial-search-adapter], main[data-sial-catalog-actions] .toolbar input[type=search]").forEach(mountSearch);
     document.querySelectorAll("button.btn[data-sial-button-adapter], article[data-sial-catalog-actions] .card-actions > button.btn, article[data-sial-catalog-actions] .inline-form-panel .form-actions > button.btn, main[data-sial-catalog-actions] .card-actions > button.btn, .form-card[data-sial-form-adapter] .form-actions > button.btn, .form-card[data-sial-form-adapter] [data-geo-locate], .form-card[data-sial-form-adapter] [data-sial-plan-action], .permission-toolbar .permission-actions > button.btn").forEach(mountButton);
     document.querySelectorAll(".drawer[data-sial-drawer-adapter]:not([data-sial-drawer-local]), main[data-sial-catalog-actions] .drawer:not([data-sial-drawer-local])").forEach(mountDetailDrawer);
-    document.querySelectorAll("main .page > .notice[data-sial-notice-adapter]").forEach(mountNotice);
+    document.querySelectorAll(".notice[data-sial-notice-adapter]").forEach(mountNotice);
+    document.querySelectorAll("main [data-sial-dynamic-notice], .cut-publish-dialog [data-sial-dynamic-notice]").forEach(mountDynamicNotice);
     document.querySelectorAll("main .page > [data-sial-toast-adapter]").forEach(mountToast);
     document.querySelectorAll("main .toolbar select.select, main .workflow-filters select.select, main .permission-toolbar select.select").forEach((select) => {
       if (!select.closest(".inline-form-panel, form")) mountFilter(select);
     });
+    document.querySelectorAll("#bulkRows select[data-bulk-vehicle], #bulkRows select[data-bulk-driver]").forEach(mountFilter);
+    document.querySelectorAll("#bulkRows button[data-remove-bulk-row]").forEach(mountAction);
+    document.querySelectorAll('#driverForm input[type="checkbox"][name="licenseCategory"]').forEach(mountLicenseCheckbox);
     document.querySelectorAll(".card-actions .chip").forEach((count) => {
       if (count.dataset.sialRecordCount !== undefined || /\bregistros?\b/i.test(count.textContent)) mountCount(count);
     });
-    document.querySelectorAll(".table-wrap:not(.sial-native-proxy) .status[data-sial-chip-adapter], main .page .status[data-sial-chip-adapter]:not(.sial-native-proxy)").forEach((status) => { if (!status.closest(".table-wrap.sial-native-proxy")) mountStatusChip(status); });
+    document.querySelectorAll("[data-sial-chip-adapter]:not(.sial-native-proxy)").forEach((status) => { if (!status.closest(".table-wrap.sial-native-proxy")) mountStatusChip(status); });
     document.querySelectorAll(".approval-order-card .status, .approval-context-head > .status, .approval-order-state-current > .status, .approval-order-state--closed > .status, .approval-decision > .status, .recurring-review-heading .status, .additional-source-header > .status, .additional-submit-status > .status, .additional-page-header .card-actions > .status, .additional-line-result > .status, .tracking-detail .card-header > .status, .tracking-detail .order-material-response > .status, .suggest-workspace-head > .status, [data-adjustment-root] > .card > .card-header > .status, [data-adjustment-root] [data-margin-state] > .status, #materialDetailDrawer .detail-value > .status").forEach(mountStatusChip);
-    document.querySelectorAll(".table-wrap:not([data-sial-table-adapter]):not(.sial-native-proxy) .row-actions > .icon-btn[aria-label], .additional-material-line-main > .additional-remove[aria-label]").forEach(mountAction);
+    document.querySelectorAll(".table-wrap:not([data-sial-table-adapter]):not(.sial-native-proxy) .row-actions > .icon-btn[aria-label], .additional-material-line-main > .additional-remove[aria-label], .cut-source-dialog button.icon-btn[aria-label], .cut-drafts-dialog button.icon-btn[aria-label], .cut-publish-dialog button.icon-btn[aria-label]").forEach(mountAction);
     document.querySelectorAll(".table-pagination").forEach(mountPagination);
   };
   scan();

@@ -1,0 +1,44 @@
+{
+  "status": "warning",
+  "consumer": {
+    "root": "D:\\Propuestas UI-UX\\SIAL UI UX\\SIAL Web - Propuesta",
+    "name": "sial-web-propuesta"
+  },
+  "package": {
+    "name": "@banasandev/banasan-ui",
+    "declared": {
+      "section": "dependencies",
+      "spec": "file:vendor/banasan-ui-flow-timeline-20261103.tgz"
+    },
+    "resolvedRoot": "D:\\Propuestas UI-UX\\SIAL UI UX\\SIAL Web - Propuesta\\node_modules\\.pnpm\\@banasandev+banasan-ui@file_3707f287fc764cdb7e10d03bb3ad9620\\node_modules\\@banasandev\\banasan-ui",
+    "resolvedVersion": "1.5.0",
+    "resolvedEntry": "D:\\Propuestas UI-UX\\SIAL UI UX\\SIAL Web - Propuesta\\node_modules\\.pnpm\\@banasandev+banasan-ui@file_3707f287fc764cdb7e10d03bb3ad9620\\node_modules\\@banasandev\\banasan-ui\\dist\\banasan-ui.cjs",
+    "resolveError": null,
+    "entries": {
+      "main": {
+        "value": "./dist/banasan-ui.cjs",
+        "exists": true
+      },
+      "module": {
+        "value": "./dist/banasan-ui.js",
+        "exists": true
+      },
+      "types": {
+        "value": "./dist/index.d.ts",
+        "exists": true
+      }
+    }
+  },
+  "source": {
+    "root": "D:\\SIAL\\Librerias\\.worktrees\\web\\christmas-isotype",
+    "version": "1.5.0",
+    "sameAsResolved": false,
+    "sourceNewestMtime": "2026-11-03T18:44:49.460Z",
+    "distNewestMtime": "2026-11-03T18:44:56.765Z",
+    "distStale": false
+  },
+  "warnings": [
+    "local-consumption-is-provisional"
+  ],
+  "failures": []
+}

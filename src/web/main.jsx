@@ -1,4 +1,6 @@
+import {HomeOverview} from './home-overview.jsx';
 import React from "react";
+import { SecurityContainers, SecurityVehicles, SecurityPoma } from "./security-product/pages.jsx";
 import { createRoot } from "react-dom/client";
 import { SialIsotype } from "./christmas-isotype/sial_isotype";
 import "@banasandev/banasan-ui/style.css";
@@ -9,6 +11,8 @@ import { mountLegacyTableControls } from "./legacy-table-controls.jsx";
 import { mountAssignmentComponents } from "./assignment-components.jsx";
 import { KnownDevices } from "./known-devices.jsx";
 import { mountShell } from "./shell-navigation.jsx";
+import { mountCompanyRoleMove } from "./company-role-move.jsx";
+import { mountCutHubTable } from "./cut-hub-table.jsx";
 import { MaterialsInventory } from "./materials-inventory.jsx";
 import { MaterialsMovements } from "./materials-movements.jsx";
 import { MaterialsOperations } from "./materials-operations.jsx";
@@ -34,7 +38,10 @@ import { FarmCatalog_sectores } from "./farm-catalog-sectores.jsx";
 
 export { mountShell };
 
-const mounts = {
+const mounts = {"home-overview": HomeOverview,
+  "security-containers": SecurityContainers,
+  "security-vehicles": SecurityVehicles,
+  "security-poma": SecurityPoma,
   "farm-grupos": FarmCatalog_grupos,
   "farm-productos": FarmCatalog_productos,
   "farm-sectores": FarmCatalog_sectores,
@@ -79,8 +86,10 @@ function mountStandaloneBrands() {
 
 function mountProposalViews() {
   mountStandaloneBrands();
+  mountCutHubTable();
   if (!/(?:^|\/)shared\/componentes\.html$/i.test(location.pathname)) mountLegacyTableControls();
   mountAssignmentComponents();
+  mountCompanyRoleMove();
   document.querySelectorAll("[data-sial-react-view]").forEach((element) => {
     const View = mounts[element.dataset.sialReactView];
     if (!View || element.dataset.sialMounted === "true") return;
@@ -94,3 +103,5 @@ if (document.readyState === "loading") {
 } else {
   mountProposalViews();
 }
+
+export {mountPalletDetail, unmountPalletDetail} from './pallet-trace-detail.jsx';

@@ -62,11 +62,19 @@
       type: qs("[data-hub-type]"),
       clear: qs("[data-hub-clear]"),
       empty: qs("[data-hub-empty]"),
-      resultCount: qs("[data-hub-result-count]")
+      resultCount: qs("[data-hub-result-count]"),
+      pagination: qs(".table-pagination")
     };
     if (!refs.body) return;
 
 
+    let page = 1;
+    let pageSize = 10;
+    // Escenario aislado para comprobar varias páginas sin alterar la bandeja habitual.
+    if (new URLSearchParams(location.search).get("escenario") === "volumen") {
+      const sample = [...notices];
+      for (let i = 0; i < 18; i++) notices.push({ ...sample[i % sample.length], id: `DEMO-${String(i + 1).padStart(3, "0")}` });
+    }
     const actionFor = (item) => {
       if (item.group === "draft" || item.version === "Borrador") return { label: "Continuar", mode: "editar" };
       if (item.canCorrect) return { label: item.group === "attention" ? "Corregir" : "Preparar corrección", mode: "corregir" };
@@ -109,7 +117,7 @@
               <span><strong>${number(item.boxes)}</strong> cajas</span>
             </div>
           </td>
-          <td><span class="status ${statusClass(item.group, item.status)}">${esc(item.status)}</span></td>
+          <td><span class="status ${statusClass(item.group, item.status)}" data-sial-chip-adapter>${esc(item.status)}</span></td>
           <td><strong>${esc(item.updated)}</strong><span class="cut-hub-meta">${esc(item.note)}</span></td>
           <td>
             <div class="row-actions cut-hub-row-actions">
@@ -124,7 +132,12 @@
 
     function render() {
       const visible = filtered();
-      refs.body.innerHTML = visible.map(rowHtml).join("");
+      page = Math.max(1, Math.min(page, Math.ceil(visible.length / pageSize) || 1));
+      refs.body.innerHTML = visible.slice((page - 1) * pageSize, page * pageSize).map(rowHtml).join("");
+      if (refs.pagination) {
+        Object.assign(refs.pagination.dataset, { sialPage: String(page), sialPageSize: String(pageSize), sialTotal: String(visible.length) });
+        refs.pagination.dispatchEvent(new CustomEvent("sial:table-page-state", { detail: { page, pageSize, total: visible.length } }));
+      }
       refs.empty.classList.toggle("is-hidden", visible.length > 0);
       qs(".cut-hub-table-wrap").classList.toggle("is-hidden", visible.length === 0);
       refs.resultCount.textContent = `${visible.length} ${visible.length === 1 ? "aviso visible" : "avisos visibles"}`;
@@ -136,10 +149,15 @@
       refs.view.value = "all";
       refs.week.value = "all";
       refs.type.value = "all";
+      [refs.search, refs.view, refs.week, refs.type].forEach((control) => {
+        control.dispatchEvent(new Event(control === refs.search ? "input" : "change", { bubbles: true }));
+      });
       render();
     }
 
-    [refs.search, refs.view, refs.week, refs.type].forEach((control) => control.addEventListener("input", render));
+    [refs.search, refs.view, refs.week, refs.type].forEach((control) => control.addEventListener(control === refs.search ? "input" : "change", () => { page = 1; render(); }));
+    refs.pagination?.addEventListener("sial:table-page-request", (event) => { page = event.detail.page; render(); });
+    refs.pagination?.addEventListener("sial:table-page-size-request", (event) => { pageSize = event.detail.pageSize; page = 1; render(); });
     refs.clear.addEventListener("click", clearFilters);
     qs("[data-hub-empty-clear]")?.addEventListener("click", clearFilters);
 

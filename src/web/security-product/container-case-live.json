@@ -1,0 +1,2026 @@
+{
+  "id": "reference-ad90ccd0",
+  "travelOrder": "OP-64",
+  "operationCode": "OP-64",
+  "filingNumber": "64",
+  "technicalOperationCode": "AD90CCD0",
+  "operationName": "En Cross Docking",
+  "source": "web",
+  "sourceLabel": "Transporte web",
+  "status": "En Cross Docking",
+  "statusTone": "active",
+  "container": {
+    "code": "MMAU135866-8"
+  },
+  "containerLabel": "MMAU135866-8",
+  "containerType": "ESPECIAL",
+  "containerCapacity": "20 pallets",
+  "contextContainer": "SIN_STATUS",
+  "year": "2026",
+  "weekNumber": "43",
+  "weekLabel": "Semana 43 · 2026",
+  "registeredAt": "2026-10-23T21:21:26.671-05:00",
+  "responsible": "VANESA ALEXANDRA FONSECA LOPEZ",
+  "syncStatus": "",
+  "syncTone": "default",
+  "vehicle": "Sin asignación",
+  "driver": "Sin asignación",
+  "transportCompany": "Sin asignación",
+  "carrier": "Sin asignación",
+  "location": {
+    "code": "PORT",
+    "name": "Zona Externa"
+  },
+  "locationLabel": "Zona Externa",
+  "detailReference": "OP-64 · AD90CCD0 · MMAU135866-8",
+  "trace": [
+    {
+      "id": "live-movement-14",
+      "name": "En cross docking",
+      "event": "Descarga de pallets en ze/puerto",
+      "occurredAt": "23/10/2026, 09:21 p. m.",
+      "occurredAtValue": "2026-10-23T21:21:00-05:00",
+      "responsible": "VANESA ALEXANDRA FONSECA LOPEZ",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "En cross docking",
+      "statusTone": "active",
+      "vehicle": "Sin asignación",
+      "driver": "Sin asignación",
+      "transportCompany": "Sin asignación",
+      "carrier": "Sin asignación",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-13",
+      "name": "Inspección externa aprobada",
+      "event": "Inspección de contenedor externa",
+      "occurredAt": "23/10/2026, 08:03 p. m.",
+      "occurredAtValue": "2026-10-23T20:03:00-05:00",
+      "responsible": "ANGELITH AVELITH CAMARGO CAMACHO",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Aprobado",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": 156,
+      "inspectionKind": "EXTERNAL",
+      "inspectionCreatedAt": "2026-10-23T20:03:00-05:00",
+      "inspectionDetails": [
+        {
+          "label": "Tipo de inspección",
+          "value": "Inspección de contenedor externa"
+        },
+        {
+          "label": "Resultado",
+          "value": "Aprobado"
+        },
+        {
+          "label": "Observaciones",
+          "value": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real"
+        },
+        {
+          "label": "Panel frontal",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Lado izquierdo",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Lado derecho",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Puertas",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Sistema de refrigeracion - compartimientos accesibles",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Exterior y bastidor (pared frontal hasta las puertas)",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Verificación del sello recibido",
+          "value": "VERIFIED"
+        }
+      ],
+      "sealDetails": [
+        {
+          "label": "Sello de botella",
+          "value": "OUV20072"
+        }
+      ],
+      "evidenceIds": [
+        "live-1-photo-0",
+        "live-1-photo-1",
+        "live-1-photo-2",
+        "live-1-photo-3",
+        "live-1-photo-4",
+        "live-1-photo-5",
+        "live-1-photo-6",
+        "live-1-photo-7",
+        "live-1-photo-8",
+        "live-1-photo-9",
+        "live-1-photo-10",
+        "live-1-photo-11"
+      ],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-12",
+      "name": "Recibido en puerto",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 07:02 p. m.",
+      "occurredAtValue": "2026-10-23T19:02:00-05:00",
+      "responsible": "JUAN CARLOS ANAYA ANAYA",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Recibido en puerto",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-11",
+      "name": "Despachado desde finca",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 06:26 p. m.",
+      "occurredAtValue": "2026-10-23T18:26:00-05:00",
+      "responsible": "ESTEBAN DAVID BARRAZA CABRERA",
+      "zone": {
+        "code": "FARM",
+        "name": "Finca / MANANTIAL ORGÁNICO"
+      },
+      "zoneLabel": "Finca / MANANTIAL ORGÁNICO",
+      "status": "Despachado desde finca",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-10",
+      "name": "Cargado en finca",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 05:22 p. m.",
+      "occurredAtValue": "2026-10-23T17:22:00-05:00",
+      "responsible": "ANGIE MELISSA CONSTANTE PABON",
+      "zone": {
+        "code": "FARM",
+        "name": "Finca / MANANTIAL ORGÁNICO"
+      },
+      "zoneLabel": "Finca / MANANTIAL ORGÁNICO",
+      "status": "Cargado en finca",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [
+        {
+          "label": "Sello de botella",
+          "value": "OUV20072"
+        }
+      ],
+      "evidenceIds": [
+        "live-4-photo-0",
+        "live-4-photo-1",
+        "live-4-photo-2",
+        "live-4-photo-3"
+      ],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-9",
+      "name": "En cargue",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 04:00 p. m.",
+      "occurredAtValue": "2026-10-23T16:00:00-05:00",
+      "responsible": "ANGIE MELISSA CONSTANTE PABON",
+      "zone": {
+        "code": "FARM",
+        "name": "Finca / MANANTIAL ORGÁNICO"
+      },
+      "zoneLabel": "Finca / MANANTIAL ORGÁNICO",
+      "status": "En cargue",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [
+        "live-5-photo-0",
+        "live-5-photo-1",
+        "live-5-photo-2",
+        "live-5-photo-3",
+        "live-5-photo-4",
+        "live-5-photo-5",
+        "live-5-photo-6",
+        "live-5-photo-7",
+        "live-5-photo-8",
+        "live-5-photo-9",
+        "live-5-photo-10",
+        "live-5-photo-11",
+        "live-5-photo-12",
+        "live-5-photo-13"
+      ],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-8",
+      "name": "Inspección interna aprobada",
+      "event": "Inspección de contenedor interna",
+      "occurredAt": "23/10/2026, 11:47 a. m.",
+      "occurredAtValue": "2026-10-23T11:47:00-05:00",
+      "responsible": "ANGIE MELISSA CONSTANTE PABON",
+      "zone": {
+        "code": "FARM",
+        "name": "Finca / MANANTIAL ORGÁNICO"
+      },
+      "zoneLabel": "Finca / MANANTIAL ORGÁNICO",
+      "status": "Aprobado",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": 148,
+      "inspectionKind": "INTERNAL",
+      "inspectionCreatedAt": "2026-10-23T11:47:00-05:00",
+      "inspectionDetails": [
+        {
+          "label": "Tipo de inspección",
+          "value": "Inspección de contenedor interna"
+        },
+        {
+          "label": "Resultado",
+          "value": "Aprobado"
+        },
+        {
+          "label": "Piso",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Techo",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Panel de refrigeracion interno (lamina deflectora)",
+          "value": "VERIFIED"
+        }
+      ],
+      "sealDetails": [],
+      "evidenceIds": [
+        "live-6-photo-0",
+        "live-6-photo-1",
+        "live-6-photo-2",
+        "live-6-photo-3",
+        "live-6-photo-4",
+        "live-6-photo-5",
+        "live-6-photo-6",
+        "live-6-photo-7",
+        "live-6-photo-8",
+        "live-6-photo-9",
+        "live-6-photo-10",
+        "live-6-photo-11",
+        "live-6-photo-12",
+        "live-6-photo-13",
+        "live-6-photo-14",
+        "live-6-photo-15"
+      ],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-7",
+      "name": "Inspección externa aprobada",
+      "event": "Inspección de contenedor externa",
+      "occurredAt": "23/10/2026, 11:40 a. m.",
+      "occurredAtValue": "2026-10-23T11:40:00-05:00",
+      "responsible": "ANGIE MELISSA CONSTANTE PABON",
+      "zone": {
+        "code": "FARM",
+        "name": "Finca / MANANTIAL ORGÁNICO"
+      },
+      "zoneLabel": "Finca / MANANTIAL ORGÁNICO",
+      "status": "Aprobado",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": 146,
+      "inspectionKind": "EXTERNAL",
+      "inspectionCreatedAt": "2026-10-23T11:40:00-05:00",
+      "inspectionDetails": [
+        {
+          "label": "Tipo de inspección",
+          "value": "Inspección de contenedor externa"
+        },
+        {
+          "label": "Resultado",
+          "value": "Aprobado"
+        },
+        {
+          "label": "Panel frontal",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Lado izquierdo",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Lado derecho",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Puertas",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Sistema de refrigeracion - compartimientos accesibles",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Exterior y bastidor (pared frontal hasta las puertas)",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Verificación del sello recibido",
+          "value": "VERIFIED"
+        }
+      ],
+      "sealDetails": [
+        {
+          "label": "Sello de guaya",
+          "value": "3061835"
+        }
+      ],
+      "evidenceIds": [
+        "live-7-photo-0",
+        "live-7-photo-1",
+        "live-7-photo-2",
+        "live-7-photo-3",
+        "live-7-photo-4",
+        "live-7-photo-5",
+        "live-7-photo-6",
+        "live-7-photo-7",
+        "live-7-photo-8",
+        "live-7-photo-9",
+        "live-7-photo-10",
+        "live-7-photo-11"
+      ],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-6",
+      "name": "Recibido en finca",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 11:36 a. m.",
+      "occurredAtValue": "2026-10-23T11:36:00-05:00",
+      "responsible": "ANGIE MELISSA CONSTANTE PABON",
+      "zone": {
+        "code": "FARM",
+        "name": "Finca / MANANTIAL ORGÁNICO"
+      },
+      "zoneLabel": "Finca / MANANTIAL ORGÁNICO",
+      "status": "Recibido en finca",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-5",
+      "name": "Despachado a finca",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 09:58 a. m.",
+      "occurredAtValue": "2026-10-23T09:58:00-05:00",
+      "responsible": "KEINER LUIS PACHECO SANCHEZ",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Despachado a finca",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-4",
+      "name": "Asignado a vehículo",
+      "event": "Despacho",
+      "occurredAt": "23/10/2026, 09:53 a. m.",
+      "occurredAtValue": "2026-10-23T09:53:00-05:00",
+      "responsible": "KEINER LUIS PACHECO SANCHEZ",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Asignado a vehículo",
+      "statusTone": "active",
+      "vehicle": "KUS342",
+      "driver": "DIEGO ALFREDO ANGARITA DIETES",
+      "transportCompany": "CHRISTIAN MEJIA",
+      "carrier": "S26432",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [
+        {
+          "label": "Bolsa de seguridad",
+          "value": "VQTX023311"
+        }
+      ],
+      "evidenceIds": [
+        "live-10-photo-0"
+      ],
+      "securityLabels": []
+    },
+    {
+      "id": "live-movement-3",
+      "name": "Inspección externa aprobada",
+      "event": "Inspección de contenedor externa",
+      "occurredAt": "23/10/2026, 09:23 a. m.",
+      "occurredAtValue": "2026-10-23T09:23:00-05:00",
+      "responsible": "MARGARITA ROSA LEGUIA RODRÍGUEZ",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Aprobado",
+      "statusTone": "active",
+      "vehicle": "Sin asignación",
+      "driver": "Sin asignación",
+      "transportCompany": "Sin asignación",
+      "carrier": "Sin asignación",
+      "inspectionId": 139,
+      "inspectionKind": "EXTERNAL",
+      "inspectionCreatedAt": "2026-10-23T09:23:00-05:00",
+      "inspectionDetails": [
+        {
+          "label": "Tipo de inspección",
+          "value": "Inspección de contenedor externa"
+        },
+        {
+          "label": "Resultado",
+          "value": "Aprobado"
+        },
+        {
+          "label": "Panel frontal",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Lado izquierdo",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Lado derecho",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Puertas",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Sistema de refrigeracion - compartimientos accesibles",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Exterior y bastidor (pared frontal hasta las puertas)",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Número de sello de guaya",
+          "value": "3061835"
+        }
+      ],
+      "sealDetails": [
+        {
+          "label": "Sello de guaya",
+          "value": "3061835"
+        }
+      ],
+      "evidenceIds": [
+        "live-11-photo-0",
+        "live-11-photo-1",
+        "live-11-photo-2",
+        "live-11-photo-3",
+        "live-11-photo-4",
+        "live-11-photo-5",
+        "live-11-photo-6",
+        "live-11-photo-7",
+        "live-11-photo-8",
+        "live-11-photo-9",
+        "live-11-photo-10",
+        "live-11-photo-11"
+      ],
+      "securityLabels": [
+        {
+          "id": "live-11-label-0",
+          "code": "QY300159",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-1",
+          "code": "QY300160",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-2",
+          "code": "QY300161",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-3",
+          "code": "QY300162",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-4",
+          "code": "QY300163",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-5",
+          "code": "QY300164",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-6",
+          "code": "QY300165",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-7",
+          "code": "QY300166",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-8",
+          "code": "QY300167",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-9",
+          "code": "QY300168",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-10",
+          "code": "QY300169",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-11",
+          "code": "QY300170",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-12",
+          "code": "QY300171",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-13",
+          "code": "QY300172",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-14",
+          "code": "WCDIDP50969ID170W2146PARTNUMBER818141A",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-11-label-15",
+          "code": "QY300174",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        }
+      ]
+    },
+    {
+      "id": "live-movement-2",
+      "name": "Inspección interna aprobada",
+      "event": "Inspección de contenedor interna",
+      "occurredAt": "23/10/2026, 08:32 a. m.",
+      "occurredAtValue": "2026-10-23T08:32:00-05:00",
+      "responsible": "MARGARITA ROSA LEGUIA RODRÍGUEZ",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Aprobado",
+      "statusTone": "active",
+      "vehicle": "Sin asignación",
+      "driver": "Sin asignación",
+      "transportCompany": "Sin asignación",
+      "carrier": "Sin asignación",
+      "inspectionId": 138,
+      "inspectionKind": "INTERNAL",
+      "inspectionCreatedAt": "2026-10-23T08:32:00-05:00",
+      "inspectionDetails": [
+        {
+          "label": "Tipo de inspección",
+          "value": "Inspección de contenedor interna"
+        },
+        {
+          "label": "Resultado",
+          "value": "Aprobado"
+        },
+        {
+          "label": "Piso",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Techo",
+          "value": "VERIFIED"
+        },
+        {
+          "label": "Panel de refrigeracion interno (lamina deflectora)",
+          "value": "VERIFIED"
+        }
+      ],
+      "sealDetails": [],
+      "evidenceIds": [
+        "live-12-photo-0",
+        "live-12-photo-1",
+        "live-12-photo-2",
+        "live-12-photo-3",
+        "live-12-photo-4",
+        "live-12-photo-5",
+        "live-12-photo-6",
+        "live-12-photo-7",
+        "live-12-photo-8",
+        "live-12-photo-9",
+        "live-12-photo-10",
+        "live-12-photo-11",
+        "live-12-photo-12",
+        "live-12-photo-13",
+        "live-12-photo-14",
+        "live-12-photo-15"
+      ],
+      "securityLabels": [
+        {
+          "id": "live-12-label-0",
+          "code": "ZI280305",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-12-label-1",
+          "code": "ZI280306",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-12-label-2",
+          "code": "ZI280307",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-12-label-3",
+          "code": "ZI280308",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-12-label-4",
+          "code": "ZI280309",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-12-label-5",
+          "code": "ZI280310",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        },
+        {
+          "id": "live-12-label-6",
+          "code": "ZI280311",
+          "type": "",
+          "typeLabel": "",
+          "status": "Instalada",
+          "statusTone": "active"
+        }
+      ]
+    },
+    {
+      "id": "live-movement-1",
+      "name": "Disponible",
+      "event": "Movimiento",
+      "occurredAt": "23/10/2026, 08:23 a. m.",
+      "occurredAtValue": "2026-10-23T08:23:00-05:00",
+      "responsible": "JHAIR DAVID CARRILLO HERNANDEZ",
+      "zone": {
+        "code": "PORT",
+        "name": "Zona Externa"
+      },
+      "zoneLabel": "Zona Externa",
+      "status": "Disponible",
+      "statusTone": "active",
+      "vehicle": "Sin asignación",
+      "driver": "Sin asignación",
+      "transportCompany": "Sin asignación",
+      "carrier": "Sin asignación",
+      "inspectionId": null,
+      "inspectionKind": null,
+      "inspectionCreatedAt": null,
+      "inspectionDetails": [],
+      "sealDetails": [],
+      "evidenceIds": [],
+      "securityLabels": []
+    }
+  ],
+  "evidences": [
+    {
+      "id": "live-1-photo-0",
+      "title": "Inspección externa aprobada - Evidencia 1",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-01.jpg"
+    },
+    {
+      "id": "live-1-photo-1",
+      "title": "Inspección externa aprobada - Evidencia 2",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-02.jpg"
+    },
+    {
+      "id": "live-1-photo-2",
+      "title": "Inspección externa aprobada - Evidencia 3",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-03.jpg"
+    },
+    {
+      "id": "live-1-photo-3",
+      "title": "Inspección externa aprobada - Evidencia 4",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-04.jpg"
+    },
+    {
+      "id": "live-1-photo-4",
+      "title": "Inspección externa aprobada - Evidencia 5",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-05.jpg"
+    },
+    {
+      "id": "live-1-photo-5",
+      "title": "Inspección externa aprobada - Evidencia 6",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-06.jpg"
+    },
+    {
+      "id": "live-1-photo-6",
+      "title": "Inspección externa aprobada - Evidencia 7",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-07.jpg"
+    },
+    {
+      "id": "live-1-photo-7",
+      "title": "Inspección externa aprobada - Evidencia 8",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-08.jpg"
+    },
+    {
+      "id": "live-1-photo-8",
+      "title": "Inspección externa aprobada - Evidencia 9",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-09.jpg"
+    },
+    {
+      "id": "live-1-photo-9",
+      "title": "Inspección externa aprobada - Evidencia 10",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-10.jpg"
+    },
+    {
+      "id": "live-1-photo-10",
+      "title": "Inspección externa aprobada - Evidencia 11",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-11.jpg"
+    },
+    {
+      "id": "live-1-photo-11",
+      "title": "Inspección externa aprobada - Evidencia 12",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 08:03 p. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-12.jpg"
+    },
+    {
+      "id": "live-4-photo-0",
+      "title": "Evidencia final de cierre - Foto 1",
+      "type": "Evidencia de cierre",
+      "capturedAt": "23/10/2026, 05:20 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Evidencia registrada durante el cierre del cargue del contenedor.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-13.jpg"
+    },
+    {
+      "id": "live-4-photo-1",
+      "title": "Evidencia final de cierre - Foto 2",
+      "type": "Evidencia de cierre",
+      "capturedAt": "23/10/2026, 05:20 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Evidencia registrada durante el cierre del cargue del contenedor.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-14.jpg"
+    },
+    {
+      "id": "live-4-photo-2",
+      "title": "Evidencia final de cierre - Foto 3",
+      "type": "Evidencia de cierre",
+      "capturedAt": "23/10/2026, 05:21 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Evidencia registrada durante el cierre del cargue del contenedor.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-15.jpg"
+    },
+    {
+      "id": "live-4-photo-3",
+      "title": "Evidencia final de cierre - Foto 4",
+      "type": "Evidencia de cierre",
+      "capturedAt": "23/10/2026, 05:21 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Evidencia registrada durante el cierre del cargue del contenedor.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-16.jpg"
+    },
+    {
+      "id": "live-5-photo-0",
+      "title": "Pallet 353970050177452727 - Posición 1 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:01 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 1. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-17.jpg"
+    },
+    {
+      "id": "live-5-photo-1",
+      "title": "Pallet 353970050177493072 - Posición 2 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:03 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 2. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-18.jpg"
+    },
+    {
+      "id": "live-5-photo-2",
+      "title": "Pallet 353970050177493034 - Posición 3 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:04 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 3. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-19.jpg"
+    },
+    {
+      "id": "live-5-photo-3",
+      "title": "Pallet 353970050177452598 - Posición 4 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:06 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 4. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-20.jpg"
+    },
+    {
+      "id": "live-5-photo-4",
+      "title": "Pallet 353970050177452796 - Posición 5 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:13 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 5. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-21.jpg"
+    },
+    {
+      "id": "live-5-photo-5",
+      "title": "Pallet 353970050177452826 - Posición 6 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:15 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 6. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-22.jpg"
+    },
+    {
+      "id": "live-5-photo-6",
+      "title": "Pallet 353970050177493133 - Posición 7 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:17 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 7. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-23.jpg"
+    },
+    {
+      "id": "live-5-photo-7",
+      "title": "Pallet 353970050177452628 - Posición 8 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:18 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 8. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-24.jpg"
+    },
+    {
+      "id": "live-5-photo-8",
+      "title": "Pallet 353970050177492945 - Posición 9 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 04:57 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 9. 54 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-25.jpg"
+    },
+    {
+      "id": "live-5-photo-9",
+      "title": "Pallet 353970050177452697 - Posición 10 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 05:08 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 10. 55 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-26.jpg"
+    },
+    {
+      "id": "live-5-photo-10",
+      "title": "Pallet 353970050177493140 - Posición 11 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 05:10 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 11. 54 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-27.jpg"
+    },
+    {
+      "id": "live-5-photo-11",
+      "title": "Pallet 353970050177492846 - Posición 12 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 05:11 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 12. 33 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-28.jpg"
+    },
+    {
+      "id": "live-5-photo-12",
+      "title": "Pallet 353970050177492747 - Posición 13 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 05:12 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 13. 26 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-29.jpg"
+    },
+    {
+      "id": "live-5-photo-13",
+      "title": "Pallet 353970050177493041 - Posición 14 - Evidencia 1",
+      "type": "Evidencia de cargue de pallet",
+      "capturedAt": "23/10/2026, 05:11 p. m.",
+      "historical": false,
+      "status": "Activa",
+      "statusTone": "active",
+      "observation": "Posición 14. 66 cajas Evidencia vigente del pallet cargado.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-30.jpg"
+    },
+    {
+      "id": "live-6-photo-0",
+      "title": "Inspección interna aprobada - Evidencia 1",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-31.jpg"
+    },
+    {
+      "id": "live-6-photo-1",
+      "title": "Inspección interna aprobada - Evidencia 2",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-32.jpg"
+    },
+    {
+      "id": "live-6-photo-2",
+      "title": "Inspección interna aprobada - Evidencia 3",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-33.jpg"
+    },
+    {
+      "id": "live-6-photo-3",
+      "title": "Inspección interna aprobada - Evidencia 4",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-34.jpg"
+    },
+    {
+      "id": "live-6-photo-4",
+      "title": "Inspección interna aprobada - Evidencia 5",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-35.jpg"
+    },
+    {
+      "id": "live-6-photo-5",
+      "title": "Inspección interna aprobada - Evidencia 6",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-36.jpg"
+    },
+    {
+      "id": "live-6-photo-6",
+      "title": "Inspección interna aprobada - Evidencia 7",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-37.jpg"
+    },
+    {
+      "id": "live-6-photo-7",
+      "title": "Inspección interna aprobada - Evidencia 8",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-38.jpg"
+    },
+    {
+      "id": "live-6-photo-8",
+      "title": "Inspección interna aprobada - Evidencia 9",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-39.jpg"
+    },
+    {
+      "id": "live-6-photo-9",
+      "title": "Inspección interna aprobada - Evidencia 10",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-40.jpg"
+    },
+    {
+      "id": "live-6-photo-10",
+      "title": "Inspección interna aprobada - Evidencia 11",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-41.jpg"
+    },
+    {
+      "id": "live-6-photo-11",
+      "title": "Inspección interna aprobada - Evidencia 12",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-42.jpg"
+    },
+    {
+      "id": "live-6-photo-12",
+      "title": "Inspección interna aprobada - Evidencia 13",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-43.jpg"
+    },
+    {
+      "id": "live-6-photo-13",
+      "title": "Inspección interna aprobada - Evidencia 14",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-44.jpg"
+    },
+    {
+      "id": "live-6-photo-14",
+      "title": "Inspección interna aprobada - Evidencia 15",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-45.jpg"
+    },
+    {
+      "id": "live-6-photo-15",
+      "title": "Inspección interna aprobada - Evidencia 16",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 11:47 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-46.jpg"
+    },
+    {
+      "id": "live-7-photo-0",
+      "title": "Inspección externa aprobada - Evidencia 1",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-47.jpg"
+    },
+    {
+      "id": "live-7-photo-1",
+      "title": "Inspección externa aprobada - Evidencia 2",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-48.jpg"
+    },
+    {
+      "id": "live-7-photo-2",
+      "title": "Inspección externa aprobada - Evidencia 3",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-49.jpg"
+    },
+    {
+      "id": "live-7-photo-3",
+      "title": "Inspección externa aprobada - Evidencia 4",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-50.jpg"
+    },
+    {
+      "id": "live-7-photo-4",
+      "title": "Inspección externa aprobada - Evidencia 5",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-51.jpg"
+    },
+    {
+      "id": "live-7-photo-5",
+      "title": "Inspección externa aprobada - Evidencia 6",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-52.jpg"
+    },
+    {
+      "id": "live-7-photo-6",
+      "title": "Inspección externa aprobada - Evidencia 7",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-53.jpg"
+    },
+    {
+      "id": "live-7-photo-7",
+      "title": "Inspección externa aprobada - Evidencia 8",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-54.jpg"
+    },
+    {
+      "id": "live-7-photo-8",
+      "title": "Inspección externa aprobada - Evidencia 9",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-55.jpg"
+    },
+    {
+      "id": "live-7-photo-9",
+      "title": "Inspección externa aprobada - Evidencia 10",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-56.jpg"
+    },
+    {
+      "id": "live-7-photo-10",
+      "title": "Inspección externa aprobada - Evidencia 11",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-57.jpg"
+    },
+    {
+      "id": "live-7-photo-11",
+      "title": "Inspección externa aprobada - Evidencia 12",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 11:40 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-58.jpg"
+    },
+    {
+      "id": "live-10-photo-0",
+      "title": "Sello guaya - Evidencia 1",
+      "type": "Evidencia de sello guaya",
+      "capturedAt": "23/10/2026, 09:56 a. m.",
+      "historical": false,
+      "status": "Sincronizado",
+      "statusTone": "active",
+      "observation": "Evidencia registrada durante el despacho a finca para sello guaya.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-59.jpg"
+    },
+    {
+      "id": "live-11-photo-0",
+      "title": "Inspección externa aprobada - Evidencia 1",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-60.jpg"
+    },
+    {
+      "id": "live-11-photo-1",
+      "title": "Inspección externa aprobada - Evidencia 2",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-61.jpg"
+    },
+    {
+      "id": "live-11-photo-2",
+      "title": "Inspección externa aprobada - Evidencia 3",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-62.jpg"
+    },
+    {
+      "id": "live-11-photo-3",
+      "title": "Inspección externa aprobada - Evidencia 4",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-63.jpg"
+    },
+    {
+      "id": "live-11-photo-4",
+      "title": "Inspección externa aprobada - Evidencia 5",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-64.jpg"
+    },
+    {
+      "id": "live-11-photo-5",
+      "title": "Inspección externa aprobada - Evidencia 6",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-65.jpg"
+    },
+    {
+      "id": "live-11-photo-6",
+      "title": "Inspección externa aprobada - Evidencia 7",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-66.jpg"
+    },
+    {
+      "id": "live-11-photo-7",
+      "title": "Inspección externa aprobada - Evidencia 8",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-67.jpg"
+    },
+    {
+      "id": "live-11-photo-8",
+      "title": "Inspección externa aprobada - Evidencia 9",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-68.jpg"
+    },
+    {
+      "id": "live-11-photo-9",
+      "title": "Inspección externa aprobada - Evidencia 10",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-69.jpg"
+    },
+    {
+      "id": "live-11-photo-10",
+      "title": "Inspección externa aprobada - Evidencia 11",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-70.jpg"
+    },
+    {
+      "id": "live-11-photo-11",
+      "title": "Inspección externa aprobada - Evidencia 12",
+      "type": "Inspección de contenedor externa",
+      "capturedAt": "23/10/2026, 09:23 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-71.jpg"
+    },
+    {
+      "id": "live-12-photo-0",
+      "title": "Inspección interna aprobada - Evidencia 1",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-72.jpg"
+    },
+    {
+      "id": "live-12-photo-1",
+      "title": "Inspección interna aprobada - Evidencia 2",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-73.jpg"
+    },
+    {
+      "id": "live-12-photo-2",
+      "title": "Inspección interna aprobada - Evidencia 3",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-74.jpg"
+    },
+    {
+      "id": "live-12-photo-3",
+      "title": "Inspección interna aprobada - Evidencia 4",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-75.jpg"
+    },
+    {
+      "id": "live-12-photo-4",
+      "title": "Inspección interna aprobada - Evidencia 5",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-76.jpg"
+    },
+    {
+      "id": "live-12-photo-5",
+      "title": "Inspección interna aprobada - Evidencia 6",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-77.jpg"
+    },
+    {
+      "id": "live-12-photo-6",
+      "title": "Inspección interna aprobada - Evidencia 7",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-78.jpg"
+    },
+    {
+      "id": "live-12-photo-7",
+      "title": "Inspección interna aprobada - Evidencia 8",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-79.jpg"
+    },
+    {
+      "id": "live-12-photo-8",
+      "title": "Inspección interna aprobada - Evidencia 9",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-80.jpg"
+    },
+    {
+      "id": "live-12-photo-9",
+      "title": "Inspección interna aprobada - Evidencia 10",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-81.jpg"
+    },
+    {
+      "id": "live-12-photo-10",
+      "title": "Inspección interna aprobada - Evidencia 11",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-82.jpg"
+    },
+    {
+      "id": "live-12-photo-11",
+      "title": "Inspección interna aprobada - Evidencia 12",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-83.jpg"
+    },
+    {
+      "id": "live-12-photo-12",
+      "title": "Inspección interna aprobada - Evidencia 13",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-84.jpg"
+    },
+    {
+      "id": "live-12-photo-13",
+      "title": "Inspección interna aprobada - Evidencia 14",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-85.jpg"
+    },
+    {
+      "id": "live-12-photo-14",
+      "title": "Inspección interna aprobada - Evidencia 15",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-86.jpg"
+    },
+    {
+      "id": "live-12-photo-15",
+      "title": "Inspección interna aprobada - Evidencia 16",
+      "type": "Inspección de contenedor interna",
+      "capturedAt": "23/10/2026, 08:32 a. m.",
+      "historical": false,
+      "status": "Aprobado",
+      "statusTone": "active",
+      "observation": "Sin observaciones registradas.",
+      "imageSrc": "../shared/cases/ad90ccd0/evidence-87.jpg"
+    }
+  ],
+  "securityLabels": [
+    {
+      "id": "live-11-label-0",
+      "code": "QY300159",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-1",
+      "code": "QY300160",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-2",
+      "code": "QY300161",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-3",
+      "code": "QY300162",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-4",
+      "code": "QY300163",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-5",
+      "code": "QY300164",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-6",
+      "code": "QY300165",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-7",
+      "code": "QY300166",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-8",
+      "code": "QY300167",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-9",
+      "code": "QY300168",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-10",
+      "code": "QY300169",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-11",
+      "code": "QY300170",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-12",
+      "code": "QY300171",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-13",
+      "code": "QY300172",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-14",
+      "code": "WCDIDP50969ID170W2146PARTNUMBER818141A",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-11-label-15",
+      "code": "QY300174",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-0",
+      "code": "ZI280305",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-1",
+      "code": "ZI280306",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-2",
+      "code": "ZI280307",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-3",
+      "code": "ZI280308",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-4",
+      "code": "ZI280309",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-5",
+      "code": "ZI280310",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    },
+    {
+      "id": "live-12-label-6",
+      "code": "ZI280311",
+      "type": "",
+      "typeLabel": "",
+      "status": "Instalada",
+      "statusTone": "active"
+    }
+  ],
+  "comments": [
+    {
+      "id": "live-comment-0",
+      "author": "JUAN CARLOS ANAYA ANAYA",
+      "date": "23/10/2026, 07:02 p. m.",
+      "text": "Sin novedad",
+      "traceNodeId": "live-movement-12"
+    },
+    {
+      "id": "live-comment-1",
+      "author": "ANGELITH AVELITH CAMARGO CAMACHO",
+      "date": "23/10/2026, 08:03 p. m.",
+      "text": "Quedó aprobado la inspección externa . Con un error de digitación en finca en el área de etiquetas donde la última no coincide con el consecutivo. Pero las demás si están correctas y verificadas visualmente en tiempo real",
+      "traceNodeId": "live-movement-13"
+    }
+  ]
+}

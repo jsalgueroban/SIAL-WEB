@@ -19,23 +19,24 @@
     <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
     <main class="main">
       <section class="page">
-        <p class="page-eyebrow">Operaciones puerto / Gestion y programacion</p>
+        <p class="page-eyebrow">Operaciones puerto / Gestión y programación</p>
         <div class="page-header">
-          <div><h1 class="page-title">Gestion de operaciones puerto</h1><p class="page-subtitle">Modulo para administrar contenedores, programarlos por semana operativa y mantener tipos, etapas y puertos usados en recepcion, consolidacion, despacho y exportacion.</p></div>
-          <a class="btn btn-primary" href="programacion-contenedores.html">Abrir programacion</a>
+          <div><h1 class="page-title">Gestión de operaciones puerto</h1><p class="page-subtitle">Modulo para administrar contenedores, programarlos por semana operativa y mantener tipos, etapas y puertos usados en recepcion, consolidacion, despacho y exportación.</p></div>
+          <a class="btn btn-primary" href="programacion-contenedores.html">Abrir programación</a>
         </div>
         <div class="stats">
-          <article class="stat"><label>Contenedores</label><strong>ISO</strong><span>Numero unico, tipo existente y estado operativo.</span></article>
-          <article class="stat"><label>Programacion</label><strong>Semana</strong><span>Contenedores activos disponibles para asignacion e inspeccion.</span></article>
+          <article class="stat"><label>Contenedores</label><strong>ISO</strong><span>Número único, tipo existente y estado operativo.</span></article>
+          <article class="stat"><label>Programación</label><strong>Semana</strong><span>Contenedores activos disponibles para asignacion e inspeccion.</span></article>
           <article class="stat"><label>Etapas</label><strong>Flujo</strong><span>Disponible, transito, inspeccion, cargado, cerrado y exportado.</span></article>
-          <article class="stat"><label>Puertos</label><strong>Catalogo</strong><span>Nombres en mayusculas y trazabilidad administrativa.</span></article>
+          <article class="stat"><label>Puertos</label><strong>Catalogo</strong><span>Nombres en mayúsculas y trazabilidad administrativa.</span></article>
         </div>
-        <article class="card"><div class="card-header"><div><h2 class="card-title">Accesos de gestion</h2><p class="card-subtitle">La programacion consume contenedores activos, procesos disponibles y etapas operativas existentes.</p></div></div><div class="card-body"><div class="toolbar compact"><a class="btn btn-secondary" href="gestion-contenedores.html">Gestionar contenedores</a><a class="btn btn-secondary" href="programacion-contenedores.html">Programacion de contenedores</a><a class="btn btn-secondary" href="trazabilidad-pallets.html">Trazabilidad de pallets</a><a class="btn btn-secondary" href="gestion-tipos-contenedor.html">Tipos de contenedor</a><a class="btn btn-secondary" href="gestion-etapas-contenedor.html">Etapas</a><a class="btn btn-secondary" href="gestion-puertos.html">Puertos</a></div></div></article>
+        <article class="card"><div class="card-header"><div><h2 class="card-title">Accesos de gestion</h2><p class="card-subtitle">La programación consume contenedores activos, procesos disponibles y etapas operativas existentes.</p></div></div><div class="card-body"><div class="toolbar compact"><a class="btn btn-secondary" href="gestion-contenedores.html">Gestionar contenedores</a><a class="btn btn-secondary" href="programacion-contenedores.html">Programación de contenedores</a><a class="btn btn-secondary" href="trazabilidad-pallets.html">Trazabilidad de pallets</a><a class="btn btn-secondary" href="gestion-tipos-contenedor.html">Tipos de contenedor</a><a class="btn btn-secondary" href="gestion-etapas-contenedor.html">Etapas</a><a class="btn btn-secondary" href="gestion-puertos.html">Puertos</a></div></div></article>
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-puerto.js"></script>
+  <script src="../shared/sial-core.js?v=20261103-port3"></script>
+  <script src="../Gestion de Empresas/company-feedback.js"></script>
+  <script src="sial-puerto.js?v=20261103-port3"></script>
   <script>SIAL.applyShell("programacionContenedores");</script>
 </body>
 </html>

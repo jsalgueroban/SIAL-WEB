@@ -91,7 +91,6 @@
       rowCount: qs("[data-row-count]"),
       validationSummary: qs("[data-validation-summary]"),
       publish: qs("[data-open-publish]"),
-      success: qs("[data-create-success]"),
       backdrop: qs("[data-modal-backdrop]"),
       sourceDialog: qs("[data-source-dialog]"),
       draftsDialog: qs("[data-drafts-dialog]"),
@@ -133,7 +132,7 @@
       }
       refs.code.textContent = routeNotice;
       refs.state.textContent = isCorrection ? "Nueva versión" : isReadOnly ? "Publicado" : "Borrador guardado";
-      refs.state.className = `status ${isReadOnly ? "status-active" : "status-warning"}`;
+      refs.state.classList.remove("status-active", "status-warning", "status-inactive"); refs.state.classList.add(isReadOnly ? "status-active" : "status-warning");
       if (isReadOnly) published = true;
       if (isCorrection) {
         refs.type.value = "Corrección"; refs.version.value = correctionMeta.nextVersion; refs.editContext?.classList.remove("is-hidden");
@@ -150,7 +149,7 @@
     const formatNumber = (value) => Number(value || 0).toLocaleString("es-CO");
     const totalBoxes = (row) => Number(row.pallets || 0) * Number(row.boxes || 0);
     const unique = (values) => [...new Set(values.filter(Boolean))];
-    const fieldLabels = { client: "Cliente", reference: "Referencia", pallets: "Palés", boxes: "Cajas por palé" };
+    const fieldLabels = { cutDate: "Día de corte", farm: "Finca", group: "Grupo", sector: "Sector", client: "Cliente", reference: "Referencia", pallets: "Palés", boxes: "Cajas por palé", bunches: "Racimos", direct: "Directo", line: "Línea" };
     const isFieldLocked = (field) => published || (isCorrection && !correctionEditableFields.has(field));
     const getChanges = () => {
       if (!isCorrection) return []; const changes = [];
@@ -178,8 +177,7 @@
       validated = false;
       refs.publish.disabled = true;
       refs.state.textContent = isCorrection ? "Cambios sin guardar" : "Borrador sin guardar";
-      refs.state.className = "status status-warning";
-      refs.success.classList.add("is-hidden");
+      refs.state.classList.remove("status-active", "status-inactive"); refs.state.classList.add("status-warning");
       refs.validationSummary.classList.add("is-hidden");
     };
 
@@ -231,9 +229,9 @@
     }
 
     function rowStatus(result) {
-      if (result.errors.length) return `<span class="status status-inactive">${result.errors.length} por corregir</span>`;
-      if (result.warnings.length) return `<span class="status status-warning">${result.warnings.length} advertencia</span>`;
-      return `<span class="status status-active">Lista</span>`;
+      if (result.errors.length) return `<span class="status status-inactive" data-sial-chip-adapter>${result.errors.length} por corregir</span>`;
+      if (result.warnings.length) return `<span class="status status-warning" data-sial-chip-adapter>${result.warnings.length} advertencia</span>`;
+      return `<span class="status status-active" data-sial-chip-adapter>Lista</span>`;
     }
 
     function rowTemplate(row, index, results) {
@@ -305,6 +303,7 @@
         const row = rows.find((item) => item.id === tableRow.dataset.assignmentRow);
         if (!row) return;
         qsa("[data-field]", tableRow).forEach((control) => {
+          control.setAttribute("aria-label", `${fieldLabels[control.dataset.field]} · fila ${rows.indexOf(row) + 1}`);
           const update = () => {
             const field = control.dataset.field;
             row[field] = control.type === "number" ? Number(control.value || 0) : control.value;
@@ -338,15 +337,26 @@
       if (!changes.length) { refs.changeSummary.className = "cut-change-summary is-empty"; refs.changeSummary.innerHTML = "<strong>Aún no hay cambios</strong><span>Modifica un campo permitido para preparar la nueva versión.</span>"; return; }
       const materials = changes.some((change) => ["reference", "pallets", "boxes"].includes(change.field)); const transport = changes.some((change) => ["pallets", "boxes"].includes(change.field));
       refs.changeSummary.className = "cut-change-summary";
-      refs.changeSummary.innerHTML = `<div class="cut-change-summary-head"><div><strong>${changes.length} ${changes.length === 1 ? "cambio preparado" : "cambios preparados"}</strong><span>Se publicarán como ${esc(correctionMeta.nextVersion)} sin reemplazar ${esc(correctionMeta.originVersion)}.</span></div><span class="status ${validated ? "status-active" : "status-warning"}">${validated ? "Validado" : "Pendiente de validar"}</span></div><div class="cut-change-list">${changes.slice(0, 6).map((change) => `<div><span>Fila ${change.row} · ${esc(change.farm)} · ${esc(change.label)}</span><del>${esc(change.before)}</del><b aria-hidden="true">→</b><ins>${esc(change.after)}</ins></div>`).join("")}${changes.length > 6 ? `<small>Y ${changes.length - 6} cambios más.</small>` : ""}</div><div class="cut-change-impact"><span><strong>Materiales:</strong> ${materials ? "recalcular sugerencias" : "sin cambios"}.</span><span><strong>Transporte:</strong> ${transport ? "revisar capacidad" : "sin cambios"}.</span></div>`;
+      refs.changeSummary.innerHTML = `<div class="cut-change-summary-head"><div><strong>${changes.length} ${changes.length === 1 ? "cambio preparado" : "cambios preparados"}</strong><span>Se publicarán como ${esc(correctionMeta.nextVersion)} sin reemplazar ${esc(correctionMeta.originVersion)}.</span></div><span class="status ${validated ? "status-active" : "status-warning"}" data-sial-chip-adapter>${validated ? "Validado" : "Pendiente de validar"}</span></div><div class="cut-change-list">${changes.slice(0, 6).map((change) => `<div><span>Fila ${change.row} · ${esc(change.farm)} · ${esc(change.label)}</span><del>${esc(change.before)}</del><b aria-hidden="true">→</b><ins>${esc(change.after)}</ins></div>`).join("")}${changes.length > 6 ? `<small>Y ${changes.length - 6} cambios más.</small>` : ""}</div><div class="cut-change-impact"><span><strong>Materiales:</strong> ${materials ? "recalcular sugerencias" : "sin cambios"}.</span><span><strong>Transporte:</strong> ${transport ? "revisar capacidad" : "sin cambios"}.</span></div>`;
     }
 
     function render() {
+      const focused = body.contains(document.activeElement) ? document.activeElement : null;
+      const focusedRow = focused?.closest("[data-assignment-row]")?.dataset.assignmentRow;
+      const focusedField = focused?.dataset.field;
+      const selection = focused && typeof focused.selectionStart === "number"
+        ? [focused.selectionStart, focused.selectionEnd] : null;
       const results = validateRows();
       body.innerHTML = rows.length
         ? rows.map((row, index) => rowTemplate(row, index, results)).join("")
         : '<tr><td colspan="16"><div class="empty-state show">Aún no hay asignaciones. Agrega una fila o carga información existente.</div></td></tr>';
       bindRowEvents();
+      if (focusedRow && focusedField) {
+        const restoredRow = qsa("[data-assignment-row]", body).find((element) => element.dataset.assignmentRow === focusedRow);
+        const restored = restoredRow && qsa("[data-field]", restoredRow).find((element) => element.dataset.field === focusedField);
+        restored?.focus({ preventScroll: true });
+        if (restored && selection) restored.setSelectionRange(...selection);
+      }
       renderSummary(results); renderChangeSummary();
       qsa("[data-header-field]").forEach((control) => { control.disabled = published || isCorrection; });
       qsa("[data-add-assignment], [data-source]").forEach((button) => { button.disabled = published || isCorrection; });
@@ -449,7 +459,7 @@
       if (mode === "loading") {
         return `<div class="cut-preview-head"><strong>${data.length} referencias detectadas</strong><span>Pedido del cliente</span></div>
           <table><thead><tr><th>Cliente</th><th>Referencia</th><th>Cajas solicitadas</th><th>Estado</th></tr></thead>
-          <tbody>${data.map((row) => `<tr><td>${esc(row.client)}</td><td>${esc(row.reference)}</td><td>${formatNumber(row.demand)}</td><td><span class="status status-active">Reconocida</span></td></tr>`).join("")}</tbody></table>`;
+          <tbody>${data.map((row) => `<tr><td>${esc(row.client)}</td><td>${esc(row.reference)}</td><td>${formatNumber(row.demand)}</td><td><span class="status status-active" data-sial-chip-adapter>Reconocida</span></td></tr>`).join("")}</tbody></table>`;
       }
       const results = validateRowsFor(data);
       return `<div class="cut-preview-head"><strong>${data.length} filas listas para importar</strong><span>Se agregarán al borrador</span></div>
@@ -531,7 +541,7 @@
             <small>${esc(size)}${detail ? ` · ${esc(detail)}` : ""}</small>
           </span>
           <span class="${current.status}">${current.badge}</span>
-          <button class="btn btn-ghost cut-file-remove" type="button" data-remove-source-file="${mode}">
+          <button class="btn btn-ghost cut-file-remove" data-sial-button-adapter type="button" data-remove-source-file="${mode}">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg>
             ${actionLabel}
           </button>
@@ -546,7 +556,12 @@
       refs.backdrop.hidden = false;
       dialog.hidden = false;
       document.body.classList.add("modal-open");
-      window.setTimeout(() => qs("button, input, select, textarea", dialog)?.focus(), 0);
+      requestAnimationFrame(() => requestAnimationFrame(() => modalControls(dialog)[0]?.focus()));
+    }
+
+    function modalControls(dialog) {
+      return qsa('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]', dialog)
+        .filter(element => element.getClientRects().length && !element.closest('.sial-native-proxy, [hidden], .is-hidden'));
     }
 
     function closeModals() {
@@ -554,7 +569,9 @@
       refs.backdrop.hidden = true;
       [refs.sourceDialog, refs.draftsDialog, refs.publishDialog].forEach((dialog) => { dialog.hidden = true; });
       document.body.classList.remove("modal-open");
-      lastTrigger?.focus?.();
+      const trigger = lastTrigger?.classList.contains("sial-native-proxy")
+        ? lastTrigger.previousElementSibling?.querySelector("button") : lastTrigger;
+      requestAnimationFrame(() => trigger?.isConnected && trigger.focus());
     }
 
     function openSource(mode, trigger) {
@@ -605,11 +622,12 @@
         renderFileState(mode, "analyzing", file);
         const [parsed] = await Promise.all([parse, wait(680)]);
         if (token !== fileProcessToken) return;
+        if (!parsed.length) throw new Error("Archivo sin filas");
         importedRows = parsed;
         const detail = mode === "loading"
           ? `${importedRows.length} referencias detectadas`
           : `${importedRows.length} filas detectadas`;
-        renderFileState(mode, "ready", file, detail);
+        renderFileState(mode, "ready", file, isDelimited ? detail : `${detail} · Vista de demostración: datos de ejemplo, no lectura del Excel adjunto`);
         refs.sourceNext.disabled = false;
         refs.sourceNext.textContent = "Revisar datos";
       } catch {
@@ -627,9 +645,13 @@
         const parsed = parsePastedRows(refs.pasteInput.value);
         if (!parsed.length) {
           refs.pasteInput.classList.add("is-error");
+          refs.pasteInput.setAttribute("aria-invalid", "true");
+          window.CompanyFeedback?.show("No hay filas para agregar", "warning", "Pega las columnas separadas por tabulaciones.");
           refs.pasteInput.focus();
           return;
         }
+        refs.pasteInput.removeAttribute("aria-invalid");
+        refs.pasteInput.classList.remove("is-error");
         rows.push(...parsed);
         markChanged();
         closeModals();
@@ -648,10 +670,10 @@
       if (sourceStage === 1) {
         sourceStage = 2;
         const preview = sourceMode === "loading" ? refs.loadingPreview : refs.excelPreview;
-        preview.innerHTML = previewTable(importedRows, sourceMode);
+        preview.innerHTML = `<div class="table-wrap" data-sial-table-adapter="materials" data-sial-local-pagination data-sial-table-min-width="640px">${previewTable(importedRows, sourceMode)}</div>`;
         preview.classList.remove("is-hidden");
         if (sourceMode === "excel") {
-          refs.excelMapping.classList.remove("is-hidden");
+          refs.excelMapping.classList.toggle("is-hidden", /\.(csv|tsv)$/i.test(sourceFile.name));
           qs("[data-mapping-grid]").innerHTML = mappingTemplate();
         }
         refs.sourceNext.textContent = sourceMode === "loading" ? "Usar Loading Plan" : "Importar al borrador";
@@ -674,8 +696,8 @@
     }
 
     function showSourceResult(message) {
-      refs.sourceResult.innerHTML = `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>${esc(message)}</span>`;
-      refs.sourceResult.classList.remove("is-hidden");
+      refs.sourceResult.classList.add("is-hidden");
+      window.CompanyFeedback?.show("Información agregada", "success", message);
     }
 
     function saveDraft() {
@@ -688,12 +710,12 @@
       const index = drafts.findIndex((draft) => draft.id === current.id);
       if (index >= 0) drafts[index] = current;
       else drafts.unshift(current);
-      saveDrafts(drafts);
+      try { saveDrafts(drafts); }
+      catch { window.CompanyFeedback?.show("No se pudo guardar el borrador", "error", "Inténtalo nuevamente."); return; }
       refs.state.textContent = "Borrador guardado";
-      refs.state.className = "status status-active";
+      refs.state.classList.remove("status-warning", "status-inactive"); refs.state.classList.add("status-active");
       qs("[data-last-saved]").textContent = "Guardado ahora";
-      refs.success.textContent = "Borrador guardado. Puedes continuar más tarde desde la bandeja.";
-      refs.success.classList.remove("is-hidden");
+      window.CompanyFeedback?.show("Borrador guardado", "success", "Puedes retomarlo desde Borradores.");
     }
 
     function renderDrafts() {
@@ -703,11 +725,11 @@
         <article class="cut-draft-item">
           <div class="cut-draft-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"></path><path d="M9 11h6M9 15h5"></path></svg></div>
           <div class="cut-draft-content">
-            <div><strong>${esc(draft.code)}</strong><span class="status status-warning">Incompleto</span></div>
+            <div><strong>${esc(draft.code)}</strong><span class="status status-warning" data-sial-chip-adapter>Incompleto</span></div>
             <p>${esc(draft.week)} · ${esc(draft.type)} · ${draft.rows.length} asignaciones</p>
             <small>${esc(draft.missing)} · Actualizado ${esc(draft.updated)}</small>
           </div>
-          <button class="btn btn-secondary" type="button" data-resume-draft="${esc(draft.id)}">Retomar</button>
+          <button class="btn btn-secondary" data-sial-button-adapter type="button" data-resume-draft="${esc(draft.id)}">Retomar</button>
         </article>
       `).join("");
       qsa("[data-resume-draft]", refs.draftsList).forEach((button) => {
@@ -737,7 +759,7 @@
       refs.validationSummary.classList.remove("is-hidden", "is-success", "is-warning");
       refs.validationSummary.classList.add(validated ? (warnings.length ? "is-warning" : "is-success") : "is-warning");
       refs.validationSummary.innerHTML = validated
-        ? `<div><strong>${warnings.length ? `Aviso válido con ${warnings.length} advertencias` : isCorrection ? "Cambios listos para revisar" : "Aviso listo para publicar"}</strong><span>${warnings.length ? "Revisa las advertencias antes de confirmar." : isCorrection ? "El motivo, las asignaciones y el impacto fueron validados." : "Fincas, referencias, certificaciones y cantidades fueron validadas."}</span></div><button class="btn btn-primary" type="button" data-summary-publish>${isCorrection ? "Revisar cambios" : "Publicar aviso"}</button>`
+        ? `<div><strong>${warnings.length ? `Aviso válido con ${warnings.length} advertencias` : isCorrection ? "Cambios listos para revisar" : "Aviso listo para publicar"}</strong><span>${warnings.length ? "Revisa las advertencias antes de confirmar." : isCorrection ? "El motivo, las asignaciones y el impacto fueron validados." : "Fincas, referencias, certificaciones y cantidades fueron validadas."}</span></div><button class="btn btn-primary" data-sial-button-adapter type="button" data-summary-publish>${isCorrection ? "Revisar cambios" : "Publicar aviso"}</button>`
         : `<div><strong>${errors.length + Number(reasonMissing) + Number(changesMissing) || 1} bloqueos impiden publicar</strong><span>${reasonMissing ? "Explica el motivo del cambio." : changesMissing ? "Realiza al menos un cambio permitido." : rows.length ? "Revisa las filas marcadas y vuelve a validar." : "Agrega al menos una asignación."}</span></div>`;
       qs("[data-summary-publish]")?.addEventListener("click", openPublish);
       refs.validationSummary.focus(); render(); return validated;
@@ -757,7 +779,9 @@
       qs("[data-publish-summary]").innerHTML = [["Fincas", unique(rows.map((row) => row.farm)).length], ["Palés", formatNumber(pallets)], ["Cajas", formatNumber(boxes)]].map(([label, value]) => `<span><strong>${esc(value)}</strong> ${esc(label.toLowerCase())}</span>`).join("");
       const changes = getChanges(); refs.publishChanges.classList.toggle("is-hidden", !isCorrection);
       if (isCorrection) refs.publishChanges.innerHTML = `<strong>Qué cambiará</strong><div>${changes.map((change) => `<span><b>${esc(change.label)}</b> · ${esc(change.farm)}: <del>${esc(change.before)}</del> → <ins>${esc(change.after)}</ins></span>`).join("")}</div><p><b>Motivo:</b> ${esc(refs.changeReason.value.trim())}</p>`;
-      qs("[data-publish-validation]").className = `cut-publish-validation ${warnings ? "is-warning" : "is-success"}`;
+      const publishValidation = qs("[data-publish-validation]");
+      publishValidation.classList.remove("notice-warning", "notice-success");
+      publishValidation.classList.add(warnings ? "notice-warning" : "notice-success");
       qs("[data-publish-validation]").innerHTML = warnings
         ? `<svg class="icon" viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z"></path></svg><div><strong>${warnings} advertencias identificadas</strong><span>Confirma que fueron revisadas antes de continuar.</span></div>`
         : `<svg class="icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg><div><strong>Validación completa</strong><span>Sin errores ni advertencias pendientes.</span></div>`;
@@ -766,9 +790,8 @@
 
     function publishNotice() {
       if (pendingAction === "save") { saveDraft(); closeModals(); return; }
-      published = true; closeModals(); refs.state.textContent = "Publicado"; refs.state.className = "status status-active"; refs.publish.disabled = true; refs.validationSummary.classList.add("is-hidden");
-      refs.success.innerHTML = isCorrection ? `<strong>${esc(correctionMeta.nextVersion)} publicada.</strong> El aviso conserva su identificador y la versión anterior permanece disponible.` : `<strong>${esc(refs.code.textContent)} publicado.</strong> La versión quedó disponible para las áreas autorizadas.`;
-      refs.success.classList.remove("is-hidden"); qs("[data-last-saved]").textContent = "Publicado ahora"; render(); window.scrollTo({ top: 0, behavior: "smooth" });
+      published = true; closeModals(); window.CompanyFeedback?.show("Aviso publicado"); refs.state.textContent = "Publicado"; refs.state.classList.remove("status-warning", "status-inactive"); refs.state.classList.add("status-active"); refs.publish.disabled = true; refs.validationSummary.classList.add("is-hidden");
+      qs("[data-last-saved]").textContent = "Publicado ahora"; render(); window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     qs("[data-add-assignment]")?.addEventListener("click", () => {
@@ -825,7 +848,15 @@
       markChanged();
     }));
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !refs.backdrop.hidden) closeModals();
+      if (refs.backdrop.hidden || event.defaultPrevented) return;
+      if (event.key === "Escape") { event.preventDefault(); event.stopImmediatePropagation(); closeModals(); }
+      if (event.key === "Tab") {
+        const dialog = [refs.sourceDialog, refs.draftsDialog, refs.publishDialog].find(item => !item.hidden);
+        const controls = modalControls(dialog);
+        const first = controls[0], last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
     });
 
     saveDrafts(getDrafts());

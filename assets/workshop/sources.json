@@ -1,0 +1,92 @@
+[
+  {
+    "file": "anvil.svg",
+    "source": "https://game-icons.net/1x1/lorc/anvil.html",
+    "download": "https://raw.githubusercontent.com/game-icons/icons/master/lorc/anvil.svg",
+    "author": "Lorc / Game-icons.net",
+    "license": "CC BY 3.0",
+    "sha256": "8f1b9ce7c512d167719dcd77fc169c811eb69b25e30ed1ae5610d161ce9007a4",
+    "used": false,
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+  },
+  {
+    "file": "goggles.svg",
+    "source": "https://game-icons.net/1x1/delapouite/steampunk-goggles.html",
+    "download": "https://raw.githubusercontent.com/game-icons/icons/master/delapouite/steampunk-goggles.svg",
+    "author": "Delapouite / Game-icons.net",
+    "license": "CC BY 3.0",
+    "sha256": "99f18dad6e7b1a604d8773d12fb8379a0d55c38e2918282303edffa1f1b6b194",
+    "used": true,
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+  },
+  {
+    "file": "smoke_01.png",
+    "source": "https://kenney.nl/assets/particle-pack",
+    "download": "https://codeload.github.com/Calinou/kenney-particle-pack/zip/refs/heads/master",
+    "author": "Kenney",
+    "license": "CC0 1.0",
+    "sha256": "89df665bb2e9a021edad2a9077d2651c44e6c6cd28f3fd38f800c41a5febd2a2",
+    "used": false,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "file": "smoke_04.png",
+    "source": "https://kenney.nl/assets/particle-pack",
+    "download": "https://codeload.github.com/Calinou/kenney-particle-pack/zip/refs/heads/master",
+    "author": "Kenney",
+    "license": "CC0 1.0",
+    "sha256": "be2579db131de274567e0e1b5a2e81f9790205f0e68a3c1a038d130a7b24e092",
+    "used": true,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "file": "flame_01.png",
+    "source": "https://kenney.nl/assets/particle-pack",
+    "download": "https://codeload.github.com/Calinou/kenney-particle-pack/zip/refs/heads/master",
+    "author": "Kenney",
+    "license": "CC0 1.0",
+    "sha256": "e9a3b7f44defc34251eccca5f54ad719765fe25b5266df7eb0906cd859076a43",
+    "used": true,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "file": "spark_05.png",
+    "source": "https://kenney.nl/assets/particle-pack",
+    "download": "https://codeload.github.com/Calinou/kenney-particle-pack/zip/refs/heads/master",
+    "author": "Kenney",
+    "license": "CC0 1.0",
+    "sha256": "31a0138d1c26c8110eff74fbfcd308439a82ca1e53ccd8fc002528e24fd32c36",
+    "used": true,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "file": "star_06.png",
+    "source": "https://kenney.nl/assets/particle-pack",
+    "download": "https://codeload.github.com/Calinou/kenney-particle-pack/zip/refs/heads/master",
+    "author": "Kenney",
+    "license": "CC0 1.0",
+    "sha256": "1eeea29f7a006be4a9682412fefc37087d158b100f60abde99933766870dcba0",
+    "used": false,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "file": "light_01.png",
+    "source": "https://kenney.nl/assets/particle-pack",
+    "download": "https://codeload.github.com/Calinou/kenney-particle-pack/zip/refs/heads/master",
+    "author": "Kenney",
+    "license": "CC0 1.0",
+    "sha256": "e15db5a8ccea012f4df82689f1a829bdaac04fd8a3066a723f157e0b01ffbf0a",
+    "used": false,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "file": "anvil.glb",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/low-poly-medieval-anvil-5fd39d9e",
+    "author": "Innerscene",
+    "license": "CC0 1.0",
+    "sha256": "f81c84ddff1b2bea1f9e9cf84f14a1ba83680df99ad4b04d427d98e48dea41a4",
+    "adaptation": "project-workshop-model.mjs: orthographic SVG and SIAL material",
+    "used": true,
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  }
+]

@@ -12,7 +12,7 @@
       })();
     </script>
     <link rel="stylesheet" href="gestion-alertas-contactos.css" />
-  </head>
+  <link rel="stylesheet" href="company-feedback.css?v=20261030-2" /></head>
   <body data-view-family="gestion">
     <div class="app-shell">
       <aside class="sidebar" aria-label="Navegación principal">
@@ -299,8 +299,9 @@
         </section>
       </main>
     </div>
-    <script src="../shared/sial-core.js"></script>
-    <script src="sial-empresas.js"></script>
+    <script src="company-feedback.js?v=20261030-2"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+    <script src="sial-empresas.js?v=20261030-groupmove19"></script>
     <script>
       SIAL.applyShell("alertasContactos");
       const q = (s) => document.querySelector(s),
@@ -398,9 +399,11 @@
           savedAlerts = next;
         } catch {
           q("#context").textContent = "No se pudieron guardar las alertas en este navegador. Inténtalo de nuevo.";
+          window.CompanyFeedback?.show("No se pudieron guardar las alertas", "error", "Intenta nuevamente.");
           return;
         }
         renderAlerts(row, a);
+        window.CompanyFeedback?.show("Alertas guardadas");
         q("#editor").classList.add("is-hidden");
         filter();
       };

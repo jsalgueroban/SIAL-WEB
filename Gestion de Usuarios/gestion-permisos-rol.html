@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Administracion de permisos en roles</title>
+  <title>SIAL | Administración de permisos en roles</title>
   <script>
     (function () {
       const savedTheme = localStorage.getItem("sial-theme");
@@ -11,21 +11,21 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-usuarios.css?v=20261029-roles-v2" />
+  <link rel="stylesheet" href="sial-usuarios.css?v=20261030-users3" />
 </head>
 <body data-view-family="configuracion">
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Navegacion principal">
+    <aside class="sidebar" aria-label="Navegación principal">
       <div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div>
       <p class="menu-caption">Usuarios</p>
       <nav data-nav></nav>
     </aside>
     <header class="header">
       <div class="header-left">
-        <button class="icon-btn" aria-label="Abrir menu">
+        <button class="icon-btn" aria-label="Abrir menú">
           <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
-        <label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label>
+        <label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label>
       </div>
       <div class="header-right">
         <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro">
@@ -43,22 +43,22 @@
         <p class="page-eyebrow">Usuarios / Seguridad / Permisos</p>
         <div class="page-header">
           <div>
-            <h1 class="page-title">Administracion de permisos en roles</h1>
-            <p class="page-subtitle">Selecciona un rol y ajusta rapidamente que acciones puede ejecutar en cada modulo.</p>
+            <h1 class="page-title">Administración de permisos en roles</h1>
+            <p class="page-subtitle">Selecciona un rol y ajusta rápidamente qué acciones puede ejecutar en cada módulo.</p>
           </div>
         </div>
 
         <section class="permission-admin-panel" aria-label="Administracion de permisos por rol">
           <div class="permission-toolbar">
             <div class="permission-field">
-              <select class="select" id="permissionRoleSelect" aria-label="Seleccionar rol"></select>
+              <select class="select" id="permissionRoleSelect" aria-label="Rol"></select>
             </div>
             <div class="permission-field">
               <input class="input" id="permissionSearch" type="search" data-sial-search-adapter aria-label="Buscar permiso o módulo" placeholder="Permiso o módulo" />
             </div>
             <div class="permission-field">
-              <select class="select" id="permissionModuleFilter" aria-label="Filtrar permisos por modulo">
-                <option value="all">Todos los modulos</option>
+              <select class="select" id="permissionModuleFilter" aria-label="Módulo">
+                <option value="all">Todos los módulos</option>
               </select>
             </div>
             <div class="permission-actions">
@@ -85,8 +85,9 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js?v=20261029-roles-v2"></script>
-  <script src="sial-usuarios.js?v=20261029-roles-v2"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="../Gestion de Empresas/company-feedback.js"></script>
+  <script src="sial-usuarios.js?v=20261030-users2"></script>
   <script>SIAL.applyShell("permisosRol"); SIAL.initPermissionGrid();</script>
 </body>
 </html>

@@ -5,7 +5,7 @@ window.TransportAvailability = (() => {
     const records = typeof VehiclePrototype === 'undefined' ? [] : VehiclePrototype.read();
     let states = {};
     try { states = JSON.parse(localStorage.getItem(`sial-catalog-state:${new URL('gestion-vehiculos.html', location.href).pathname}`) || '{}'); } catch { states = {}; }
-    const mapped = records.map(item => states[item.plate] ? { ...item, status: states[item.plate].status || item.status, audit: states[item.plate].audit || item.audit } : item);
+    const mapped = records.map(item => !item.stateManaged && states[item.plate] ? { ...item, status: states[item.plate].status || item.status, audit: states[item.plate].audit || item.audit } : item);
     if (new URLSearchParams(location.search).get('escenario') === 'disponible' && !mapped.some(item => String(item.plate || '').trim().toUpperCase() === 'DEMO-001')) {
       const expires = new Date(); expires.setFullYear(expires.getFullYear()+1);
       const future = `${expires.getFullYear()}-${String(expires.getMonth()+1).padStart(2,'0')}-${String(expires.getDate()).padStart(2,'0')}T12:00`;
@@ -16,6 +16,13 @@ window.TransportAvailability = (() => {
   const maintenanceList = () => window.SIALMaintenanceStore?.read?.() || [];
   const operationsList = () => window.SIALOperationStore?.read?.() || [];
   const normalize = value => String(value || '').trim().toUpperCase();
+  function sourcesReady() {
+    if (typeof VehiclePrototype === 'undefined' || !VehiclePrototype.read || !window.SIALMaintenanceStore?.read || !window.SIALOperationStore?.read || !window.SIALPreopEvidence?.unresolvedForVehicle) return false;
+    try {
+      return ['sial-transport-vehicles-v1', 'sial-transport-maintenance-v1', 'sial-transport-operations-v1']
+        .every(key => { const raw = localStorage.getItem(key); return raw === null || Array.isArray(JSON.parse(raw)); });
+    } catch { return false; }
+  }
   function due(value) {
     if (!value) return null;
     const text = String(value).trim();
@@ -33,6 +40,20 @@ window.TransportAvailability = (() => {
     const today = new Date(); today.setHours(0,0,0,0);
     return stamp.getTime() < today.getTime() ? true : stamp.getTime() > today.getTime() ? false : null;
   }
+  // La clasificación del servicio marca REVIEW cuando un documento vigente
+  // vence dentro de 30 días. Esta señal no determina elegibilidad por placa.
+  function nearExpiry(value) {
+    if (due(value) !== false) return false;
+    const text = String(value || '').trim();
+    const dateOnly = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(text);
+    const date = dateOnly
+      ? new Date(Number(dateOnly[3]), Number(dateOnly[2]) - 1, Number(dateOnly[1]))
+      : new Date(text);
+    if (Number.isNaN(date.getTime())) return false;
+    const limit = new Date();
+    limit.setDate(limit.getDate() + 30);
+    return date.getTime() <= limit.getTime();
+  }
   function get(plate) {
     const id = normalize(plate);
     const record = vehicleList().find(item => normalize(item.plate) === id);
@@ -43,6 +64,8 @@ window.TransportAvailability = (() => {
     if (record?.status === 'inactive') blockers.push('Vehículo inactivo.');
     if (record?.status === 'warning') signals.push('Estado administrativo en revisión.');
     for (const item of maintenance) blockers.push(`${item.status === 'active' ? 'En mantenimiento' : 'Pendiente de liberación'}: ${item.id}.`);
+    const inspections = window.SIALPreopEvidence?.unresolvedForVehicle(id) || [];
+    for (const inspection of inspections) blockers.push(`Inspección ${inspection.id} no apta; no hay liberación registrada en la propuesta.`);
     const operation = record?.oplabel || null;
     const hasTransitOperation = operations.some(item => /TR[ÁA]NSITO/.test(String(item.state || item.status || '').toLocaleUpperCase('es')));
     if (record?.opstatus === 'nodisponible' || (record?.opstatus === 'transito' && !hasTransitOperation)) blockers.push(`Estado operativo registrado: ${operation || record.opstatus}.`);
@@ -58,16 +81,21 @@ window.TransportAvailability = (() => {
     else if (soatExpired === null) signals.push('Vigencia del SOAT sin información suficiente.');
     if (techExpired === true) blockers.push('Tecnomecánica con fecha de vencimiento superada.');
     else if (techExpired === null) signals.push('Vigencia de tecnomecánica sin información suficiente.');
-    const demoAvailable = record?.[demoMarker] === true && !blockers.length && record.status === 'active' && record.unavailabilityReason === null && record.inProcess === false && soatExpired === false && techExpired === false;
+    if (nearExpiry(record?.soatEndAt || record?.soatDisplay)) signals.push('SOAT próximo a vencer: requiere revisión dentro de 30 días.');
+    if (nearExpiry(record?.techEndAt || record?.techDisplay)) signals.push('Tecnomecánica próxima a vencer: requiere revisión dentro de 30 días.');
+    const sourcesVerified = sourcesReady();
+    if (!sourcesVerified) signals.push('No se pudieron verificar todas las fuentes locales de disponibilidad.');
+    const demoAvailable = sourcesVerified && record?.[demoMarker] === true && !blockers.length && record.status === 'active' && record.unavailabilityReason === null && record.inProcess === false && soatExpired === false && techExpired === false;
     if (demoAvailable) signals.push('Vehículo de demostración: disponibilidad simulada con datos completos.');
     else if (!blockers.length) signals.push('Elegibilidad pendiente de verificación en el servicio.');
-    return { eligible: blockers.length ? 'blocked' : demoAvailable ? 'available' : 'unknown', signals: [...blockers,...signals], operation, operationActive, maintenance: maintenance.map(item=>item.id).join(', ') || null, record };
+    return { eligible: blockers.length ? 'blocked' : demoAvailable ? 'available' : 'unknown', sourcesVerified, signals: [...blockers,...signals], operation, operationActive, maintenance: maintenance.map(item=>item.id).join(', ') || null, record };
   }
   function list() {
     const values = new Map();
     vehicleList().forEach(record => values.set(normalize(record.plate), record));
     maintenanceList().forEach(record => {const plate=normalize(record.vehicle);if(plate&&!values.has(plate)) values.set(plate,{plate});});
     operationsList().forEach(record => {const plate=normalize(record.vehicle||record.plate);if(plate&&!values.has(plate)) values.set(plate,{plate});});
+    (window.SIALPreopEvidence?.vehiclesWithUnresolved() || []).forEach(plate => {const id=normalize(plate);if(id&&!values.has(id)) values.set(id,{plate:id});});
     return Array.from(values.values());
   }
   return {get,list,due};

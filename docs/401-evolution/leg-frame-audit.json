@@ -1,0 +1,49 @@
+{
+  "before": {
+    "frames": 576,
+    "legs": 1152,
+    "samples": 48384,
+    "failedFrames": 26,
+    "maxFootDistortion": 2.220446049250313e-16,
+    "failedFrameIds": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111
+    ],
+    "failureKinds": [
+      "upper-edge-gap"
+    ]
+  },
+  "after": {
+    "frames": 576,
+    "legs": 1152,
+    "samples": 48384,
+    "failedFrames": 0,
+    "maxFootDistortion": 2.220446049250313e-16,
+    "failures": [],
+    "masterSha256": "6cfc03ad0f301595f01b6a5456369215d63be61dfd5b4ce99f585eb69d0ac588"
+  }
+}

@@ -3,12 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:mascot-preview": "node scripts/build-mascot-preview.mjs",
     "build:ui": "vite build --config vite.ui.config.mjs",
     "build:vehicle": "vite build --config vite.vehicle.config.mjs",
     "build:tractomula": "node scripts/build-tractomula.mjs"
   },
   "dependencies": {
-    "@banasandev/banasan-ui": "1.4.0",
+    "@banasandev/banasan-ui": "file:vendor\\banasan-ui-case-carousel-20261103.tgz",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.8.1",

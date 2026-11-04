@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIAL | Error 401</title>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("sial-theme");
+      const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="../shared/sial-core.css?v=20261028-christmas-global" />
+  <link rel="stylesheet" href="../shared/vendor/sial-mascot-preview.css?v=20261029-401" />
+  <link rel="stylesheet" href="./401-continuidad.css?v=20261029" />
+</head>
+<body data-view-family="sistema">
+  <main class="error-shell" id="error-401">
+    <section class="page error-page" aria-labelledby="errorTitle">
+      <div class="public-changelog-topbar error-topbar">
+        <a class="brand public-changelog-brand" href="../index.html" aria-label="Volver al catálogo SIAL"><span class="error401-brand-mark" aria-hidden="true"></span><span>SIAL</span></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro">
+          <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg>
+          <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+        </button>
+      </div>
+
+      <article class="error-panel error-panel-auth" aria-describedby="errorDescription">
+        <div class="error-main">
+          <p class="page-eyebrow">SIAL / Estado del sistema</p>
+          <span class="error-code" aria-label="Codigo de error 401">401</span>
+          <h1 class="error-title" id="errorTitle">Necesitas iniciar sesión</h1>
+          <p class="error-description" id="errorDescription">Tu sesión no está activa o ha vencido. Inicia sesión nuevamente para continuar con tu trabajo.</p>
+          <div class="error-actions">
+            <a class="btn btn-primary" href="../Login/index.html">Iniciar sesión</a>
+            <a class="btn btn-secondary" href="../index.html">Volver al catálogo</a>
+          </div>
+          <p class="error401-help">Si el problema continúa, reporta el código 401 al equipo de soporte.</p>
+        </div>
+        <div class="error401-illustration" data-sial-mascot="forbidden" data-sial-component="SialMascot" data-sial-source="library-local-preview" data-sial-variant="forbidden" aria-hidden="true"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script>window.SIALCore?.initThemeToggle?.();</script>
+  <script defer src="../shared/vendor/sial-mascot-preview.js?v=20261029-401"></script>
+</body>
+</html>

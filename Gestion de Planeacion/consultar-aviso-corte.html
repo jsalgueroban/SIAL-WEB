@@ -11,7 +11,7 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-aviso-corte.css" />
+  <link rel="stylesheet" href="sial-aviso-corte.css?v=20261031-spacing5" />
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
@@ -23,7 +23,7 @@
 
     <header class="header">
       <div class="header-left">
-        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú">
+        <button data-sial-button-adapter class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
         <label class="search">
@@ -32,11 +32,11 @@
         </label>
       </div>
       <div class="header-right">
-        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false">
+        <button data-sial-button-adapter class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false">
           <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg>
           <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path><path d="m4.93 4.93 1.41 1.41m11.32 11.32 1.41 1.41m0-14.14-1.41 1.41M6.34 17.66l-1.41 1.41"></path></svg>
         </button>
-        <button class="icon-btn" type="button" aria-label="Notificaciones">
+        <button data-sial-button-adapter class="icon-btn" type="button" aria-label="Notificaciones">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg>
         </button>
         <span class="avatar">QA</span>
@@ -50,13 +50,13 @@
             <p class="page-eyebrow">Planeaci&oacute;n / Avisos de corte</p>
             <div class="cut-consult-title-row">
               <h1 class="page-title" data-consult-title>Consultar aviso de corte</h1>
-              <span class="status status-active" data-consult-status>Publicado</span>
+              <span class="status status-active" data-sial-chip-adapter data-consult-status>Publicado</span>
             </div>
             <p class="page-subtitle" data-consult-subtitle>Consulta la versi&oacute;n vigente, sus cambios y la continuidad operativa.</p>
           </div>
           <div class="page-header-actions">
             <a class="btn btn-secondary" href="gestion-avisos-corte.html">Volver a avisos</a>
-            <button class="btn btn-secondary" type="button" data-consult-export>
+            <button data-sial-button-adapter class="btn btn-secondary" type="button" data-consult-export>
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"></path><path d="M5 19h14"></path></svg>
               Exportar detalle
             </button>
@@ -64,9 +64,11 @@
           </div>
         </div>
 
-        <div class="notice notice-info cut-consult-scope" data-consult-scope role="status">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"></path><path d="m9 12 2 2 4-4"></path></svg>
-          <span>Cargando el alcance autorizado...</span>
+        <div class="cut-consult-scope">
+          <div class="notice notice-info" data-consult-scope data-sial-dynamic-notice role="status">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            <span>Cargando el alcance autorizado...</span>
+          </div>
         </div>
 
         <div class="cut-consult-loading" data-consult-loading aria-live="polite">
@@ -95,7 +97,7 @@
               </div>
             </div>
             <dl class="cut-consult-meta" data-consult-meta></dl>
-            <div class="cut-consult-block is-hidden" data-consult-block></div>
+            <div class="cut-consult-block notice-warning is-hidden" data-sial-dynamic-notice role="status" data-consult-block></div>
           </article>
 
           <div class="cut-consult-layout">
@@ -106,9 +108,9 @@
                     <h2 class="card-title">Asignaciones del aviso</h2>
                     <p class="card-subtitle">Informaci&oacute;n consolidada de la versi&oacute;n seleccionada.</p>
                   </div>
-                  <span class="chip" data-consult-line-count>0 asignaciones</span>
+                  <span class="chip" data-sial-chip-adapter data-sial-chip-tone="info" data-consult-line-count>0 asignaciones</span>
                 </div>
-                <div class="table-wrap">
+                <div class="table-wrap" data-sial-table-adapter="materials" data-sial-local-pagination data-sial-table-min-width="760px" data-sial-table-class="cut-consult-table" data-sial-preserve-numeric>
                   <table class="cut-consult-table">
                     <thead><tr><th>Finca</th><th>Cliente y referencia</th><th>Certificaci&oacute;n</th><th>Pal&eacute;s</th><th>Cajas</th><th>D&iacute;a de corte</th></tr></thead>
                     <tbody data-consult-lines></tbody>
@@ -122,10 +124,10 @@
                     <h2 class="card-title">Cambios de esta versi&oacute;n</h2>
                     <p class="card-subtitle" data-consult-diff-subtitle>Comparaci&oacute;n con la versi&oacute;n anterior.</p>
                   </div>
-                  <span class="chip" data-consult-diff-count>0 cambios</span>
+                  <span class="chip" data-sial-chip-adapter data-sial-chip-tone="info" data-consult-diff-count>0 cambios</span>
                 </div>
                 <div class="cut-consult-no-diff is-hidden" data-consult-no-diff></div>
-                <div class="table-wrap" data-consult-diff-wrap>
+                <div class="table-wrap" data-consult-diff-wrap data-sial-table-adapter="materials" data-sial-local-pagination data-sial-respect-visibility data-sial-table-min-width="720px" data-sial-table-class="cut-consult-diff-table">
                   <table class="cut-diff-table cut-consult-diff-table">
                     <thead><tr><th>Asignaci&oacute;n</th><th>Dato</th><th>Anterior</th><th>Nuevo</th><th>Impacto</th></tr></thead>
                     <tbody data-consult-diffs></tbody>
@@ -166,9 +168,9 @@
     </main>
   </div>
 
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-aviso-corte.js"></script>
-  <script src="sial-aviso-corte-detail.js"></script>
+  <script src="../shared/sial-core.js?v=20261031-planea8"></script>
+  <script src="sial-aviso-corte.js?v=20261031-planea8"></script>
+  <script src="sial-aviso-corte-detail.js?v=20261031-planea8"></script>
   <script>SIAL.applyShell("avisos"); window.SIALCutNoticeDetail.init();</script>
 </body>
 </html>

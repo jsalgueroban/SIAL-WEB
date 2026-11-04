@@ -1,0 +1,11 @@
+{
+  "package": "@banasandev/banasan-ui",
+  "version": "1.5.0",
+  "published": false,
+  "source": "christmas-isotype: local build preview",
+  "entrySha256": "1016d872288763305b3754bd7c18170d4781f7d656407b3b1e76428ff69bbb76",
+  "stylesheetSha256": "6088bf5f4c7cd356c01cb06fa1edb1860047781870f6788ee6e127dd8c6d7617",
+  "animationEngine": "Remotion Player 4.0.523",
+  "sessionMasterSha256": "a2aed0430aadd0f1fdbd2d703f6b2ca47a4342c41d5bf0896bf36da70af22a50",
+  "builtAt": "2026-11-01T04:44:56.963Z"
+}

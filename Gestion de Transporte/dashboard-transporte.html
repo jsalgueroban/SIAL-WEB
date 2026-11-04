@@ -10,7 +10,7 @@
       const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
-  </script>  <link rel="stylesheet" href="sial-conductores.css" />
+  </script>  <link rel="stylesheet" href="sial-conductores.css?v=20261030-bulk4" />
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
@@ -18,14 +18,14 @@
     <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
     <main class="main">
       <section class="page">
-        <p class="page-eyebrow">Transporte / Analitica</p>
-        <div class="page-header"><div><h1 class="page-title">Dashboard de transporte</h1><p class="page-subtitle">Monitoreo ejecutivo de flota, disponibilidad, vencimientos documentales y capacidad operativa para decisiones de programacion.</p></div></div>
-        <div class="notice notice-info" data-sial-notice-adapter><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>Vista analitica de lectura. Las acciones administrativas se realizan desde gestion de vehiculos y catalogos.</span></div>
+        <p class="page-eyebrow">Transporte / Analítica</p>
+        <div class="page-header"><div><h1 class="page-title">Dashboard de transporte</h1><p class="page-subtitle">Monitoreo ejecutivo de flota, disponibilidad, vencimientos documentales y capacidad operativa para decisiones de programación.</p></div></div>
+        <div class="notice notice-info" data-sial-notice-adapter><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>Vista analítica de lectura. Las acciones administrativas se realizan desde gestión de vehículos y catalogos.</span></div>
         <div class="stats">
-          <article class="stat"><label>Vehiculos activos</label><strong>39</strong><span>Elegibles despues de validacion administrativa.</span></article>
+          <article class="stat"><label>Vehículos activos</label><strong>39</strong><span>Elegibles despues de validacion administrativa.</span></article>
           <article class="stat"><label>Disponibles hoy</label><strong>28</strong><span>Sin bloqueo documental ni operativo.</span></article>
-          <article class="stat"><label>Alertas documentales</label><strong>6</strong><span>SOAT o tecnomecanica por vencer.</span></article>
-          <article class="stat"><label>Capacidad pallets</label><strong>784</strong><span>Capacidad maxima reportada para vehiculos activos.</span></article>
+          <article class="stat"><label>Alertas documentales</label><strong>6</strong><span>SOAT o tecnomecánica por vencer.</span></article>
+          <article class="stat"><label>Capacidad pallets</label><strong>784</strong><span>Capacidad maxima reportada para vehículos activos.</span></article>
         </div>
         <div class="analytics-grid">
           <article class="card">
@@ -39,27 +39,27 @@
             </div>
           </article>
           <article class="card">
-            <div class="card-header"><div><h2 class="card-title">Alertas criticas</h2><p class="card-subtitle">Eventos que requieren gestion documental u operativa.</p></div></div>
+            <div class="card-header"><div><h2 class="card-title">Alertas criticas</h2><p class="card-subtitle">Eventos que requieren gestión documental u operativa.</p></div></div>
             <div class="card-body timeline">
               <div class="timeline-item danger"><strong>05/05/2026</strong><span>SOAT por vencer: CMN-204 / OPERADOR CARIBE SAS</span><span class="status status-inactive">Critico</span></div>
-              <div class="timeline-item warning"><strong>12/05/2026</strong><span>Tecnomecanica por vencer: TRK-116 / TRANSLOGISTICA SAS</span><span class="status status-warning">Alerta</span></div>
-              <div class="timeline-item"><strong>Hoy</strong><span>4 vehiculos bloqueados por mantenimiento o documentos.</span><span class="status status-active">Control</span></div>
+              <div class="timeline-item warning"><strong>12/05/2026</strong><span>Tecnomecánica por vencer: TRK-116 / TRANSLOGISTICA SAS</span><span class="status status-warning">Alerta</span></div>
+              <div class="timeline-item"><strong>Hoy</strong><span>4 vehículos bloqueados por mantenimiento o documentos.</span><span class="status status-active">Control</span></div>
             </div>
           </article>
         </div>
         <article class="card mt-24">
-          <div class="card-header"><div><h2 class="card-title">Capacidad por empresa transportadora</h2><p class="card-subtitle">Resumen de soporte para programacion y asignacion de operaciones.</p></div></div>
-          <div class="table-wrap" data-sial-table-adapter="simple"><table><thead><tr><th>Empresa</th><th>Vehiculos</th><th>Disponibles</th><th>Alertas</th><th>Capacidad pallets</th><th>Estado operativo</th></tr></thead><tbody>
+          <div class="card-header"><div><h2 class="card-title">Capacidad por empresa transportadora</h2><p class="card-subtitle">Resumen de soporte para programación y asignacion de operaciones.</p></div></div>
+          <div class="table-wrap" data-sial-table-adapter="simple"><table><thead><tr><th>Empresa</th><th>Vehículos</th><th>Disponibles</th><th>Alertas</th><th>Capacidad pallets</th><th>Estado operativo</th></tr></thead><tbody>
             <tr><td>TRANSLOGISTICA SAS</td><td>18</td><td>15</td><td>2</td><td>420</td><td><span class="status status-active">Operativa</span></td></tr>
-            <tr><td>OPERADOR CARIBE SAS</td><td>11</td><td>8</td><td>3</td><td>224</td><td><span class="status status-warning">Revision</span></td></tr>
+            <tr><td>OPERADOR CARIBE SAS</td><td>11</td><td>8</td><td>3</td><td>224</td><td><span class="status status-warning">Revisión</span></td></tr>
             <tr><td>TRANSPORTES ANDINOS</td><td>10</td><td>5</td><td>1</td><td>140</td><td><span class="status status-warning">Limitada</span></td></tr>
           </tbody></table></div>
         </article>
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-conductores.js"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="sial-conductores.js?v=20261030-arl1"></script>
   <script>SIAL.applyShell("dashboard");</script>
 </body>
 </html>

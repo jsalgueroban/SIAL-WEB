@@ -1,0 +1,98 @@
+[
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational\\components\\operational-audit-workbench.tsx",
+    "sha256": "3293c935c7032b60a2d2c7e5d8a80dcfb56ba1ef2f30a5caef932f459afcd478",
+    "target": "src\\web\\security-product\\operational-audit-workbench.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational\\components\\operational-audit-toolbar.tsx",
+    "sha256": "c74e13697b6c38871e4755c9f98a172c816e9c85c0729562e40200d180491969",
+    "target": "src\\web\\security-product\\operational-audit-toolbar.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational\\components\\operational-audit-table-actions.tsx",
+    "sha256": "30b49361da741af1d25c9b6e082fd36170f40a6c3f21e1983d3013df74821925",
+    "target": "src\\web\\security-product\\operational-audit-table-actions.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational\\utils\\operational-audit-filters.ts",
+    "sha256": "6493212749ad740610ad72dd8d9e1044d0af46d185dffe02011fd93e14b281ab",
+    "target": "src\\web\\security-product\\operational-audit-filters.ts",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational-vehicles\\components\\operational-vehicle-audit-workbench.tsx",
+    "sha256": "69dbfe4b0eadf7029f7af367233ee0e2c89b01d5fe8a302cfaf2a08f83a62bf5",
+    "target": "src\\web\\security-product\\operational-vehicle-audit-workbench.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational-vehicles\\components\\operational-vehicle-audit-toolbar.tsx",
+    "sha256": "d4ecf6b5abd5483ea4fd35809e210014a3079fa6129350dd42aff054fdbb2680",
+    "target": "src\\web\\security-product\\operational-vehicle-audit-toolbar.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\operational-vehicles\\utils\\vehicle-operational-audit-filters.ts",
+    "sha256": "2314f9755d6a76bd2ab3ce361773f542887da586cdc075d0c24b8f8fd5d9ea54",
+    "target": "src\\web\\security-product\\vehicle-operational-audit-filters.ts",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\components\\poma-workspace.tsx",
+    "sha256": "09c0d02419ec1d313392c63660149399d0a16cc28a8760040fe2fdf949918347",
+    "target": "src\\web\\security-product\\poma-workspace.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\components\\poma-toolbar.tsx",
+    "sha256": "7a0f6553fb51b1814a3061786f9d9135d9ab886a9a9da763558462c4f45d39c4",
+    "target": "src\\web\\security-product\\poma-toolbar.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\components\\poma-download-button.tsx",
+    "sha256": "48ff9ede8572dfe98b395ae4f9672f2aaaf809e7651e5f5d8e7136670d8289c4",
+    "target": "src\\web\\security-product\\poma-download-button.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\components\\poma-dispatch-download-button.tsx",
+    "sha256": "48e259f1d055d0667c9bfc35ee17c99b31468fb69ff1e779295285a941ca33d4",
+    "target": "src\\web\\security-product\\poma-dispatch-download-button.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\components\\poma-generation-overlay.tsx",
+    "sha256": "a30d9e4729230e6dfe43c418d8551edde3eb66a3c5c7f47b9c12cf6711cb98bb",
+    "target": "src\\web\\security-product\\poma-generation-overlay.tsx",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\hooks\\use-poma-generation.ts",
+    "sha256": "93b933e407c371d50acd0ad3b8eacb30c03d3fa5d87a62dd64f39bf7295c6984",
+    "target": "src\\web\\security-product\\use-poma-generation.ts",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\hooks\\use-has-poma-for-dispatch.ts",
+    "sha256": "04f68fa656bfbadaacad7bddf7dfc8f2d56bcdc91de063c616b284d3c12c209a",
+    "target": "src\\web\\security-product\\use-has-poma-for-dispatch.ts",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\utils\\poma.mapper.ts",
+    "sha256": "09f8b9e896f6e729bb33a908e40fa30704908fef5033bab5f2b3e9c55e216f17",
+    "target": "src\\web\\security-product\\poma.mapper.ts",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  },
+  {
+    "source": "D:\\SIAL\\Repos\\sial\\fe-sial-web\\src\\features\\audit\\poma\\utils\\poma-formatters.ts",
+    "sha256": "93a385c721599f7a90591f5c0be3e38d0adc076a6bcb560f879b975370af8121",
+    "target": "src\\web\\security-product\\poma-formatters.ts",
+    "delta": "Imports to local simulation bridge; React import for prototype build. JSX and component props preserved."
+  }
+]

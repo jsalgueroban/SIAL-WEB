@@ -1272,7 +1272,7 @@
   border-radius: 999px;
   color: var(--color-text-3);
   background: var(--color-soft-surface);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
 }
 
@@ -1286,7 +1286,7 @@
   display: block;
   margin-top: 5px;
   color: var(--color-text-3);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* Avisos de corte: bandeja operativa */
@@ -1488,7 +1488,7 @@
 
 .cut-hub-detail-grid dt {
   color: var(--color-text-3);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .cut-hub-detail-grid dd {
@@ -1903,6 +1903,10 @@ body.modal-open {
   gap: 20px;
 }
 
+.cut-consult-content .card {
+  margin-bottom: 0;
+}
+
 .cut-consult-summary {
   overflow: hidden;
 }
@@ -1914,7 +1918,7 @@ body.modal-open {
 .cut-consult-kicker {
   margin: 0 0 4px;
   color: var(--color-text-3);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -1930,7 +1934,7 @@ body.modal-open {
 .cut-consult-version-current span,
 .cut-consult-version-current small {
   color: var(--color-text-3);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .cut-consult-version-current strong {
@@ -1951,7 +1955,7 @@ body.modal-open {
 }
 
 .cut-consult-meta > div:last-child { border-right: 0; }
-.cut-consult-meta dt { color: var(--color-text-3); font-size: 11px; }
+.cut-consult-meta dt { color: var(--color-text-3); font-size: 12px; font-weight: 600; }
 .cut-consult-meta dd { margin: 4px 0 0; color: var(--color-text); font-weight: 700; }
 
 .cut-consult-block {
@@ -2043,7 +2047,7 @@ body.modal-open {
 .cut-version-item.is-active { box-shadow: inset 3px 0 0 var(--color-primary-500); background: var(--color-primary-50); }
 .cut-version-item > span:first-child { display: grid; gap: 2px; }
 .cut-version-item time,
-.cut-version-item small { color: var(--color-text-3); font-size: 11px; }
+.cut-version-item small { color: var(--color-text-3); font-size: 12px; }
 .cut-version-item > small { grid-column: 1 / -1; }
 .cut-version-item > .status { position: absolute; right: 14px; bottom: 12px; }
 
@@ -2062,12 +2066,12 @@ body.modal-open {
 
 .cut-flow-item:first-child { border-top: 0; }
 .cut-flow-item > div { display: grid; gap: 2px; }
-.cut-flow-item small { color: var(--color-text-3); font-size: 11px; }
+.cut-flow-item small { color: var(--color-text-3); font-size: 12px; }
 .cut-flow-marker { width: 9px; height: 9px; border-radius: 50%; background: var(--color-text-3); }
 .cut-flow-marker.is-active { background: var(--color-success-main); }
 .cut-flow-marker.is-warning { background: var(--color-warning-main); }
 .cut-flow-marker.is-inactive { background: var(--color-error-main); }
-.cut-flow-item .status { font-size: 10px; }
+.cut-flow-item .status { font-size: 12px; }
 
 .cut-evidence-item {
   display: grid;
@@ -2082,7 +2086,7 @@ body.modal-open {
 .cut-evidence-item > .icon { width: 19px; height: 19px; color: var(--color-primary-500); }
 .cut-evidence-item > div { display: grid; gap: 2px; min-width: 0; }
 .cut-evidence-item strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
-.cut-evidence-item small { color: var(--color-text-3); font-size: 10px; }
+.cut-evidence-item small { color: var(--color-text-3); font-size: 12px; }
 .cut-evidence-item .btn { min-height: 36px; padding: 6px 9px; }
 
 .cut-evidence-preview {
@@ -2098,7 +2102,7 @@ body.modal-open {
 }
 
 .cut-evidence-preview > div { display: grid; gap: 3px; }
-.cut-evidence-preview span { color: var(--color-text-2); font-size: 11px; }
+.cut-evidence-preview span { color: var(--color-text-2); font-size: 12px; }
 
 .cut-consult-timeline {
   padding: 4px 20px 20px;
@@ -2117,7 +2121,7 @@ body.modal-open {
 .cut-timeline-head { display: flex; justify-content: space-between; gap: 16px; }
 .cut-timeline-head time,
 .cut-consult-timeline p,
-.cut-consult-timeline small { color: var(--color-text-3); font-size: 11px; }
+.cut-consult-timeline small { color: var(--color-text-3); font-size: 12px; }
 .cut-consult-timeline p { margin: 3px 0; }
 
 @media (max-width: 1080px) {
@@ -2146,3 +2150,66 @@ body.modal-open {
 @media (prefers-reduced-motion: reduce) {
   .cut-consult-loading span { animation: none; }
 }
+
+/* Contiene los elementos accesibles de la tabla al desplazarse en móvil. */
+.cut-hub-table-wrap { position: relative; }
+
+/* Jerarquía de lectura de la consulta, según DESIGN.md. */
+.cut-consult-content .card-subtitle { font-size: 14px; line-height: 1.45; }
+.cut-consult-timeline article strong, .cut-flow-item strong, .cut-evidence-item strong { font-size: 14px; line-height: 1.4; }
+.cut-evidence-item strong { white-space: normal; overflow-wrap: anywhere; }
+
+.cut-consult-summary > .sial-library-dynamic-notice:not(:empty) { margin: 0 18px 18px; }
+.cut-consult-table tbody td,
+.cut-consult-diff-table tbody td { font-size: 14px; line-height: 1.45; }
+@media (max-width: 760px) {
+  .cut-consult-heading .page-header-actions > .sial-library-button,
+  .cut-consult-heading .page-header-actions > .sial-library-button > button { width: 100%; }
+}
+
+/* Resumen y ciclo de cintas en Gestión de semanas. */
+.week-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.week-ribbon-sequence .card-body { padding: 16px 20px 20px; }
+.week-ribbon-items { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.week-ribbon-empty { color: var(--color-text-2); font-size: 13px; }
+@media (max-width: 760px) { .week-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .week-summary { grid-template-columns: 1fr; } }
+
+/* Etiquetas de cinta: composición elegida para el calendario de semanas. */
+.week-ribbon-items { gap: 10px; }
+.week-sequence-item { display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface); color: var(--color-text); font-size: 13px; transition: transform 240ms cubic-bezier(.2, 1.35, .3, 1); }
+.week-sequence-item strong { font-size: 13px; }
+.week-sequence-item > span:last-child { color: var(--color-text-2); }
+.week-sequence-swatch { width: 14px; height: 14px; flex: none; border: 1px solid #9ba5b2; border-radius: 50%; background: var(--week-ribbon-color, var(--color-text-3)); }
+.week-sequence-item[data-ribbon-code="BL"] { --week-ribbon-color: #fff; }
+.week-sequence-item[data-ribbon-code="AZ"] { --week-ribbon-color: var(--color-ribbon-az); }
+.week-sequence-item[data-ribbon-code="RO"] { --week-ribbon-color: var(--color-ribbon-ro); }
+.week-sequence-item[data-ribbon-code="CA"] { --week-ribbon-color: var(--color-ribbon-ca); }
+.week-sequence-item[data-ribbon-code="NE"] { --week-ribbon-color: var(--color-ribbon-ne); }
+.week-sequence-item[data-ribbon-code="NA"] { --week-ribbon-color: var(--color-ribbon-na); }
+.week-sequence-item[data-ribbon-code="VE"] { --week-ribbon-color: var(--color-ribbon-ve); }
+.week-sequence-item[data-ribbon-code="AM"] { --week-ribbon-color: var(--color-ribbon-am); }
+@media (hover: hover) { .week-sequence-item:hover { transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .week-sequence-item { transition: none; } .week-sequence-item:hover { transform: none; } }
+
+/* Indicadores: relieve discreto aprobado para Gestión de semanas. */
+.week-indicator-summary { margin: 0 0 24px; }
+.week-indicator-context { margin: 0 0 12px; color: var(--color-text-2); font-size: 12px; line-height: 1.4; }
+.week-indicator-grid { display: flex; flex-wrap: wrap; gap: 22px; }
+.week-indicator-grid > .week-indicator { flex: 0 1 280px; min-width: 0; }
+.week-indicator-grid:has(> .week-indicator:nth-child(3)) { justify-content: space-between; }
+.week-indicator { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 88px; padding: 16px 20px; border: 1px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-surface); box-shadow: 0 3px 9px color-mix(in srgb, var(--color-text) 9%, transparent), -2px -2px 5px color-mix(in srgb, var(--color-surface) 85%, transparent), inset 0 1px 0 var(--color-surface); }
+.week-indicator h2 { margin: 0; color: var(--color-text); font-size: 13px; font-weight: 600; line-height: 1.35; }
+.week-indicator p { margin: 4px 0 0; color: var(--color-text-2); font-size: 12px; line-height: 1.4; }
+.week-indicator > strong { color: var(--color-text); font-size: 24px; line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums; }
+[data-theme="dark"] .week-indicator { box-shadow: 0 3px 9px rgba(0,0,0,.24), -2px -2px 5px color-mix(in srgb, var(--color-surface-overlay) 45%, transparent), inset 0 1px 0 var(--color-border-subtle); }
+@media(max-width:560px) { .week-indicator-grid { gap: 18px; } }
+@media(forced-colors:active) { .week-indicator { border: 1px solid CanvasText; box-shadow: none; } }
+
+/* Matriz agrupada: controles publicados, etiquetas accesibles sin duplicar encabezados. */
+.planning-matrix-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.planning-matrix-field { min-width: 0; }
+.planning-matrix-field > div { width: 100%; }
+
+.planning-matrix-field { position: relative; }
+.planning-assignment-matrix .cut-create-col-date { width: 180px; }

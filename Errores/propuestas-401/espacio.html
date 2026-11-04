@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <title>SIAL | Tu espacio de trabajo</title>
+  <script>(function(){const saved=localStorage.getItem('sial-theme');document.documentElement.dataset.theme=saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');})();</script>
+  <link rel="stylesheet" href="../../shared/sial-core.css">
+  <link rel="stylesheet" href="../../shared/vendor/sial-mascot-preview.css">
+  <link rel="stylesheet" href="../401-scene.css">
+  <link rel="stylesheet" href="./espacio.css">
+</head>
+<body class="space-concept" data-view-family="sistema">
+  <div class="proposal-return"><a href="./index.html">Comparar propuestas</a><span>Tu espacio de trabajo</span></div>
+  <main class="workspace" aria-labelledby="session-title">
+    <header class="workspace__header">
+      <a class="brand" href="../../index.html" aria-label="Volver al catálogo SIAL"><span class="error401-brand-mark" aria-hidden="true"></span><span>SIAL</span></a>
+      <div class="workspace__location"><span>Acceso</span><span class="session-state"><i aria-hidden="true"></i>Sesión no activa</span></div>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar tema">
+        <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2m-15.07-7.07 1.41 1.41m11.32 11.32 1.41 1.41M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </header>
+    <div class="workspace__body">
+      <div class="workspace__companion">
+        <div class="workspace__mascot" data-session-scene data-sial-mascot="forbidden" data-sial-component="SialMascot" data-sial-source="library-local-preview" data-sial-variant="forbidden"></div>
+      </div>
+      <section class="workspace__recovery" aria-describedby="session-description">
+        <h1 id="session-title">Tu espacio de<br class="desktop-break"> trabajo te espera.</h1>
+        <p id="session-description">Tu sesión no está activa o ha vencido. Inicia sesión nuevamente para continuar en SIAL.</p>
+        <div class="workspace__actions">
+          <a class="btn btn-primary" href="../../Login/index.html">Iniciar sesión<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+          <a class="workspace__secondary" href="../../index.html">Volver al catálogo</a>
+        </div>
+        <p class="workspace__assurance">Para continuar, necesitamos identificarte nuevamente.</p>
+      </section>
+    </div>
+    <footer class="workspace__footer"><span class="workspace__code">401</span><p>Si el problema continúa, comparte este código con soporte.</p></footer>
+  </main>
+  <script src="../../shared/sial-core.js"></script>
+  <script>window.SIALCore?.initThemeToggle?.();</script>
+  <script defer src="../../shared/vendor/sial-mascot-preview.js"></script>
+</body>
+</html>

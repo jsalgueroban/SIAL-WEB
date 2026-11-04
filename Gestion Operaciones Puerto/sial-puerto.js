@@ -141,9 +141,15 @@ const SIAL = (() => {
       form?.reset();
       openButton.focus();
     };
-    openButton.addEventListener("click", () => open("new"));
+    openButton.addEventListener("click", () => { form?.reset(); if (form) { delete form.dataset.originalCode; delete form.dataset.originalName; } open("new"); });
     cancelButton?.addEventListener("click", close);
-    qsa(config.editButtons || "[data-edit-inline]").forEach((button) => button.addEventListener("click", () => open("edit")));
+    qsa(config.editButtons || "[data-edit-inline]").forEach((button) => button.addEventListener("click", () => {
+      const data = button.closest('tr')?.dataset || {};
+      const map = { containerNumber: 'code', containerType: 'type', typeCode: 'code', typeDescription: 'name', typeCapacity: 'capacity', stageName: 'name', stageState: 'state', portName: 'name', portState: 'state' };
+      form.dataset.originalCode = data.code || ''; form.dataset.originalName = data.name || '';
+      Object.entries(map).forEach(([id, key]) => { const input = qs(`#${id}`, form); if (!input) return; input.value = id === 'typeCapacity' ? parseFloat(data[key]) || '' : id.endsWith('State') ? String(data[key] || '').toUpperCase() : data[key] || ''; input.dispatchEvent(new Event('input', { bubbles: true })); input.dispatchEvent(new Event('change', { bubbles: true })); });
+      open('edit');
+    }));
   }
 
   function initCatalogForm(config = {}) {
@@ -167,7 +173,7 @@ const SIAL = (() => {
       qsa("[data-unique-code]", form).forEach((input) => {
         const note = qs(`#${input.getAttribute("aria-describedby")}`);
         const value = input.value.trim().toUpperCase();
-        if (value && existingCodes.includes(value)) {
+        if (value && value !== form.dataset.originalCode && existingCodes.includes(value)) {
           setFieldState(input, note, "El codigo ya existe en la tabla maestra.", "");
           fail = true;
         }
@@ -175,7 +181,7 @@ const SIAL = (() => {
       qsa("[data-unique-name]", form).forEach((input) => {
         const note = qs(`#${input.getAttribute("aria-describedby")}`);
         const value = input.value.trim().toUpperCase();
-        if (value && existingNames.includes(value)) {
+        if (value && value !== form.dataset.originalName && existingNames.includes(value)) {
           setFieldState(input, note, "El nombre ya existe en la tabla maestra.", "");
           fail = true;
         }
@@ -187,7 +193,8 @@ const SIAL = (() => {
           fail = true;
         }
       });
-      ok?.classList.toggle("is-hidden", fail);
+      ok?.classList.add("is-hidden");
+      if (!fail) window.CompanyFeedback?.show('Datos validados', 'success', 'Formulario correcto en esta propuesta de demostración.');
     });
   }
 
@@ -205,7 +212,7 @@ const SIAL = (() => {
         [number, qs("#containerNumberNote"), v => {
           const value = v.trim().toUpperCase();
           if (!/^[A-Z]{4}[0-9]{7}$/.test(value)) return "Debe cumplir formato ISO: 4 letras + 7 digitos.";
-          if (existing.includes(value)) return "El numero de contenedor ya existe.";
+          if (value !== form.dataset.originalCode && existing.includes(value)) return "El número de contenedor ya existe.";
           return "";
         }],
         [qs("#containerType"), qs("#containerTypeNote"), v => v ? "" : "Selecciona un tipo de contenedor existente."]
@@ -216,7 +223,8 @@ const SIAL = (() => {
         setFieldState(input, note, error, "Dato validado.");
         if (error) fail = true;
       });
-      ok?.classList.toggle("is-hidden", fail);
+      ok?.classList.add("is-hidden");
+      if (!fail) window.CompanyFeedback?.show('Datos validados', 'success', 'Formulario correcto en esta propuesta de demostración.');
     });
   }
 
@@ -447,6 +455,7 @@ const SIAL = (() => {
     }
 
     function renderAvailableContainers() {
+      qs('[data-container-search-select]')?.dispatchEvent(new Event('sial:selection-state'));
       const available = activeAvailableContainers();
       const totalPages = Math.max(1, Math.ceil(available.length / selectState.pageSize));
       selectState.page = Math.min(Math.max(selectState.page, 1), totalPages);
@@ -460,7 +469,7 @@ const SIAL = (() => {
         selectList.innerHTML = pageItems.map((container) => `
           <button class="search-select-option" type="button" data-container-option="${escapeHtml(container.id)}">
             <span><strong>${escapeHtml(container.code)}</strong><small>${escapeHtml(container.type)} / ${escapeHtml(container.processLabel)}</small></span>
-            <span class="status status-active">Activo</span>
+            <span class="status status-active" data-sial-chip-adapter>Activo</span>
           </button>
         `).join("");
       }
@@ -538,9 +547,9 @@ const SIAL = (() => {
             <td>${escapeHtml(container?.code || "--")}<br /><span class="muted">${escapeHtml(container?.type || "--")}</span></td>
             <td>${escapeHtml(formatWeekLabel(schedule.operationWeek))}</td>
             <td>${escapeHtml(stage?.name || "--")}</td>
-            <td><span class="status ${escapeHtml(status.className)}">${escapeHtml(status.label)}</span></td>
+            <td><span class="status ${escapeHtml(status.className)}" data-sial-chip-adapter>${escapeHtml(status.label)}</span></td>
             <td class="muted">${escapeHtml((schedule.audit || "").replace("|", " / "))}</td>
-            <td><div class="row-actions"><button class="icon-btn" type="button" data-open-schedule-detail="${escapeHtml(schedule.uuid)}" aria-label="Visualizar programacion"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></td>
+            <td><div class="row-actions"><button class="icon-btn" type="button" data-open-schedule-detail="${escapeHtml(schedule.uuid)}" aria-label="Visualizar programación"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></td>
           </tr>
         `;
       }).join("");
@@ -566,7 +575,7 @@ const SIAL = (() => {
         week: formatWeekLabel(schedule.operationWeek),
         stage: stage?.name || "--",
         status: status.label,
-        validation: "container Activo + container_process Disponible",
+        validation: "Contenedor activo y disponible al programar",
         process: `${container?.processCode || "--"} / ${container?.processLabel || "--"}`
       };
       qsa("[data-schedule-detail]", drawer).forEach((node) => {
@@ -609,6 +618,11 @@ const SIAL = (() => {
       return window.crypto?.randomUUID?.() || `8b420c90-7b8d-4705-9f55-${String(Date.now()).slice(-12)}`;
     }
 
+    const selectionSource = qs('[data-container-search-select]');
+    selectionSource.sialContainerSelection = {
+      read: () => ({ value: Array.from(selectedContainers), options: [...activeAvailableContainers(), ...Array.from(selectedContainers).map(findContainer).filter(Boolean)].map(item => ({ value: item.id, label: item.code, description: item.type })) }),
+      change: (ids) => { selectedContainers.clear(); ids.forEach(id => selectedContainers.add(id)); renderSelectedContainers(); renderAvailableContainers(); setFieldState(selectInput, selectNote, '', `${ids.length} contenedores seleccionados.`); }
+    };
     renderStageOptions();
     if (!weekInput.value) weekInput.value = toDateInputValue(getWeekStart(todayDate()));
     renderSelectedContainers();
@@ -699,7 +713,7 @@ const SIAL = (() => {
       renderAvailableContainers();
     });
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       resetFormMessages();
       const weekNote = qs("#scheduleOperationWeekNote");
@@ -736,6 +750,8 @@ const SIAL = (() => {
         return;
       }
 
+      const confirmed = await window.CompanyFeedback.confirm('Confirmar programación', `Se programarán ${selectedItems.length} contenedores para ${formatWeekLabel(weekStart)}.`, 'Programar contenedores');
+      if (!confirmed) return;
       const createdSchedules = selectedItems.map((container, index) => ({
         uuid: nextUuid(),
         code: nextScheduleCode(index + 1),
@@ -749,7 +765,8 @@ const SIAL = (() => {
 
       if (ok) {
         ok.textContent = `${selectedItems.length} contenedor(es) quedaron parametrizados para ${formatWeekLabel(weekStart)} con etapa ${stage.name}.`;
-        ok.classList.remove("is-hidden");
+        ok.classList.add("is-hidden");
+        window.CompanyFeedback?.show('Contenedores programados', 'success', ok.textContent);
       }
       selectedContainers.clear();
       selectInput.value = "";

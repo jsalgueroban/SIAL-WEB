@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Programacion de contenedores</title>
+  <title>SIAL | Programación de contenedores</title>
   <script>
     (function () {
       const savedTheme = localStorage.getItem("sial-theme");
@@ -33,19 +33,19 @@
     </header>
     <main class="main">
       <section class="page">
-        <p class="page-eyebrow">Operaciones puerto / Programacion de contenedores</p>
-        <div class="page-header"><div><h1 class="page-title">Programacion de contenedores</h1><p class="page-subtitle">Parametriza contenedores activos y disponibles por semana operativa para dejarlos habilitados en la operacion vigente.</p></div></div>
+        <p class="page-eyebrow">Operaciones puerto / Programación de contenedores</p>
+        <div class="page-header"><div><h1 class="page-title">Programación de contenedores</h1><p class="page-subtitle">Parametriza contenedores activos y disponibles por semana operativa para dejarlos habilitados en la operación vigente.</p></div></div>
 
         <article class="card">
           <div class="card-header">
             <div><h2 class="card-title">Parametrizar contenedores</h2><p class="card-subtitle">Selecciona una semana y uno o varios contenedores disponibles. La etapa operativa se asigna por regla y se visualiza en la tabla.</p></div>
-            <div class="card-actions"><span class="chip" id="containerAvailabilityChip">0 disponibles</span></div>
+            <div class="card-actions"><span class="chip" id="containerAvailabilityChip" data-sial-chip-adapter data-sial-chip-tone="info">0 disponibles</span></div>
           </div>
           <div class="card-body">
             <form id="containerScheduleForm" novalidate>
               <section class="section">
                 <div class="grid container-schedule-grid">
-                  <div class="field container-schedule-week">
+                  <div class="field container-schedule-week" data-sial-form-control>
                     <label class="label" for="scheduleOperationWeek">Semana operativa <span class="required">*</span></label>
                     <input class="input" id="scheduleOperationWeek" type="date" aria-describedby="scheduleOperationWeekNote" />
                     <div class="field-note" id="scheduleOperationWeekNote">Fecha base para calcular la semana operativa.</div>
@@ -60,19 +60,19 @@
                       </div>
                     </div>
                     <div class="selected-containers" id="selectedContainersList" aria-live="polite"></div>
-                    <div class="field-note" id="containerSearchSelectNote">Listado paginado de contenedores disponibles para la semana. Puedes seleccionar varios.</div>
+                    <div class="field-note" id="containerSearchSelectNote">Busca contenedores disponibles para la semana. Puedes seleccionar varios.</div>
                   </div>
                   <div class="field container-schedule-observation">
-                    <label class="label" for="containerScheduleObservation">Observacion</label>
-                    <textarea class="input" id="containerScheduleObservation" rows="2" placeholder="Observacion operativa opcional"></textarea>
+                    <label class="label" for="containerScheduleObservation">Observación</label>
+                    <textarea class="input" id="containerScheduleObservation" rows="2" placeholder="Observación operativa opcional"></textarea>
                   </div>
                 </div>
               </section>
               <div class="notice notice-success is-hidden" id="scheduleFormOk"></div>
-              <div class="notice notice-warning is-hidden" id="scheduleFormWarning"></div>
+              <div class="notice notice-warning is-hidden" data-sial-dynamic-notice id="scheduleFormWarning"></div>
               <div class="form-actions">
-                <button class="btn btn-secondary" id="clearContainerScheduleForm" type="button">Limpiar formulario</button>
-                <button class="btn btn-primary" type="submit">Parametrizar contenedores</button>
+                <button data-sial-button-adapter class="btn btn-secondary" id="clearContainerScheduleForm" type="button">Limpiar formulario</button>
+                <button data-sial-button-adapter class="btn btn-primary" type="submit">Parametrizar contenedores</button>
               </div>
             </form>
           </div>
@@ -81,39 +81,39 @@
         <article class="card mt-24">
           <div class="card-header">
             <div><h2 class="card-title">Programaciones de contenedores</h2><p class="card-subtitle">Consulta de programaciones vigentes, futuras y finalizadas por semana operativa.</p></div>
-            <div class="card-actions"><span class="chip" id="containerScheduleCount">0 registros visibles</span><button class="btn btn-secondary" type="button" data-export-table data-export-filename="programacion-contenedores" aria-label="Exportar programacion de contenedores"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar</span></button></div>
+            <div class="card-actions"><span class="chip" id="containerScheduleCount">0 registros visibles</span><button data-sial-button-adapter class="btn btn-secondary" type="button" data-export-table data-export-filename="programacion-contenedores" aria-label="Exportar programación de contenedores"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar</span></button></div>
           </div>
           <div class="card-body">
             <div class="toolbar compact">
-              <input class="input" id="containerScheduleSearch" type="search" aria-label="Buscar programacion, contenedor o etapa" placeholder="Buscar programacion, contenedor o etapa" />
+              <input class="input" id="containerScheduleSearch" data-sial-search-adapter type="search" aria-label="Buscar programación, contenedor o etapa" placeholder="Buscar programación, contenedor o etapa" />
               <select class="select" id="containerScheduleStatus"><option value="all">Todos los estados</option><option value="vigente">Vigente</option><option value="programado">Programado</option><option value="finalizado">Finalizado</option></select>
               <select class="select" id="containerScheduleWeekFilter"><option value="all">Todas las semanas</option><option value="current">Semana actual</option><option value="future">Futuras</option><option value="past">Finalizadas</option></select>
-              <select class="select" id="containerScheduleStageFilter"><option value="all">Todas las etapas</option></select>
+              <select class="select" id="containerScheduleStageFilter" aria-label="Etapa"><option value="all">Todas las etapas</option></select>
             </div>
           </div>
-          <div class="table-wrap"><table><thead><tr><th>Programacion</th><th>Contenedor</th><th>Semana operativa</th><th>Etapa</th><th>Estado</th><th>Auditoria</th><th>Acciones</th></tr></thead><tbody id="containerScheduleBody"></tbody></table></div>
-          <div class="card-body"><div class="empty-state" id="containerScheduleEmpty">No hay programaciones que coincidan con los filtros.</div><div class="table-pagination" id="containerSchedulePagination" aria-label="Paginacion de programaciones"></div></div>
+          <div class="table-wrap" data-sial-table-adapter="materials"><table><thead><tr><th>Programación</th><th>Contenedor</th><th>Semana operativa</th><th>Etapa</th><th>Estado</th><th>Auditoría</th><th>Acciones</th></tr></thead><tbody id="containerScheduleBody"></tbody></table></div>
+          <div class="card-body"><div class="empty-state" id="containerScheduleEmpty">No hay programaciones que coincidan con los filtros.</div><div class="table-pagination" id="containerSchedulePagination" aria-label="Paginación de programaciones"></div></div>
         </article>
       </section>
     </main>
   </div>
   <div class="drawer-backdrop" id="containerScheduleBackdrop"></div>
-  <aside class="drawer" id="containerScheduleDrawer" aria-label="Detalle de programacion de contenedor">
-    <div class="drawer-head"><div><h3>Detalle programacion</h3><p>Consulta lateral de semana, proceso, etapa y auditoria.</p></div><button class="icon-btn" id="closeContainerScheduleDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
+  <aside class="drawer" data-sial-drawer-adapter id="containerScheduleDrawer" aria-label="Detalle de programación de contenedor">
+    <div class="drawer-head"><div><h3>Detalle programación</h3><p>Consulta lateral de semana, proceso, etapa y auditoría.</p></div><button class="icon-btn" id="closeContainerScheduleDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
     <div class="drawer-body">
-      <div class="detail-group"><span class="detail-label">Programacion</span><div class="detail-value" data-schedule-detail="code">-</div></div>
-      <div class="detail-group"><span class="detail-label">UUID tecnico</span><div class="detail-value" data-schedule-detail="uuid">-</div></div>
+      <div class="detail-group"><span class="detail-label">Programación</span><div class="detail-value" data-schedule-detail="code">-</div></div>
       <div class="detail-group"><span class="detail-label">Contenedor</span><div class="detail-value" data-schedule-detail="container">-</div></div>
       <div class="detail-group"><span class="detail-label">Semana operativa</span><div class="detail-value" data-schedule-detail="week">-</div></div>
       <div class="detail-group"><span class="detail-label">Etapa</span><div class="detail-value" data-schedule-detail="stage">-</div></div>
       <div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-schedule-detail="status">-</div></div>
-      <div class="detail-group"><span class="detail-label">Validacion</span><div class="detail-value" data-schedule-detail="validation">-</div></div>
+      <div class="detail-group"><span class="detail-label">Validación</span><div class="detail-value" data-schedule-detail="validation">-</div></div>
       <div class="detail-group"><span class="detail-label">Proceso asociado</span><div class="detail-value" data-schedule-detail="process">-</div></div>
-      <div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="containerScheduleAudit"></div></div>
+      <div class="detail-group"><span class="detail-label">Auditoría</span><div class="stack" id="containerScheduleAudit"></div></div>
     </div>
   </aside>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-puerto.js"></script>
+  <script src="../shared/sial-core.js?v=20261103-port3"></script>
+  <script src="../Gestion de Empresas/company-feedback.js"></script>
+  <script src="sial-puerto.js?v=20261103-port3"></script>
   <script>SIAL.applyShell("programacionContenedores"); SIAL.initContainerScheduling();</script>
 </body>
 </html>

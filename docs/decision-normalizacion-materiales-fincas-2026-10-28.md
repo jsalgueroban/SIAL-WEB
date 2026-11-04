@@ -1,5 +1,11 @@
 # Materiales y continuación en Gestión de Fincas · 28/10/2026
 
+## Cierre de revisión de propuesta — 30/10/2026
+
+John confirmó la aprobación y validación visual de Gestión de Fincas y Referencias y pidió cerrar el bloque. Se da por concluida la revisión de la propuesta local. La animación de filtros se comprobó en las seis bandejas: Clases, Grupos, Productos, Sectores, Fincas y Referencias; en las cinco últimas se verificaron entrada y salida, y movimiento reducido a 390 px sin desborde. El ajuste de movimiento permanece sin publicar en el checkout local.
+
+El cierre de esta revisión no acredita integración productiva, permisos, backend ni QA formal. Continúan como hipótesis de prototipo las relaciones por nombre de finca con grupo/sector y la conservación de clase histórica inactiva al versionar. La normalización Web global continúa abierta para los demás módulos.
+
 ## Alcance y decisión
 
 Propuesta Web, vía `reuse`, continuación de la dirección de normalización acordada. Materiales conserva sus composiciones aprobadas. Clases de referencia inicia el siguiente bloque de Fincas mediante el patrón `web-short-embedded-form` y la bandeja de Proveedores como referencia de componentes. No se modificaron aplicación ni librería productiva. Paquete instalado: `@banasandev/banasan-ui@1.4.0`.

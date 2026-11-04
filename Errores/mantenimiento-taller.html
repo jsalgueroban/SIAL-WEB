@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="data:,">
+  <title>SIAL | Estamos poniendo todo a punto</title>
+  <script>document.documentElement.dataset.theme=localStorage.getItem('sial-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');</script>
+  <link rel="stylesheet" href="../shared/sial-core.css"><link rel="stylesheet" href="../shared/vendor/sial-mascot-preview.css">
+  <link rel="stylesheet" href="./propuestas-401/pausa.css?v=20261030-fit"><link rel="stylesheet" href="./mantenimiento-taller.css">
+</head>
+<body class="pausa-page maintenance-page" data-view-family="sistema">
+  <div class="pausa-shell">
+    <header class="pausa-header">
+      <a class="pausa-brand" href="../index.html" aria-label="Ir al catálogo SIAL"><span class="error401-brand-mark" aria-hidden="true"></span><span>SIAL</span></a>
+      <span class="pausa-location">Tu espacio de trabajo</span>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar tema">
+        <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </header>
+    <main class="pausa-workspace" aria-labelledby="maintenance-title">
+      <section class="pausa-copy">
+        <p class="pausa-state"><span aria-hidden="true"></span>Mantenimiento en curso</p>
+        <h1 id="maintenance-title">Estamos poniendo<br class="pausa-desktop-break"> todo a punto.</h1>
+        <p class="pausa-description">SIAL está temporalmente en mantenimiento. Puedes reintentar el acceso o volver al catálogo mientras terminamos los ajustes.</p>
+        <div class="pausa-actions"><button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar acceso<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 7v5h-5m5 0a7 7 0 1 0-2 5"/></svg></button><a class="pausa-secondary" href="../index.html">Volver al catálogo</a></div>
+      </section>
+      <section class="maintenance-illustration" aria-label="Bananito repara el logo de SIAL en su taller">
+        <div data-maintenance-scene></div>
+        <nav class="maintenance-scenarios" aria-label="Comparar escenarios de mantenimiento">
+          <a href="./mantenimiento-taller.html" data-scenario="workshop">Ciclo completo</a>
+          <a href="./mantenimiento-taller.html?escena=soldadura" data-scenario="weld">Solo soldadura</a>
+        </nav>
+      </section>
+    </main>
+    <footer class="pausa-footer"><p><span class="pausa-code">SIAL</span><span>Si necesitas ayuda, indica a soporte el módulo al que intentabas acceder.</span></p><div class="maintenance-footer-links"><a href="./propuestas-401/pausa.html">Ver estructura elegida</a><a href="./404-neutral.html">Ver Neutral · 404</a><a href="./recursos-taller.html">Modelos de la escena</a><a href="./mantenimiento-revision-brazo.html">Revisión por cuadros</a></div></footer>
+  </div>
+  <script src="../shared/sial-core.js"></script><script>window.SIALCore?.initThemeToggle?.();const scene=new URLSearchParams(location.search).get('escena')==='soldadura'?'weld':'workshop';document.querySelector(`[data-scenario="${scene}"]`).setAttribute('aria-current','page');</script>
+  <script defer src="../shared/vendor/sial-mascot-preview.js?v=20261031-fast-launch"></script>
+</body></html>
+
+
+
+
+
+
+

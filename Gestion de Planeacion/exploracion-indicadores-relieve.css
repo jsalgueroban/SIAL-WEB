@@ -1,0 +1,19 @@
+/* Exploración local: no modifica Card ni tokens de la librería. */
+.soft-stage { background: #eef0f2; border: 1px solid #e0e4e8; padding: 22px; border-radius: 20px; }
+.soft-stage .metric-option-heading { margin-bottom: 12px; }
+.soft-stage .metric-option-heading strong { color: #25364a; }
+.soft-stage .metric-example { gap: 22px; padding: 12px 0 7px; }
+.soft-stage .metric-mini { background: #eef0f2; border-radius: 20px; border: 1px solid #e3e7eb; padding: 16px 20px; min-height: 88px; box-shadow: 6px 6px 12px #c8cdd3, -6px -6px 12px #fff, inset 1px 1px 1px #ffffffc9; }
+.soft-stage .metric-mini-label { color: #24364b; }
+.soft-stage .metric-mini-note { color: #526174; }
+.soft-stage .metric-mini-value { color: #172b43; }
+.soft-subtle .metric-mini { border-radius: 16px; box-shadow: 3px 3px 7px #d1d6dc, -3px -3px 7px #fff, inset 1px 1px 1px #ffffffb3; }
+[data-theme="dark"] .soft-stage { background: #202936; border-color: #344052; }
+[data-theme="dark"] .soft-stage .metric-mini { background: #202936; border-color: #344052; box-shadow: 6px 6px 12px #141b25, -5px -5px 12px #2d394a, inset 1px 1px 1px #46526780; }
+[data-theme="dark"] .soft-subtle .metric-mini { box-shadow: 3px 3px 7px #141b25, -3px -3px 7px #2d394a; }
+[data-theme="dark"] .soft-stage .metric-option-heading strong,
+[data-theme="dark"] .soft-stage .metric-mini-label,
+[data-theme="dark"] .soft-stage .metric-mini-value { color: #f0f4fa; }
+[data-theme="dark"] .soft-stage .metric-mini-note { color: #b9c6d8; }
+@media(max-width:560px) { .soft-stage { padding: 16px; } .soft-stage .metric-example { gap: 18px; } }
+@media(forced-colors:active) { .soft-stage .metric-mini { border: 1px solid CanvasText; box-shadow: none; } }

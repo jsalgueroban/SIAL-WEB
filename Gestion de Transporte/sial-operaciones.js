@@ -1,6 +1,7 @@
 ﻿const SIAL = (() => {
   const qs = (selector, root = document) => root.querySelector(selector);
   const qsa = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const setReadOnly = (field, value) => { if (field) { field.value = value; field.dispatchEvent(new Event("input", { bubbles: true })); } };
 
   const vehicleData = {
     "TRK-421": { plate: "TRK-421", type: "TRACTOMULA", capacity: 32, company: "TRANSLOGISTICA SAS" },
@@ -208,18 +209,18 @@
   function updateWeekDisplay(dateInput, weekDisplay, operationWeek, note, allowPast = false) {
     const week = calculateOperationWeek(dateInput?.value || "");
     if (!week) {
-      if (weekDisplay) weekDisplay.value = "";
+      setReadOnly(weekDisplay, "");
       if (operationWeek) operationWeek.value = "";
       setFieldState(dateInput, note, "Selecciona una fecha valida.", "");
       return false;
     }
     if (!allowPast && !isFutureDate(dateInput.value)) {
-      if (weekDisplay) weekDisplay.value = week.label;
+      setReadOnly(weekDisplay, week.label);
       if (operationWeek) operationWeek.value = week.key;
       setFieldState(dateInput, note, "La fecha debe ser futura para poder planificar.", "");
       return false;
     }
-    if (weekDisplay) weekDisplay.value = week.label;
+    setReadOnly(weekDisplay, week.label);
     if (operationWeek) operationWeek.value = week.key;
     setFieldState(dateInput, note, "", `Semana calculada: ${week.label}`);
     return true;
@@ -278,25 +279,25 @@
 
     const setVehicleReadOnly = (value) => {
       const data = vehicleData[value];
-      if (readonlyFields.plate) readonlyFields.plate.value = data?.plate || "";
-      if (readonlyFields.vehType) readonlyFields.vehType.value = data?.type || "";
-      if (readonlyFields.capacity) readonlyFields.capacity.value = data?.capacity || "";
-      if (readonlyFields.company) readonlyFields.company.value = data?.company || "";
+      setReadOnly(readonlyFields.plate, data?.plate || "");
+      setReadOnly(readonlyFields.vehType, data?.type || "");
+      setReadOnly(readonlyFields.capacity, data?.capacity || "");
+      setReadOnly(readonlyFields.company, data?.company || "");
     };
 
     const setDriverReadOnly = (value) => {
       const data = driverData[value];
-      if (readonlyFields.license) readonlyFields.license.value = data?.license || "";
-      if (readonlyFields.licenseExp) readonlyFields.licenseExp.value = data?.licenseExp || "";
-      if (readonlyFields.arlExp) readonlyFields.arlExp.value = data?.arlExp || "";
+      setReadOnly(readonlyFields.license, data?.license || "");
+      setReadOnly(readonlyFields.licenseExp, data?.licenseExp || "");
+      setReadOnly(readonlyFields.arlExp, data?.arlExp || "");
     };
 
     if (isEdit) {
       const op = operationData[opId];
-      qs(".page-eyebrow").textContent = "Transporte / Programacion de vehiculos / Editar programacion";
-      qs(".page-title").textContent = "Editar programacion";
+      qs(".page-eyebrow").textContent = "Transporte / Programación de vehículos / Editar programación";
+      qs(".page-title").textContent = "Editar programación";
       qs(".page-subtitle").textContent = "Modifica los datos editables de la programacion. La semana operativa se calcula desde la fecha programada.";
-      qs(".form-heading h2").textContent = "Edicion de programacion";
+      qs(".form-heading h2").textContent = "Edición de programación";
       qs(".form-heading p").textContent = "Campos editables: conductor, tipo de destino, destino y observaciones.";
       qs("#operationFormSubmit").textContent = "Guardar cambios";
       qs(".notice-info span").innerHTML = "Solo se permite editar la programacion si el vehiculo no ha cambiado de estado posterior. La auditoria se registra al guardar.";
@@ -319,12 +320,12 @@
 
     if (isReprogram) {
       const op = operationData[opId];
-      qs(".page-eyebrow").textContent = "Transporte / Programacion de vehiculos / Reprogramar vehiculo";
-      qs(".page-title").textContent = "Reprogramar vehiculo";
+      qs(".page-eyebrow").textContent = "Transporte / Programación de vehículos / Reprogramar vehículo";
+      qs(".page-title").textContent = "Reprogramar vehículo";
       qs(".page-subtitle").textContent = "Crea una nueva programacion a partir de un vehiculo con operacion finalizada. El origen queda como trazabilidad, no se edita la operacion anterior.";
-      qs(".form-heading h2").textContent = "Reprogramacion desde operacion finalizada";
+      qs(".form-heading h2").textContent = "Reprogramación desde operación finalizada";
       qs(".form-heading p").textContent = "Vehiculo precargado desde el registro finalizado; define nuevo conductor, fecha futura y destino.";
-      qs("#operationFormSubmit").textContent = "Guardar reprogramacion";
+      qs("#operationFormSubmit").textContent = "Guardar reprogramación";
       qs(".notice-info span").innerHTML = "La reprogramacion crea una nueva operacion. El vehiculo debe estar disponible y sin programacion activa vigente.";
       if (op) {
         vehicleSelect.value = op.vehicle;
@@ -412,6 +413,7 @@
             ...(isReprogram ? { origin: opId } : {}), ...(availability.record?.isDemo ? { isDemo: true } : {}) };
           try { window.SIALOperationStore.write([created, ...current]); }
           catch { ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error"); ok.setAttribute("role", "alert"); ok.textContent = "No fue posible guardar la programación en este navegador."; return; }
+          window.TransportFeedback?.next("gestion-operaciones.html", isReprogram ? "Reprogramación guardada" : "Programación guardada");
           window.location.href = `gestion-operaciones.html${params.escenario === "disponible" ? "?escenario=disponible" : ""}`;
           return;
         }
@@ -426,6 +428,7 @@
           const changes = readOperations().map(item => item.id === opId ? updated : item);
           window.SIALOperationStore.write(changes);
         } catch { ok.classList.remove("is-hidden", "notice-success"); ok.classList.add("notice-error"); ok.setAttribute("role", "alert"); ok.textContent = "No fue posible guardar los cambios en este navegador."; return; }
+        window.TransportFeedback?.next("gestion-operaciones.html", "Cambios guardados");
         window.location.href = `gestion-operaciones.html${params.escenario === "disponible" ? "?escenario=disponible" : ""}`;
       }
     });
@@ -438,7 +441,7 @@
           if (note.dataset.base) note.textContent = note.dataset.base;
         });
         ok?.classList.add("is-hidden");
-        Object.values(readonlyFields).forEach((field) => { if (field) field.value = ""; });
+        Object.values(readonlyFields).forEach((field) => setReadOnly(field, ""));
         if (!isEdit) {
           if (destSelect) destSelect.innerHTML = '<option value="">Primero selecciona tipo de destino</option>';
           if (vehicleSelect) {
@@ -453,7 +456,7 @@
             }
           }
           if (dateInput) { dateInput.value = ""; dateInput.disabled = false; }
-          if (weekDisplay) weekDisplay.value = "";
+          setReadOnly(weekDisplay, "");
           if (operationWeek) operationWeek.value = "";
         }
         qs("#operationFormSubmit")?.removeAttribute("disabled");
@@ -506,7 +509,7 @@
       const row = document.createElement("tr");
       row.dataset.bulkRow = String(rowIndex);
       row.innerHTML = `
-        <td><select class="select compact-control" data-bulk-vehicle aria-label="Vehiculo fila ${rowIndex}">${vehicleOptions()}</select></td>
+        <td><select class="select compact-control" data-bulk-vehicle aria-label="Vehículo fila ${rowIndex}">${vehicleOptions()}</select></td>
         <td><select class="select compact-control" data-bulk-driver aria-label="Conductor fila ${rowIndex}">${driverOptions()}</select></td>
         <td><input class="input compact-control" type="datetime-local" data-bulk-date aria-label="Fecha fila ${rowIndex}" value="${baseDate?.value || ""}" /></td>
         <td><span class="bulk-week" data-bulk-week>-</span></td>
@@ -538,19 +541,19 @@
         const rowErrors = [];
 
         [vehicle, driver, date].forEach((input) => input?.classList.remove("is-error"));
-        if (!vehicle?.value) rowErrors.push("vehiculo");
+        if (!vehicle?.value) rowErrors.push("vehículo");
         if (vehicle?.value && window.TransportAvailability?.get(vehicle.value)?.eligible !== "available") rowErrors.push("disponibilidad no verificada");
         if (!driver?.value) rowErrors.push("conductor");
         else if (!eligibleDrivers(date?.value || "").some(item => item.code === driver.value)) rowErrors.push("conductor sin vigencia verificable");
         if (!date?.value || !week || !isFutureDate(date.value)) rowErrors.push("fecha futura");
-        if (vehicle?.value && vehicles.has(vehicle.value)) rowErrors.push("vehiculo duplicado");
+        if (vehicle?.value && vehicles.has(vehicle.value)) rowErrors.push("vehículo duplicado");
         if (driver?.value && drivers.has(driver.value)) rowErrors.push("conductor duplicado");
 
         if (vehicle?.value) vehicles.set(vehicle.value, rowNumber);
         if (driver?.value) drivers.set(driver.value, rowNumber);
 
         if (rowErrors.length) {
-          if (!vehicle?.value || rowErrors.includes("vehiculo duplicado")) vehicle?.classList.add("is-error");
+          if (!vehicle?.value || rowErrors.includes("vehículo duplicado")) vehicle?.classList.add("is-error");
           if (!driver?.value || rowErrors.includes("conductor duplicado")) driver?.classList.add("is-error");
           if (!date?.value || rowErrors.includes("fecha futura")) date?.classList.add("is-error");
           setRowStatus(row, "Revisar", "error");
@@ -571,6 +574,8 @@
 
       const valid = errors.length === 0;
       if (warning) {
+        warning.classList.remove("notice-error");
+        warning.classList.add("notice-warning");
         warning.classList.toggle("is-hidden", valid);
         warning.innerHTML = valid ? "" : `<svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="m10.3 3.8-7 12.2A2 2 0 0 0 5 19h14a2 2 0 0 0 1.7-3L13.7 3.8a2 2 0 0 0-3.4 0Z"></path></svg><span>${errors.join(" ")}</span>`;
       }
@@ -601,7 +606,8 @@
         ...(window.TransportAvailability?.get(item.vehicleId)?.record?.isDemo ? { isDemo: true } : {})
       }));
       try { window.SIALOperationStore.write([...created, ...current]); }
-      catch { if (warning) { warning.classList.remove("is-hidden"); warning.textContent = "No fue posible guardar el lote en este navegador."; } return; }
+      catch { if (warning) { warning.classList.remove("is-hidden", "notice-warning"); warning.classList.add("notice-error"); warning.textContent = "No fue posible guardar el lote en este navegador."; } return; }
+      window.TransportFeedback?.next("gestion-operaciones.html", "Programaciones guardadas");
       window.location.reload();
     });
 

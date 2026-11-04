@@ -11,8 +11,8 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-empresas.css" />
-</head>
+  <link rel="stylesheet" href="sial-empresas.css?v=20261030-groupmove19" />
+<link rel="stylesheet" href="company-feedback.css?v=20261030-2" /></head>
 <body data-view-family="registro-extenso">
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegacion principal">
@@ -49,21 +49,21 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">Registro de empresa</h1>
-            <p class="page-subtitle">Formulario administrativo para datos base de empresa y asignacion de uno o varios tipos.</p>
+            <p class="page-subtitle">Formulario administrativo para datos base de empresa y asignación de uno o varios tipos.</p>
           </div>
-          <a class="btn btn-secondary" href="gestion-empresas.html">Volver a gestion</a>
+          <a class="btn btn-secondary" href="gestion-empresas.html">Volver a gestión</a>
         </div>
 
         <article class="card form-card" data-sial-form-adapter>
           <div class="form-heading">
             <h2>Datos de empresa</h2>
-            <p>El nombre y razon social se normalizan a mayusculas. El NIT debe conservar unicidad administrativa.</p>
+            <p>El nombre y razón social se normalizan a mayúsculas. El NIT debe conservar unicidad administrativa.</p>
           </div>
           <div class="form-body">
             <p class="field-note is-hidden" id="formOk" role="status">Datos guardados en este navegador; no se guardan en el sistema real.</p>
             <form data-company-form novalidate>
               <section class="section">
-                <h3 class="section-title">Identificacion</h3>
+                <h3 class="section-title">Identificación</h3>
                 <div class="grid">
                   <div class="field span-6" data-sial-form-control>
                     <label class="label" for="companyName">Nombre comercial <span class="required">*</span></label>
@@ -73,23 +73,23 @@
                   <div class="field span-6" data-sial-form-control>
                     <label class="label" for="nit">NIT <span class="required">*</span></label>
                     <input class="input" id="nit" data-required data-nit aria-describedby="nitNote" placeholder="901456789-4" />
-                    <div class="field-note" id="nitNote">Debe ser unico y valido.</div>
+                    <div class="field-note" id="nitNote">Debe ser único y válido.</div>
                   </div>
                   <div class="field span-12" data-sial-form-control>
-                    <label class="label" for="businessName">Razon social</label>
+                    <label class="label" for="businessName">Razón social</label>
                     <input class="input" id="businessName" data-uppercase placeholder="BANAPALMA S.A.S." />
                   </div>
                 </div>
               </section>
 
               <section class="section">
-                <h3 class="section-title">Asignacion de tipos de empresa</h3>
+                <h3 class="section-title">Asignación de tipos de empresa</h3>
                 <div class="grid">
                   <div class="field span-12">
                     <div class="role-box">
                       <p class="role-box-title">Tipos disponibles para asignar</p>
                       <div class="role-grid" id="companyTypeDraftGrid"></div>
-                      <div class="field-note" id="companyTypeNote">Selecciona uno o mas tipos y agregalos a la asignacion.</div>
+                      <div class="field-note" id="companyTypeNote">Selecciona uno o mas tipos y agregalos a la asignación.</div>
                       <div class="assignment-actions mt-12">
                         <button class="btn btn-secondary" type="button" id="addCompanyTypeAssignment">Agregar tipos</button>
                       </div>
@@ -113,9 +113,10 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script>
-  <script src="company-prototype.js"></script>
-  <script src="sial-empresas.js"></script>
+  <script src="company-feedback.js?v=20261030-2"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="company-prototype.js?v=20261030-feedback3"></script>
+  <script src="sial-empresas.js?v=20261030-groupmove19"></script>
   <script>SIAL.applyShell("registro"); CompanyPrototype.initForm(); SIAL.initCompanyTypeAssignment(); SIAL.initBasicFormValidation();</script>
 </body>
 </html>

@@ -1,0 +1,36 @@
+diff --git a/dist/banasan-ui.js b/dist/banasan-ui.js
+index e4fd27c230bf9ea14570776cc2e87ebbff20ccb4..c4518e18c83e02daa51a49177bdf1d83106c0298 100644
+--- a/dist/banasan-ui.js
++++ b/dist/banasan-ui.js
+@@ -2609,7 +2609,7 @@ function Cr(e, t) {
+ function wr(...e) {
+ 	return e.filter(Boolean).join(" ");
+ }
+-function Tr({ page: e, pageSize: r, total: i, pageSizeOptions: a, onPageChange: o, onPageSizeChange: s, emptyState: c = "Sin registros disponibles.", label: l = "Paginacion de registros", className: u, ...d }) {
++function Tr({ page: e, pageSize: r, total: i, pageSizeOptions: a, onPageChange: o, onPageSizeChange: s, emptyState: c = "Sin registros disponibles.", label: l = "Paginación de registros", className: u, ...d }) {
+ 	let f = br(i, r), p = yr(e, f), { start: m, end: h } = xr(p, r, i), g = Sr(p, f), _ = Cr(a, r), v = i > 0, y = (e) => {
+ 		let t = yr(e, f);
+ 		t !== p && o(t);
+@@ -2626,11 +2626,11 @@ function Tr({ page: e, pageSize: r, total: i, pageSizeOptions: a, onPageChange:
+ 			}),
+ 			/* @__PURE__ */ n("label", {
+ 				className: "bui-pagination-size",
+-				children: [/* @__PURE__ */ t("span", { children: "Registros por pagina" }), /* @__PURE__ */ t("select", {
++				children: [/* @__PURE__ */ t("span", { children: "Registros por página" }), /* @__PURE__ */ t("select", {
+ 					className: "bui-pagination-select",
+ 					value: r,
+ 					onChange: (e) => s?.(Number(e.target.value)),
+-					"aria-label": "Registros por pagina",
++					"aria-label": "Registros por página",
+ 					disabled: !s || !v,
+ 					children: _.map((e) => /* @__PURE__ */ t("option", {
+ 						value: e,
+@@ -2640,7 +2640,7 @@ function Tr({ page: e, pageSize: r, total: i, pageSizeOptions: a, onPageChange:
+ 			}),
+ 			/* @__PURE__ */ n("div", {
+ 				className: "bui-pagination-pages",
+-				"aria-label": "Cambiar pagina",
++				"aria-label": "Cambiar página",
+ 				children: [
+ 					/* @__PURE__ */ t("button", {
+ 						className: "bui-pagination-button",

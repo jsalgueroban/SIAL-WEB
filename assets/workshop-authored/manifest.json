@@ -1,0 +1,14 @@
+{
+  "version": "2026-10-30-owned-2",
+  "origin": "Developed in this project for the SIAL workshop scene",
+  "models": [
+    {"name":"anvil","source":"src/web/workshop-owned-resources.jsx","geometry":"Authored polyhedral rings, plate, horn, waist, footing, hardy hole and fasteners"},
+    {"name":"goggles","source":"src/web/workshop-owned-resources.jsx","geometry":"Authored rear strap, fitted front strap, bridge, perspective lens housings, seals, vents and rivets"},
+    {"name":"hammer and torch","source":"src/web/maintenance-composition.jsx","geometry":"Authored tool paths, steel faces, grip bands, torch collars, trigger and nozzle"},
+    {"name":"explosion and welding light","source":"src/web/workshop-owned-resources.jsx","geometry":"Authored deterministic pressure rings, billows, glow and debris; no sprite textures"},
+    {"name":"volumetric SIAL mark","source":"src/web/workshop-space.mjs and workshop-brand-3d.jsx","geometry":"Existing SIAL mark face with original contour extrusion, fourteen-unit side walls and eight shared fracture polygons"}
+  ],
+  "externalGeometryOrTexturesInCurrentScene": false,
+  "preservedProjectSources": ["Bananito recovered master", "Existing SIAL mark component", "React and Remotion rendering libraries"],
+  "retiredAssets": "assets/workshop: historical public resources, excluded from current render; credits retained there"
+}

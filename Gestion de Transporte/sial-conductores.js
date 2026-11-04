@@ -172,7 +172,7 @@
       arlEnd: [qs("#arlEnd"), qs("#arlEndNote"), v => {
         const start = qs("#arlStart").value;
         if (!v) return "La fecha de fin ARL es obligatoria.";
-        if (start && v < start) return "La fecha de fin no puede ser anterior al inicio.";
+        if (start && v <= start) return "La fecha de fin debe ser posterior al inicio.";
         return "";
       }]
     };

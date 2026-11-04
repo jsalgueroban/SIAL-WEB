@@ -11,7 +11,7 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-empresas.css" />
+  <link rel="stylesheet" href="sial-empresas.css?v=20261030-groupmove19" />
   <style>
     .multiselect-container { position: relative; width: 100%; }
     .select-trigger { 
@@ -34,7 +34,7 @@
     .dropdown-body .role-option:hover { background: var(--color-soft-surface); border-color: var(--color-border-subtle); }
     .dropdown-body .role-option:last-child { margin-bottom: 0; }
   </style>
-</head>
+<link rel="stylesheet" href="company-feedback.css?v=20261030-2" /></head>
 <body data-view-family="gestion">
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegacion principal">
@@ -78,7 +78,7 @@
 
         <div class="notice notice-info" data-sial-notice-adapter>
           <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
-          <span>El rol se guarda asociado desde el instante de creacion para evitar deuda operativa. La eliminacion solo es posible si no hay usuarios asociados.</span>
+          <span>El rol se guarda asociado desde el instante de creacion para evitar deuda operativa. La eliminación solo es posible si no hay usuarios asociados.</span>
         </div>
 
         <article class="card" data-sial-catalog-actions>
@@ -101,11 +101,11 @@
           </div>
           <div class="card-body">
             <div class="toolbar compact">
-              <input class="input" id="roleSearch" type="search" data-sial-search-adapter aria-label="Buscar por codigo, rol o empresa" placeholder="Buscar por codigo, rol o empresa" />
+              <input class="input" id="roleSearch" type="search" data-sial-search-adapter aria-label="Buscar por codigo, rol o empresa" placeholder="Buscar por código, rol o empresa" />
               <select class="select" id="roleStatus">
                 <option value="all">Todos los estados</option>
                 <option value="active">Activo</option>
-                <option value="warning">Revision</option>
+                <option value="warning">Revisión</option>
                 <option value="inactive">Inactivo</option>
               </select>
             </div>
@@ -114,7 +114,7 @@
           <div class="inline-form-panel inline-form-compact is-hidden" id="roleInlineForm" data-inline-form-panel>
             <div class="form-heading">
               <h2 id="roleFormTitle">Nuevo rol</h2>
-              <p>Formulario resumido para registrar el rol y su asignacion inicial de empresa.</p>
+              <p>Formulario resumido para registrar el rol y su asignación inicial de empresa.</p>
             </div>
             <div class="form-body">
               <p class="field-note is-hidden" id="roleFormOk" role="status">Rol revisado en esta propuesta; no se guarda en el sistema real.</p>
@@ -124,7 +124,7 @@
                   <div class="field span-12" data-sial-form-control>
                     <label class="label" for="roleName">Nombre del rol <span class="required">*</span></label>
                     <input class="input" id="roleName" data-required data-uppercase aria-describedby="roleNameNote" placeholder="ADMINISTRADOR GENERAL" />
-                    <div class="field-note" id="roleNameNote">Texto en mayusculas sostenidas.</div>
+                    <div class="field-note" id="roleNameNote">Texto en mayúsculas sostenidas.</div>
                   </div>
                   <div class="field span-12">
                     <label class="label" for="roleCompanyTrigger">Empresas asignadas al crear <span class="required">*</span></label>
@@ -141,7 +141,7 @@
                           </label>
                           <label class="role-option">
                             <input type="checkbox" value="Banapalma">
-                            <span><strong>Banapalma</strong><span>Operacion regional bananera.</span></span>
+                            <span><strong>Banapalma</strong><span>Operación regional bananera.</span></span>
                           </label>
                           <label class="role-option">
                             <input type="checkbox" value="AgroCeiba">
@@ -157,7 +157,7 @@
                     <div class="field-note" id="roleCompanyNote">Selecciona una o varias empresas iniciales para el alta del rol.</div>
                   </div>
                   <div class="field span-12">
-                    <label class="label" for="roleDescription">Descripcion breve</label>
+                    <label class="label" for="roleDescription">Descripción breve</label>
                     <textarea class="textarea" id="roleDescription" rows="2" maxlength="240" placeholder="Resumen de permisos y alcance."></textarea>
                   </div>
                 </div>
@@ -174,11 +174,11 @@
             <table>
               <thead>
                 <tr>
-                  <th>Codigo</th>
+                  <th>Código</th>
                   <th>Rol</th>
                   <th>Empresas asociadas</th>
                   <th>Estado</th>
-                  <th>Auditoria</th>
+                  <th>Auditoría</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -201,7 +201,7 @@
                   <td>R-002</td>
                   <td>SUPERVISOR_REGIONAL</td>
                   <td>2 empresas<br><span class="muted">AgroCeiba, Transfruta</span></td>
-                  <td><span class="status status-warning">Revision</span></td>
+                  <td><span class="status status-warning">Revisión</span></td>
                   <td class="muted">20/04/2026 11:04</td>
                   <td>
                     <div class="row-actions">
@@ -236,11 +236,12 @@
     </main>
   </div>
 
-  <div class="drawer-backdrop" id="detailBackdrop"></div><aside class="drawer" data-sial-drawer-adapter id="detailDrawer" aria-label="Detalle rol"><div class="drawer-head"><div><h3>Detalle rol</h3><p>Consulta lateral de parametrizacion y auditoria.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div><div class="drawer-body"><div class="detail-group"><span class="detail-label">Codigo</span><div class="detail-value" data-detail-target="code">-</div></div><div class="detail-group"><span class="detail-label">Nombre del rol</span><div class="detail-value" data-detail-target="name">-</div></div><div class="detail-group"><span class="detail-label">Empresas asociadas</span><div class="detail-value" data-detail-target="companies">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Auditoria</span><div class="stack" id="detailAudit"></div></div></div></aside>
+  <div class="drawer-backdrop" id="detailBackdrop"></div><aside class="drawer" data-sial-drawer-adapter id="detailDrawer" aria-label="Detalle rol"><div class="drawer-head"><div><h3>Detalle rol</h3><p>Consulta lateral de parametrización y auditoría.</p></div><button class="icon-btn" id="closeDetail" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div><div class="drawer-body"><div class="detail-group"><span class="detail-label">Código</span><div class="detail-value" data-detail-target="code">-</div></div><div class="detail-group"><span class="detail-label">Nombre del rol</span><div class="detail-value" data-detail-target="name">-</div></div><div class="detail-group"><span class="detail-label">Empresas asociadas</span><div class="detail-value" data-detail-target="companies">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-detail-target="state">-</div></div><div class="detail-group"><span class="detail-label">Auditoría</span><div class="stack" id="detailAudit"></div></div></div></aside>
 
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-empresas.js"></script>
-  <script src="role-prototype.js"></script>
+  <script src="company-feedback.js?v=20261030-2"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="sial-empresas.js?v=20261030-groupmove19"></script>
+  <script src="role-prototype.js?v=20261030-feedback3"></script>
   <script>
     SIAL.applyShell("paramRoles");
     RolePrototype.init();

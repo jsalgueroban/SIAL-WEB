@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SIAL | Registrar mantenimiento</title>
   <script>(function(){const t=localStorage.getItem("sial-theme"),d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=t||(d?"dark":"light")})();</script>
-  <link rel="stylesheet" href="sial-mantenimientos.css?v=hu297-4" />
+  <link rel="stylesheet" href="sial-mantenimientos.css?v=20261030-ui17" />
 </head>
 <body data-view-family="registro-extenso">
   <div class="app-shell">
@@ -22,8 +22,8 @@
             <form id="maintenanceForm" novalidate>
               <section class="section"><h3 class="section-title">Vehículo</h3><div class="grid">
                 <div class="field span-6" data-sial-form-control><label class="label" for="maintenanceVehicle">Vehículo <span class="required">*</span></label><select class="select" id="maintenanceVehicle" required aria-describedby="maintenanceVehicleNote"><option value="">Selecciona un vehículo</option><option value="FLT-001">FLT-001 · CAMIÓN</option><option value="CMN-204">CMN-204 · CAMIÓN</option><option value="TRK-421">TRK-421 · TRACTOMULA</option></select><div class="field-note" id="maintenanceVehicleNote">No se puede iniciar otro mantenimiento si tiene una operación activa.</div></div>
-                <div class="field span-3"><label class="label" for="maintenancePlate">Código seleccionado</label><input class="input" id="maintenancePlate" data-context-plate value="Sin seleccionar" readonly /></div>
-                <div class="field span-3"><label class="label" for="maintenanceAvailability">Disponibilidad actual</label><input class="input" id="maintenanceAvailability" data-context-state value="Sin seleccionar" readonly /></div>
+                <div class="field span-3" data-sial-form-control><label class="label" for="maintenancePlate">Código seleccionado</label><input class="input" id="maintenancePlate" data-context-plate value="Sin seleccionar" readonly /></div>
+                <div class="field span-3" data-sial-form-control><label class="label" for="maintenanceAvailability">Disponibilidad actual</label><input class="input" id="maintenanceAvailability" data-context-state value="Sin seleccionar" readonly /></div>
                 <div class="field span-12"><div class="field-note maintenance-consequence" id="maintenanceImpact">Selecciona un vehículo para validar su disponibilidad.</div></div>
               </div></section>
               <section class="section"><h3 class="section-title">Datos del mantenimiento</h3><div class="grid">
@@ -42,7 +42,7 @@
                 <div class="field span-12"><label class="label" for="maintenanceNotes">Observaciones</label><textarea class="textarea maintenance-notes" id="maintenanceNotes" placeholder="Agrega información útil para el seguimiento"></textarea></div>
               </div></section>
               <section class="section"><h3 class="section-title">Evidencia de ingreso</h3><div class="grid"><div class="field span-12"><label class="label" for="maintenanceEvidence">Adjuntar soportes <span class="required">*</span></label><div class="maintenance-upload"><input class="maintenance-upload-input" id="maintenanceEvidence" type="file" multiple required /><label class="btn btn-secondary" for="maintenanceEvidence">Seleccionar archivos</label><span class="maintenance-upload-name" id="maintenanceEvidenceName" aria-live="polite">Ningún archivo seleccionado</span></div><div class="field-note">La cantidad y los formatos permitidos siguen pendientes de definición funcional.</div></div></div></section>
-              <p class="maintenance-form-feedback" id="maintenanceFormFeedback" role="status" aria-live="polite" hidden></p>
+              <p class="maintenance-form-feedback notice-error" id="maintenanceFormFeedback" data-sial-dynamic-notice role="status" aria-live="polite" hidden></p>
               <div class="form-actions"><a class="btn btn-secondary" href="gestion-mantenimientos.html">Cancelar</a><button class="btn btn-secondary" type="reset">Limpiar</button><button class="btn btn-primary" id="maintenanceSubmit" type="submit" disabled>Revisar registro</button></div>
             </form>
           </div>
@@ -50,6 +50,7 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script><script src="sial-conductores.js"></script><script src="vehicle-prototype.js?v=20261028"></script><script src="operation-store.js?v=20261028"></script><script src="maintenance-store.js?v=20261028-2"></script><script src="transport-availability.js?v=20261028"></script><script src="sial-mantenimientos.js?v=20261028-persist2"></script><script>SIAL.applyShell("mantenimientos"); SIALMaintenance.initForm();</script>
+  <script src="transport-feedback.js?v=20261030-3"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script><script src="sial-conductores.js?v=20261030-arl1"></script><script src="vehicle-prototype.js?v=20261030-state4"></script><script src="operation-store.js?v=20261028"></script><script src="maintenance-store.js?v=20261028-2"></script><script src="sial-preoperacionales.js?v=20261030-evidence2"></script><script src="transport-availability.js?v=20261030-sources3"></script><script src="sial-mantenimientos.js?v=20261030-ui17"></script><script>SIAL.applyShell("mantenimientos"); SIALMaintenance.initForm();</script>
 </body>
 </html>

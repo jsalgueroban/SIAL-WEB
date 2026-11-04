@@ -1,0 +1,312 @@
+[
+  {
+    "id": "referencias",
+    "label": "Referencias",
+    "views": [
+      {
+        "label": "Gestión de referencias",
+        "href": "Gestion de Fincas/gestion-referencias.html"
+      },
+      {
+        "label": "Clases de referencias",
+        "href": "Gestion de Fincas/gestion-clases-referencia.html"
+      },
+      {
+        "label": "Productos",
+        "href": "Gestion de Fincas/gestion-productos.html"
+      }
+    ]
+  },
+  {
+    "id": "fincas",
+    "label": "Fincas",
+    "views": [
+      {
+        "label": "Gestión de fincas",
+        "href": "Gestion de Fincas/gestion-fincas.html"
+      },
+      {
+        "label": "Gestión de sectores",
+        "href": "Gestion de Fincas/gestion-sectores.html"
+      },
+      {
+        "label": "Gestión de grupos",
+        "href": "Gestion de Fincas/gestion-grupos.html"
+      }
+    ]
+  },
+  {
+    "id": "transporte",
+    "label": "Transporte",
+    "views": [
+      {
+        "label": "Gestión de conductores",
+        "href": "Gestion de Transporte/gestion-conductores.html"
+      },
+      {
+        "label": "Gestión de licencias",
+        "href": "Gestion de Transporte/gestion-categorias-licencia.html"
+      },
+      {
+        "label": "Conductor + licencia",
+        "href": "Gestion de Transporte/relacion-conductor-licencia.html"
+      },
+      {
+        "label": "Gestión de vehículos",
+        "href": "Gestion de Transporte/gestion-vehiculos.html"
+      },
+      {
+        "label": "Tipos de vehículos",
+        "href": "Gestion de Transporte/gestion-tipos-vehiculo.html"
+      },
+      {
+        "label": "Dashboard transporte",
+        "href": "Gestion de Transporte/dashboard-transporte.html"
+      },
+      {
+        "label": "Matriz documental",
+        "href": "Gestion de Transporte/matriz-documental-vehiculos.html"
+      },
+      {
+        "label": "Disponibilidad",
+        "href": "Gestion de Transporte/disponibilidad-operativa.html"
+      },
+      {
+        "label": "Mantenimientos",
+        "href": "Gestion de Transporte/gestion-mantenimientos.html"
+      },
+      {
+        "label": "Preoperacional",
+        "href": "Gestion de Transporte/gestion-preoperacionales.html"
+      },
+      {
+        "label": "Traslado de materiales",
+        "href": "Gestion de Transporte/plan-operacional.html"
+      },
+      {
+        "label": "Programación de vehículos",
+        "href": "Gestion de Transporte/gestion-operaciones.html"
+      }
+    ]
+  },
+  {
+    "id": "empresas",
+    "label": "Empresa",
+    "views": [
+      {
+        "label": "Gestión de empresas",
+        "href": "Gestion de Empresas/gestion-empresas.html"
+      },
+      {
+        "label": "Roles por empresas",
+        "href": "Gestion de Empresas/roles-empresa.html"
+      },
+      {
+        "label": "Creación de roles",
+        "href": "Gestion de Empresas/parametrizacion-roles.html"
+      },
+      {
+        "label": "Clientes",
+        "href": "Gestion de Empresas/gestion-clientes.html"
+      },
+      {
+        "label": "Contactos",
+        "href": "Gestion de Empresas/gestion-contactos.html"
+      },
+      {
+        "label": "Alertas por contacto",
+        "href": "Gestion de Empresas/gestion-notificaciones-contactos.html"
+      },
+      {
+        "label": "Dependencias",
+        "href": "Gestion de Empresas/gestion-dependencias.html"
+      }
+    ]
+  },
+  {
+    "id": "usuarios",
+    "label": "Usuarios",
+    "views": [
+      {
+        "label": "Gestión de usuarios",
+        "href": "Gestion de Usuarios/gestion-usuarios.html"
+      },
+      {
+        "label": "Roles y asignaciones",
+        "href": "Gestion de Usuarios/roles-asignaciones.html"
+      },
+      {
+        "label": "Registro de usuario",
+        "href": "Gestion de Usuarios/registro-usuario.html"
+      },
+      {
+        "label": "Editar usuario",
+        "href": "Gestion de Usuarios/editar-usuario.html"
+      },
+      {
+        "label": "Permisos por rol",
+        "href": "Gestion de Usuarios/gestion-permisos-rol.html"
+      },
+      {
+        "label": "Mis dispositivos",
+        "href": "Gestion de Usuarios/mis-dispositivos.html"
+      }
+    ]
+  },
+  {
+    "id": "planeacion",
+    "label": "Planeación",
+    "views": [
+      {
+        "label": "Avisos de corte",
+        "href": "Gestion de Planeacion/gestion-avisos-corte.html"
+      },
+      {
+        "label": "Crear aviso",
+        "href": "Gestion de Planeacion/crear-aviso-corte.html"
+      },
+      {
+        "label": "Gestión de semanas",
+        "href": "Gestion de Planeacion/gestion-semanas.html"
+      },
+      {
+        "label": "Generar semanas",
+        "href": "Gestion de Planeacion/generacion-semanas.html"
+      },
+      {
+        "label": "Gestión de cintas",
+        "href": "Gestion de Planeacion/gestion-cintas.html"
+      }
+    ]
+  },
+  {
+    "id": "materiales",
+    "label": "Materiales y Suministros",
+    "views": [
+      {
+        "label": "Gestión de pedidos",
+        "href": "Materiales y Suministros/gestion-pedidos-materiales.html"
+      },
+      {
+        "label": "Pedidos adicionales",
+        "href": "Materiales y Suministros/pedidos-adicionales.html"
+      },
+      {
+        "label": "Seguimiento de pedidos",
+        "href": "Materiales y Suministros/seguimiento-pedidos-finca.html"
+      },
+      {
+        "label": "Aprobación de pedidos",
+        "href": "Materiales y Suministros/aprobacion-pedidos-materiales.html"
+      },
+      {
+        "label": "Pedidos recurrentes",
+        "href": "Materiales y Suministros/pedidos-recurrentes.html"
+      },
+      {
+        "label": "Inventario de materiales",
+        "href": "Materiales y Suministros/inventario-materiales-finca.html"
+      },
+      {
+        "label": "Movimientos de inventario",
+        "href": "Materiales y Suministros/movimientos-inventario.html"
+      },
+      {
+        "label": "Inventario de pallets",
+        "href": "Materiales y Suministros/inventario-pallets.html"
+      },
+      {
+        "label": "Órdenes de transporte de insumos",
+        "href": "Materiales y Suministros/ordenes-transporte-insumos.html"
+      },
+      {
+        "label": "Resumen para proveedores externos",
+        "href": "Materiales y Suministros/resumen-proveedores.html"
+      },
+      {
+        "label": "Seguimiento de entregas y POD",
+        "href": "Materiales y Suministros/seguimiento-entregas.html"
+      },
+      {
+        "label": "Control de trazabilidad y estado de entregas",
+        "href": "Materiales y Suministros/control-trazabilidad-entregas.html"
+      },
+      {
+        "label": "Trazabilidad del pedido",
+        "href": "Materiales y Suministros/trazabilidad-pedido.html"
+      },
+      {
+        "label": "Catálogo de materiales",
+        "href": "Materiales y Suministros/gestion-materiales.html"
+      },
+      {
+        "label": "Configuraciones por referencia",
+        "href": "Materiales y Suministros/configuracion-materiales-referencia.html"
+      },
+      {
+        "label": "Categorías de pedido",
+        "href": "Materiales y Suministros/categorias-pedido.html"
+      },
+      {
+        "label": "Recetas de materiales",
+        "href": "Materiales y Suministros/recetas-materiales.html"
+      },
+      {
+        "label": "Gestión de proveedores",
+        "href": "Materiales y Suministros/gestion-proveedores.html"
+      },
+      {
+        "label": "Reglas documentales",
+        "href": "Materiales y Suministros/reglas-documentales.html"
+      }
+    ]
+  },
+  {
+    "id": "puerto",
+    "label": "Puerto",
+    "views": [
+      {
+        "label": "Gestión de contenedores",
+        "href": "Gestion Operaciones Puerto/gestion-contenedores.html"
+      },
+      {
+        "label": "Programación de contenedores",
+        "href": "Gestion Operaciones Puerto/programacion-contenedores.html"
+      },
+      {
+        "label": "Trazabilidad de pallets",
+        "href": "Gestion Operaciones Puerto/trazabilidad-pallets.html"
+      },
+      {
+        "label": "Tipos de contenedor",
+        "href": "Gestion Operaciones Puerto/gestion-tipos-contenedor.html"
+      },
+      {
+        "label": "Etapas de contenedor",
+        "href": "Gestion Operaciones Puerto/gestion-etapas-contenedor.html"
+      },
+      {
+        "label": "Gestión de puertos",
+        "href": "Gestion Operaciones Puerto/gestion-puertos.html"
+      }
+    ]
+  },
+  {
+    "id": "trazabilidad",
+    "label": "Seguridad",
+    "views": [
+      {
+        "label": "Seguimiento de operaciones de contenedores",
+        "href": "Trazabilidad/auditoria-operativa.html"
+      },
+      {
+        "label": "Seguimiento operacional de vehículos",
+        "href": "Trazabilidad/seguimiento-vehiculos.html"
+      },
+      {
+        "label": "Generar POMA",
+        "href": "Trazabilidad/generar-documento-poma.html"
+      }
+    ]
+  }
+]

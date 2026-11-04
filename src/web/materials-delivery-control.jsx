@@ -1,207 +1,51 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRightIcon, Button, Chip, IconButton, Pagination, SelectInput, Table, TableRowActions, TextInput, ViewIcon } from "@banasandev/banasan-ui";
-import { Area, CartesianGrid, ComposedChart, LabelList, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { aggregateStages, deliveryControlCases, deliveryStages, getCaseReading } from "./materials-delivery-control-data.js";
+import React,{useState,useEffect,useMemo,memo} from 'react';
+import {Button,SelectInput,Table} from '@banasandev/banasan-ui';
+import {ResponsiveContainer,BarChart,Bar,Cell,LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,LabelList} from 'recharts';
+import {useChartMotion,useAnimatedShares} from './materials-chart-motion.js';
+import {aggregate,stages,types,farms} from './materials-document-dashboard-data.mjs';
 
-const fmt = (value) => value === null ? "Sin dato" : new Intl.NumberFormat("es-CO").format(value);
-const materialId = (item) => `${item.materialCode}|${item.unit}`;
-const unique = (values) => [...new Set(values)];
-const stageColors = { flow: "#2c72ba", gap: "#d79b47" };
+const stageColors=['var(--color-text-3)','var(--color-primary-500)','var(--color-warning-main)','var(--color-success-main)'];
+const typeColors=['var(--color-primary-500)','var(--color-info-main)','var(--color-text-3)'];
+const fmt=n=>new Intl.NumberFormat('es-CO').format(n);
+function Icon({kind,...props}){const paths={bars:'M5 20V10h3v10m4 0V4h3v16m4 0v-7h3v7',donut:'M12 3a9 9 0 1 0 9 9h-9V3Zm4 0v5h5a7 7 0 0 0-5-5Z',lines:'m3 17 6-8 6 4 6-9M3 21h18',table:'M3 4h18v16H3zM3 9h18M3 14h18M10 4v16',grid:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',box:'m12 3 9 5-9 5-9-5 9-5ZM3 8v9l9 5 9-5V8M12 13v9',farm:'M3 21V9l9-6 9 6v12M8 21v-7h8v7M8 9h1m6 0h1',sun:'M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M5.6 18.4 7 17m10-10 1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0',chevron:'m9 5 7 7-7 7',clock:'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',file:'M14 2H5v20h14V7l-5-5Zm0 0v6h5M8 12h8M8 16h6'};return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d={paths[kind]||paths.file}/></svg>}
 
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(() => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || false);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduced(query.matches);
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-  return reduced;
+function ViewPicker({label,value,onChange,items}) {
+ return <div className="view-picker" role="group" aria-label={label}>{items.map(item=><Button key={item.value} variant="ghost" aria-pressed={value===item.value} onClick={()=>onChange(item.value)} title={item.hint}><Icon kind={item.icon}/><span>{item.label}</span></Button>)}</div>;
+}
+function ChartTooltip({active,payload,label}) {
+ if(!active||!payload?.length)return null;
+ return <div className="chart-tooltip"><strong>{label}</strong>{payload.map((entry,i)=><div key={entry.dataKey}><i style={{background:entry.color||stageColors[stages.indexOf(label)]||typeColors[i]}}/><span>{entry.name==='value'?'Documentos':entry.name}</span><b>{fmt(entry.value)}</b></div>)}</div>;
 }
 
-function StageFlowChart({ totals, unit, activeStage, hasCases, reducedMotion }) {
-  const chartData = deliveryStages.map((entry) => ({
-    key: entry.key,
-    label: ({ approved: "Aprobado", programmed: "Programado", dispatched: "Despachado", delivered: "Con POD" })[entry.key],
-    fullLabel: entry.label,
-    value: totals[entry.key]
-  }));
-  return <div className="control-chart-panel">
-    {hasCases ? <div className="control-chart-scroll"><div className="control-chart-canvas" role="img" aria-label={`Gráfica del avance por etapa en ${unit}: ${chartData.map((item) => `${item.fullLabel}, ${fmt(item.value)}`).join("; ")}.`}>
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={chartData} margin={{ top: 36, right: 37, bottom: 7, left: 0 }}>
-          <CartesianGrid vertical={false} stroke="var(--color-border-subtle)" strokeDasharray="3 5" />
-          <XAxis dataKey="label" tick={{ fill: "var(--color-text-2)", fontSize: 11 }} axisLine={false} tickLine={false} interval={0} padding={{ left: 28, right: 12 }} />
-          <YAxis tick={{ fill: "var(--color-text-2)", fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={fmt} tickCount={5} width={42} domain={[0, (dataMax) => Math.ceil(dataMax * 1.25 / 100) * 100]} />
-          <Tooltip formatter={(value) => [`${fmt(value)} ${unit}`, "Cantidad"]} labelFormatter={(_, payload) => payload?.[0]?.payload?.fullLabel || "Etapa"} contentStyle={{ background: "var(--color-surface)", borderColor: "var(--color-border)", borderRadius: 10, color: "var(--color-text)" }} />
-          <Area type="linear" dataKey="value" fill={stageColors.flow} fillOpacity={.09} stroke="none" connectNulls={false} isAnimationActive={!reducedMotion} animationDuration={500} />
-          <Line type="linear" dataKey="value" stroke={stageColors.flow} strokeWidth={3} connectNulls={false} dot={(props) => <circle key={props.key} cx={props.cx} cy={props.cy} r={props.payload.key === activeStage ? 7 : 5} fill="var(--color-surface)" stroke={stageColors.flow} strokeWidth={3} />} activeDot={{ r: 8 }} isAnimationActive={!reducedMotion} animationDuration={500}>
-            <LabelList dataKey="value" position="top" offset={12} formatter={(value) => value === null ? "" : fmt(value)} style={{ fill: "var(--color-text)", fontSize: 12, fontWeight: 650 }} />
-          </Line>
-        </ComposedChart>
-      </ResponsiveContainer>
-    </div></div> : <p className="control-chart-empty">Selecciona un material y filtros con casos para ver el avance.</p>}
-    <p className="control-chart-note">Cada punto es una etapa, no una fecha. Escala desde cero · {unit}</p>
-  </div>;
-}
+function Donut({data,total,motion}){const [active,setActive]=useState(null);const shares=useAnimatedShares(data.map(d=>total?d.value/total:0),motion);let offset=0;const circumference=2*Math.PI*76;return <div className="donut-wrap"><svg viewBox="0 0 220 220" role="img" aria-label={data.map(d=>`${d.label}: ${d.value} documentos`).join('; ')}><circle cx="110" cy="110" r="76" fill="none" stroke="var(--color-border-subtle)" strokeWidth="26"/>{data.map((d,i)=>{const length=shares[i]*circumference;const start=offset;offset+=length;return <circle onMouseEnter={()=>setActive(i)} onMouseLeave={()=>setActive(null)} style={{opacity:active===null||active===i?1:.35}} key={d.label} cx="110" cy="110" r="76" fill="none" stroke={stageColors[i]} strokeWidth={active===i?32:26} strokeDasharray={`${length} ${circumference-length}`} strokeDashoffset={-start} transform="rotate(-90 110 110)"><title>{d.label}: {d.value} documentos</title></circle>})}<text x="110" y="108" textAnchor="middle" className="donut-total">{fmt(active===null?total:data[active].value)}</text><text x="110" y="130" textAnchor="middle" className="donut-label">{active===null?"documentos":data[active].label}</text></svg><div className="donut-key">{data.map((d,i)=><button type="button" key={d.label} aria-label={`${d.label}: ${d.value} documentos`} onMouseEnter={()=>setActive(i)} onMouseLeave={()=>setActive(null)} onFocus={()=>setActive(i)} onBlur={()=>setActive(null)} onClick={()=>setActive(i)}><span><i style={{background:stageColors[i]}}/>{d.label}</span><strong>{total?(d.value/total*100).toLocaleString('es-CO',{maximumFractionDigits:1}):0}%</strong></button>)}</div></div>}
 
-function GapSummary({ totals, unit }) {
-  const gaps = [
-    { key: "planning", from: "approved", to: "programmed", label: "Aprobado → programado", positive: "Sin programar", negative: "Exceso programado" },
-    { key: "departure", from: "programmed", to: "dispatched", label: "Programado → despachado", positive: "Sin salida", negative: "Salida mayor al plan" },
-    { key: "pod", from: "dispatched", to: "delivered", label: "Despachado → con POD", positive: "Sin POD conciliado", negative: "Entrega mayor al despacho" }
-  ].map((entry) => ({ ...entry, delta: totals[entry.from] === null || totals[entry.to] === null ? null : totals[entry.from] - totals[entry.to] }));
-  return <div className="control-gap-summary" aria-label="Brechas entre etapas">
-    {gaps.map((entry) => <div key={entry.key} className={`control-gap-item${entry.delta !== null && entry.delta < 0 ? " is-over" : ""}`}>
-      <span>{entry.label}</span>
-      <strong>{entry.delta === null ? "Sin dato" : `${fmt(Math.abs(entry.delta))} ${unit}`}</strong>
-      <small>{entry.delta === null ? "Falta una magnitud" : entry.delta === 0 ? "Sin diferencia" : entry.delta > 0 ? entry.positive : entry.negative}</small>
-    </div>)}
-  </div>;
-}
+const StageChart=memo(function StageChart({data,kind,motion}){const Chart=kind==='lines'?LineChart:BarChart;return <div role="img" aria-label={data.map(d=>`${d.label}: ${d.value} documentos`).join('; ')} className="stage-chart-canvas"><ResponsiveContainer width="100%" height="100%"><Chart data={data} margin={{top:25,right:0,left:-30,bottom:6}} accessibilityLayer><CartesianGrid vertical={false} stroke="var(--color-border-subtle)" strokeDasharray="3 4"/><XAxis dataKey="label" tick={{fill:'var(--color-text-2)',fontSize:12}} tickLine={false} axisLine={false} interval={0}/><YAxis allowDecimals={false} tick={{fill:'var(--color-text-2)',fontSize:12}} tickLine={false} axisLine={false} domain={[0,'auto']}/><Tooltip content={<ChartTooltip/>} cursor={{fill:"var(--color-primary-50)",stroke:"var(--color-border-subtle)",strokeDasharray:"3 3"}}/>{kind==='lines'?<Line type="linear" dataKey="value" stroke="var(--color-primary-500)" strokeWidth={3} isAnimationActive={motion} animationDuration={480} animationEasing="ease-out" activeDot={{r:7,strokeWidth:3}} dot={{r:5,fill:'var(--color-surface)',strokeWidth:2}}><LabelList dataKey="value" position="top" style={{fill:'var(--color-text)',fontSize:12}}/></Line>:<Bar dataKey="value" maxBarSize={96} activeBar={{stroke:"var(--color-surface)",strokeWidth:2,fillOpacity:.85}} radius={[4,4,0,0]} isAnimationActive={motion} animationDuration={480} animationEasing="ease-out">{data.map((d,i)=><Cell key={d.label} fill={stageColors[i]}/>)}<LabelList dataKey="value" position="top" style={{fill:'var(--color-text)',fontSize:12}}/></Bar>}</Chart></ResponsiveContainer></div>});
+const FarmChart=memo(function FarmChart({data,motion}){const rows=data.map(d=>({...d,total:types.reduce((n,_,i)=>n+d['t'+i],0)}));const max=Math.max(1,...rows.map(d=>d.total));return <div role="img" aria-label={rows.map(d=>`${d.label}: ${d.total} documentos`).join('; ')} style={{height:Math.max(150,rows.length*30+35)}}><ResponsiveContainer width="100%" height="100%"><BarChart data={rows} layout="vertical" margin={{top:6,right:30,left:0,bottom:0}} accessibilityLayer><CartesianGrid horizontal={false} stroke="var(--color-border-subtle)" strokeDasharray="3 4"/><XAxis type="number" domain={[0,Math.ceil(max/20)*20]} allowDecimals={false} tick={{fill:'var(--color-text-2)',fontSize:12}} axisLine={false} tickLine={false}/><YAxis type="category" dataKey="label" tickFormatter={label=>rows.find(d=>d.label===label)?.total===0?`${label} (0)`:label} width={108} tick={{fill:'var(--color-text)',fontSize:12}} axisLine={false} tickLine={false} interval={0}/><Tooltip content={<ChartTooltip/>} cursor={{fill:"var(--color-primary-50)",stroke:"var(--color-border-subtle)",strokeDasharray:"3 3"}}/>{types.map((t,i)=><Bar key={t} dataKey={'t'+i} name={t} stackId="documents" fill={typeColors[i]} activeBar={{stroke:"var(--color-surface)",strokeWidth:2,fillOpacity:.85}} maxBarSize={18} isAnimationActive={motion} animationDuration={480} animationEasing="ease-out">{i===2&&<LabelList dataKey="total" position="right" style={{fill:'var(--color-text)',fontSize:11}}/>}</Bar>)}</BarChart></ResponsiveContainer></div>});
 
-function Quantity({ value, unit }) {
-  return value === null ? <span className="control-unavailable">Sin dato</span> : <span className="control-number">{fmt(value)} <small>{unit}</small></span>;
-}
-
-function CaseDetail({ item, onClose, detailRef }) {
-  return <section ref={detailRef} className="control-case-detail" aria-label={`Detalle de ${item.id}`} tabIndex={-1}>
-    <div className="control-detail-heading"><div><h3>{item.id}</h3><p>{item.farm} · {item.material} · {item.unit}</p></div><Button variant="outlined" onClick={onClose}>Cerrar detalle</Button></div>
-    <dl className="control-detail-context">
-      <div><dt>Origen</dt><dd>{item.document}</dd></div>
-      <div><dt>Aviso de Corte</dt><dd>{item.notice ? `${item.notice} · ${item.noticeVersion}` : "Sin aviso de corte"}</dd></div>
-      <div><dt>Orden de transporte</dt><dd>{item.order}</dd></div>
-      {item.receivedReported != null && <div><dt>Recepción reportada sin POD</dt><dd>{fmt(item.receivedReported)} {item.unit} · pendiente de soporte</dd></div>}
-      <div><dt>Entrega / POD</dt><dd>{item.delivery || "Sin entrega"} · {item.pod || "Sin POD validado"}</dd></div>
-    </dl>
-    <div className="control-vehicle-plan">
-      <div className="control-vehicle-heading"><div><h4>Programación en vehículos</h4><p>Viajes vinculados a la orden {item.order}</p></div><strong>{fmt(item.programmed)} {item.unit} programados</strong></div>
-      <div className="control-vehicle-list">
-        {item.vehicleAssignments.map((assignment) => <div className="control-vehicle-row" key={assignment.trip}>
-          <span><small>Viaje</small><strong>{assignment.trip}</strong></span>
-          <span><small>Vehículo</small><strong>{assignment.vehicle}</strong></span>
-          <span><small>Asignado</small><strong>{fmt(assignment.quantity)} {item.unit}</strong></span>
-        </div>)}
-      </div>
-      {item.programmed > item.approved && <p className="control-vehicle-warning">La asignación supera en {fmt(item.programmed - item.approved)} {item.unit} lo aprobado en Materiales.</p>}
-    </div>
-    <div className="control-detail-stages">
-      {deliveryStages.map((stage) => <div key={stage.key} className="control-detail-stage">
-        <div><span>{stage.label}</span><Quantity value={item[stage.key]} unit={item.unit} /></div>
-        <a href={stage.href}>{stage.link} <ArrowRightIcon size={15} aria-hidden="true" /></a>
-      </div>)}
-    </div>
-    <p className="control-detail-updated">Última actualización del caso: {item.updated}</p>
-  </section>;
-}
-
-export function MaterialsDeliveryControl() {
-  const reducedMotion = useReducedMotion();
-  const [farm, setFarm] = useState("all");
-  const [notice, setNotice] = useState("all");
-  const [material, setMaterial] = useState("101279|UN");
-  const [search, setSearch] = useState("");
-  const [stage, setStage] = useState("approved");
-  const [activeAlert, setActiveAlert] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
-  const detailRef = useRef(null);
-  const casesRef = useRef(null);
-  const inspectTrigger = useRef(null);
-  const farmOptions = [{ value: "all", label: "Todas las fincas" }, ...unique(deliveryControlCases.map((item) => item.farm)).map((value) => ({ value, label: value }))];
-  const noticeOptions = [{ value: "all", label: "Todos los avisos" }, ...unique(deliveryControlCases.map((item) => item.notice || "none")).map((value) => ({ value, label: value === "none" ? "Sin aviso de corte" : value }))];
-  const materialOptions = [{ value: "all", label: "Todos los materiales" }, ...unique(deliveryControlCases.map(materialId)).map((value) => {
-    const item = deliveryControlCases.find((entry) => materialId(entry) === value);
-    return { value, label: `${item.material} · ${item.unit}` };
-  })];
-  const scopeCases = useMemo(() => deliveryControlCases.filter((item) => {
-    const query = search.trim().toLocaleLowerCase("es-CO");
-    const haystack = `${item.id} ${item.document} ${item.order} ${item.materialCode} ${item.material} ${item.farm}`.toLocaleLowerCase("es-CO");
-    return (farm === "all" || item.farm === farm) && (notice === "all" || (item.notice || "none") === notice) && (!query || haystack.includes(query));
-  }), [farm, notice, search]);
-  const filtered = useMemo(() => scopeCases.filter((item) => material === "all" || materialId(item) === material), [scopeCases, material]);
-  const focusedMaterial = material === "all" ? null : deliveryControlCases.find((item) => materialId(item) === material);
-  const focusedCases = focusedMaterial ? filtered : [];
-  const totals = aggregateStages(focusedCases);
-  const activeStage = deliveryStages.find((item) => item.key === stage);
-  const filtersActive = farm !== "all" || notice !== "all" || material !== "101279|UN" || Boolean(search.trim());
-  const alerts = [
-    { key: "overprogrammed", label: "Sobreprogramados", short: ["sobreprogramado", "sobreprogramados"], cases: scopeCases.filter((item) => item.programmed > item.approved) },
-    { key: "pendingPod", label: "Entrega / POD por conciliar", short: ["entrega/POD por conciliar", "entregas/POD por conciliar"], cases: scopeCases.filter((item) => item.dispatched !== null && (item.delivered === null || item.delivered < item.dispatched || (item.delivered > 0 && !item.pod))) },
-    { key: "noDeparture", label: "Sin despacho confirmado", short: ["sin despacho confirmado", "sin despacho confirmado"], cases: scopeCases.filter((item) => item.dispatched === null) }
-  ];
-  const openAlert = alerts.find((alert) => alert.key === activeAlert);
-  const tableCases = openAlert ? openAlert.cases : filtered;
-  const currentPage = Math.min(page, Math.max(1, Math.ceil(tableCases.length / pageSize)));
-  const rows = tableCases.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const selected = tableCases.find((item) => item.id === selectedId);
-
-  useEffect(() => {
-    if (selectedId) detailRef.current?.focus();
-  }, [selectedId]);
-
-  function changeFilter(setter, value) { setter(value); setPage(1); setSelectedId(null); setActiveAlert(null); }
-  function inspect(item) {
-    inspectTrigger.current = document.activeElement;
-    if (activeAlert) setMaterial(materialId(item));
-    setSelectedId(item.id);
-    requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
-  }
-  function selectAlert(key) {
-    setActiveAlert(activeAlert === key ? null : key);
-    setSelectedId(null);
-    setPage(1);
-    requestAnimationFrame(() => casesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
-  }
-  function closeDetail() { setSelectedId(null); requestAnimationFrame(() => inspectTrigger.current?.focus()); }
-  const columns = [
-    { key: "id", header: "Pedido / origen", render: (item) => <span className="control-table-primary"><strong>{item.id}</strong><small>{item.document}</small></span> },
-    { key: "farm", header: "Finca", render: (item) => item.farm },
-    { key: "material", header: "Material", render: (item) => <span className="control-table-primary"><strong>{item.material}</strong><small>{item.materialCode} · {item.unit}</small></span> },
-    ...deliveryStages.map((entry) => ({ key: entry.key, header: ({ approved: "Aprobado", programmed: "Programado", dispatched: "Despachado", delivered: "Con POD" })[entry.key], render: (item) => <Quantity value={item[entry.key]} unit={item.unit} /> })),
-    { key: "reading", header: "Lectura", render: (item) => { const reading = getCaseReading(item); return <Chip preset={reading.preset}>{reading.label}</Chip>; } }
-  ];
-
-  return <div className="delivery-control">
-    <header className="control-page-heading"><div><h1>Control de trazabilidad y entregas</h1><p>Compara lo autorizado, lo preparado para el traslado, la salida efectiva y la recepción con POD.</p>{alerts.some((alert) => alert.cases.length) && <div className="control-attention" aria-label="Alertas para todos los materiales en la búsqueda"><span>Atención</span>{alerts.filter((alert) => alert.cases.length).map((alert) => <button key={alert.key} type="button" className={activeAlert === alert.key ? "is-active" : ""} aria-pressed={activeAlert === alert.key} onClick={() => selectAlert(alert.key)}><strong>{alert.cases.length}</strong> {alert.short[alert.cases.length === 1 ? 0 : 1]}</button>)}</div>}</div><span className="control-fixture-note">Datos ilustrativos · 28 jun 2026</span></header>
-
-    <section className="control-workspace" aria-label="Conciliación de entregas">
-      <div className="control-toolbar">
-        <TextInput id="control-search" label="Buscar caso" placeholder="Pedido, documento, orden o material" value={search} onChange={(value) => changeFilter(setSearch, value)} />
-        <SelectInput id="control-farm" label="Finca" value={farm} options={farmOptions} onChange={(value) => changeFilter(setFarm, value)} />
-        <SelectInput id="control-notice" label="Aviso de Corte" value={notice} options={noticeOptions} onChange={(value) => changeFilter(setNotice, value)} />
-        <SelectInput id="control-material" label="Material" value={material} options={materialOptions} onChange={(value) => changeFilter(setMaterial, value)} />
-        {filtersActive && <Button variant="outlined" onClick={() => { setSearch(""); setFarm("all"); setNotice("all"); setMaterial("101279|UN"); setPage(1); setSelectedId(null); setActiveAlert(null); }}>Limpiar filtros</Button>}
-      </div>
-
-      {!openAlert && <section className="control-stage-board" aria-labelledby="control-board-title">
-        <div className="control-board-heading"><div><span>{focusedMaterial ? `${focusedMaterial.material} · ${focusedMaterial.unit}` : "Panorama por material"}</span><h2 id="control-board-title">Avance y brechas por etapa</h2><p>{focusedMaterial ? `${focusedCases.length} ${focusedCases.length === 1 ? "caso" : "casos"} del material seleccionado` : "Selecciona un material para comparar cantidades de una misma unidad."}</p></div><span className="control-board-source">Pedido → Transporte → Finca</span></div>
-        <div className="control-stage-list">
-          {deliveryStages.map((entry, index) => <button key={entry.key} type="button" className={`control-stage${stage === entry.key ? " is-selected" : ""}`} aria-pressed={stage === entry.key} onClick={() => setStage(entry.key)}>
-            <span className="control-stage-index">{String(index + 1).padStart(2, "0")}</span>
-            <span className="control-stage-label">{entry.label}</span>
-            <strong>{focusedMaterial ? fmt(totals[entry.key]) : "—"} {focusedMaterial && totals[entry.key] !== null && <small>{focusedMaterial.unit}</small>}</strong>
-            <span className="control-stage-source">{entry.source}</span>
-          </button>)}
-        </div>
-        <div className="control-board-footer"><div><strong>{activeStage.source}</strong><span>{activeStage.explanation}</span></div><a href={activeStage.href}>{activeStage.link} <ArrowRightIcon size={16} aria-hidden="true" /></a></div>
-        <StageFlowChart totals={totals} unit={focusedMaterial?.unit || ""} activeStage={stage} hasCases={focusedCases.length > 0} reducedMotion={reducedMotion} />
-        <GapSummary totals={totals} unit={focusedMaterial?.unit || ""} />
-      </section>}
-
-      <section ref={casesRef} className="control-cases" aria-labelledby="control-cases-title"><div className="control-cases-head"><div><h2 id="control-cases-title">{openAlert ? openAlert.label : "Casos y diferencias"}</h2><p>{openAlert ? "Casos en todos los materiales para la alerta seleccionada." : "Abre un pedido para revisar el origen de cada cifra."}</p></div><div className="control-cases-head-actions">{openAlert && <button type="button" onClick={() => { setActiveAlert(null); setSelectedId(null); setPage(1); }}>Ver todos</button>}<Chip preset="info">{tableCases.length} {tableCases.length === 1 ? "caso" : "casos"}</Chip></div></div>
-        <Table columns={columns} data={rows} rowKey={(item) => item.id} minWidth="1100px" emptyState="No hay casos para estos filtros. Ajusta la búsqueda o limpia los filtros." actionsHeader="Detalle" actionsWidth="70px" actions={(item) => <TableRowActions label={`Acciones de ${item.id}`}><IconButton variant="ghost" aria-label={`Examinar ${item.id}`} title="Examinar caso" onClick={() => inspect(item)}><ViewIcon /></IconButton></TableRowActions>} />
-        <div className="control-case-mobile-list" aria-label="Casos filtrados">
-          {rows.length ? rows.map((item) => <article className="control-case-mobile" key={item.id}>
-            <div className="control-mobile-case-head"><div><strong>{item.id}</strong><span>{item.farm} · {item.material}</span></div><Chip preset={getCaseReading(item).preset}>{getCaseReading(item).label}</Chip></div>
-            <dl>{deliveryStages.map((entry) => <div key={entry.key}><dt>{entry.label}</dt><dd><Quantity value={item[entry.key]} unit={item.unit} /></dd></div>)}</dl>
-            <button type="button" onClick={() => inspect(item)}>Examinar caso <ArrowRightIcon size={15} aria-hidden="true" /></button>
-          </article>) : <p className="control-mobile-empty">No hay casos para estos filtros. Ajusta la búsqueda o limpia los filtros.</p>}
-        </div>
-        <Pagination page={currentPage} pageSize={pageSize} total={tableCases.length} pageSizeOptions={[2, 5, 10]} onPageChange={(value) => { setPage(value); setSelectedId(null); }} onPageSizeChange={(value) => { setPageSize(value); setPage(1); setSelectedId(null); }} />
-      </section>
-      {selected && <CaseDetail item={selected} onClose={closeDetail} detailRef={detailRef} />}
-    </section>
-  </div>;
+export function MaterialsDeliveryControl(){
+ const [type,setType]=useState('all'),[farm,setFarm]=useState('all'),[chart,setChart]=useState('bars');
+ const requestedState=new URLSearchParams(location.search).get('estado');
+ const [scenario,setScenario]=useState(['loading','error','empty'].includes(requestedState)?requestedState:'loading');
+ useEffect(()=>{if(!['loading','error','empty'].includes(requestedState)){const timer=setTimeout(()=>setScenario('ready'),250);return()=>clearTimeout(timer)}},[requestedState]);
+ const motion=useChartMotion();
+ const summary=useMemo(()=>aggregate(type,farm,scenario==='empty'),[type,farm,scenario]);
+ const busy=scenario==='loading'||scenario==='error';
+ const clear=()=>{setType('all');setFarm('all');if(scenario==='empty')setScenario('ready')};
+ const totals=summary.destinations.map(d=>({...d,total:types.reduce((n,_,i)=>n+d['t'+i],0)}));
+ const stateCards=<div className="stage-cards">{summary.stages.map((s,i)=><div className="stage-stat" key={s.label}><div><i style={{background:stageColors[i]}}/>{s.label}</div><strong data-count={s.label}>{fmt(s.value)}<small> documentos</small></strong><span>{summary.total?(s.value/summary.total*100).toLocaleString('es-CO',{maximumFractionDigits:1}):'0'}% del total</span></div>)}</div>;
+ const stagePanel=<section className="card analytic-panel stage-panel" aria-labelledby="stage-title"><div className="card-header panel-head"><div><h2 className="card-title" id="stage-title">Documentos por etapa</h2><p className="card-subtitle">Distribución en su estado actual</p></div><div className="stage-header-tools"><ViewPicker label="Tipo de gráfica" value={chart} onChange={setChart} items={[{value:"bars",label:"Barras",icon:"bars",hint:"Comparar cantidades por etapa"},{value:"donut",label:"Dona",icon:"donut",hint:"Comparar proporciones"},{value:"lines",label:"Líneas",icon:"lines",hint:"Comparar etapas; no representa tiempo"}]}/><span className="panel-total">{fmt(summary.total)}<small> documentos</small></span></div></div><div className="stage-plot">{chart==='donut'?<Donut data={summary.stages} total={summary.total} motion={motion}/>:<StageChart data={summary.stages} kind={chart} motion={motion}/>}</div><p className="chart-caption">{chart==='lines'?'Categorías de estado: la línea no representa evolución en el tiempo.':'Cada documento se cuenta una vez, en su etapa actual.'}</p>{stateCards}</section>;
+ const farmPanel=<section className="card analytic-panel farm-panel" aria-labelledby="farm-title">
+  <div className="card-header panel-head"><div><h2 className="card-title" id="farm-title">Documentos por finca</h2><p className="card-subtitle">Remisiones, reservas y RTP por destino</p></div><span className="panel-total">{summary.destinations.length}<small> fincas</small></span></div>
+  <div className="farm-view-content" aria-label="Distribución por finca">
+   <div className="farm-legend" aria-label="Leyenda de tipos">{types.map((t,i)=><span key={t}><i style={{background:typeColors[i]}}/>{t}</span>)}</div><div className="farm-chart"><FarmChart key={farm} data={summary.destinations} motion={motion}/></div>
+   <div className="farm-detail-heading"><h3 id="farm-detail-title">Detalle por finca</h3><p>Conteos por tipo de documento para el alcance seleccionado.</p></div>
+   <div className="farm-table" role="region" aria-labelledby="farm-detail-title"><Table columns={[{key:'label',header:'Finca',render:item=><strong>{item.label}</strong>},...types.map((t,i)=>({key:'t'+i,header:t,render:item=><span className="document-number">{fmt(item['t'+i])}</span>})),{key:'total',header:'Total',render:item=><strong className="document-number total-number">{fmt(item.total)}</strong>}]} data={totals} rowKey={item=>item.label} minWidth="510px" emptyState="No hay fincas en el alcance."/></div>
+  </div>
+  <div className="farm-panel-footer"><span>{summary.destinations.length} fincas · incluidas las que tienen 0 documentos</span><strong>{fmt(summary.total)} documentos</strong></div>
+ </section>;
+ return <div className="delivery-panorama"><div className="page-header"><div><h1 className="page-title">Control de trazabilidad y entregas</h1><p className="page-subtitle">Estado de los documentos de transporte y su distribución por finca.</p></div><span className="sample-note">Datos ilustrativos</span></div>
+ <section className="card filters" aria-label="Filtros de documentos"><SelectInput id="type-filter" label="Tipo de documento" value={type} options={[{value:'all',label:'Todos los documentos'},...types.map(t=>({value:t,label:t}))]} onChange={setType}/><SelectInput id="farm-filter" label="Finca destino" value={farm} options={[{value:'all',label:'Todas las fincas'},...farms.map(f=>({value:f,label:f}))]} onChange={setFarm}/>{(type!=='all'||farm!=='all')&&<Button variant="outlined" onClick={clear}>Limpiar filtros</Button>}</section>
+ <div className="reading-line"><span>{farm==='all'?'Todas las fincas':farm} · {type==='all'?'Todos los tipos':type}</span><span aria-live="polite">{busy?'Consultando documentos…':`${summary.destinations.length} fincas en la consulta`}</span></div>
+ <div className="results" data-chart-motion={motion?"enabled":"reduced"} aria-busy={scenario==='loading'}>{scenario==='loading'?<section className="loading-state" role="status"><p>Consultando documentos…</p><div className="skeletons">{[1,2,3,4].map(i=><div key={i}/>)}</div></section>:scenario==='error'?<section className="feedback" role="alert"><Icon kind="file"/><h2>No pudimos consultar los documentos</h2><p>Los filtros se conservaron. Intenta cargar la consulta nuevamente.</p><Button onClick={()=>setScenario('ready')}>Reintentar consulta</Button></section>:<>{summary.total===0&&<div className="empty-feedback" role="status"><strong>No hay documentos para esta consulta.</strong><span>Las fincas del alcance se conservan con conteo 0.</span><button onClick={clear}>Restablecer consulta</button></div>}<div className="analysis-grid">{stagePanel}{farmPanel}</div></>}</div>
+</div>;
 }

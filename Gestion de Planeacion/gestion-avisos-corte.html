@@ -11,7 +11,7 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-aviso-corte.css" />
+  <link rel="stylesheet" href="sial-aviso-corte.css?v=20261031-typography4" />
 </head>
 <body data-view-family="gestion">
   <div class="app-shell">
@@ -23,7 +23,7 @@
 
     <header class="header">
       <div class="header-left">
-        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú">
+        <button data-sial-button-adapter class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
         <label class="search">
@@ -32,11 +32,11 @@
         </label>
       </div>
       <div class="header-right">
-        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false">
+        <button data-sial-button-adapter class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false">
           <svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg>
           <svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path><path d="m4.93 4.93 1.41 1.41m11.32 11.32 1.41 1.41m0-14.14-1.41 1.41M6.34 17.66l-1.41 1.41"></path></svg>
         </button>
-        <button class="icon-btn" type="button" aria-label="Notificaciones">
+        <button data-sial-button-adapter class="icon-btn" type="button" aria-label="Notificaciones">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg>
         </button>
         <span class="avatar">QA</span>
@@ -60,7 +60,7 @@
               <p class="card-subtitle">Selecciona un aviso para consultar su detalle o continuar el trabajo pendiente.</p>
             </div>
             <div class="card-actions">
-              <span class="chip" data-hub-result-count>0 avisos visibles</span>
+              <span class="chip" data-sial-chip-adapter data-sial-chip-tone="info" data-hub-result-count>0 avisos visibles</span>
               <a class="btn btn-primary" href="crear-aviso-corte.html">
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
                 Crear aviso
@@ -69,7 +69,7 @@
           </div>
           <div class="card-body">
             <div class="toolbar cut-hub-filters">
-              <input class="input" type="search" data-hub-search aria-label="Buscar avisos" placeholder="Buscar por aviso, semana o responsable" />
+              <input class="input" id="cutHubSearch" type="search" data-sial-search-adapter data-hub-search aria-label="Buscar avisos" placeholder="Buscar por aviso, semana o responsable" />
               <select class="select" data-hub-view aria-label="Filtrar por estado de gestión">
                 <option value="all">Todos los avisos</option>
                 <option value="attention">Requieren atención</option>
@@ -88,7 +88,7 @@
                 <option value="Proyectado">Proyectado</option>
                 <option value="Corrección">Corrección</option>
               </select>
-              <button class="btn btn-ghost is-hidden" type="button" data-hub-clear>Limpiar filtros</button>
+              <button data-sial-button-adapter class="btn btn-ghost is-hidden" type="button" data-hub-clear>Limpiar filtros</button>
             </div>
           </div>
 
@@ -109,11 +109,12 @@
             </table>
           </div>
 
+          <div class="table-pagination" data-sial-page="1" data-sial-page-size="10" data-sial-total="0" aria-label="Paginación de avisos"></div>
           <div class="cut-hub-empty is-hidden" data-hub-empty>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
             <strong>No hay avisos para esta búsqueda</strong>
             <span>Prueba otra semana, tipo o término.</span>
-            <button class="btn btn-secondary" type="button" data-hub-empty-clear>Limpiar filtros</button>
+            <button data-sial-button-adapter class="btn btn-secondary" type="button" data-hub-empty-clear>Limpiar filtros</button>
           </div>
 
         </article>
@@ -122,9 +123,9 @@
   </div>
 
 
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-aviso-corte.js"></script>
-  <script src="sial-aviso-corte-list.js"></script>
+  <script src="../shared/sial-core.js?v=20261031-planea8"></script>
+  <script src="sial-aviso-corte.js?v=20261031-planea8"></script>
+  <script src="sial-aviso-corte-list.js?v=20261031-planea8"></script>
   <script>SIAL.applyShell("avisos"); window.SIALCutNoticeList.init();</script>
 </body>
 </html>

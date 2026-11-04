@@ -27,12 +27,26 @@ function mount(stage, options = {}) {
   const heading = scope.querySelector("#vehicle-model-title");
   const focusButton = scope.querySelector('[data-view-action="focus"]');
   const buttons = [...scope.querySelectorAll("[data-vehicle-type]")].filter(button => button.tagName === "BUTTON");
+  const viewActions = [...scope.querySelectorAll("[data-view-action]")];
+  const help = scope.querySelector("#vehicleHelp");
+  const normalHelp = help?.textContent || "";
+  const setViewerAvailable = (available) => {
+    viewActions.forEach(button => { button.disabled = !available; });
+    if (help) help.textContent = available ? normalHelp : "Los controles del modelo no están disponibles. Puedes consultar el expediente.";
+  };
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "default" });
   } catch {
     if (pending) pending.hidden = true;
     if (fallback) fallback.hidden = false;
+    setViewerAvailable(false);
+    buttons.forEach(button => button.addEventListener("click", () => {
+      const model = models[button.dataset.vehicleType];
+      if (!model) return;
+      if (heading) heading.textContent = model.label;
+      buttons.forEach(item => { const selected = item === button; item.classList.toggle("is-active", selected); item.setAttribute("aria-pressed", String(selected)); });
+    }));
     return { select: () => {} };
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
@@ -133,6 +147,7 @@ function mount(stage, options = {}) {
     const model = models[type];
     if (!model) return;
     const ticket = ++selectionId;
+    setViewerAvailable(false);
     if (pending) { pending.hidden = false; pending.textContent = `Cargando ${model.label.toLowerCase()}…`; }
     if (fallback) fallback.hidden = true;
     if (heading) heading.textContent = model.label;
@@ -164,12 +179,14 @@ function mount(stage, options = {}) {
       }
       fitModel();
       if (pending) pending.hidden = true;
+      setViewerAvailable(true);
       requestRender();
     } catch (error) {
       if (ticket !== selectionId || disposed) return;
       console.error("No se pudo cargar el modelo 3D", error);
       if (pending) pending.hidden = true;
       if (fallback) fallback.hidden = false;
+      setViewerAvailable(false);
     }
   }
   function clear() {
@@ -206,6 +223,7 @@ function mount(stage, options = {}) {
     event.preventDefault();
     if (pending) pending.hidden = true;
     if (fallback) fallback.hidden = false;
+    setViewerAvailable(false);
   });
   if (options.initialType !== null) select(options.initialType || "TRUCK");
   resize();

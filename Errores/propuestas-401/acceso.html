@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIAL | Recuperar acceso</title><link rel="icon" href="data:,">
+  <script>(function(){const saved=localStorage.getItem('sial-theme');document.documentElement.dataset.theme=saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');})();</script>
+  <link rel="stylesheet" href="../../shared/sial-core.css">
+  <link rel="stylesheet" href="../../shared/vendor/sial-mascot-preview.css">
+  <link rel="stylesheet" href="../401-scene.css">
+  <link rel="stylesheet" href="./acceso.css">
+</head>
+<body class="access-concept">
+  <div class="access-page">
+    <header class="access-toolbar">
+      <a class="access-brand" href="../../index.html" aria-label="Ir al catálogo de SIAL"><span class="error401-brand-mark" aria-hidden="true"></span><span>SIAL</span></a>
+      <div class="access-tools"><a href="./index.html">Comparar propuestas</a><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema" title="Cambiar tema" aria-pressed="false"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.1-7.1-1.4 1.4M6.5 17.5l-1.4 1.4m0-13.8 1.4 1.4m11 11 1.4 1.4"/></svg></button></div>
+    </header>
+    <main class="access-main">
+      <article class="access-panel" aria-labelledby="access-title">
+        <div class="access-visual">
+          <div class="access-visual-title"><span class="access-status-dot" aria-hidden="true"></span><span>Acceso a SIAL</span></div>
+          <p class="access-visual-caption">Volvamos a tu espacio de trabajo.</p>
+          <div class="access-mascot" data-session-scene data-sial-mascot="forbidden" data-sial-component="SialMascot" data-sial-source="library-local-preview"></div>
+        </div>
+        <section class="access-recovery" aria-describedby="access-description">
+          <div class="access-recovery-status"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Sesión no activa</span></div>
+          <h1 id="access-title">Vuelve a entrar<br>en SIAL.</h1>
+          <p id="access-description">Tu sesión no está activa o ha vencido. Inicia sesión nuevamente para continuar con tu trabajo.</p>
+          <div class="access-actions"><a class="btn btn-primary" href="../../Login/index.html">Iniciar sesión<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a><a class="access-back" href="../../index.html">Volver al catálogo</a></div>
+          <p class="access-assurance">Por seguridad, necesitamos identificarte antes de darte acceso a SIAL.</p>
+        </section>
+        <footer class="access-panel-footer"><span class="access-error-code">401</span><p>Si el problema continúa, comparte este código con soporte.</p></footer>
+      </article>
+    </main>
+    <footer class="access-page-footer"><span>SIAL · Acceso a la aplicación</span><a href="../401.html">Ver la vista actual</a></footer>
+  </div>
+  <script src="../../shared/sial-core.js"></script><script>window.SIALCore?.initThemeToggle?.();</script>
+  <script defer src="../../shared/vendor/sial-mascot-preview.js?v=20261030-context-proposals"></script>
+</body>
+</html>

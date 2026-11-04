@@ -138,7 +138,18 @@ const SIAL = (() => {
     const openButton = qs("[data-open-inline-form]");
     const cancelButton = qs("[data-cancel-inline-form]");
     if (!panel || !openButton) return;
-    const open = () => {
+    const open = (event) => {
+      const row = event?.currentTarget?.closest("tr");
+      const form = panel.querySelector("form");
+      form?.reset();
+      if (form) form.dataset.editingCode = row?.dataset.code || "";
+      [["#ribbonCode", "code"], ["#colorEs", "name"], ["#colorEn", "english"], ["#ribbonOrder", "order"]].forEach(([selector, key]) => {
+        const field = panel.querySelector(selector);
+        if (!field) return;
+        field.value = row?.dataset[key] || "";
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      panel.querySelector(".form-heading h2").textContent = row ? "Editar cinta" : "Nueva cinta";
       panel.classList.remove("is-hidden");
       openButton.setAttribute("aria-expanded", "true");
       panel.querySelector("input:not([readonly]), select")?.focus();
@@ -171,8 +182,8 @@ const SIAL = (() => {
         if (empty) fail = true;
       });
       const code = qs("#ribbonCode", form);
-      if (code?.value && existingCodes.includes(code.value.trim().toUpperCase())) {
-        setFieldState(code, qs("#ribbonCodeNote"), "El codigo ya existe en el calendario oficial.", "");
+      if (code?.value && existingCodes.includes(code.value.trim().toUpperCase()) && code.value.trim().toUpperCase() !== form.dataset.editingCode) {
+        setFieldState(code, qs("#ribbonCodeNote"), "El código ya existe en el calendario oficial.", "");
         fail = true;
       }
       const order = qs("#ribbonOrder", form);
@@ -180,7 +191,7 @@ const SIAL = (() => {
         setFieldState(order, qs("#ribbonOrderNote"), "El orden debe ser entero mayor a cero.", "");
         fail = true;
       }
-      qs("#formOk")?.classList.toggle("is-hidden", fail);
+      if (!fail) window.CompanyFeedback?.show("Datos de cinta validados", "success", "La cinta está lista en esta propuesta.");
     });
   }
 
@@ -208,15 +219,20 @@ const SIAL = (() => {
       const startValue = startInput.value;
       const initialRibbon = ribbonSelect.value || "BL";
       const year = Number(yearInput.value || new Date().getFullYear());
-      if (!startValue) return;
+      if (!startValue) {
+        setFieldState(startInput, note, "Selecciona una fecha de inicio.", "");
+        previewBody.innerHTML = "";
+        previewCount.textContent = "0 semanas generadas";
+        return false;
+      }
       const start = new Date(`${startValue}T00:00:00`);
       if (start.getDay() !== 1) {
         setFieldState(startInput, note, "La semana 1 debe iniciar un lunes.", "");
         previewBody.innerHTML = "";
         previewCount.textContent = "0 semanas generadas";
-        return;
+        return false;
       }
-      setFieldState(startInput, note, "", "Fecha valida. Cada semana terminara domingo.");
+      setFieldState(startInput, note, "", "Fecha válida. Cada semana terminará el domingo.");
       const initialIndex = Math.max(0, ribbons.findIndex(([code]) => code === initialRibbon));
       const rows = Array.from({ length: 52 }, (_, index) => {
         const weekStart = addDays(start, index * 7);
@@ -242,6 +258,7 @@ const SIAL = (() => {
         </tr>
       `).join("");
       previewCount.textContent = "52 semanas generadas";
+      return true;
     }
 
     [startInput, ribbonSelect, yearInput].forEach((control) => {
@@ -251,8 +268,8 @@ const SIAL = (() => {
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      generatePreview();
-      qs("#formOk")?.classList.remove("is-hidden");
+      const valid = generatePreview();
+      if (valid) window.CompanyFeedback?.show("Vista previa generada", "success", "Vista previa de 52 semanas disponible.");
     });
 
     generatePreview();

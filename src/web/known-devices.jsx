@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Chip, Drawer, IconButton, ViewIcon } from "@banasandev/banasan-ui";
+import { Button, Chip, Drawer, IconButton, Toast, ViewIcon } from "@banasandev/banasan-ui";
 
 const source = "@banasandev/banasan-ui";
 const seed = [
@@ -50,7 +50,7 @@ function ToggleConfirmation({ device, onCancel, onConfirm }) {
   return <div className="known-device-confirm-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onCancel(); }}>
     <section className="known-device-confirm" role="alertdialog" aria-modal="true" aria-labelledby="known-device-confirm-title" aria-describedby="known-device-confirm-description">
       <h2 id="known-device-confirm-title">{verb} {device.name}</h2>
-      <p id="known-device-confirm-description">{device.active ? "En esta propuesta, el equipo pasará a revocado. En el producto real dejaría de operar como dispositivo conocido para el acceso offline." : "En esta propuesta, el equipo volverá a autorizado. El producto real tendría que confirmar el cambio."}</p>
+      <p id="known-device-confirm-description">{device.active ? "El dispositivo dejará de estar autorizado para el acceso sin conexión." : "El dispositivo volverá a estar autorizado para el acceso sin conexión."}</p>
       <div className="known-device-confirm-actions"><Button ref={cancelRef} variant="outlined" onClick={onCancel}>Cancelar</Button><Button ref={confirmRef} variant="filled" onClick={onConfirm}>{verb} dispositivo</Button></div>
     </section>
   </div>;
@@ -69,7 +69,7 @@ export function KnownDevices() {
     if (!pending) return;
     const action = pending.active ? "revocado" : "autorizado";
     setDevices((current) => current.map((device) => device.id === pending.id ? { ...device, active: !device.active, updated: new Date().toLocaleString("es-CO") } : device));
-    setFeedback(`${pending.name}: estado ${action} solo en esta vista de ejemplo.`);
+    setFeedback(`${pending.name}: ${action}.`);
     setPendingId(null);
   }
   return <div className="known-devices">
@@ -80,7 +80,7 @@ export function KnownDevices() {
         <DevicePanel title="Dispositivos autorizados" devices={active} empty="No hay dispositivos autorizados." onView={setDetailId} onToggle={setPendingId} />
         <DevicePanel title="Dispositivos revocados" devices={revoked} empty="No hay dispositivos revocados." onView={setDetailId} onToggle={setPendingId} />
       </div>
-      {feedback && <p className="known-device-feedback" role="status">{feedback}</p>}
+      {feedback && <div className="known-device-feedback" role="status"><Toast visible variant="success" title="Estado actualizado" description={feedback} onClose={() => setFeedback("")} /></div>}
     </article>
     {detail && <Drawer show onClose={() => setDetailId(null)} title="Detalle de dispositivo" subtitle="Información registrada para el acceso offline." ariaLabel={`Detalle de ${detail.name}`} data={[
       { label: "Usuario", children: detail.user }, { label: "Correo", children: detail.email }, { label: "Dispositivo", children: detail.name }, { label: "ID local", children: detail.localId }, { label: "Plataforma", children: detail.platform }, { label: "Sistema y app", children: detail.system }, { label: "Bootstrap inicial", children: detail.bootstrap }, { label: "Estado", children: detail.active ? "Autorizado" : "Revocado" }, { label: "Registrado", children: detail.created }, { label: "Actualizado", children: detail.updated }

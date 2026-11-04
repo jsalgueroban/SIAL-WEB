@@ -149,7 +149,7 @@
 
     window.setTimeout(() => {
       refs.loading.classList.add("is-hidden");
-      if (!notice) { refs.scope.classList.add("is-hidden"); refs.status.textContent = "Sin acceso"; refs.status.className = "status status-inactive"; refs.subtitle.textContent = "El aviso solicitado no está disponible dentro de tu alcance."; refs.export.classList.add("is-hidden"); refs.error.classList.remove("is-hidden"); return; }
+      if (!notice) { refs.scope.classList.add("is-hidden"); refs.status.textContent = "Sin acceso"; refs.status.classList.remove("status-active", "status-warning"); refs.status.classList.add("status-inactive"); refs.subtitle.textContent = "El aviso solicitado no está disponible dentro de tu alcance."; refs.export.classList.add("is-hidden"); refs.error.classList.remove("is-hidden"); return; }
       refs.content.classList.remove("is-hidden");
       renderNotice(notice, notice.current);
     }, 260);
@@ -161,7 +161,7 @@
       activeVersionId = selected.id;
       refs.title.textContent = item.group === "draft" ? "Consultar borrador de aviso" : "Consultar aviso de corte";
       refs.status.textContent = item.status;
-      refs.status.className = `status ${item.group === "attention" ? "status-inactive" : item.group === "draft" ? "status-warning" : "status-active"}`;
+      refs.status.classList.remove("status-active", "status-warning", "status-inactive"); refs.status.classList.add(item.group === "attention" ? "status-inactive" : item.group === "draft" ? "status-warning" : "status-active");
       refs.subtitle.textContent = `${item.week} · ${item.type} · ${item.stage}`;
       refs.scope.querySelector("span").textContent = item.scope;
       refs.code.textContent = item.code;
@@ -186,7 +186,7 @@
       refs.lineCount.textContent = `${selected.lines.length} ${selected.lines.length === 1 ? "asignación" : "asignaciones"}`;
       refs.lines.innerHTML = selected.lines.map((line) => `<tr><td><strong>${esc(line.farm)}</strong></td><td><strong>${esc(line.client)}</strong><span class="cut-hub-meta">${esc(line.reference)}</span></td><td>${esc(line.certification)}</td><td class="is-number">${number(line.pallets)}</td><td class="is-number">${number(line.boxes)}</td><td>${esc(line.cutDate)}</td></tr>`).join("");
 
-      refs.versions.innerHTML = item.versions.map((entry, index) => `<button class="cut-version-item${entry.id === selected.id ? " is-active" : ""}" type="button" data-version-id="${esc(entry.id)}" aria-pressed="${entry.id === selected.id}"><span><strong>${esc(entry.label)}</strong><small>${esc(entry.state)}</small></span><time>${esc(entry.publishedAt)}</time><small>${esc(entry.owner)}</small>${index === 0 ? '<span class="status status-active">Vigente</span>' : ""}</button>`).join("");
+      refs.versions.innerHTML = item.versions.map((entry, index) => `<button class="cut-version-item${entry.id === selected.id ? " is-active" : ""}" type="button" data-version-id="${esc(entry.id)}" aria-pressed="${entry.id === selected.id}"><span><strong>${esc(entry.label)}</strong><small>${esc(entry.state)}</small></span><time>${esc(entry.publishedAt)}</time><small>${esc(entry.owner)}</small>${index === 0 ? '<span class="status status-active" data-sial-chip-adapter>Vigente</span>' : ""}</button>`).join("");
       qsa("[data-version-id]", refs.versions).forEach((button) => button.addEventListener("click", () => renderNotice(item, button.dataset.versionId)));
 
       refs.diffCount.textContent = `${selected.differences.length} ${selected.differences.length === 1 ? "cambio" : "cambios"}`;
@@ -197,8 +197,8 @@
       refs.diffs.innerHTML = selected.differences.map((change) => `<tr><td>${esc(change.line)}</td><td><strong>${esc(change.field)}</strong></td><td><del>${esc(change.before)}</del></td><td><ins>${esc(change.after)}</ins></td><td>${esc(change.impact)}</td></tr>`).join("");
 
       const canPlanTransport = item.group === "published" && item.stage === "Preoperativa";
-      refs.flow.innerHTML = item.flow.map((step) => `<div class="cut-flow-item"><span class="cut-flow-marker is-${esc(step.tone)}"></span><div><strong>${esc(step.area)}</strong><small>${esc(step.detail)}</small></div><span class="status status-${esc(step.tone)}">${esc(step.status)}</span></div>`).join("") + (canPlanTransport ? `<div class="cut-flow-plan-action"><a class="btn btn-primary" href="../Gestion%20de%20Transporte/plan-operacional.html?origen=aviso&id=${encodeURIComponent(item.code)}">Planificar transporte</a></div>` : "");
-      refs.evidence.innerHTML = item.evidence.map((file, index) => `<div class="cut-evidence-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"></path><path d="M9 11h6M9 15h5"></path></svg><div><strong>${esc(file.name)}</strong><small>${esc(file.kind)} · ${esc(file.date)}</small></div><button class="btn btn-ghost" type="button" data-evidence-index="${index}">Ver</button></div>`).join("") + '<div class="cut-evidence-preview is-hidden" data-evidence-preview></div>';
+      refs.flow.innerHTML = item.flow.map((step) => `<div class="cut-flow-item"><span class="cut-flow-marker is-${esc(step.tone)}"></span><div><strong>${esc(step.area)}</strong><small>${esc(step.detail)}</small></div><span class="status status-${esc(step.tone)}" data-sial-chip-adapter>${esc(step.status)}</span></div>`).join("") + (canPlanTransport ? `<div class="cut-flow-plan-action"><a class="btn btn-primary" href="../Gestion%20de%20Transporte/plan-operacional.html?origen=aviso&id=${encodeURIComponent(item.code)}">Planificar transporte</a></div>` : "");
+      refs.evidence.innerHTML = item.evidence.map((file, index) => `<div class="cut-evidence-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"></path><path d="M9 11h6M9 15h5"></path></svg><div><strong>${esc(file.name)}</strong><small>${esc(file.kind)} · ${esc(file.date)}</small></div><button class="btn btn-ghost" data-sial-button-adapter type="button" data-evidence-index="${index}">Ver</button></div>`).join("") + '<div class="cut-evidence-preview is-hidden" data-evidence-preview></div>';
       qsa("[data-evidence-index]", refs.evidence).forEach((button) => button.addEventListener("click", () => {
         const file = item.evidence[Number(button.dataset.evidenceIndex)];
         const preview = qs("[data-evidence-preview]", refs.evidence);

@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -24,7 +24,7 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 let socket;
 try {
   let port;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
+  for (let attempt = 0; attempt < 600; attempt += 1) {
     try { port = Number((await readFile(join(profile, 'DevToolsActivePort'), 'utf8')).split('\n')[0]); break; }
     catch { await delay(100); }
   }
@@ -61,7 +61,7 @@ try {
     const url = new URL(redirect.route.split('/').map(encodeURIComponent).join('/'), baseUrl).href;
     await send('Page.navigate', { url });
     let result;
-    for (let attempt = 0; attempt < 100; attempt += 1) {
+    for (let attempt = 0; attempt < 300; attempt += 1) {
       await delay(100);
       result = await evaluate(`(() => {
         const target = new URL(${JSON.stringify(redirect.target.split('/').map(encodeURIComponent).join('/'))}, ${JSON.stringify(baseUrl)});
@@ -86,21 +86,23 @@ try {
     for (const viewport of config.viewports) {
       await send('Emulation.setDeviceMetricsOverride', { ...viewport, deviceScaleFactor: 1, mobile: false });
       let report;
-      for (let attempt = 0; attempt < 100; attempt += 1) {
+      for (let attempt = 0; attempt < 300; attempt += 1) {
         await delay(100);
-        const ready = await evaluate('document.readyState').catch(() => null);
-        if (ready !== 'complete') continue;
+        const ready = await evaluate(`document.readyState === 'complete' && location.pathname === new URL(${JSON.stringify(url)}).pathname`).catch(() => false);
+        if (!ready) continue;
         report = await evaluate(`(async () => {
           const { auditPatternRuntime } = await import('/scripts/pattern-runtime-gate.mjs');
           return auditPatternRuntime(${JSON.stringify({ expected: view.expected, requireNavigation: (view.route.startsWith('Materiales y Suministros/') && !view.route.endsWith('/ajustar-pedido-sugerido.html')) || view.requireNavigation, checkRecordCount: view.checkRecordCount, localExpandedTable: view.localExpandedTable, responsiveCaseList: view.responsiveCaseList })});
         })()`).catch(() => null);
         if (report?.components && Object.values(report.components).every((item) => item.mounted > 0)) break;
       }
-      reports.push({ route: view.route, pattern_id: view.pattern_id, ...report });
+      reports.push({ route: view.route, pattern_id: view.pattern_id, ...(report || { passed: false, issues: ['La vista no produjo un informe de auditoría dentro del tiempo permitido.'] }) });
     }
   }
   const passed = reports.every((report) => report.passed);
-  process.stdout.write(`${JSON.stringify({ passed, checked_at: new Date().toISOString(), reports }, null, 2)}\n`);
+  const output = `${JSON.stringify({ passed, checked_at: new Date().toISOString(), reports }, null, 2)}\n`;
+  if (process.env.SIAL_GATE_OUTPUT) await writeFile(process.env.SIAL_GATE_OUTPUT, output, 'utf8');
+  else await new Promise((resolve, reject) => process.stdout.write(output, (error) => error ? reject(error) : resolve()));
   if (!passed) process.exitCode = 1;
 } finally {
   if (socket?.readyState === WebSocket.OPEN) {

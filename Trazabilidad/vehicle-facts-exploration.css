@@ -1,0 +1,122 @@
+/* Vehicle summary composition approved for the main proposal; exploration A retained. */
+.vf-preview-bar { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:16px 0; border-bottom:1px solid var(--color-border-subtle); }
+.vf-preview-bar p { margin:4px 0 0; color:var(--color-text-2); font-size:12px; }
+.vf-preview-bar nav { display:flex; flex-wrap:wrap; gap:8px; }
+.vf-preview-bar a { border:1px solid var(--color-border-subtle); border-radius:8px; padding:10px 12px; color:var(--color-primary-600); font-size:13px; text-decoration:none; }
+.vf-preview-bar a[aria-current] { border-color:var(--color-primary-500); background:var(--color-soft-surface); font-weight:600; }
+.vf-groups { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+.vf-groups section + section { border-left:1px solid var(--color-border-subtle); padding-left:24px; }
+.vf-groups h4,.vf-register h4 { font-size:14px; font-weight:600; margin:0 0 16px; color:var(--color-text); }
+.vf-list { margin:0; display:grid; gap:14px; }
+.vf-list > div { min-width:0; }
+.vf-list dt { font-size:12px; color:var(--color-text-2); margin-bottom:3px; font-weight:400; }
+.vf-list dd { font-size:14px; font-weight:500; line-height:1.5; margin:0; color:var(--color-text); overflow-wrap:anywhere; }
+.vf-event-facts { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.vf-event-note { margin-top:22px; padding-top:18px; border-top:1px solid var(--color-border-subtle); }
+.vf-event-note .vf-list { grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:20px; }
+.vf-route { padding:16px 20px; background:var(--color-soft-surface); border-radius:var(--radius-control); margin-bottom:24px; }
+.vf-route .vf-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; }
+.vf-route dd { font-size:16px; font-weight:600; }
+.vf-register-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px; }
+.vf-register-columns .vf-list { gap:0; }
+.vf-register-columns .vf-list > div { display:grid; grid-template-columns:minmax(110px,.8fr) minmax(0,1.2fr); gap:16px; padding:10px 0; border-bottom:1px solid var(--color-border-subtle); }
+.vf-register-columns dt { margin:0; }
+.vf-register-footer { margin-top:20px; }
+.vf-register-footer .vf-list { display:flex; flex-wrap:wrap; gap:20px 48px; }
+.vf-b .vf-event-facts { grid-template-columns:1fr; gap:0; }
+.vf-b .vf-event-facts > div { display:grid; grid-template-columns:150px minmax(0,1fr); gap:20px; padding:12px 0; border-bottom:1px solid var(--color-border-subtle); }
+@media(max-width:900px){ .vf-preview-bar { align-items:flex-start; flex-direction:column; } .vf-groups { gap:16px; } .vf-groups section+section{padding-left:16px;} }
+@media(max-width:650px){ .vf-groups,.vf-register-columns {grid-template-columns:1fr;} .vf-groups section+section{border-left:0;padding:20px 0 0;border-top:1px solid var(--color-border-subtle);} .vf-event-facts,.vf-event-note .vf-list,.vf-route .vf-list {grid-template-columns:1fr;} .vf-b .vf-event-facts > div,.vf-register-columns .vf-list>div {grid-template-columns:1fr;gap:3px;} }
+
+.vf-administration { margin-top:24px; padding-top:18px; border-top:1px solid var(--color-border-subtle); }
+.vf-administration h4 { font-size:13px; font-weight:600; margin:0 0 12px; }
+.vf-administration .vf-list { grid-template-columns:repeat(3,minmax(0,1fr));gap:24px; }
+.vf-event-note .vf-list { grid-template-columns:1fr;gap:18px; }
+@media(max-width:650px){.vf-administration .vf-list{grid-template-columns:1fr;}}
+
+/* B selected: use available width for facts rather than stretching single rows. */
+.vf-b .vf-event-facts { grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
+.vf-b .vf-event-facts > div { display:block; padding:0; border:0; }
+.vf-b .vf-event-facts dt { margin-bottom:6px; }
+.vf-b .vf-event-note { margin-top:18px; padding-top:16px; }
+.vf-b .vf-event-note .vf-list { grid-template-columns:minmax(0,1fr); gap:24px; }
+.vf-register-footer { margin-top:16px; padding-top:16px; border-top:1px solid var(--color-border-subtle); }
+.vf-register-footer .vf-list { display:grid; grid-template-columns:1fr 1.3fr 1fr; gap:24px; }
+.vf-route-readable { display:grid; grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr); gap:12px 24px; align-items:center; padding:18px 20px; }
+.vf-route-point { display:flex; align-items:flex-start; gap:12px; min-width:0; }
+.vf-route-marker,.vf-route-direction { color:var(--color-primary-600); flex:none; padding-top:2px; }
+.vf-route-readable dl { margin:0; min-width:0; }
+.vf-route-readable dt { font-size:12px; color:var(--color-text-2); margin-bottom:5px; }
+.vf-route-readable dd { font-size:17px; line-height:1.45; margin:0; overflow-wrap:anywhere; }
+.vf-route-explanation { grid-column:1/-1; margin:0; font-size:12px; color:var(--color-text-2); line-height:1.5; }
+body:is([data-vehicle-exploration], [data-vehicle-summary]) .vehicle-detail-section:has(.vf-b) > .mt-5 { justify-content:center; margin-top:20px; }
+@media(max-width:650px){
+ .vf-b .vf-event-facts,.vf-b .vf-event-note .vf-list,.vf-register-footer .vf-list {grid-template-columns:1fr;gap:16px;}
+ .vf-route-readable {grid-template-columns:1fr;gap:16px;}
+ .vf-route-direction {display:none;}
+}
+
+/* B: route context belongs to the reading area, borders only around major blocks. */
+.vf-route-compact { grid-column:1 / -1; margin:0; padding:12px 16px; gap:12px 20px; }
+.vf-route-compact dt { margin-bottom:2px; }
+.vf-route-compact dd { font-size:15px; }
+body:is([data-vehicle-exploration], [data-vehicle-summary]) .vehicle-workspace:has(.vf-route-compact) { gap:16px 20px; }
+body:is([data-vehicle-exploration], [data-vehicle-summary]) .vehicle-workspace:has(.vf-route-compact) .vehicle-journey,
+body:is([data-vehicle-exploration], [data-vehicle-summary]) .vehicle-workspace:has(.vf-route-compact) .vehicle-detail-section { border:1px solid var(--color-border-subtle); border-radius:var(--radius-surface); padding:20px; min-width:0; }
+@media(max-width:650px){ .vf-route-compact { padding:12px; } body:is([data-vehicle-exploration], [data-vehicle-summary]) .vehicle-workspace:has(.vf-route-compact) .vehicle-journey,body:is([data-vehicle-exploration], [data-vehicle-summary]) .vehicle-workspace:has(.vf-route-compact) .vehicle-detail-section {padding:16px;} }
+
+/* B upper context: three semantic sections share one reading grid. */
+.vehicle-separated-blocks { display:grid; gap:24px; min-width:0; overflow:clip; }
+.vehicle-separated-blocks > .card { margin-bottom:0; }
+.vehicle-separated-blocks .vehicle-selector-content { display:grid; gap:20px; padding:0 20px 20px; }
+.vehicle-selected-block { display:grid; gap:24px; padding:24px; min-width:0; }
+@media(max-width:650px){ .vehicle-selected-block {padding:16px;} }
+.vf-register-organized .vf-register-columns { grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; }
+.vf-register-organized .vf-register-columns > section { min-width:0; }
+.vf-register-organized .vf-register-columns > section + section { border-left:1px solid var(--color-border-subtle); padding-left:28px; }
+.vf-register-organized h4 { margin-bottom:14px; }
+.vf-register-organized .vf-list { gap:14px; }
+.vf-register-organized .vf-list > div { display:block; padding:0; border:0; }
+.vf-register-organized .vf-list dt { margin-bottom:3px; }
+.vf-register-organized .vf-list dd { line-height:1.5; }
+@media(max-width:1100px) and (min-width:701px){
+ .vf-register-organized .vf-register-columns {grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
+ .vf-register-organized .vf-register-columns > section:last-child {grid-column:1/-1;border-left:0;border-top:1px solid var(--color-border-subtle);padding:18px 0 0;}
+ .vf-register-organized .vf-register-columns > section:last-child .vf-list {grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+}
+@media(max-width:700px){
+ .vf-register-organized .vf-register-columns {grid-template-columns:1fr;gap:20px;}
+ .vf-register-organized .vf-register-columns > section + section {border-left:0;border-top:1px solid var(--color-border-subtle);padding:18px 0 0;}
+ .vf-register-organized .vf-list {grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+}
+@media(max-width:420px){.vf-register-organized .vf-list {grid-template-columns:1fr;}}
+
+.vehicle-separated-blocks > .bui-drawer-container[aria-hidden='true'] { display:none; }
+
+/* Separate the selected operation heading from its three information groups. */
+.vehicle-selected-block .vehicle-context-heading { border-bottom:1px solid var(--color-border-subtle); padding-bottom:20px; }
+
+/* Feature layout and detail-panel motion; FlowTimeline owns the chronology. */
+.vehicle-journey-list { margin-top:16px; }
+.vehicle-selected-block .vehicle-detail-section { animation:vehicle-detail-enter 220ms ease-out; }
+@keyframes vehicle-detail-enter { from {opacity:.5;transform:translateY(5px);} to {opacity:1;transform:translateY(0);} }
+@media(prefers-reduced-motion:reduce) {.vehicle-selected-block .vehicle-detail-section {animation:none;}}
+.vf-event-note dd {white-space:pre-wrap;}
+@media(min-width:651px) and (max-width:1200px){.vf-b .vf-event-facts {grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* Vehicle drawer uses the same semantic grouping as the approved main view. */
+.vehicle-drawer-content {display:grid;gap:24px;min-width:0;}
+.vehicle-drawer-status {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.vehicle-drawer-status > span:last-child {font-size:12px;color:var(--color-text-2);}
+.vehicle-drawer-group {border-bottom:1px solid var(--color-border-subtle);padding-bottom:20px;}
+.vehicle-drawer-group h4 {font-size:14px;font-weight:600;margin:0 0 14px;}
+.vehicle-drawer-group dl {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px;margin:0;}
+.vehicle-drawer-group dt {font-size:12px;color:var(--color-text-2);margin-bottom:4px;}
+.vehicle-drawer-group dd {font-size:14px;line-height:1.5;margin:0;overflow-wrap:anywhere;}
+.vehicle-drawer-history {display:grid;gap:24px;}
+.vehicle-drawer-history .vehicle-journey {padding:0;border:0;}
+.vehicle-drawer-history .vehicle-detail-section {border-top:1px solid var(--color-border-subtle);padding-top:20px;animation:vehicle-detail-enter 220ms ease-out;}
+.vehicle-drawer-history .vf-b .vf-event-facts {grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+.vehicle-drawer-history .vf-b .vf-event-note .vf-list {grid-template-columns:minmax(0,1fr);}
+@media(max-width:420px){.vehicle-drawer-group dl,.vehicle-drawer-history .vf-b .vf-event-facts {grid-template-columns:minmax(0,1fr);}}
+@media(prefers-reduced-motion:reduce){.vehicle-drawer-history .vehicle-detail-section {animation:none;}}

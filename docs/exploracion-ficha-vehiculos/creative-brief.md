@@ -1,0 +1,2 @@
+# Brief: dos secciones de seguimiento vehicular
+Modo Operate. Evolución acotada, no rediseño de vista. Personal de seguimiento debe identificar vehículo, situación actual y hechos del hito sin recorrer 17 recuadros equivalentes. Conservar identidad SIAL, filtros, selector, recorrido descendente, Drawer, POMA y los 12+5 campos. Sin inspecciones ni evidencias. A: ficha por tres grupos temáticos. B: franja de ubicación/destino con registro tabular compacto. Nuevos patrones solo proposal-only, sin promover librería. Comparar mismos datos y viewport. Selección visual pendiente.

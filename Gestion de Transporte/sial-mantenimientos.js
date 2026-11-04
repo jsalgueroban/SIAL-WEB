@@ -73,9 +73,10 @@
     const operationActive = () => vehicle.value && window.TransportAvailability?.get(vehicle.value).operationActive;
     const updateContext = () => {
       const activeTrip = Boolean(operationActive());
-      const unavailable = !window.TransportAvailability;
+      const unavailable = !window.TransportAvailability || (vehicle.value && !window.TransportAvailability.get(vehicle.value).sourcesVerified);
       qs("[data-context-plate]").value = vehicle.value || "Sin seleccionar";
       qs("[data-context-state]").value = activeTrip ? "Operación en tránsito" : vehicle.value ? "Por verificar" : "Sin seleccionar";
+      [qs("[data-context-plate]"), qs("[data-context-state]")].forEach(field => field.dispatchEvent(new Event("input", { bubbles: true })));
       blocked.classList.toggle("is-hidden", !activeTrip);
       impact.textContent = unavailable ? "No se pudo consultar el estado operativo local." : vehicle.value ? (activeTrip ? "No puede registrarse mientras exista una operación en tránsito." : "Sin tránsito reportado en la propuesta. La disponibilidad final debe verificarse.") : "Selecciona un vehículo para validar su disponibilidad.";
       qs("#maintenanceSubmit").disabled = !vehicle.value || activeTrip || unavailable;
@@ -93,7 +94,7 @@
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       feedback.hidden = true;
-      if (!window.TransportAvailability || operationActive()) { updateContext(); return; }
+      if (!window.TransportAvailability || !window.TransportAvailability.get(vehicle.value).sourcesVerified || operationActive()) { updateContext(); return; }
       const required = qsa("[required]", form);
       let firstInvalid = null;
       required.forEach((field) => {
@@ -119,11 +120,11 @@
       const year = new Date().getFullYear();
       const next = Math.max(0, ...all.map(item => Number(item.id.split('-').at(-1)) || 0)) + 1;
       let id = `MNT-${year}-${String(next).padStart(3,'0')}`;
-      const button = qs('#maintenanceSubmit'); button.disabled = true;
+      const button = qs('#maintenanceSubmit'); button.disabled = true; button.textContent = 'Guardando mantenimiento…';
       let attachments = [];
       try {
         attachments = await store.persistFiles(evidence.files, id);
-        if (operationActive()) throw new Error('El vehículo ahora tiene una operación en tránsito.');
+        if (!window.TransportAvailability.get(vehicle.value).sourcesVerified || operationActive()) throw new Error('No se pudo verificar la operación del vehículo.');
         const latest = store.read();
         if (latest.some(item => item.id === id)) {
           const revised = Math.max(0, ...latest.map(item => Number(item.id.split('-').at(-1)) || 0)) + 1;
@@ -132,11 +133,12 @@
         const value = id => qs(`#${id}`)?.value.trim() || '';
         const record = {id, vehicle:value('maintenanceVehicle'),kind:value('maintenanceKind'),cause:value('maintenanceCause'),priority:value('maintenancePriority'),workshop:value('maintenanceWorkshop'),responsible:value('maintenanceResponsible'),cost:value('maintenanceCost'),start:value('maintenanceStart'),expected:value('maintenanceExpected'),mileage:value('maintenanceMileage'),hours:value('maintenanceHours'),origin:value('maintenanceOrigin'),diagnosis:value('maintenanceDiagnosis'),notes:value('maintenanceNotes'),attachments,status:'active',audit:[`Ingreso registrado · ${new Date().toLocaleString('es-CO')}`]};
         store.write([record,...latest]);
+        window.TransportFeedback?.next("detalle-mantenimiento.html", "Mantenimiento registrado");
         location.href = `detalle-mantenimiento.html?id=${encodeURIComponent(id)}`;
       } catch {
         if (attachments.length) await store.deleteFiles(attachments).catch(() => {});
         feedback.textContent = operationActive() ? 'El vehículo ahora tiene una operación en tránsito. No se guardó el mantenimiento.' : 'No se pudo guardar el mantenimiento o sus soportes en este navegador. Intenta nuevamente.';
-        feedback.hidden = false; button.disabled = false;
+        feedback.hidden = false; button.disabled = false; button.textContent = 'Revisar registro';
       }
     });
   }
@@ -174,13 +176,37 @@
       const card = document.createElement('article'); card.className='card';
       const body = document.createElement('div'); body.className='card-body';
       const dl = document.createElement('dl'); dl.className='sial-key-value-grid';
-      const fields = [['Vehículo',record.vehicle],['Estado',statusLabels[record.status]],['Tipo',record.kind],['Taller',record.workshop],['Ingreso',formatDateTime(record.start)],['Salida estimada',formatDateTime(record.expected)],['Motivo',record.cause],['Diagnóstico',record.diagnosis],['Responsable',record.responsible],['Prioridad',record.priority],['Costo estimado',record.cost],['Kilometraje de ingreso',record.mileage],['Horómetro de ingreso',record.hours],['Origen',record.origin],['Observaciones',record.notes],['Resultado de liberación',record.release?.notes]];
+      const fields = [['Vehículo',record.vehicle],['Estado',statusLabels[record.status]],['Tipo',record.kind],['Taller',record.workshop],['Ingreso',formatDateTime(record.start)],['Salida estimada',formatDateTime(record.expected)],['Motivo',record.cause],['Diagnóstico',record.diagnosis],['Responsable',record.responsible],['Prioridad',record.priority],['Costo estimado',record.cost],['Kilometraje de ingreso',record.mileage],['Horómetro de ingreso',record.hours],['Origen',record.origin],['Observaciones',record.notes],['Resultado de la revisión',record.completion?.notes],['Resultado de liberación',record.release?.notes]];
       fields.filter(([,value])=>value).forEach(([label,value])=>{const item=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;if(label==='Estado'){const chip=document.createElement('span');chip.className=`status status-${statusClasses[record.status] || 'warning'}`;chip.dataset.sialChipAdapter='';chip.textContent=value;dd.append(chip)}else dd.textContent=value;item.append(dt,dd);dl.append(item)});
-      body.append(dl); appendEvidence(body,record.attachments,'Soportes de ingreso'); appendEvidence(body,record.release?.attachments,'Evidencia de liberación');
+      body.append(dl); appendEvidence(body,record.attachments,'Soportes de ingreso'); appendEvidence(body,record.completion?.attachments,'Evidencia del trabajo terminado'); appendEvidence(body,record.release?.attachments,'Evidencia de liberación');
       if(record.audit?.length){const section=document.createElement('section'),h=document.createElement('h2'),ul=document.createElement('ul');section.className='maintenance-panel';h.textContent='Eventos del expediente';record.audit.forEach(entry=>{const li=document.createElement('li');li.textContent=entry;ul.append(li)});section.append(h,ul);body.append(section)}
       if(record.status==='active'){
-        const action=document.createElement('button');action.type='button';action.className='btn btn-secondary';action.dataset.sialButtonAdapter='';action.textContent='Marcar trabajo terminado';
-        action.addEventListener('click',()=>{try{const all=store.read(),current=all.find(item=>item.id===id);if(!current||current.status!=='active')throw new Error();store.write(all.map(item=>item.id===id?{...item,status:'release',audit:[...(item.audit||[]),`Trabajo terminado · ${new Date().toLocaleString('es-CO')}`]}:item));location.reload()}catch{action.textContent='No se pudo guardar o el estado cambió. Recarga la vista.'}});body.append(action);
+        const section=document.createElement('section'); section.className='maintenance-panel';
+        const title=document.createElement('h2'); title.textContent='Finalización del trabajo';
+        const form=document.createElement('form'); form.className='maintenance-completion-form'; form.noValidate=true;
+        const diagnosisLabel=document.createElement('label'); diagnosisLabel.className='label'; diagnosisLabel.htmlFor='completionDiagnosis'; diagnosisLabel.textContent='Diagnóstico';
+        const diagnosis=document.createElement('textarea'); diagnosis.id='completionDiagnosis'; diagnosis.className='textarea'; diagnosis.rows=3; diagnosis.required=true; diagnosis.value=record.diagnosis || '';
+        const notesLabel=document.createElement('label'); notesLabel.className='label'; notesLabel.htmlFor='completionNotes'; notesLabel.textContent='Resultado de la revisión de seguridad';
+        const notes=document.createElement('textarea'); notes.id='completionNotes'; notes.className='textarea'; notes.rows=3; notes.required=true;
+        const evidenceLabel=document.createElement('label'); evidenceLabel.className='label'; evidenceLabel.htmlFor='completionEvidence'; evidenceLabel.textContent='Evidencia del trabajo';
+        const evidence=document.createElement('input'); evidence.id='completionEvidence'; evidence.className='maintenance-upload-input'; evidence.type='file'; evidence.required=true;
+        const upload=document.createElement('div'); upload.className='maintenance-upload';
+        const uploadLabel=document.createElement('label'); uploadLabel.className='btn btn-secondary'; uploadLabel.htmlFor=evidence.id; uploadLabel.textContent='Seleccionar archivo';
+        const uploadName=document.createElement('span'); uploadName.className='maintenance-upload-name'; uploadName.setAttribute('aria-live','polite'); uploadName.textContent='Ningún archivo seleccionado';
+        evidence.addEventListener('change',()=>{uploadName.textContent=evidence.files?.[0]?.name || 'Ningún archivo seleccionado';});
+        upload.append(evidence,uploadLabel,uploadName);
+        const feedback=document.createElement('p'); feedback.className='maintenance-form-feedback notice-error'; feedback.dataset.sialDynamicNotice=''; feedback.hidden=true; feedback.tabIndex=-1; feedback.setAttribute('role','alert');
+        const action=document.createElement('button');action.type='submit';action.className='btn btn-secondary';action.dataset.sialButtonAdapter='';action.textContent='Marcar trabajo terminado';
+        const field=(...children)=>{const wrapper=document.createElement('div');wrapper.className='field';wrapper.append(...children);return wrapper;};
+        form.append(field(diagnosisLabel,diagnosis),field(notesLabel,notes),field(evidenceLabel,upload),feedback,action); section.append(title,form); body.append(section);
+        form.addEventListener('submit',async event=>{
+          event.preventDefault(); feedback.hidden=true;
+          if(!diagnosis.value.trim() || !notes.value.trim() || !evidence.files?.length){feedback.textContent=!diagnosis.value.trim()?'Escribe el diagnóstico antes de terminar el trabajo.':!notes.value.trim()?'Escribe el resultado de la revisión de seguridad.':'Adjunta la evidencia del trabajo terminado.';feedback.hidden=false;(!diagnosis.value.trim()?diagnosis:!notes.value.trim()?notes:evidence).focus();return;}
+          if(!window.TransportFeedback || !await window.TransportFeedback.confirm('Marcar trabajo terminado','El expediente pasará a pendiente de liberación. El vehículo seguirá bloqueado por mantenimiento.','Marcar trabajo terminado'))return;
+          action.disabled=true;action.textContent='Guardando trabajo…';let attachments=[];
+          try{const current=store.read().find(item=>item.id===id);if(!current||current.status!=='active')throw new Error('El estado del expediente cambió.');attachments=await store.persistFiles(evidence.files,`${id}/trabajo`);const latest=store.read();if(!latest.some(item=>item.id===id&&item.status==='active'))throw new Error('El estado del expediente cambió.');store.write(latest.map(item=>item.id===id?{...item,diagnosis:diagnosis.value.trim(),status:'release',completion:{notes:notes.value.trim(),attachments},audit:[...(item.audit||[]),`Trabajo terminado · ${new Date().toLocaleString('es-CO')}`]}:item));window.TransportFeedback?.next('detalle-mantenimiento.html','Trabajo terminado');location.reload();}
+          catch(error){if(attachments.length)await store.deleteFiles(attachments).catch(()=>{});feedback.textContent=error.message?.includes('estado')?'El estado cambió. Recarga la vista.':'No se pudo guardar el resultado o la evidencia. Intenta nuevamente.';feedback.hidden=false;action.disabled=false;action.textContent='Marcar trabajo terminado';}
+        });
       }
       card.append(body);page.append(card);
       if(record.status==='release' && releaseTemplate){releaseTemplate.classList.add('mt-24');page.append(releaseTemplate);}
@@ -202,14 +228,16 @@
       evidence.classList.toggle('is-error',!evidence.files?.length);notes.classList.toggle('is-error',!notes.value.trim());
       evidence.setAttribute('aria-invalid',String(!evidence.files?.length));notes.setAttribute('aria-invalid',String(!notes.value.trim()));
       if(invalid){feedback.textContent=!evidence.files?.length?'Adjunta la evidencia final para liberar.':'Escribe el resultado y las observaciones.';feedback.hidden=false;result.classList.add('is-hidden');(!evidence.files?.length?evidence:notes).focus();return;}
-      const button=qs('#releaseSubmit',page);button.disabled=true;let attachments=[];
+      if (!window.TransportFeedback || !await window.TransportFeedback.confirm('Liberar vehículo','Se cerrará el mantenimiento. La disponibilidad final también depende de las demás restricciones.','Liberar vehículo')) return;
+      const button=qs('#releaseSubmit',page);button.disabled=true;button.textContent='Guardando liberación…';let attachments=[];
       try{const current=store.read().find(item=>item.id===id);if(!current||current.status!=='release')throw new Error('El estado del expediente cambió. Recarga la vista.');
         attachments=await store.persistFiles(evidence.files,`${id}/liberacion`);
         const latest=store.read();
         if (!latest.some(item => item.id===id && item.status==='release')) throw new Error('El estado del expediente cambió. Recarga la vista.');
         store.write(latest.map(item=>item.id===id?{...item,status:'closed',release:{notes:notes.value.trim(),attachments},audit:[...(item.audit||[]),`Liberar vehículo · ${new Date().toLocaleString('es-CO')}`]}:item));
+        window.TransportFeedback?.next("detalle-mantenimiento.html", "Vehículo liberado");
         location.reload();
-      }catch(error){if(attachments.length)await store.deleteFiles(attachments).catch(()=>{});feedback.textContent=error.message?.includes('estado')?error.message:'No se pudo guardar la liberación o su evidencia. Intenta nuevamente.';feedback.hidden=false;button.disabled=false;}
+      }catch(error){if(attachments.length)await store.deleteFiles(attachments).catch(()=>{});feedback.textContent=error.message?.includes('estado')?error.message:'No se pudo guardar la liberación o su evidencia. Intenta nuevamente.';feedback.hidden=false;button.disabled=false;button.textContent='Liberar vehículo';}
     });
   }
 

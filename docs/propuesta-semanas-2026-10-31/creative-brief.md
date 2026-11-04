@@ -1,0 +1,3 @@
+# Brief creativo · Gestión de semanas
+
+Plataforma web; perfil creative/explore. Planeación necesita encontrar una semana, su período y cinta; generar el calendario anual es una acción secundaria identificable. El usuario solicita retirar paneles de Estado operativo y secuencia excesiva. Usar identidad y tipografía de DESIGN.md, Table y controles de librería donde correspondan, datos de ejemplo claramente identificados y movimiento moderado con alternativa reducida. No suponer estados, métricas, cambios de fechas o acciones de negocio no respaldados. Explorar dos composiciones visibles: consulta tabular y navegación por mes. La selección corresponde a John; son prototipos aislados sin persistencia.

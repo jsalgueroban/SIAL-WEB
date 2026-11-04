@@ -1,5 +1,11 @@
 @import url("../shared/sial-core.css");
 
+.transport-confirm { width: min(460px, calc(100vw - 32px)); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface, 12px); padding: 24px; background: var(--color-surface); color: var(--color-text); box-shadow: var(--shadow-overlay); }
+.transport-confirm::backdrop { background: rgb(10 20 35 / 55%); }
+.transport-confirm h2 { margin: 0 0 10px; font-size: 1.15rem; }
+.transport-confirm p { margin: 0; line-height: 1.5; }
+.transport-confirm-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
 .maintenance-toolbar { grid-template-columns: minmax(280px, 1fr) minmax(190px, 220px) minmax(190px, 220px); align-items: end; }
 .maintenance-filter-field { min-width: 0; }
 .maintenance-filter-field > .input, .maintenance-filter-field > .select { width: 100%; min-width: 0; height: 44px; }
@@ -32,6 +38,8 @@
 .maintenance-upload-input { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .maintenance-upload .btn { flex: 0 0 auto; }
 .maintenance-upload-name { min-width: 0; overflow: hidden; color: var(--color-text-2); text-overflow: ellipsis; white-space: nowrap; }
+.maintenance-completion-form { display: grid; gap: 16px; }
+.maintenance-completion-form > button { justify-self: start; }
 .maintenance-file-list { display: grid; gap: 8px; margin-top: 12px; }
 .maintenance-file { display: flex; justify-content: space-between; gap: 16px; padding: 10px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-control); }
 .maintenance-layout { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(320px, .75fr); gap: 24px; align-items: start; }

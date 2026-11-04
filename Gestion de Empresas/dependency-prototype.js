@@ -38,10 +38,10 @@
     toggle.setAttribute('aria-label', activate ? 'Activar' : 'Inactivar');
     const svg = toggle.querySelector('svg'); svg.replaceChildren();
     const path = document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('d',activate ? 'M20 6 9 17l-5-5' : 'M18 6 6 18M6 6l12 12'); svg.append(path);
-    toggle.addEventListener('click', () => {
-      if (!confirm(`¿${activate ? 'Activar' : 'Inactivar'} ${item.name}?`)) return;
-      try { const all = read(); const target = all.find(x => x.code === item.code); if (!target) throw new Error('Dependencia no encontrada.'); target.status = activate ? 'active' : 'inactive'; target.state = activate ? 'Activo' : 'Inactivo'; target.audit = audit(activate ? 'Activación' : 'Inactivación',target.audit); localStorage.setItem(key, JSON.stringify(all)); location.reload(); }
-      catch (e) { error(e.message || 'No se pudo guardar el estado.'); }
+    toggle.dataset.stateConfirmReady = 'true'; toggle.addEventListener('click', async () => {
+      if (!await window.CompanyFeedback.confirm(`${activate ? 'Activar' : 'Inactivar'} dependencia`, `¿Deseas ${activate ? 'activar' : 'inactivar'} ${item.name}?`, activate ? 'Activar' : 'Inactivar')) return;
+      try { const all = read(); const target = all.find(x => x.code === item.code); if (!target) throw new Error('Dependencia no encontrada.'); target.status = activate ? 'active' : 'inactive'; target.state = activate ? 'Activo' : 'Inactivo'; target.audit = audit(activate ? 'Activación' : 'Inactivación',target.audit); localStorage.setItem(key, JSON.stringify(all)); window.CompanyFeedback?.next('gestion-dependencias.html', activate ? 'Dependencia activada' : 'Dependencia inactivada'); location.reload(); }
+      catch (e) { window.CompanyFeedback?.show('No se pudo guardar', 'error', e.message || 'Intenta nuevamente.'); }
     });
     tbody.append(tr);
   });
@@ -58,7 +58,7 @@
       if (editing && !item) throw new Error('Dependencia no encontrada.');
       if (!item) { item = {code:String(Math.max(0,...all.map(x => Number(x.code)||0))+1),status:'active',state:'Activo',audit:''}; all.push(item); }
       item.name = value; item.audit = audit(editing ? 'Edición' : 'Creación',item.audit);
-      localStorage.setItem(key, JSON.stringify(all)); location.reload();
+      localStorage.setItem(key, JSON.stringify(all)); window.CompanyFeedback?.next('gestion-dependencias.html', editing ? 'Cambios guardados' : 'Dependencia registrada'); location.reload();
     } catch (e) { error(e.message || 'No se pudo guardar la dependencia.'); }
   });
 })();

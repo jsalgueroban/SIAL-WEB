@@ -13,15 +13,15 @@ const SIAL = (() => {
     "SIAL Central": [
       ["admin-general", "Administrador general", "Acceso administrativo completo."],
       ["seguridad", "Seguridad y roles", "Gestiona usuarios, roles y permisos."],
-      ["auditoria", "Consulta auditoria", "Consulta trazabilidad y eventos."]
+      ["auditoria", "Consulta auditoría", "Consulta trazabilidad y eventos."]
     ],
     Banapalma: [
-      ["supervisor-campo", "Supervisor campo", "Gestiona operacion regional."],
+      ["supervisor-campo", "Supervisor campo", "Gestiona operación regional."],
       ["gestor-documental", "Gestor documental", "Consulta y actualiza soportes."],
       ["consulta", "Consulta operativa", "Acceso de lectura operacional."]
     ],
     AgroCeiba: [
-      ["consulta-historica", "Consulta historica", "Acceso limitado a informacion historica."]
+      ["consulta-historica", "Consulta histórica", "Acceso limitado a información histórica."]
     ]
   };
 
@@ -37,12 +37,12 @@ const SIAL = (() => {
     {
       id: "usuarios",
       label: "Usuarios",
-      description: "Altas, consulta, edicion y control de acceso de usuarios.",
+      description: "Altas, consulta, edición y control de acceso de usuarios.",
       permissions: [
-        ["gestion-usuarios", "Gestion de usuarios", "Listado, detalle y estados de usuarios."],
-        ["registro-usuario", "Registro de usuario", "Creacion de usuarios y asignacion empresa + roles."],
-        ["editar-usuario", "Editar usuario", "Actualizacion de datos base y asignaciones."],
-        ["permisos-rol", "Administracion de permisos", "Matriz de permisos asociada a roles."]
+        ["gestion-usuarios", "Gestión de usuarios", "Listado, detalle y estados de usuarios."],
+        ["registro-usuario", "Registro de usuario", "Creación de usuarios y asignación empresa + roles."],
+        ["editar-usuario", "Editar usuario", "Actualización de datos base y asignaciones."],
+        ["permisos-rol", "Administración de permisos", "Matriz de permisos asociada a roles."]
       ]
     },
     {
@@ -50,11 +50,11 @@ const SIAL = (() => {
       label: "Empresa",
       description: "Empresas, roles por empresa y tipos asociados.",
       permissions: [
-        ["gestion-empresas", "Gestion de empresas", "Consulta y mantenimiento de empresas."],
+        ["gestion-empresas", "Gestión de empresas", "Consulta y mantenimiento de empresas."],
         ["roles-empresa", "Roles por empresas", "Roles habilitados para una empresa."],
-        ["creacion-roles", "Creacion de roles", "Alta y edicion de roles base."],
-        ["tipos-empresa", "Tipos de empresas", "Catalogo de clasificacion de empresas."],
-        ["empresa-tipo", "Empresa + tipo", "Relacion entre empresa y tipo."]
+        ["creacion-roles", "Creación de roles", "Alta y edición de roles base."],
+        ["tipos-empresa", "Tipos de empresas", "Catálogo de clasificación de empresas."],
+        ["empresa-tipo", "Empresa + tipo", "Relación entre empresa y tipo."]
       ]
     },
     {
@@ -62,29 +62,29 @@ const SIAL = (() => {
       label: "Fincas",
       description: "Estructura productiva: fincas, sectores y grupos.",
       permissions: [
-        ["gestion-fincas", "Gestion de fincas", "Maestra de fincas disponibles."],
-        ["gestion-sectores", "Gestion de sectores", "Sectores asociados a fincas."],
-        ["gestion-grupos", "Gestion de grupos", "Grupos de operacion productiva."]
+        ["gestion-fincas", "Gestión de fincas", "Maestra de fincas disponibles."],
+        ["gestion-sectores", "Gestión de sectores", "Sectores asociados a fincas."],
+        ["gestion-grupos", "Gestión de grupos", "Grupos de operación productiva."]
       ]
     },
     {
       id: "transporte",
       label: "Transporte",
-      description: "Conductores, vehiculos, licencias y control documental.",
+      description: "Conductores, vehículos, licencias y control documental.",
       permissions: [
-        ["conductores", "Gestion de conductores", "Maestra y detalle de conductores."],
-        ["licencias", "Gestion de licencias", "Categorias y relacion conductor + licencia."],
-        ["vehiculos", "Gestion de vehiculos", "Flota, estado y datos operativos."],
-        ["tipos-vehiculo", "Tipos de vehiculos", "Catalogo de tipos de vehiculo."],
-        ["control-documental", "Control documental", "Seguimiento SOAT, tecnomecanica y soportes."]
+        ["conductores", "Gestión de conductores", "Maestra y detalle de conductores."],
+        ["licencias", "Gestión de licencias", "Categorías y relación conductor + licencia."],
+        ["vehiculos", "Gestión de vehículos", "Flota, estado y datos operativos."],
+        ["tipos-vehiculo", "Tipos de vehículos", "Catálogo de tipos de vehículo."],
+        ["control-documental", "Control documental", "Seguimiento SOAT, tecnomecánica y soportes."]
       ]
     },
     {
       id: "planeacion",
-      label: "Planeacion",
-      description: "Cintas, calendario y monitoreo de programacion.",
+      label: "Planeación",
+      description: "Cintas, calendario y monitoreo de programación.",
       permissions: [
-        ["gestion-cintas", "Gestion de cintas", "Configuracion de cintas y colores."],
+        ["gestion-cintas", "Gestión de cintas", "Configuración de cintas y colores."],
         ["monitoreo-calendario", "Monitoreo calendario", "Consulta de semanas y eventos."],
         ["aviso-corte", "Aviso de corte", "Registro y control de avisos."]
       ]
@@ -92,11 +92,11 @@ const SIAL = (() => {
     {
       id: "referencias",
       label: "Referencias",
-      description: "Referencias, clases y productos de catalogo.",
+      description: "Referencias, clases y productos de catálogo.",
       permissions: [
-        ["gestion-referencias", "Gestion de referencias", "Maestra de referencias."],
-        ["clases-referencias", "Clases de referencias", "Clasificacion de referencias."],
-        ["productos", "Productos", "Catalogo de productos asociados."]
+        ["gestion-referencias", "Gestión de referencias", "Maestra de referencias."],
+        ["clases-referencias", "Clases de referencias", "Clasificación de referencias."],
+        ["productos", "Productos", "Catálogo de productos asociados."]
       ]
     },
     {
@@ -104,8 +104,8 @@ const SIAL = (() => {
       label: "Puerto",
       description: "Contenedores, etapas, puertos y operaciones.",
       permissions: [
-        ["contenedores", "Gestion de contenedores", "Control de contenedores."],
-        ["tipos-contenedor", "Tipos de contenedor", "Catalogo de tipos."],
+        ["contenedores", "Gestión de contenedores", "Control de contenedores."],
+        ["tipos-contenedor", "Tipos de contenedor", "Catálogo de tipos."],
         ["etapas", "Etapas", "Etapas del flujo portuario."],
         ["puertos", "Puertos", "Catalogo de puertos."]
       ]
@@ -113,11 +113,11 @@ const SIAL = (() => {
     {
       id: "trazabilidad",
       label: "Trazabilidad",
-      description: "Eventos, inspecciones y auditoria del flujo logistico.",
+      description: "Eventos, inspecciones y auditoría del flujo logístico.",
       permissions: [
-        ["tipos-inspeccion", "Tipos de inspeccion", "Catalogo para inspecciones."],
+        ["tipos-inspeccion", "Tipos de inspección", "Catálogo para inspecciones."],
         ["eventos-trazabilidad", "Eventos de trazabilidad", "Eventos operativos del flujo."],
-        ["consulta-auditoria", "Consulta de auditoria", "Lectura de eventos y cambios."]
+        ["consulta-auditoria", "Consulta de auditoría", "Lectura de eventos y cambios."]
       ]
     }
   ];
@@ -144,7 +144,7 @@ const SIAL = (() => {
       users: 8,
       updatedBy: "seguridad.sial",
       updatedAt: "22/04/2026 09:20",
-      description: "Acceso administrativo transversal para operacion y parametrizacion completa.",
+      description: "Acceso administrativo transversal para operación y parametrización completa.",
       permissions: allPermissionKeys(),
       audit: [
         ["Actualizacion de permisos", "seguridad.sial - 22/04/2026 09:20"],
@@ -160,13 +160,13 @@ const SIAL = (() => {
       users: 3,
       updatedBy: "seguridad.sial",
       updatedAt: "25/04/2026 14:12",
-      description: "Gestiona usuarios, roles y permisos sin intervenir operacion productiva.",
+      description: "Gestiona usuarios, roles y permisos sin intervenir operación productiva.",
       permissions: [
         ...permissionsForModules(["usuarios", "empresa"], ["consultar", "crear", "editar", "inactivar", "exportar"]),
         ...permissionsForModules(["trazabilidad"], ["consultar", "exportar"])
       ],
       audit: [
-        ["Revision de alcance", "seguridad.sial - 25/04/2026 14:12"],
+        ["Revisión de alcance", "seguridad.sial - 25/04/2026 14:12"],
         ["Permisos de auditoria agregados", "auditor.master - 21/04/2026 10:30"]
       ]
     },
@@ -179,7 +179,7 @@ const SIAL = (() => {
       users: 14,
       updatedBy: "admin.empresas",
       updatedAt: "20/04/2026 11:04",
-      description: "Supervision regional con control operativo limitado a finca, planeacion y consulta logistica.",
+      description: "Supervision regional con control operativo limitado a finca, planeacion y consulta logística.",
       permissions: [
         ...permissionsForModules(["fincas", "planeacion"], ["consultar", "crear", "editar", "exportar"]),
         ...permissionsForModules(["transporte", "referencias"], ["consultar", "exportar"])
@@ -219,7 +219,7 @@ const SIAL = (() => {
       users: 2,
       updatedBy: "auditor.master",
       updatedAt: "18/04/2026 08:55",
-      description: "Rol de solo lectura para revision historica y auditoria.",
+      description: "Rol de solo lectura para revision histórica y auditoria.",
       permissions: [
         ...permissionsForModules(["usuarios", "empresa", "fincas", "transporte", "planeacion", "referencias", "puerto", "trazabilidad"], ["consultar", "exportar"])
       ],
@@ -239,7 +239,7 @@ const SIAL = (() => {
     const nav = qs("[data-nav]");
     if (!nav) return;
     const items = [
-      ["usuarios", "gestion-usuarios.html", "Gestion de usuarios"],
+      ["usuarios", "gestion-usuarios.html", "Gestión de usuarios"],
       ["registro", "registro-usuario.html", "Registro de usuario"],
       ["edicion", "editar-usuario.html", "Editar usuario"],
       ["permisosRol", "gestion-permisos-rol.html", "Permisos por rol"]
@@ -368,14 +368,31 @@ const SIAL = (() => {
       qsa("[type='email']", form).forEach((input) => {
         const note = qs(`#${input.getAttribute("aria-describedby")}`);
         if (input.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-          setFieldState(input, note, "Debe tener formato de correo valido.", "");
+          setFieldState(input, note, "Debe tener formato de correo válido.", "");
           fail = true;
         }
       });
+      const username = qs("#username", form);
+      if (username?.value && !/^[^\s]{3,30}$/.test(username.value)) {
+        setFieldState(username, qs("#usernameNote"), "Usa entre 3 y 30 caracteres sin espacios.", "");
+        fail = true;
+      }
+      const birthDate = qs("#birthDate", form);
+      if (birthDate?.value) {
+        const born = new Date(`${birthDate.value}T00:00:00`);
+        const today = new Date();
+        let age = today.getFullYear() - born.getFullYear();
+        if (today.getMonth() < born.getMonth() || (today.getMonth() === born.getMonth() && today.getDate() < born.getDate())) age--;
+        if (!Number.isFinite(born.getTime()) || age < 18) { setFieldState(birthDate, qs("#birthDateNote"), "Debe ser mayor de edad.", ""); fail = true; }
+      }
       const password = qs("#password", form);
+      if (password?.value && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/.test(password.value)) {
+        setFieldState(password, qs("#passwordNote"), "Usa al menos 8 caracteres, una mayúscula, una minúscula y un número.", "");
+        fail = true;
+      }
       const confirm = qs("#confirmPassword", form);
       if (password && confirm && password.value !== confirm.value) {
-        setFieldState(confirm, qs("#confirmPasswordNote"), "Debe coincidir exactamente con la contrasena.", "");
+        setFieldState(confirm, qs("#confirmPasswordNote"), "Debe coincidir exactamente con la contraseña.", "");
         fail = true;
       }
       const assignments = qsa("[data-assignment-company]").length;
@@ -383,10 +400,11 @@ const SIAL = (() => {
       if (assignmentNote) {
         assignmentNote.classList.toggle("error", assignments < 1);
         assignmentNote.classList.toggle("success", assignments >= 1);
-        assignmentNote.textContent = assignments < 1 ? "Agrega al menos una relacion empresa + roles antes de guardar." : "Relaciones empresa + roles listas para guardar.";
+        assignmentNote.textContent = assignments < 1 ? "Agrega al menos una relación empresa + roles antes de guardar." : "Relaciones empresa + roles listas para guardar.";
         if (assignments < 1) fail = true;
       }
       qs("#formOk")?.classList.toggle("is-hidden", fail);
+      if (!fail) window.CompanyFeedback?.show("Datos validados", "success", "El formulario está listo en esta propuesta.");
     });
   }
 
@@ -421,7 +439,7 @@ const SIAL = (() => {
     const renderAssignments = () => {
       if (!assignmentList) return;
       if (!assignments.length) {
-        assignmentList.innerHTML = `<div class="empty-state show">Aun no hay relaciones empresa + roles agregadas.</div>`;
+        assignmentList.innerHTML = `<div class="empty-state show">Aún no hay relaciones empresa + roles agregadas.</div>`;
         return;
       }
       assignmentList.innerHTML = assignments.map((item) => `
@@ -460,14 +478,14 @@ const SIAL = (() => {
       editingCompany = current ? company : "";
       renderRoleDraft(company, current?.roles || []);
       setFieldState(companySelect, companyNote, company ? "" : "Selecciona una empresa.", company ? "Empresa lista para cargar roles." : "");
-      if (rolesNote) rolesNote.textContent = "Selecciona uno o mas roles y agrega la asignacion.";
+      if (rolesNote) rolesNote.textContent = "Selecciona uno o más roles y agrega la asignación.";
     });
 
     addButton?.addEventListener("click", () => {
       const company = companySelect.value;
       const roles = selectedRoles();
       if (!company) {
-        setFieldState(companySelect, companyNote, "Selecciona una empresa antes de agregar la asignacion.", "");
+        setFieldState(companySelect, companyNote, "Selecciona una empresa antes de agregar la asignación.", "");
         return;
       }
       if (!roles.length) {
@@ -485,9 +503,21 @@ const SIAL = (() => {
       renderAssignments();
       rolesNote?.classList.remove("error");
       rolesNote?.classList.add("success");
-      if (rolesNote) rolesNote.textContent = "Asignacion agregada al resumen inferior.";
+      if (rolesNote) rolesNote.textContent = "Asignación agregada al resumen inferior.";
     });
 
+    qs("[data-user-form]")?.addEventListener("reset", () => {
+      assignments = [];
+      editingCompany = "";
+      renderRoleDraft("");
+      renderAssignments();
+      qs("#formOk")?.classList.add("is-hidden");
+      qsa(".field-note, #assignmentNote", qs("[data-user-form]")).forEach((note) => note.classList.remove("error", "success"));
+      qsa("[aria-invalid]", qs("[data-user-form]")).forEach((input) => { input.removeAttribute("aria-invalid"); input.classList.remove("is-error"); });
+      if (rolesNote) rolesNote.textContent = "Selecciona uno o más roles y agrega la asignación.";
+      const note = qs("#assignmentNote");
+      if (note) note.textContent = "Agrega al menos una relación de empresa y roles antes de finalizar.";
+    });
     renderRoleDraft("");
     renderAssignments();
   }
@@ -550,7 +580,7 @@ const SIAL = (() => {
     function renderModuleOptions() {
       if (!moduleFilter || moduleFilter.dataset.ready === "true") return;
       moduleFilter.dataset.ready = "true";
-      moduleFilter.innerHTML = `<option value="all">Todos los modulos</option>${permissionModules.map((module) =>
+      moduleFilter.innerHTML = `<option value="all">Todos los módulos</option>${permissionModules.map((module) =>
         `<option value="${escapeHtml(module.id)}">${escapeHtml(module.label)}</option>`
       ).join("")}`;
     }
@@ -588,12 +618,13 @@ const SIAL = (() => {
 
     function renderMatrix() {
       const moduleValue = moduleFilter?.value || "all";
-      const term = String(matrixSearch?.value || "").trim().toLowerCase();
+      const normalizeSearch = (value) => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const term = normalizeSearch(matrixSearch?.value || "").trim();
       let visibleModules = 0;
       matrix.innerHTML = permissionModules.map((module) => {
         if (moduleValue !== "all" && module.id !== moduleValue) return "";
         const rows = module.permissions.filter(([, label, description]) => {
-          const text = `${module.label} ${label} ${description}`.toLowerCase();
+          const text = normalizeSearch(`${module.label} ${label} ${description}`);
           return !term || text.includes(term);
         });
         if (!rows.length) return "";
@@ -668,9 +699,31 @@ const SIAL = (() => {
       setModulePermissions(button.dataset.moduleId, button.dataset.moduleAction);
     });
 
+    const toolbar = qs(".permission-toolbar");
+    const clearFilters = document.createElement("button");
+    clearFilters.type = "button";
+    clearFilters.className = "sial-filter-reset";
+    clearFilters.hidden = true;
+    clearFilters.title = "Limpiar filtros";
+    clearFilters.setAttribute("aria-label", "Limpiar filtros");
+    clearFilters.innerHTML = '<svg viewBox="0 0 576 512" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6l0 29.1L364.3 320l29.1 0c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"/></svg>';
+    toolbar.insertBefore(clearFilters, qs(".permission-actions", toolbar));
+    const syncFilters = () => {
+      const active = Boolean(matrixSearch.value.trim()) || moduleFilter.value !== "all";
+      clearFilters.hidden = !active;
+      toolbar.classList.toggle("has-active-filters", active);
+    };
     [matrixSearch, moduleFilter].filter(Boolean).forEach((control) => {
-      control.addEventListener(control.tagName === "INPUT" ? "input" : "change", renderMatrix);
+      control.addEventListener(control.tagName === "INPUT" ? "input" : "change", () => { renderMatrix(); syncFilters(); });
     });
+    clearFilters.addEventListener("click", () => {
+      matrixSearch.value = "";
+      moduleFilter.value = "all";
+      matrixSearch.dispatchEvent(new Event("input", { bubbles: true }));
+      moduleFilter.dispatchEvent(new Event("change", { bubbles: true }));
+      (document.getElementById("sial-library-permissionSearch") || matrixSearch).focus();
+    });
+    syncFilters();
 
     resetButton?.addEventListener("click", () => {
       workingPermissions = new Set(originalPermissions);
@@ -710,6 +763,7 @@ const SIAL = (() => {
       originalPermissions = new Set(role.permissions);
       workingPermissions = new Set(originalPermissions);
       renderAll();
+      window.CompanyFeedback?.show("Permisos guardados");
       saveButton.textContent = "Guardado";
       window.setTimeout(() => {
         saveButton.textContent = "Guardar";

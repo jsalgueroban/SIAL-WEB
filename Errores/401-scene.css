@@ -1,0 +1,63 @@
+#error-401 { min-height: 100svh; padding: 28px 32px 20px; }
+#error-401 .error-page { max-width: 1120px; padding-bottom: 20px; }
+#error-401 .error-topbar { margin-bottom: 18px; }
+#error-401 .error401-brand-mark { display: inline-grid; align-items: center; width: 44px; height: 44px; flex: 0 0 44px; overflow: visible; }
+#error-401 .error401-brand-mark svg { display: block; overflow: visible; }
+.session-recovery { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 36px; min-height: min(660px, calc(100svh - 160px)); }
+.session-recovery__copy { padding: 28px 0 28px 20px; min-width: 0; }
+.session-recovery__eyebrow { color: var(--color-text-3); font-size: 11px; letter-spacing: .13em; font-weight: 600; margin: 0 0 24px; }
+.session-recovery__status { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-2); font-size: 12px; }
+.session-recovery__status svg { width: 18px; height: 18px; fill: none; stroke: var(--color-primary-500); stroke-width: 1.7; }
+.session-recovery h1 { font-size: clamp(36px, 4.4vw, 58px); line-height: 1.12; letter-spacing: -.035em; font-weight: 600; margin: 16px 0 20px; color: var(--color-text); }
+#error-401 .error-description { font-size: 15px; max-width: 420px; margin: 0; }
+#error-401 .error-actions { margin-top: 28px; gap: 12px; }
+#error-401 .btn-secondary { border-color: transparent; box-shadow: none; color: var(--color-text-2); background: transparent; }
+#error-401 .btn-secondary:hover { color: var(--color-primary-500); background: var(--color-hover-surface); }
+.session-recovery__note { font-size: 12px; line-height: 1.65; color: var(--color-text-3); max-width: 390px; margin: 20px 0 0; }
+#error-401 .error401-help { display: flex; align-items: center; gap: 10px; font-size: 11px; line-height: 1.6; color: var(--color-text-3); margin: 34px 0 0; max-width: 400px; }
+.error401-help span { padding: 3px 7px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 11px; font-weight: 600; }
+.error401-illustration { min-width: 0; }
+.session-scene__stage { width: 100%; flex: none; height: 470px; position: relative; overflow: hidden; isolation: isolate; }
+.session-scene__door { position: absolute; width: 210px; height: 310px; bottom: 51px; right: 27px; border: 2px solid var(--color-border); border-bottom: 0; border-radius: 110px 110px 0 0; background: var(--color-surface); display: flex; flex-direction: column; align-items: center; padding-top: 65px; }
+.session-scene__door::after { content: ""; position: absolute; inset: 12px 12px 0; border: 1px solid var(--color-border-subtle); border-radius: 98px 98px 0 0; z-index: -1; }
+.session-scene__door-label { font-size: 9px; letter-spacing: .12em; color: var(--color-text-3); font-weight: 600; }
+.session-scene__lock { width: 42px; height: 42px; stroke: var(--color-primary-500); stroke-width: 2; margin-top: 22px; }
+.session-scene__door-state { position: absolute; bottom: 22px; right: 14px; font-size: 9px; color: var(--color-text-3); display: inline-flex; gap: 5px; align-items: center; }
+.session-scene__door-state i { width: 5px; height: 5px; border-radius: 50%; background: var(--color-warning-main); }
+.session-scene__floor { position: absolute; bottom: 50px; left: 5%; right: 2%; height: 1px; background: var(--color-border); }
+.session-scene__actor { width: 300px; height: 346.4px; position: absolute; bottom: 35px; left: 5%; }
+.session-scene__bubble { position: absolute; top: 20px; left: 6%; z-index: 2; padding: 14px 18px; border-radius: 14px 14px 14px 3px; background: var(--color-primary-50); color: var(--color-text-2); font-size: 13px; line-height: 1.55; opacity: var(--scene-bubble); transform: translateY(calc(6px * (1 - var(--scene-bubble)))); }
+.session-scene__replay { display: block; min-height: 44px; margin: 4px auto 0; border: 0; background: transparent; color: var(--color-text-3); font: inherit; font-size: 11px; padding: 8px 10px; cursor: pointer; border-radius: 6px; }
+.session-scene__replay:hover { color: var(--color-primary-500); background: var(--color-hover-surface); }
+.session-scene__replay:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 3px; }
+.session-scene__replay:disabled { display: none; }
+@media (max-width: 900px) {
+  .session-recovery { gap: 10px; }
+  .session-recovery__copy { padding-left: 0; }
+  .session-scene__actor { width: 260px; height: 300.2px; left: 5%; }
+  .session-scene__door { right: 0; width: 175px; height: 280px; }
+  .session-scene__bubble { left: 0; font-size: 12px; }
+}
+@media (max-width: 680px) {
+  #error-401 { padding: 18px 22px; }
+  #error-401 .error-topbar { margin-bottom: 0; }
+  .session-recovery { display: flex; flex-direction: column; min-height: 0; gap: 0; }
+  .error401-illustration { order: -1; width: 100%; max-width: 370px; }
+  .session-scene__stage { height: 310px; }
+  .session-scene__actor { width: 215px; height: 248.3px; left: 8%; bottom: 5px; }
+  .session-scene__floor { bottom: 16px; }
+  .session-scene__door { height: 230px; width: 155px; bottom: 17px; right: 9px; padding-top: 48px; }
+  .session-scene__door-state { bottom: 15px; font-size: 8px; }
+  .session-scene__door-label { font-size: 8px; }
+  .session-scene__lock { width: 32px; height: 32px; margin-top: 14px; }
+  .session-scene__bubble { left: 0; top: 0; padding: 10px 13px; font-size: 11px; }
+  .session-scene__replay { margin-top: 0; padding-block: 5px; font-size: 11px; }
+  .session-recovery__copy { width: 100%; padding: 18px 0 8px; }
+  .session-recovery__eyebrow { margin-bottom: 14px; font-size: 9px; }
+  .session-recovery h1 { font-size: 38px; margin: 12px 0 16px; }
+  #error-401 .error-description { font-size: 13px; }
+  #error-401 .error-actions { margin-top: 22px; }
+  #error-401 .error-actions .btn { width: 100%; }
+  .session-recovery__note { font-size: 11px; margin-top: 16px; }
+  #error-401 .error401-help { margin-top: 22px; font-size: 10px; }
+}

@@ -43,20 +43,20 @@
             <div><h2 class="card-title">Pallets registrados</h2><p class="card-subtitle">Consulta todos los pallets autorizados o selecciona una finca para acotar el resultado.</p></div>
             <div class="card-actions">
               <span class="chip" id="traceCount" aria-live="polite">0 registros visibles</span>
-              <button class="btn btn-secondary" type="button" data-export-table data-export-filename="trazabilidad-pallets" aria-label="Exportar trazabilidad de pallets"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar</span></button>
+              <button data-sial-button-adapter class="btn btn-secondary" type="button" data-export-table data-export-filename="trazabilidad-pallets" aria-label="Exportar trazabilidad de pallets"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v4H3zM7 7v13h10V7"></path></svg><span>Exportar</span></button>
             </div>
           </div>
           <div class="card-body">
             <div class="toolbar compact">
-              <input class="input" id="traceSearch" type="search" aria-label="Buscar SSCC, referencia, contenedor u operación" placeholder="Buscar SSCC, referencia, contenedor u operación" />
+              <input class="input" id="traceSearch" data-sial-search-adapter type="search" aria-label="Buscar SSCC, referencia, contenedor u operación" placeholder="Buscar SSCC, referencia, contenedor u operación" />
               <select class="select" id="traceFarm" aria-label="Filtrar por finca"><option value="all">Todas las fincas</option></select>
-              <select class="select" id="traceStatus" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="farm">En finca</option><option value="transit">En tránsito a ZE</option><option value="ze">Recibido en ZE</option><option value="loaded">Cargado en contenedor</option><option value="exported">Exportado</option><option value="warning">Con novedad</option></select>
-              <select class="select" id="traceWeek" aria-label="Filtrar por semana"><option value="all">Todas las semanas</option><option value="SEM-2026-32">SEM-2026-32</option><option value="SEM-2026-31">SEM-2026-31</option></select>
+              <select class="select" id="traceStatus" aria-label="Filtrar por fase"><option value="all">Todas las fases</option><option value="reassembled">Pallet rearmado</option><option value="loaded-truck">Cargado en camión</option><option value="unloaded-truck">Descargado de camión</option><option value="unloaded">Descargado de contenedor</option><option value="farm">En finca</option><option value="transit">En tránsito a ZE</option><option value="ze">Recibido en ZE</option><option value="loaded">Cargado en contenedor</option><option value="exported">Exportado</option><option value="warning">Con novedad</option></select>
+              <select class="select" id="traceWeek" aria-label="Filtrar por semana"><option value="all">Todas las semanas</option><option value="SEM-2026-43">SEM-2026-43</option><option value="SEM-2026-32">SEM-2026-32</option><option value="SEM-2026-31">SEM-2026-31</option></select>
             </div>
           </div>
-          <div class="table-wrap">
+          <div class="table-wrap" data-sial-table-adapter="materials">
             <table id="traceTable">
-              <thead><tr><th>Pallet</th><th>Origen</th><th>Contenido</th><th>Ubicación actual</th><th>Estado</th><th>Última actualización</th><th>Acciones</th></tr></thead>
+              <thead><tr><th>Pallet</th><th>Origen</th><th>Contenido actual</th><th>Ubicación actual</th><th>Fase actual</th><th>Última actualización</th><th>Acciones</th></tr></thead>
               <tbody data-trace-rows></tbody>
             </table>
           </div>
@@ -68,8 +68,9 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-puerto.js"></script>
-  <script src="trazabilidad-pallets.js"></script>
+  <script src="../shared/sial-core.js?v=20261103-port4"></script>
+  <script src="../Gestion de Empresas/company-feedback.js"></script>
+  <script src="sial-puerto.js?v=20261103-port4"></script>
+  <script src="trazabilidad-pallets.js?v=20261103-port4"></script>
 </body>
 </html>

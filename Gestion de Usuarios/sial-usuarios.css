@@ -151,13 +151,6 @@
   gap: 6px;
 }
 
-.permission-field span {
-  color: var(--color-text-3);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
 
 .permission-actions {
   display: flex;
@@ -380,4 +373,19 @@
   .permission-table {
     min-width: 700px;
   }
+}
+
+@media (min-width: 1101px) {
+  .permission-toolbar.has-active-filters { grid-template-columns: minmax(200px, 1fr) minmax(170px, .85fr) minmax(155px, .72fr) auto auto; }
+}
+
+/* Evita seleccionar texto al arrastrar una tarjeta de rol. */
+.sial-library-role-card .bui-checkbox-card-content { user-select: none; }
+
+/* Mantener espacio de lectura en anchos intermedios de escritorio. */
+@media (min-width: 721px) and (max-width: 1200px) {
+  .permission-toolbar, .permission-toolbar.has-active-filters {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  }
+  .permission-actions { grid-column: 1 / -1; justify-content: flex-end; }
 }

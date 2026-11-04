@@ -1,3 +1,7 @@
+.sial-filter-toolbar:has(> .sial-filter-actions) { --sial-filter-action-track: max-content; }
+.sial-filter-actions { display: flex; gap: 8px; align-items: center; justify-self: end; }
+.sial-filter-actions > * { width: auto; }
+
 .sial-filter-reset-row {
   display: flex;
   justify-content: flex-end;
@@ -15,11 +19,11 @@
   align-items: end;
 }
 
-.sial-filter-toolbar[data-sial-filter-fields="1"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(0, 1fr) 44px; }
-.sial-filter-toolbar[data-sial-filter-fields="2"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) minmax(150px, 240px) 44px; }
-.sial-filter-toolbar[data-sial-filter-fields="3"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(2, minmax(150px, 240px)) 44px; }
-.sial-filter-toolbar[data-sial-filter-fields="4"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(3, minmax(135px, 200px)) 44px; }
-.sial-filter-toolbar[data-sial-filter-fields="5"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(4, minmax(120px, 180px)) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="1"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(0, 1fr) var(--sial-filter-action-track, ) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="2"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) minmax(150px, 240px) var(--sial-filter-action-track, ) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="3"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(2, minmax(150px, 240px)) var(--sial-filter-action-track, ) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="4"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(3, minmax(135px, 200px)) var(--sial-filter-action-track, ) 44px; }
+.sial-filter-toolbar[data-sial-filter-fields="5"]:has(> .sial-filter-reset:not([hidden]):not(.is-hidden), > .sial-filter-reset-row) { grid-template-columns: minmax(200px, 1fr) repeat(4, minmax(120px, 180px)) var(--sial-filter-action-track, ) 44px; }
 
 .sial-filter-reset,
 .sial-filter-reset-row .sial-filter-reset {

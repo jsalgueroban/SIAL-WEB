@@ -1,0 +1,18 @@
+/* Propuesta cromática local: mismas dimensiones, paleta del sistema. */
+html .week-indicator {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border-subtle);
+  box-shadow: 0 3px 9px color-mix(in srgb, var(--color-text) 9%, transparent), -2px -2px 5px color-mix(in srgb, var(--color-surface) 85%, transparent), inset 0 1px 0 var(--color-surface);
+}
+html .week-indicator h2,
+html .week-indicator > strong { color: var(--color-text); }
+html .week-indicator p { color: var(--color-text-2); }
+html[data-theme="dark"] .week-indicator {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border-subtle);
+  box-shadow: 0 3px 9px rgba(0,0,0,.24), -2px -2px 5px color-mix(in srgb, var(--color-surface-overlay) 45%, transparent), inset 0 1px 0 var(--color-border-subtle);
+}
+html[data-theme="dark"] .week-indicator h2,
+html[data-theme="dark"] .week-indicator > strong { color: var(--color-text); }
+html[data-theme="dark"] .week-indicator p { color: var(--color-text-2); }
+@media (forced-colors:active) { html .week-indicator { border: 1px solid CanvasText; box-shadow: none; } }

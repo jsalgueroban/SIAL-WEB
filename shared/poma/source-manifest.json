@@ -1,0 +1,38 @@
+{
+  "source": "D:/SIAL/Repos/sial/ms-track",
+  "files": [
+    {
+      "name": "poma_v1.template.ts",
+      "sha256": "c513fc96fd93ea502ac953d2f2d83b360fbb4b3858fe998029cb2aa31bdf9f59"
+    },
+    {
+      "name": "poma_v1.styles.ts",
+      "sha256": "d9f94ae8bb3db756b1d11d8891c65fcf8ece207cce1546a629d00d2fff7536a9"
+    },
+    {
+      "name": "poma_official.view_model.ts",
+      "sha256": "6c3ebf41ee9b864e1cde431e775ce5d1d45931aa0f57c9746f762aa5f0dd1fdb"
+    },
+    {
+      "name": "gs1_128_barcode.generator.ts",
+      "sha256": "58658e580d6235575b3c6cc3b6c1f04a65e15df12852fad9f684bfe397e862bd"
+    }
+  ],
+  "cases": [
+    {
+      "loadingId": "loading-container",
+      "pallets": 12,
+      "template": "POMA-CONTAINER-V1"
+    },
+    {
+      "loadingId": "loading-truck",
+      "pallets": 6,
+      "template": "POMA-TRUCK-V1"
+    },
+    {
+      "loadingId": "snapshot-poma-64",
+      "pallets": 14,
+      "template": "POMA-CONTAINER-V1"
+    }
+  ]
+}

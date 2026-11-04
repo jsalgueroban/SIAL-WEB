@@ -1,0 +1,37 @@
+.audit-filter-row.primary.toolbar { display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px; padding:0; }
+.audit-search-field { flex:2 1 280px; min-width:0; }
+.security-filter-field { flex:1 1 150px; min-width:0; }
+.audit-search-field > .label, .security-filter-field > .label { display:block; margin-bottom:8px; }
+.audit-filter-row .sial-library-filter, .audit-filter-row .sial-library-search { width:100%; }
+.audit-filter-row .sial-filter-reset[hidden] { display:none; }
+.audit-filter-row .sial-filter-reset { flex:0 0 44px; }
+.audit-filter-panel .audit-search-hint { display:none; }
+.audit-filter-panel .sial-native-proxy { display:none!important; }
+.audit-search-field:has(.sial-library-search) > .label,
+.security-filter-field:has(.sial-library-filter) > .label { display:none; }
+.audit-date-range .field { min-width:0; flex:1; }
+.poma-operation-body.form-card { border:0; box-shadow:none; margin:0; }
+.audit-tree-approval .sial-library-button { max-width:100%; }
+.poma-generation-page > .sial-library-notice { margin-bottom:24px; }
+.poma-generation-page .table-wrap { padding:0; }
+.poma-pdf-canvas { display:block; padding:20px; }
+.poma-pdf-canvas iframe { width:100%; min-height:60vh; border:0; background:var(--color-surface); }
+.security-preview-message { margin:0 0 16px; color:var(--color-text-2); }
+.poma-document-link { display:inline-flex; align-items:center; min-height:44px; }
+@keyframes security-surface-enter { from { opacity:0; transform:translateY(8px) scale(.985); } to { opacity:1; transform:none; } }
+.company-confirm[open], .poma-overlay:not([hidden]) > section { animation:security-surface-enter 220ms cubic-bezier(.22,.8,.24,1); }
+@media (max-width:600px) {
+  .audit-case-carousel { grid-template-columns:minmax(0,1fr); }
+  .audit-case-strip { width:100%; min-width:0; }
+  .audit-filter-row.primary.toolbar > .security-filter-field, .audit-filter-row.primary.toolbar > .audit-search-field { flex-basis:100%; }
+  .audit-filter-row.primary.toolbar { gap:12px; }
+  .audit-tree-approval { flex-wrap:wrap; }
+  .poma-pdf-canvas { padding:12px; }
+}
+.audit-summary-grid small, .audit-summary-grid span, .audit-case-card small { font-size:12px; }
+.audit-summary-grid strong { font-size:13px; font-weight:600; overflow-wrap:anywhere; }
+.poma-key-values dt { font-size:12px; font-weight:500; }
+.poma-key-values dd { font-size:14px; font-weight:500; }
+@media (prefers-reduced-motion:reduce) {
+  .audit-visual-focus, .audit-photo-lightbox, .poma-overlay, .poma-overlay > section, .company-confirm, .poma-generation-spinner { animation:none!important; transition:none!important; }
+}

@@ -11,12 +11,13 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-usuarios.css?v=20261029-roles-v2" />
+  <link rel="stylesheet" href="sial-usuarios.css?v=20261030-users2" />
+  <link rel="stylesheet" href="../Gestion de Empresas/company-feedback.css" />
 </head>
 <body data-view-family="registro-extenso">
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Navegacion principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Usuarios</p><nav data-nav></nav></aside>
-    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Usuarios</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
     <main class="main">
       <section class="page">
         <p class="page-eyebrow">Seguridad / Edicion</p>
@@ -25,12 +26,12 @@
             <h1 class="page-title">Editar usuario | m.garcia</h1>
             <p class="page-subtitle">Actualiza los datos básicos y revisa las relaciones de empresa y roles del usuario.</p>
           </div>
-          <a class="btn btn-secondary" href="gestion-usuarios.html">Volver a gestion</a>
+          <a class="btn btn-secondary" href="gestion-usuarios.html">Volver a gestión</a>
         </div>
 
         <article class="card form-card" data-sial-form-adapter>
           <div class="form-heading">
-            <h2>Informacion basica</h2>
+            <h2>Información básica</h2>
             <p>Los campos bloqueados conservan identidad documental y credenciales controladas.</p>
           </div>
           <div class="form-body">
@@ -52,7 +53,7 @@
         <article class="card form-card relation-wide" data-sial-form-adapter>
           <div class="form-heading">
             <h2>Empresas y roles del usuario</h2>
-            <p>Gestion relacional por empresa. Selecciona una empresa, revisa roles disponibles y guarda cambios solo para esa relacion.</p>
+            <p>Gestión relacional por empresa. Selecciona una empresa, revisa roles disponibles y guarda cambios solo para esa relación.</p>
           </div>
           <div class="form-body stack">
             <p class="field-note">El usuario debe conservar al menos una empresa activa con uno o más roles vigentes.</p>
@@ -64,14 +65,14 @@
             <div class="role-management-grid" data-sial-role-card-adapter>
               <section class="role-box" id="availableRoles">
                 <p class="role-box-title">Roles disponibles en la empresa</p>
-                <label class="role-option"><input type="checkbox"><span><strong>Consulta auditoria</strong><span>Consulta trazabilidad y reportes.</span></span></label>
+                <label class="role-option"><input type="checkbox"><span><strong>Consulta auditoría</strong><span>Consulta trazabilidad y reportes.</span></span></label>
                 <label class="role-option"><input type="checkbox"><span><strong>Coordinador logistico</strong><span>Gestiona flujos operativos.</span></span></label>
                 <label class="role-option"><input type="checkbox"><span><strong>Gestor documental</strong><span>Administra soportes y documentos.</span></span></label>
               </section>
               <section class="role-box" id="assignedRoles">
                 <p class="role-box-title">Roles asignados al usuario</p>
                 <label class="role-option"><input type="checkbox" checked><span><strong>Administrador general</strong><span>Acceso administrativo completo.</span></span></label>
-                <label class="role-option"><input type="checkbox" checked><span><strong>Seguridad y roles</strong><span>Gestion de usuarios, roles y permisos.</span></span></label>
+                <label class="role-option"><input type="checkbox" checked><span><strong>Seguridad y roles</strong><span>Gestión de usuarios, roles y permisos.</span></span></label>
               </section>
             </div>
             <p class="field-note">Selecciona uno o varios roles para moverlos, o arrástralos a la otra lista.</p>
@@ -98,9 +99,10 @@
       </section>
     </main>
   </div>
-  <script src="../shared/sial-core.js?v=20261029-roles-v2"></script>
-  <script src="sial-usuarios.js?v=20261029-roles-v2"></script>
-  <script src="user-role-prototype.js"></script>
+  <script src="../shared/sial-core.js?v=20261030-groupmove19"></script>
+  <script src="sial-usuarios.js?v=20261030-users2"></script>
+  <script src="../Gestion de Empresas/company-feedback.js"></script>
+  <script src="user-role-prototype.js?v=20261030-user-feedback"></script>
   <script>SIAL.applyShell("edicion"); SIAL.initBasicFormValidation();</script>
 </body>
 </html>

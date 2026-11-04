@@ -1,0 +1,40 @@
+{
+  "branch": "chore/christmas-isotype",
+  "version": "1.5.0",
+  "artifact": "vendor/banasan-ui-case-carousel-20261103.tgz",
+  "installed": "D:\\Propuestas UI-UX\\SIAL UI UX\\SIAL Web - Propuesta\\node_modules\\.pnpm\\@banasandev+banasan-ui@file_568603d9bbfc1923b2fdc7589d9b6234\\node_modules\\@banasandev\\banasan-ui",
+  "rows": [
+    {
+      "file": "banasan-ui.js",
+      "source": "9c41231ac55a6241e00a7bc2931e3de4b6c4383187c82bb6291d5aa0662d7c03",
+      "installed": "9c41231ac55a6241e00a7bc2931e3de4b6c4383187c82bb6291d5aa0662d7c03"
+    },
+    {
+      "file": "banasan-ui.cjs",
+      "source": "9d85a6532e436f6c5f638a214e88b785276c9a1fcdd127404d4377a0cdc53123",
+      "installed": "9d85a6532e436f6c5f638a214e88b785276c9a1fcdd127404d4377a0cdc53123"
+    },
+    {
+      "file": "banasan-ui.css",
+      "source": "9b70044cc02ed47203e77cbc01bc423069881ee37404fad162d609383055551a",
+      "installed": "9b70044cc02ed47203e77cbc01bc423069881ee37404fad162d609383055551a"
+    },
+    {
+      "file": "Audit/audit.type.d.ts",
+      "source": "2fb7f40d750881bdaeb41264587e314c9e5e35bef1e32baef074f731296fe6e5",
+      "installed": "2fb7f40d750881bdaeb41264587e314c9e5e35bef1e32baef074f731296fe6e5"
+    }
+  ],
+  "checks": [
+    "typecheck",
+    "library-build",
+    "eslint-targeted",
+    "scanners-no-high",
+    "artifact-tests-5",
+    "consumer-build",
+    "both-views-auto-drag-inertia-keyboard",
+    "reduced-motion",
+    "mobile390-no-overflow"
+  ],
+  "publication": "local-only"
+}

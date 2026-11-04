@@ -3,7 +3,18 @@ const sialBroomIconMarkup = '<svg viewBox="0 0 576 512" width="22" height="22" f
 
 function markFilterToolbar(host, button) {
   host.classList.add('sial-filter-toolbar');
-  host.dataset.sialFilterFields = String(Array.from(host.children).filter((child) => child !== button && getComputedStyle(child).display !== 'none').length);
+  const visible = Array.from(host.children).filter((child) => child !== button && getComputedStyle(child).display !== 'none');
+  const enhancedFields = Array.from(host.children).filter((child) => child.matches('.sial-library-search, .sial-library-filter, [data-sial-component="TextInput"], [data-sial-component="SelectInput"]'));
+  const fields = enhancedFields.length ? enhancedFields : visible.filter((child) => child.matches('input, select, textarea') || child.querySelector('input, select, textarea'));
+  const actions = visible.filter((child) => child.matches('a, button'));
+  let actionGroup = host.querySelector(':scope > .sial-filter-actions');
+  if (actions.length && !actionGroup) {
+    actionGroup = document.createElement('div');
+    actionGroup.className = 'sial-filter-actions';
+    host.insertBefore(actionGroup, button);
+    actions.forEach((action) => actionGroup.appendChild(action));
+  }
+  host.dataset.sialFilterFields = String(fields.length);
 }
 
 const SIALCore = (() => {
@@ -57,7 +68,7 @@ const SIALCore = (() => {
         return;
       }
       const script = document.createElement("script");
-      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261029-roles-menu-v2");
+      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261030-company-copy");
       script.dataset.sialNavigationContract = "true";
       script.onload = () => {
         if (!window.SIALNavigationContract?.areas) {
@@ -168,6 +179,7 @@ const SIALCore = (() => {
     }
 
     function openOverlay() {
+      sidebar.inert = false;
       document.documentElement.dataset.sidebarOverlay = "open";
       backdrop.hidden = false;
       syncToggleLabels(true, true);
@@ -179,6 +191,8 @@ const SIALCore = (() => {
       if (document.documentElement.dataset.sidebarOverlay !== "open") return;
       document.documentElement.dataset.sidebarOverlay = "closed";
       backdrop.hidden = true;
+      sidebar.inert = true;
+      if (sidebar.contains(document.activeElement)) toggles[0]?.focus();
       syncToggleLabels(false, false);
     }
 
@@ -186,6 +200,8 @@ const SIALCore = (() => {
     if (isSmallViewport()) {
       document.documentElement.dataset.sidebarOverlay = "closed";
       backdrop.hidden = true;
+      sidebar.inert = true;
+      if (sidebar.contains(document.activeElement)) toggles[0]?.focus();
       syncToggleLabels(false, false);
     }
 
@@ -237,9 +253,11 @@ const SIALCore = (() => {
       if (isSmallViewport()) {
         document.documentElement.dataset.sidebarOverlay = "closed";
         backdrop.hidden = true;
+        sidebar.inert = true;
         syncToggleLabels(false, false);
       } else {
         closeOverlay();
+        sidebar.inert = false;
         syncToggleLabels(document.documentElement.dataset.sidebarState !== "collapsed");
       }
     });
@@ -395,11 +413,11 @@ const SIALCore = (() => {
       if (!script) {
         const style = document.createElement("link");
         style.rel = "stylesheet";
-        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-roles-v2");
+        style.href = getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261103-port4");
         style.dataset.sialLibraryRuntime = "true";
         document.head.appendChild(style);
         script = document.createElement("script");
-        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-roles-v2");
+        script.src = getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261103-port4");
         script.dataset.sialLibraryRuntime = "true";
         document.body.appendChild(script);
       }
@@ -1759,12 +1777,13 @@ const SIALCore = (() => {
       const saved = readSavedStates();
       allButtons.forEach((button) => {
         const row = button.closest("tr");
+        if (row?._sialPersistState) return;
         const entry = row && saved[rowIdentity(row)];
         if (!entry || !["active", "inactive"].includes(entry.status)) return;
         row.dataset.status = entry.status;
         row.dataset.state = entry.status === "active" ? "Activo" : "Inactivo";
         if (typeof entry.audit === "string") row.dataset.audit = entry.audit;
-        const status = qs(".status", row);
+        const status = qs("[data-state-badge]", row) || qs(".status", row);
         if (status) {
           status.classList.remove("status-active", "status-warning", "status-inactive");
           status.classList.add(entry.status === "active" ? "status-active" : "status-inactive");
@@ -1804,10 +1823,10 @@ const SIALCore = (() => {
       dialog.innerHTML = `
         <div class="confirm-dialog-head">
           <div>
-            <h2 id="stateConfirmTitle">Confirmar accion</h2>
-            <p id="stateConfirmDescription">Esta accion modifica la disponibilidad del registro y conserva auditoria.</p>
+            <h2 id="stateConfirmTitle">Confirmar acción</h2>
+            <p id="stateConfirmDescription">Esta acción modifica la disponibilidad del registro y conserva auditoría.</p>
           </div>
-          <button class="icon-btn" type="button" data-state-confirm-close aria-label="Cerrar confirmacion">
+          <button class="icon-btn" type="button" data-state-confirm-close aria-label="Cerrar confirmación">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg>
           </button>
         </div>
@@ -1822,12 +1841,12 @@ const SIALCore = (() => {
           </div>
           <div class="notice notice-info">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 15l3-4 3 2 5-7"></path></svg>
-            <span>La accion quedara registrada con usuario, fecha y hora dentro de la auditoria visual del prototipo.</span>
+            <span>La acción quedará registrada con usuario, fecha y hora en la auditoría.</span>
           </div>
         </div>
         <div class="confirm-dialog-actions">
-          <button class="btn btn-secondary" type="button" data-state-confirm-cancel>Cancelar</button>
-          <button class="btn btn-danger" type="button" data-state-confirm-accept>Inactivar registro</button>
+          <button class="btn btn-secondary" type="button" data-sial-button-adapter data-state-confirm-cancel>Cancelar</button>
+          <button class="btn btn-danger" type="button" data-sial-button-adapter data-state-confirm-accept>Inactivar registro</button>
         </div>
       `;
       document.body.append(backdrop, dialog);
@@ -1862,10 +1881,16 @@ const SIALCore = (() => {
     }
 
     function closeDialog() {
+      const label = pending?.button?.getAttribute("aria-label");
+      const identity = pending?.row?.dataset.code || pending?.row?.cells[0]?.textContent?.trim();
       pending = null;
       backdrop.hidden = true;
       dialog.hidden = true;
-      lastTrigger?.focus();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const candidates = qsa('main [data-sial-component="Table"] button[aria-label]').filter((node) => node.getAttribute("aria-label") === label && node.getClientRects().length);
+        const visibleTrigger = candidates.find((node) => identity && node.closest("tr")?.textContent.includes(identity)) || candidates[0];
+        (visibleTrigger || (lastTrigger?.isConnected && lastTrigger.getClientRects().length ? lastTrigger : null))?.focus();
+      }));
     }
 
     function openDialog(button) {
@@ -1875,15 +1900,16 @@ const SIALCore = (() => {
       const entityLabel = getEntityLabel(button);
       const recordLabel = [row.dataset.code, row.dataset.name].filter(Boolean).join(" - ") || row.cells[0]?.textContent?.trim() || "Registro seleccionado";
       pending = { action, button, entityLabel, row };
-      lastTrigger = button;
+      lastTrigger = document.activeElement?.closest('[data-sial-component="Table"]') ? document.activeElement : button;
 
       const isActivation = action === "active";
-      title.textContent = isActivation ? "Confirmar activacion" : "Confirmar inactivacion";
-      description.textContent = isActivation ? "El registro volvera a quedar disponible segun las reglas del modulo." : "El registro no se elimina; solo cambia su disponibilidad operativa.";
+      title.textContent = isActivation ? "Confirmar activación" : "Confirmar inactivación";
+      description.textContent = isActivation ? "El registro volverá a quedar disponible según las reglas del módulo." : "El registro no se elimina; solo cambia su disponibilidad operativa.";
       record.textContent = recordLabel;
       message.textContent = isActivation
-        ? "El registro quedara activo y podra usarse nuevamente en nuevas operaciones si cumple las reglas funcionales."
-        : "El registro quedara inactivo y no estara disponible para nuevas operaciones. Podra reactivarse si el usuario cuenta con permisos.";
+        ? "El registro quedará activo y podrá usarse nuevamente en nuevas operaciones si cumple las reglas funcionales."
+        : "El registro quedará inactivo y no estará disponible para nuevas operaciones. Podrá reactivarse si el usuario cuenta con permisos.";
+      message.removeAttribute("role");
       notice.classList.toggle("notice-warning", !isActivation);
       notice.classList.toggle("notice-success", isActivation);
       accept.textContent = isActivation ? "Activar registro" : "Inactivar registro";
@@ -1891,7 +1917,10 @@ const SIALCore = (() => {
       accept.classList.toggle("btn-danger", !isActivation);
       backdrop.hidden = false;
       dialog.hidden = false;
-      accept.focus();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const cancel = qs("[data-state-confirm-cancel]", dialog);
+        if (!dialog.hidden) (cancel?.previousElementSibling?.querySelector("button") || cancel)?.focus();
+      }));
     }
 
     function updateVisibleAudit(row, auditAction, timestamp, button) {
@@ -1918,11 +1947,27 @@ const SIALCore = (() => {
         minute: "2-digit"
       });
 
+      const nextAudit = `${auditAction}|prototipo.ui - ${timestamp}${row.dataset.audit ? `;${row.dataset.audit}` : ""}`;
+      try {
+        if (row._sialPersistState) {
+          row._sialPersistState({ status: nextStatus, audit: nextAudit });
+        } else {
+          const identity = rowIdentity(row);
+          if (!identity) throw new Error("Registro sin identificador");
+          const saved = readSavedStates();
+          saved[identity] = { status: nextStatus, audit: nextAudit };
+          localStorage.setItem(storageKey, JSON.stringify(saved));
+        }
+      } catch {
+        if (window.CompanyFeedback || window.TransportFeedback) (window.CompanyFeedback || window.TransportFeedback).show("No se pudo cambiar el estado", "error", "El registro conserva su estado anterior. Intenta nuevamente.");
+        else { message.textContent = "No se pudo guardar el cambio. El registro conserva su estado anterior."; message.setAttribute("role", "alert"); }
+        return;
+      }
       row.dataset.status = nextStatus;
       row.dataset.state = nextState;
-      row.dataset.audit = `${auditAction}|prototipo.ui - ${timestamp}${row.dataset.audit ? `;${row.dataset.audit}` : ""}`;
+      row.dataset.audit = nextAudit;
 
-      const status = qs(".status", row);
+      const status = qs("[data-state-badge]", row) || qs(".status", row);
       if (status) {
         status.classList.remove("status-active", "status-warning", "status-inactive");
         status.classList.add(isActivation ? "status-active" : "status-inactive");
@@ -1931,18 +1976,11 @@ const SIALCore = (() => {
 
       updateVisibleAudit(row, auditAction, timestamp, button);
       syncButton(button, action, entityLabel);
-      const identity = rowIdentity(row);
-      if (identity) {
-        try {
-          const saved = readSavedStates();
-          saved[identity] = { status: nextStatus, audit: row.dataset.audit };
-          localStorage.setItem(storageKey, JSON.stringify(saved));
-        } catch { /* Prototype remains usable when storage is unavailable. */ }
-      }
       row.classList.add("state-updated");
       setTimeout(() => row.classList.remove("state-updated"), 1400);
       document.dispatchEvent(new CustomEvent("sial:table-state-change", { detail: { row, status: nextStatus } }));
       closeDialog();
+      (window.CompanyFeedback || window.TransportFeedback)?.show(isActivation ? "Registro activado" : "Registro inactivado");
     }
 
     restoreSavedStates();
@@ -1973,7 +2011,14 @@ const SIALCore = (() => {
     if (document.documentElement.dataset.stateConfirmEscapeReady !== "true") {
       document.documentElement.dataset.stateConfirmEscapeReady = "true";
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !dialog.hidden) closeDialog();
+        if (dialog.hidden) return;
+        if (event.key === "Escape") { event.preventDefault(); closeDialog(); return; }
+        if (event.key !== "Tab") return;
+        const focusable = qsa('button:not([disabled]):not(.sial-native-proxy), [href], [tabindex]:not([tabindex="-1"])', dialog).filter((node) => node.getClientRects().length);
+        if (!focusable.length) { event.preventDefault(); return; }
+        const index = focusable.indexOf(document.activeElement);
+        if (event.shiftKey && index <= 0) { event.preventDefault(); focusable[focusable.length - 1].focus(); }
+        else if (!event.shiftKey && (index < 0 || index === focusable.length - 1)) { event.preventDefault(); focusable[0].focus(); }
       });
     }
   }
@@ -2115,10 +2160,17 @@ const SIALCore = (() => {
 window.SIALCore = SIALCore;
 
 SIALCore.ensureFavicon();
+if (!document.querySelector('script[data-sial-filter-motion]')) {
+  const motionScript = document.createElement('script');
+  motionScript.src = SIALCore.getSharedAssetUrl('sial-filter-motion.js?v=20261030-shared-2');
+  motionScript.dataset.sialFilterMotion = 'true';
+  document.head.appendChild(motionScript);
+}
+
 if (!document.querySelector('link[data-sial-filter-reset-style]')) {
   const filterStyle = document.createElement('link');
   filterStyle.rel = 'stylesheet';
-  filterStyle.href = SIALCore.getSharedAssetUrl('sial-filter-reset.css?v=20261026-composed');
+  filterStyle.href = SIALCore.getSharedAssetUrl('sial-filter-reset.css?v=20261103-actions');
   filterStyle.dataset.sialFilterResetStyle = 'true';
   document.head.appendChild(filterStyle);
 }
@@ -2181,18 +2233,18 @@ function loadLibraryTableControls() {
     return;
   }
   if (document.querySelector('script[data-sial-library-runtime]')) return;
-  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page .status[data-sial-chip-adapter], button.btn[data-sial-button-adapter], main .page > .notice[data-sial-notice-adapter], .brand-badge, .brand-mark")) {
+  if (!document.querySelector("main .toolbar select.select, main .workflow-filters select.select, main .trace-search-input input[data-sial-search-adapter], main .permission-toolbar select.select, main .permission-toolbar input[data-sial-search-adapter], .table-wrap .row-actions, .table-pagination, .card-actions .chip, .table-wrap[data-sial-table-adapter], .inline-form-panel .field[data-sial-form-control], .form-card .field[data-sial-form-control], .additional-form .field[data-sial-form-control], .recurring-form-grid .field[data-sial-form-control], .adjust-request-group[data-sial-number-adapter], .suggest-workspace-head > .status, main .page .status[data-sial-chip-adapter], button.btn[data-sial-button-adapter], main .page .notice[data-sial-notice-adapter], main [data-sial-dynamic-notice], main .page [data-sial-chip-adapter], .brand-badge, .brand-mark")) {
     document.documentElement.dataset.sialLibraryControls = "ready";
     return;
   }
   document.documentElement.dataset.sialLibraryControls = "loading";
   const style = document.createElement("link");
   style.rel = "stylesheet";
-  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261029-roles-v2");
+  style.href = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.css?v=20261103-port4");
   style.dataset.sialLibraryRuntime = "true";
   document.head.appendChild(style);
   const script = document.createElement("script");
-  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261029-roles-v2");
+  script.src = SIALCore.getSharedAssetUrl("vendor/sial-ui-runtime.js?v=20261103-port4");
   script.dataset.sialLibraryRuntime = "true";
   document.body.appendChild(script);
   window.setTimeout(() => {

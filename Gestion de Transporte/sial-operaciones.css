@@ -77,3 +77,5 @@
     width: 100%;
   }
 }
+.bulk-program-table .sial-library-filter [id$="-label"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.bulk-program-table .sial-library-filter { min-width: 0; }

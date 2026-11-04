@@ -4518,6 +4518,7 @@ html[data-view-motion-overlay="visible"] .view-motion-overlay {
     transform: translateX(0);
   }
   html[data-sidebar-state="collapsed"] .sidebar {
+    width: min(var(--sidebar-width), 86vw);
     padding: 20px 16px;
   }
   html[data-sidebar-state="collapsed"] .brand {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIAL | Auditoria operativa</title>
+  <title>SIAL | Seguimiento de operaciones de contenedores</title>
   <script>
     (function () {
       const savedTheme = localStorage.getItem("sial-theme");
@@ -11,50 +11,18 @@
       document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="sial-trazabilidad.css" />
-</head>
-<body data-view-family="analitica">
+  <link rel="stylesheet" href="../shared/sial-core.css" />
+
+
+<link rel="stylesheet" href="../shared/vendor/sial-ui-runtime.css?v=20261103-containers-live-case" /><link rel="stylesheet" href="security-product-utilities.css?v=3" /><link rel="stylesheet" href="security-product.css?v=8" /><link rel="stylesheet" href="container-audit.css?v=3" /></head>
+<body data-security-product data-view-family="analitica">
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Navegacion principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Seguridad</p><nav data-nav></nav></aside>
-    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menu"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Busqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
-    <main class="main">
-      <section class="page">
-        <p class="page-eyebrow">Seguridad / Auditoria operativa</p>
-        <div class="page-header"><div><h1 class="page-title">Auditoria operativa</h1><p class="page-subtitle">Centro de revision para eventos de transporte web y operacion movil: inspecciones, evidencias fotograficas, aprobacion humana, comentarios y sincronizacion.</p></div></div>
-        <div class="notice notice-info"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg><span>La prioridad de uso es revisar eventos moviles con riesgo, abrir evidencia y aprobar evidencias de inspeccion que requieren validacion humana sin perder trazabilidad.</span></div>
-        <article class="card mt-24 audit-workbench-card">
-          <div class="card-header"><div><h2 class="card-title">Centro de revision</h2></div><div class="card-actions"><span class="chip" id="auditTrailCount">0 eventos visibles</span><button class="btn btn-secondary" type="button" id="auditToggleFilters" aria-expanded="false" aria-controls="auditAdvancedFilters"><span>Mas filtros</span></button><button class="btn btn-secondary" type="button" id="auditClearFilters">Limpiar</button></div></div>
-          <div class="card-body">
-            <div class="audit-filter-panel">
-              <div class="audit-filter-row primary"><label class="audit-search-marquee" for="auditSearch"><input class="input" id="auditSearch" type="search" aria-label="Buscar auditoria" placeholder=" " autocomplete="off" /><span class="audit-search-hint" aria-hidden="true"><span>Buscar por operacion, orden de viaje, contenedor, vehiculo, usuario, evidencia fotografica, comentario o sincronizacion</span><span>Buscar por operacion, orden de viaje, contenedor, vehiculo, usuario, evidencia fotografica, comentario o sincronizacion</span></span></label><select class="select audit-year-select" id="auditYear" aria-label="Filtrar por ano"><option value="all">Todos los anos</option></select><select class="select audit-week-select" id="auditWeek" aria-label="Filtrar por semana"><option value="all">Semana</option></select><select class="select" id="auditEvent" aria-label="Filtrar por evento"><option value="all">Todos los eventos</option></select><select class="select" id="auditStatus" aria-label="Filtrar por estado o sincronizacion"><option value="all">Todos los estados</option><option value="success">Sin alertas</option><option value="warning">Con seguimiento</option><option value="error">Critico / observado</option><option value="pendiente">Pendiente sync</option></select></div>
-              <div class="audit-filter-row secondary" id="auditAdvancedFilters" hidden><div class="audit-date-range" role="group" aria-label="Rango de fecha"><input class="input" id="auditFromDate" type="date" aria-label="Fecha inicio" /><span>hasta</span><input class="input" id="auditToDate" type="date" aria-label="Fecha fin" /></div></div>
-            </div>
-            <div class="audit-case-carousel" aria-label="Cambiar operacion">
-              <button class="icon-btn audit-case-nav" type="button" id="auditCasesPrev" aria-label="Ver operaciones anteriores"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
-              <div class="audit-case-strip" id="auditOperationStrip" aria-label="Operaciones disponibles"></div>
-              <button class="icon-btn audit-case-nav" type="button" id="auditCasesNext" aria-label="Ver mas operaciones"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
-            </div>
-            <div class="audit-workbench" id="auditWorkbench" data-audit-mode="list">
-              <section class="audit-review-panel" aria-live="polite" tabindex="-1">
-                <div class="audit-selection-head audit-case-head"><div><span class="section-kicker" id="auditSelectedPhase">Evento seleccionado</span><h3 id="auditSelectedTitle">Selecciona un evento</h3><p id="auditSelectedSubtitle">La revision mostrara el expediente operativo, su arbol de eventos y la evidencia del nodo activo.</p></div><button class="btn btn-secondary" type="button" id="auditOpenDetail">Detalle completo</button></div>
-                <div class="audit-summary-grid" id="auditOperationSummary"></div>
-                <div class="audit-section-title"><span>Arbol de trazabilidad operativo</span><small id="auditTimelineMeta">0 eventos</small></div>
-                <div class="audit-flow-timeline" id="auditEventTimeline"></div>
-              </section>
-              <aside class="audit-evidence-panel" aria-label="Revision de evidencias" tabindex="-1"><div class="audit-panel-head"><div><span class="section-kicker">Evidencia</span><h3 id="auditEvidenceTitle">Sin evento</h3></div><div class="audit-panel-actions"><span class="tag" id="auditEvidenceCountLabel">0 fotos</span><button class="icon-btn audit-back-operation" type="button" id="auditBackToOperation" aria-label="Volver al arbol"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg></button></div></div><div class="audit-evidence-context" id="auditEvidenceContext"></div><div class="audit-evidence-gallery" id="auditEvidenceGallery"></div><div class="audit-section-title"><span>Comentarios y anotaciones</span></div><div class="audit-comments" id="auditComments"></div></aside>
-            </div>
-          </div>
-        </article>
-      </section>
-    </main>
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Seguridad</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" aria-pressed="false" title="Cambiar a modo oscuro"><svg class="icon theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z"></path></svg><svg class="icon theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><button class="icon-btn" aria-label="Notificaciones"><svg class="icon" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M10 17a2 2 0 0 0 4 0"></path></svg></button><span class="avatar">QA</span></div></header>
+    <main class="main" data-sial-react-view="security-containers"></main>
   </div>
-  <div class="drawer-backdrop" id="auditBackdrop"></div>
-  <aside class="drawer audit-drawer" id="auditDrawer" aria-label="Detalle auditable" aria-hidden="true">
-    <div class="drawer-head"><div><h3 id="auditDrawerTitle">Detalle auditable</h3><p id="auditDrawerSubtitle">Evento operativo</p></div><button class="icon-btn" id="closeAuditDrawer" aria-label="Cerrar detalle"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12"></path><path d="m6 6 12 12"></path></svg></button></div>
-    <div class="drawer-body"><div class="audit-drawer-grid"><div class="detail-group"><span class="detail-label">Fuente</span><div class="detail-value" data-audit-target="source">-</div></div><div class="detail-group"><span class="detail-label">Operacion</span><div class="detail-value" data-audit-target="operation">-</div></div><div class="detail-group"><span class="detail-label">Vehiculo / contenedor</span><div class="detail-value" data-audit-target="reference">-</div></div><div class="detail-group"><span class="detail-label">Usuario</span><div class="detail-value" data-audit-target="user">-</div></div><div class="detail-group"><span class="detail-label">Fecha/hora</span><div class="detail-value" data-audit-target="date">-</div></div><div class="detail-group"><span class="detail-label">Ubicacion</span><div class="detail-value" data-audit-target="location">-</div></div><div class="detail-group"><span class="detail-label">Estado</span><div class="detail-value" data-audit-target="status">-</div></div><div class="detail-group"><span class="detail-label">Sincronizacion</span><div class="detail-value" data-audit-target="sync">-</div></div></div><div class="detail-group"><span class="detail-label">Linea de trazabilidad</span><div class="audit-timeline" id="auditTraceList"></div></div><div class="detail-group"><span class="detail-label">Evidencias</span><div class="audit-evidence-grid" id="auditEvidenceList"></div></div><div class="detail-group"><span class="detail-label">Puntos de control</span><div class="audit-control-grid compact" id="auditDrawerControls"></div></div><div class="detail-group"><span class="detail-label">Novedades / comentarios</span><div class="stack" id="auditNoveltyList"></div></div><div class="detail-group"><span class="detail-label">Firmas / responsabilidad</span><div class="stack" id="auditSignatureList"></div></div></div>
-  </aside>
-  <script src="../shared/sial-core.js"></script>
-  <script src="sial-trazabilidad.js"></script>
-  <script>SIAL.applyShell("auditoria"); SIAL.initAuditTrail();</script>
-</body>
-</html>
+  <script src="../shared/sial-core.js?v=20261103-containers-live-case"></script>
+  <script src="sial-trazabilidad.js?v=20261103-containers-live-case"></script>
+  <script>SIAL.applyShell("auditoria");</script>
+  <script src="../shared/vendor/sial-ui-runtime.js?v=20261103-containers-live-case"></script>
+</body></html>

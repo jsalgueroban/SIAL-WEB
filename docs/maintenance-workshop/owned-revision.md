@@ -1,0 +1,22 @@
+# Revisión de los seis puntos — 2026-10-30
+
+Perfil local de propuesta Web, estructura elegida conservada. El usuario fija yunque único, logo acostado, acción de manos, expresiones y recursos desarrollados en el proyecto. Sustituye la exploración previa de modelos públicos. SELF: modelos, contacto, coreografía y revisión comparten geometría/estado local; no aporta beneficio independiente delegar este slice. No se abre una nueva selección de estructura ni se publica.
+
+## Cambios aplicados
+
+1. Mano libre recogida sobre la cadera en el golpe; en soldadura sujeta la curva final de manguera, dibujada delante del torso y detrás del agarre. Brazos/manos conservan paths del maestro. Se corrige la oclusión del brazo de herramienta: detrás de cabeza al levantar martillo, delante al trabajar.
+2. Se elimina la mesa del renderer y de ambos modos. El logo se convierte en una placa con superficie original, canto de 14 unidades y caras laterales de contorno/fractura. Las piezas y el yunque comparten coordenadas tridimensionales y una proyección ortográfica. No es sólo inclinar una imagen: se calculan vértices de las paredes y alturas de cada fragmento. El logo se mantiene horizontal sobre la cara de trabajo. La matriz preserva orientación de la marca.
+3. Esfuerzo y ojos entrecerrados/dientes al anticipar y golpear; ojos abiertos/boca de sorpresa al salir despedido; recuperación breve; mirada enfocada y respiración de carrera; boca de concentración al soldar; descanso al completar. No cambia la silueta de cabeza/cuerpo.
+4. Cadencia de regreso ×1.25, cuerpo inclinado, brazo de martillo bajo (alrededor de 102°) y mano libre baja con balanceo. Las herramientas permanecen unidas al agarre. Al llegar cambia a postura de trabajo. Se reutilizan los pies y puentes de unión del maestro.
+5. La explosión tiene impulso de velocidad inmediata (ease out cúbico), ondas de presión, núcleo, billows y detritos dibujados por cuadro. Expulsión hasta escala 0.11, arco y giro; recuperación distante y regreso con aumento continuo de escala. La discontinuidad de velocidad se reserva al impacto; se valida su presupuesto explícito de desplazamiento.
+6. Yunque, gafas y efectos externos retirados del render; ahora se construyen en workshop-owned-resources.jsx. Yunque poliédrico con cuerno, cara, cintura, base, orificio y fijaciones. Gafas con correa trasera antes del cuerpo, banda frontal, puente, sellos, lentes, ventilaciones y remaches acordes al contorno. Martillo y soldador locales incorporan caras metálicas, bandas, gatillo y collares. La procedencia se registra en assets/workshop-authored/manifest.json. No se afirma por ello una titularidad jurídica exclusiva; se documenta que la geometría se desarrolló en este proyecto sin incorporar modelos externos. Los maestros de Bananito y la marca siguen siendo los del proyecto.
+
+## Evidencia técnica
+
+18 pruebas Node aprobadas: regresión 401, contacto de cada golpe sobre la placa, recorrido de boquilla, continuidad/cierre de ciclos, carrera, escala creciente, plano de la marca, espesor, orientación y fragmento fijado. Build del preview aprobado: JS 609.75 kB, gzip 182.99 kB. El bundle ya no contiene Innerscene, steampunk-goggles, smoke_04.png ni data:image/png. La reducción respecto al preview anterior procede de retirar los sprites externos.
+
+La validación visual de poses no equivale a una auditoría SVG cuadro por cuadro: el adaptador del navegador no expone getCTM/isPointInFill. Se revisan golpe (108), salida (306), carrera (650) y soldadura (1150). La geometría proyectada de placa/paredes y los contactos se prueban en el evaluador compartido. El maestro conserva sus contornos; no se ha modificado la librería pública.
+
+Vista de revisión: http://127.0.0.1:5198/Errores/mantenimiento-taller.html. Ambos modos trabajan sobre el mismo yunque. Pendiente valoración del usuario; sin publicación ni sustitución de mantenimiento.html.
+
+Revisión runtime final: escritorio 1280×720 con alto de documento 720; placa reporta depth=14 y mano guiding-cable. Móvil 390×844 en oscuro: overflow horizontal false, CTA 48 px, anvil authored-sial y cero nodos bench. Se recorren escenas de golpe 108, salida 306, carrera 650 y soldadura 1150; la herramienta aparece delante del cuerpo al trabajar y el bucle se deja reproduciendo al finalizar. Evidencia: D:/SIAL/Librerias/mantenimiento-modelos-sial.png. La captura corresponde a la soldadura; el movimiento completo se revisa en la URL navegable.

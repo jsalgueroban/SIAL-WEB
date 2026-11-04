@@ -41,18 +41,18 @@ window.SIALNavigationContract = Object.freeze({
           folder: "Gestion de Transporte",
           localFolder: "Gestion de Transporte",
           views: [
-            { id: "gestion", label: "Gestion de conductores", href: "gestion-conductores.html" },
-            { id: "licencias", label: "Gestion de licencias", href: "gestion-categorias-licencia.html" },
+            { id: "gestion", label: "Gestión de conductores", href: "gestion-conductores.html" },
+            { id: "licencias", label: "Gestión de licencias", href: "gestion-categorias-licencia.html" },
             { id: "relacion", label: "Conductor + licencia", href: "relacion-conductor-licencia.html" },
-            { id: "vehiculos", label: "Gestion de vehiculos", href: "gestion-vehiculos.html" },
-            { id: "tiposVehiculo", label: "Tipos de vehiculos", href: "gestion-tipos-vehiculo.html" },
+            { id: "vehiculos", label: "Gestión de vehículos", href: "gestion-vehiculos.html" },
+            { id: "tiposVehiculo", label: "Tipos de vehículos", href: "gestion-tipos-vehiculo.html" },
             { id: "dashboard", label: "Dashboard transporte", href: "dashboard-transporte.html" },
             { id: "documental", label: "Matriz documental", href: "matriz-documental-vehiculos.html" },
             { id: "disponibilidad", label: "Disponibilidad", href: "disponibilidad-operativa.html" },
             { id: "mantenimientos", label: "Mantenimientos", href: "gestion-mantenimientos.html" },
             { id: "preoperacionales", label: "Preoperacional", href: "gestion-preoperacionales.html" },
             { id: "planes", label: "Traslado de materiales", href: "plan-operacional.html" },
-            { id: "operaciones", label: "Programacion de vehiculos", href: "gestion-operaciones.html" },
+            { id: "operaciones", label: "Programación de vehículos", href: "gestion-operaciones.html" },
           ]
         },
         {
@@ -62,9 +62,9 @@ window.SIALNavigationContract = Object.freeze({
           folder: "Gestion de Empresas",
           localFolder: "Gestion de Empresas",
           views: [
-            { id: "empresas", label: "Gestion de empresas", href: "gestion-empresas.html" },
+            { id: "empresas", label: "Gestión de empresas", href: "gestion-empresas.html" },
             { id: "roles", label: "Roles por empresas", href: "roles-empresa.html" },
-            { id: "paramRoles", label: "Creacion de roles", href: "parametrizacion-roles.html" },
+            { id: "paramRoles", label: "Creación de roles", href: "parametrizacion-roles.html" },
             { id: "tiposEmpresa", label: "Tipos de empresas", href: "gestion-tipos-empresa.html", folder: "Gestion de Transporte", localFolder: "Gestion de Transporte" },
             { id: "empresaTipo", label: "Empresa + tipo", href: "relacion-empresa-tipo.html", folder: "Gestion de Transporte", localFolder: "Gestion de Transporte" },
             { id: "clientes", label: "Clientes", href: "gestion-clientes.html" },
@@ -153,7 +153,8 @@ window.SIALNavigationContract = Object.freeze({
           folder: "Trazabilidad",
           localFolder: "Trazabilidad",
           views: [
-            { id: "auditoria", label: "Auditoria operativa", href: "auditoria-operativa.html" },
+            { id: "auditoria", label: "Seguimiento de operaciones de contenedores", href: "auditoria-operativa.html" },
+            { id: "vehiculos", label: "Seguimiento operacional de vehículos", href: "seguimiento-vehiculos.html" },
             { id: "poma", label: "Generar POMA", href: "generar-documento-poma.html" }
           ]
         }

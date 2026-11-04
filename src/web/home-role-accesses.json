@@ -1,0 +1,166 @@
+[
+  {
+    "name": "Usuarios",
+    "icon": "users",
+    "items": [
+      [
+        "Gestión de usuarios",
+        "Gestion de Usuarios/gestion-usuarios.html"
+      ]
+    ]
+  },
+  {
+    "name": "Referencias",
+    "icon": "document-list",
+    "items": [
+      [
+        "Gestión de referencias",
+        "Gestion de Fincas/gestion-referencias.html"
+      ],
+      [
+        "Clases de referencias",
+        "Gestion de Fincas/gestion-clases-referencia.html"
+      ]
+    ]
+  },
+  {
+    "name": "Puerto",
+    "icon": "port",
+    "items": [
+      [
+        "Gestión de contenedores",
+        "Gestion Operaciones Puerto/gestion-contenedores.html"
+      ],
+      [
+        "Tipos de contenedor",
+        "Gestion Operaciones Puerto/gestion-tipos-contenedor.html"
+      ],
+      [
+        "Gestión de puertos",
+        "Gestion Operaciones Puerto/gestion-puertos.html"
+      ],
+      [
+        "Operaciones de contenedores",
+        "Gestion Operaciones Puerto/programacion-contenedores.html"
+      ]
+    ]
+  },
+  {
+    "name": "Empresas",
+    "icon": "company",
+    "items": [
+      [
+        "Gestión de empresas",
+        "Gestion de Empresas/gestion-empresas.html"
+      ],
+      [
+        "Tipos de empresas",
+        "Gestion de Empresas/../Gestion de Transporte/gestion-tipos-empresa.html"
+      ],
+      [
+        "Empresas + tipo",
+        "Gestion de Empresas/../Gestion de Transporte/relacion-empresa-tipo.html"
+      ],
+      [
+        "Gestión de contactos",
+        "Gestion de Empresas/gestion-contactos.html"
+      ],
+      [
+        "Gestión de dependencias",
+        "Gestion de Empresas/gestion-dependencias.html"
+      ],
+      [
+        "Gestión de clientes",
+        "Gestion de Empresas/gestion-clientes.html"
+      ]
+    ]
+  },
+  {
+    "name": "Auditoría",
+    "icon": "columns",
+    "items": [
+      [
+        "Trazabilidad de vehículos",
+        "Trazabilidad/seguimiento-vehiculos.html"
+      ],
+      [
+        "Trazabilidad de contenedores",
+        "Trazabilidad/auditoria-operativa.html"
+      ],
+      [
+        "POMA",
+        "Trazabilidad/generar-documento-poma.html"
+      ],
+      [
+        "Trazabilidad de pallets",
+        "Trazabilidad/../Gestion Operaciones Puerto/trazabilidad-pallets.html"
+      ]
+    ]
+  },
+  {
+    "name": "Transporte",
+    "icon": "truck",
+    "items": [
+      [
+        "Gestión de conductores",
+        "Gestion de Transporte/gestion-conductores.html"
+      ],
+      [
+        "Gestión de licencias",
+        "Gestion de Transporte/gestion-categorias-licencia.html"
+      ],
+      [
+        "Operaciones de transporte",
+        "Gestion de Transporte/gestion-operaciones.html"
+      ],
+      [
+        "Gestión de vehículos",
+        "Gestion de Transporte/gestion-vehiculos.html"
+      ],
+      [
+        "Tipos de vehículos",
+        "Gestion de Transporte/gestion-tipos-vehiculo.html"
+      ],
+      [
+        "Matriz documental",
+        "Gestion de Transporte/matriz-documental-vehiculos.html"
+      ]
+    ]
+  },
+  {
+    "name": "Planeación",
+    "icon": "calendar",
+    "items": [
+      [
+        "Gestión de semanas",
+        "Gestion de Planeacion/gestion-semanas.html"
+      ],
+      [
+        "Gestión de cintas",
+        "Gestion de Planeacion/gestion-cintas.html"
+      ],
+      [
+        "Avisos de corte",
+        "Gestion de Planeacion/gestion-avisos-corte.html"
+      ]
+    ]
+  },
+  {
+    "name": "Fincas",
+    "icon": "farm",
+    "items": [
+      [
+        "Gestión de fincas",
+        "Gestion de Fincas/gestion-fincas.html"
+      ],
+      [
+        "Gestión de sectores",
+        "Gestion de Fincas/gestion-sectores.html"
+      ],
+      [
+        "Gestión de grupos",
+        "Gestion de Fincas/gestion-grupos.html"
+      ]
+    ]
+  }
+]

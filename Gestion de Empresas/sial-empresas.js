@@ -299,7 +299,9 @@ const SIAL = (() => {
     function loadCompany() {
       const data = loadAssignments(); if (!data) return;
       const assigned = data[company.value]?.roles || (company.selectedIndex === 0 ? initial : []);
-      options.forEach(option => { const label = qs("strong", option).textContent.trim(); (assigned.includes(label) ? included : excluded).appendChild(option); qs("input", option).checked = false; });
+      const normalizeRole = value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es");
+      const assignedRoles = new Set(assigned.map(normalizeRole));
+      options.forEach(option => { const label = qs("strong", option).textContent.trim(); (assignedRoles.has(normalizeRole(label)) ? included : excluded).appendChild(option); qs("input", option).checked = false; });
       save.disabled = true;
       note.classList.remove("error", "success");
       note.textContent = "Sin cambios pendientes.";
@@ -318,6 +320,11 @@ const SIAL = (() => {
       }
       save?.removeAttribute("disabled");
     };
+    document.addEventListener("sial:company-role-moved", () => {
+      note?.classList.remove("error");
+      if (note) note.textContent = "Cambios pendientes por guardar.";
+      save?.removeAttribute("disabled");
+    });
     qs("#includeRole")?.addEventListener("click", () => move(excluded, included));
     qs("#excludeRole")?.addEventListener("click", () => move(included, excluded));
     save?.addEventListener("click", () => {
@@ -342,11 +349,12 @@ const SIAL = (() => {
         data[company.value] = { roles, audit: [{ action: "Asignación de roles", actor: "Propuesta local", date: new Date().toISOString() }, ...previous] };
         localStorage.setItem(key, JSON.stringify(data));
       } catch {
-        note.classList.add("error"); note.textContent = "No se pudieron guardar los roles en este navegador."; return;
+        note.classList.add("error"); note.textContent = "No se pudieron guardar los roles en este navegador."; window.CompanyFeedback?.show("No se pudieron guardar los roles", "error", "Intenta nuevamente."); return;
       }
       note?.classList.remove("error");
       note?.classList.add("success");
       if (note) note.textContent = "Roles guardados en este navegador; no se actualizó el sistema real.";
+      window.CompanyFeedback?.show("Asignación guardada");
       save.setAttribute("disabled", "disabled");
     });
     loadCompany();

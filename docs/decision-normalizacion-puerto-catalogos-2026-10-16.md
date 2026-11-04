@@ -17,3 +17,7 @@ Faltan captura válida, exportación, acciones de estado, teclado, contraste y r
 ## Corrección de alineación
 
 El campo nativo `type=number` de Capacidad conservaba el `gap` de la rejilla `.field` además del margen del label, por lo que su input quedaba 8 px por debajo de Código y Descripción montados desde la librería. Se aplicó una excepción local `native-number-field` en `sial-puerto.css`, sin alterar otros formularios. En navegador, los tres labels quedaron en `y=514` y los tres inputs en `y=542`; tras enviar vacío, los tres inputs mantuvieron `y=542` con error visible. No se cambió la validación de capacidad.
+
+## Chips de Programación y Trazabilidad · 03/11/2026
+
+Contador de disponibilidad y estados dinámicos de programación migrados al Chip publicado. Estados de pallets adoptan Chip en tabla y detalle, conservando tonos info/activo/advertencia y neutro mediante tone default. Se preserva el texto disponibles y la actualización dinámica. Build aprobado; filtros de pallets y detalle a 390 px verificados sin errores ni desborde. Pendiente revisión visual. SELF: ajuste local de consumo; sin cambio del paquete.
