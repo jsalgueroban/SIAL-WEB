@@ -21,12 +21,8 @@ const iconPaths = {
 function destination(module, view, registry) {
   const href = view.href;
   if (!href || href.startsWith("#") || /^https?:\/\//i.test(href)) return href || "#";
-  const segments = location.pathname.split(/[\\/]+/).map((part) => decodeURIComponent(part));
-  const currentFolder = segments.at(-2) || "";
   const folder = view.folder || module.folder || view.localFolder || module.localFolder;
-  return !folder || normalized(folder) === normalized(currentFolder)
-    ? href
-    : `../${encodeURI(folder)}/${href}`;
+  return folder ? window.SIALCore.getSharedAssetUrl(`../${encodeURI(folder)}/${href}`) : href;
 }
 
 const searchable = (value) => normalized(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
