@@ -125,8 +125,9 @@ const SIALCore = (() => {
     if (!href) return "#";
     if (href.startsWith("#") || /^https?:\/\//i.test(href)) return href;
     const folder = getNavigationFolder(targetModule, view);
-    if (!folder || normalize(folder) === normalize(getCurrentNavigationFolder())) return href;
-    return `../${encodeURI(folder)}/${href}`;
+    if (!folder) return href;
+    // Anchor navigation to the shared script so root, nested and Pages URLs agree.
+    return getSharedAssetUrl(`../${encodeURI(folder)}/${href}`);
   }
 
   function initSidebarToggle() {
