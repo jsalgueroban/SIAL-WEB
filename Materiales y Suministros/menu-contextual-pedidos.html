@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIAL | Acciones contextuales en Materiales</title>
+  <script>(function(){const t=localStorage.getItem('sial-theme');const d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=t||(d?'dark':'light');})();</script>
+  <link rel="stylesheet" href="sial-materiales.css" />
+  <link rel="stylesheet" href="menu-contextual-pedidos.css" />
+</head>
+<body data-view-family="gestion">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal"><div class="brand"><span class="brand-badge">S</span><span>SIAL</span></div><p class="menu-caption">Materiales</p><nav data-nav></nav></aside>
+    <header class="header"><div class="header-left"><button class="icon-btn" type="button" data-sidebar-toggle aria-label="Abrir menú"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><label class="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Búsqueda principal" placeholder="Buscar..." /></label></div><div class="header-right"><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema"></button><span class="avatar">QA</span></div></header>
+    <main class="main"><section class="page context-demo">
+      <p class="page-eyebrow">Materiales / Exploración de interacción</p>
+      <div class="page-header"><div><h1 class="page-title">Acciones donde está el trabajo</h1><p class="page-subtitle">Explora cómo cambia el mismo menú al actuar sobre pedidos, materiales e inventario.</p></div><a class="btn btn-secondary" href="gestion-pedidos-materiales.html">Volver a pedidos</a></div>
+      <div class="context-demo-tabs" role="tablist" aria-label="Contexto de Materiales">
+        <button type="button" role="tab" id="tab-orders" aria-controls="contextSurface" aria-selected="true" data-context="orders">Pedidos</button>
+        <button type="button" role="tab" id="tab-materials" aria-controls="contextSurface" aria-selected="false" tabindex="-1" data-context="materials">Materiales</button>
+        <button type="button" role="tab" id="tab-stock" aria-controls="contextSurface" aria-selected="false" tabindex="-1" data-context="stock">Inventario</button>
+      </div>
+      <div id="featureSurface" class="context-demo-feature" aria-label="Acciones contextuales en tarjeta"></div>
+      <article class="card context-demo-card" id="contextSurface" role="tabpanel" aria-labelledby="tab-orders">
+        <div class="card-header"><div><h2 class="card-title" id="contextTitle">Pedidos de materiales</h2><p class="card-subtitle" id="contextSubtitle">El menú responde al estado del pedido y conserva el acceso visible por fila.</p></div><span class="chip" id="visibleCount">3 pedidos</span></div>
+        <div class="card-body"><div class="toolbar context-demo-toolbar"><div class="field"><label class="label" for="contextSearch" id="searchLabel">Buscar pedido o finca</label><input class="input" id="contextSearch" type="search" placeholder="Código o finca" /></div><div class="field" id="statusFilterField"><span class="label">Estado</span><div class="context-demo-filters" id="statusFilter" role="group" aria-label="Filtrar por estado"></div></div></div></div>
+        <div class="table-wrap"><table class="materials-table context-demo-table"><thead><tr id="contextHeaders"><th>Pedido</th><th>Finca</th><th>Material destacado</th><th>Disponibilidad</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="contextRows"></tbody></table></div>
+        <div class="card-body"><p class="empty-state" id="emptyState" hidden>No hay registros para estos filtros.</p><p class="context-demo-hint">Clic derecho en una fila · Teclado: Mayús + F10; flechas para explorar · Pantalla táctil: «Más acciones» y «Volver»</p></div>
+      </article>
+      <section class="card context-demo-detail" id="detailPanel" hidden tabindex="-1" aria-live="polite"><div class="card-header"><div><p class="section-kicker" id="detailKicker">Registro seleccionado</p><h2 class="card-title" id="detailTitle"></h2><p class="card-subtitle" id="detailSubtitle"></p></div><button class="icon-btn" type="button" id="closeDetail" aria-label="Cerrar detalle">×</button></div><div class="card-body" id="detailBody"></div></section>
+    </section></main>
+  </div>
+  <div id="contextMenu" class="context-demo-menu" role="menu" aria-label="Acciones contextuales" hidden></div>
+  <div class="context-demo-toast" id="demoToast" role="status" hidden></div>
+  <script src="../shared/sial-core.js"></script>
+  <script>SIALCore.initShell({area:'gestion',module:'materiales',view:'pedidos'});</script>
+  <script src="menu-contextual-pedidos.js"></script>
+</body>
+</html>

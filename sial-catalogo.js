@@ -563,6 +563,16 @@ const SIALCatalog = (() => {
     {
       module: "materiales",
       moduleLabel: "Materiales y Suministros",
+      title: "Exploración de acciones contextuales",
+      family: "gestion",
+      status: "prototipo",
+      href: "Materiales%20y%20Suministros/menu-contextual-pedidos.html",
+      description: "Prueba navegable de acciones contextuales sobre pedidos, materiales e inventario, en filas y tarjetas.",
+      tags: ["Interacción", "Materiales", "Menú contextual"]
+    },
+    {
+      module: "materiales",
+      moduleLabel: "Materiales y Suministros",
       title: "Inventario por finca",
       family: "gestion",
       status: "implementada",
@@ -673,7 +683,7 @@ const SIALCatalog = (() => {
         </div>
         <p class="module-description">${view.description}</p>
         <div class="tag-row">
-          <span class="tag tag-warning">${view.status === "implementada" ? "Implementada" : "Base"}</span>
+          <span class="tag tag-warning">${view.status === "prototipo" ? "Prototipo" : view.status === "implementada" ? "Implementada" : "Base"}</span>
           ${tags}
         </div>
         <div class="module-actions">
