@@ -32,7 +32,7 @@
       owner: "Laura Gómez", company: "Banasan", current: "initial", canCorrect: true,
       scope: "Puedes consultar las 3 fincas incluidas porque pertenecen a tu alcance autorizado.",
       note: "Aviso vigente sin novedades pendientes.",
-      versions: [version("initial", "Inicial", "Vigente", "02/08/2026, 10:24", "Laura Gómez", "Publicación inicial", cloneLines())],
+      versions: [version("initial", "Inicial · sin versión", "Vigente", "02/08/2026, 10:24", "Laura Gómez", "Publicación inicial", cloneLines())],
       flow: commonFlow,
       evidence: [
         { name: "Loading Plan SEM-2026-32.xlsx", kind: "Loading Plan", date: "02/08/2026, 09:12" },
@@ -40,7 +40,7 @@
         { name: "Validación de referencias", kind: "Resultado de validación", date: "02/08/2026, 10:18" }
       ],
       history: [
-        { date: "02/08/2026, 10:24", actor: "Laura Gómez", action: "Publicó la versión Inicial", origin: "Web", result: "Disponible para las áreas autorizadas" },
+        { date: "02/08/2026, 10:24", actor: "Laura Gómez", action: "Publicó el aviso inicial", origin: "Web", result: "Disponible para las áreas autorizadas" },
         { date: "02/08/2026, 10:18", actor: "Laura Gómez", action: "Validó certificaciones y cantidades", origin: "Web", result: "Sin bloqueos" },
         { date: "01/08/2026, 16:42", actor: "Carlos Mejía", action: "Creó el aviso desde Loading Plan", origin: "Web", result: "Borrador creado" }
       ]
@@ -49,15 +49,15 @@
       code: "AC-2026-031-02", week: "SEM-2026-31", type: "Proyectado", status: "Publicado", group: "published", stage: "Programación iniciada",
       owner: "Laura Gómez", company: "Banasan", current: "v2", canCorrect: false,
       scope: "Puedes consultar las 5 fincas incluidas. La programación de transporte ya inició.",
-      note: "La versión vigente es de consulta y no admite correcciones directas.",
+      note: "La versión vigente es de consulta y no admite modificaciones directas.",
       blockedReason: "La programación de transporte ya inició. Cualquier ajuste debe gestionarse como novedad autorizada.",
       versions: [
-        version("v2", "Versión 2", "Vigente", "01/08/2026, 16:20", "Laura Gómez", "Ajuste confirmado por el cliente", cloneLines({ L1: { client: "DOLE", pallets: 20, boxes: 1080 }, L2: { pallets: 14, boxes: 756 } }).concat(extraLines.slice(0, 2)), [
+        version("v2", "Versión 1", "Vigente", "01/08/2026, 16:20", "Laura Gómez", "Ajuste confirmado por el cliente", cloneLines({ L1: { client: "DOLE", pallets: 20, boxes: 1080 }, L2: { pallets: 14, boxes: 756 } }).concat(extraLines.slice(0, 2)), [
           { line: "LA CEIBA", field: "Cliente", before: "FYFFES", after: "DOLE", impact: "Materiales" },
           { line: "LA CEIBA", field: "Palés", before: "18", after: "20", impact: "Materiales y Transporte" },
           { line: "MARTE", field: "Palés", before: "12", after: "14", impact: "Materiales y Transporte" }
         ]),
-        version("initial", "Inicial", "Anterior", "30/07/2026, 11:30", "Laura Gómez", "Publicación inicial", cloneLines())
+        version("initial", "Inicial · sin versión", "Anterior", "30/07/2026, 11:30", "Laura Gómez", "Publicación inicial", cloneLines())
       ],
       flow: [
         { area: "Planeación", status: "Publicado", detail: "Versión 2 vigente", tone: "active" },
@@ -74,25 +74,25 @@
       history: [
         { date: "01/08/2026, 16:20", actor: "Laura Gómez", action: "Publicó la Versión 2", origin: "Web", result: "3 cambios trazados" },
         { date: "01/08/2026, 15:48", actor: "Laura Gómez", action: "Registró el motivo del cambio", origin: "Web", result: "Impacto confirmado" },
-        { date: "30/07/2026, 11:30", actor: "Laura Gómez", action: "Publicó la versión Inicial", origin: "Web", result: "Aviso distribuido" }
+        { date: "30/07/2026, 11:30", actor: "Laura Gómez", action: "Publicó el aviso inicial", origin: "Web", result: "Aviso distribuido" }
       ]
     },
     "AC-2026-031-01": {
-      code: "AC-2026-031-01", week: "SEM-2026-31", type: "Corrección", status: "Requiere corrección", group: "attention", stage: "Preoperativa",
+      code: "AC-2026-031-01", week: "SEM-2026-31", type: "Modificación", status: "Requiere modificación", group: "attention", stage: "Preoperativa",
       owner: "Mónica Salas", company: "Banasan", current: "v2", canCorrect: true,
-      scope: "Puedes consultar las 4 fincas incluidas y preparar una corrección porque la operación continúa en etapa preoperativa.",
+      scope: "Puedes consultar las 4 fincas incluidas y preparar una modificación porque la operación continúa en etapa preoperativa.",
       note: "Una referencia quedó inactiva después de la publicación.",
       blockedReason: "La referencia ALGFT18BD requiere sustitución antes de continuar con Materiales y Transporte.",
       versions: [
-        version("v2", "Versión 2", "Vigente con bloqueo", "01/08/2026, 14:05", "Mónica Salas", "Corrección de cantidades", cloneLines({ L2: { pallets: 13, boxes: 702 } }).concat([{ ...extraLines[0], pallets: 25, boxes: 1398 }]), [
+        version("v2", "Versión 1", "Vigente con bloqueo", "01/08/2026, 14:05", "Mónica Salas", "Modificación de cantidades", cloneLines({ L2: { pallets: 13, boxes: 702 } }).concat([{ ...extraLines[0], pallets: 25, boxes: 1398 }]), [
           { line: "MARTE", field: "Palés", before: "12", after: "13", impact: "Materiales y Transporte" },
           { line: "MARTE", field: "Cajas", before: "648", after: "702", impact: "Materiales" }
         ]),
-        version("initial", "Inicial", "Anterior", "28/07/2026, 11:30", "Mónica Salas", "Publicación inicial", cloneLines())
+        version("initial", "Inicial · sin versión", "Anterior", "28/07/2026, 11:30", "Mónica Salas", "Publicación inicial", cloneLines())
       ],
       flow: [
         { area: "Planeación", status: "Atención", detail: "Referencia inactiva", tone: "inactive" },
-        { area: "Materiales", status: "Detenido", detail: "Pendiente de corrección", tone: "inactive" },
+        { area: "Materiales", status: "Detenido", detail: "Pendiente de modificación", tone: "inactive" },
         { area: "Transporte", status: "Pendiente", detail: "Sin programación", tone: "warning" },
         { area: "Finca", status: "Informado", detail: "4 fincas visibles", tone: "active" },
         { area: "Puerto", status: "Pendiente", detail: "Sin operación iniciada", tone: "warning" }
@@ -101,7 +101,7 @@
       history: [
         { date: "01/08/2026, 14:05", actor: "Sistema", action: "Detectó una referencia inactiva", origin: "Catálogo de referencias", result: "Operación bloqueada" },
         { date: "01/08/2026, 13:48", actor: "Mónica Salas", action: "Publicó la Versión 2", origin: "Web", result: "Versión publicada" },
-        { date: "28/07/2026, 11:30", actor: "Mónica Salas", action: "Publicó la versión Inicial", origin: "Web", result: "Aviso distribuido" }
+        { date: "28/07/2026, 11:30", actor: "Mónica Salas", action: "Publicó el aviso inicial", origin: "Web", result: "Aviso distribuido" }
       ]
     },
     "BOR-2026-033-01": {
@@ -127,7 +127,7 @@
       owner: "Laura Gómez", company: "Banasan", current: "initial", canCorrect: false,
       scope: "Puedes consultar el cierre histórico de las 6 fincas incluidas.", note: "Semana cerrada. Consulta disponible para trazabilidad.",
       blockedReason: "La operación está cerrada y no admite cambios.",
-      versions: [version("initial", "Inicial", "Histórica", "20/07/2026, 09:10", "Laura Gómez", "Publicación inicial", cloneLines())],
+      versions: [version("initial", "Inicial · sin versión", "Histórica", "20/07/2026, 09:10", "Laura Gómez", "Publicación inicial", cloneLines())],
       flow: [{ area: "Operación", status: "Cerrada", detail: "Trazabilidad completa", tone: "active" }],
       evidence: [{ name: "Cierre SEM-2026-30.pdf", kind: "Cierre operativo", date: "24/07/2026, 17:10" }],
       history: [{ date: "24/07/2026, 17:10", actor: "Laura Gómez", action: "Cerró la semana operativa", origin: "Web", result: "Consulta histórica" }]
@@ -181,7 +181,7 @@
 
       refs.primary.classList.toggle("is-hidden", !(item.canCorrect || item.canEdit));
       if (item.canEdit) { refs.primary.textContent = "Continuar borrador"; refs.primary.href = `crear-aviso-corte.html?modo=editar&aviso=${encodeURIComponent(item.code)}`; }
-      else if (item.canCorrect) { refs.primary.textContent = "Preparar corrección"; refs.primary.href = `crear-aviso-corte.html?modo=corregir&aviso=${encodeURIComponent(item.code)}`; }
+      else if (item.canCorrect) { refs.primary.textContent = "Preparar modificación"; refs.primary.href = `crear-aviso-corte.html?modo=corregir&aviso=${encodeURIComponent(item.code)}`; }
 
       refs.lineCount.textContent = `${selected.lines.length} ${selected.lines.length === 1 ? "asignación" : "asignaciones"}`;
       refs.lines.innerHTML = selected.lines.map((line) => `<tr><td><strong>${esc(line.farm)}</strong></td><td><strong>${esc(line.client)}</strong><span class="cut-hub-meta">${esc(line.reference)}</span></td><td>${esc(line.certification)}</td><td class="is-number">${number(line.pallets)}</td><td class="is-number">${number(line.boxes)}</td><td>${esc(line.cutDate)}</td></tr>`).join("");

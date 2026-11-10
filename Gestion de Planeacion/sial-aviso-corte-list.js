@@ -4,7 +4,7 @@
 
   const notices = [
     {
-      id: "AC-2026-032", week: "SEM-2026-32", type: "Inicial", version: "Inicial",
+      id: "AC-2026-032", week: "SEM-2026-32", type: "Inicial", version: "Sin versión",
       status: "Publicado", group: "published", farms: 3, pallets: 38, boxes: 2004, canCorrect: true, operationalStage: "Preoperativa",
       updated: "Hoy, 10:24", owner: "Laura Gómez", note: "Sin novedades pendientes.",
       history: ["Publicado hoy a las 10:24", "Validado hoy a las 10:18", "Creado ayer a las 16:42"]
@@ -23,8 +23,8 @@
       history: ["Publicado ayer a las 16:20", "Validado ayer a las 16:12"]
     },
     {
-      id: "AC-2026-031-01", week: "SEM-2026-31", type: "Corrección", version: "Versión 2",
-      status: "Requiere corrección", group: "attention", farms: 4, pallets: 64, boxes: 3456, canCorrect: true, operationalStage: "Preoperativa",
+      id: "AC-2026-031-01", week: "SEM-2026-31", type: "Modificación", version: "Versión 1",
+      status: "Requiere modificación", group: "attention", farms: 4, pallets: 64, boxes: 3456, canCorrect: true, operationalStage: "Preoperativa",
       updated: "Ayer, 14:05", owner: "Mónica Salas", note: "Una referencia quedó inactiva después de la publicación.",
       history: ["Bloqueo detectado ayer a las 14:05", "Publicado el 28/07/2026 a las 11:30"]
     },
@@ -35,7 +35,7 @@
       history: ["Comparación actualizada el 28/07/2026", "Borrador creado el 28/07/2026"]
     },
     {
-      id: "AC-2026-030-01", week: "SEM-2026-30", type: "Inicial", version: "Inicial",
+      id: "AC-2026-030-01", week: "SEM-2026-30", type: "Inicial", version: "Sin versión",
       status: "Cerrado", group: "published", farms: 6, pallets: 102, boxes: 5508, canCorrect: false, operationalStage: "Cerrada",
       blockedReason: "La operación ya fue cerrada. Solo está disponible para trazabilidad.",
       updated: "24/07/2026, 17:10", owner: "Laura Gómez", note: "Semana cerrada. Consulta disponible para trazabilidad.",
@@ -77,7 +77,7 @@
     }
     const actionFor = (item) => {
       if (item.group === "draft" || item.version === "Borrador") return { label: "Continuar", mode: "editar" };
-      if (item.canCorrect) return { label: item.group === "attention" ? "Corregir" : "Preparar corrección", mode: "corregir" };
+      if (item.canCorrect) return { label: item.group === "attention" ? "Modificar" : "Preparar modificación", mode: "corregir" };
       return { label: "Consultar", mode: "consultar" };
     };
 

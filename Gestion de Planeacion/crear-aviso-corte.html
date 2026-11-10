@@ -52,7 +52,7 @@
               <h1 class="page-title" data-create-title>Nuevo aviso de corte</h1>
               <span class="status status-warning" data-sial-chip-adapter data-draft-state>Borrador sin guardar</span>
             </div>
-            <p class="page-subtitle" data-create-subtitle>Prepara el plan semanal, revisa las asignaciones y publica una única versión para las áreas involucradas.</p>
+            <p class="page-subtitle" data-create-subtitle>Prepara el plan semanal, revisa las asignaciones y publica el aviso inicial para las áreas involucradas.</p>
           </div>
           <div class="page-header-actions cut-create-actions">
             <a class="btn btn-secondary" href="gestion-avisos-corte.html">Volver</a>
@@ -65,7 +65,7 @@
 
         <div class="notice notice-info cut-create-note" data-sial-notice-adapter>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
-          <span>El aviso se publicará como una sola versión. Después de publicarlo, cualquier corrección deberá crear una nueva versión.</span>
+          <span>El aviso inicial no lleva número de versión. La primera modificación crea la Versión 1 y conserva el historial.</span>
         </div>
 
         <section class="cut-edit-context is-hidden" data-edit-context aria-labelledby="editContextTitle">
@@ -74,8 +74,8 @@
               <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
             </div>
             <div>
-              <h2 id="editContextTitle" data-edit-context-title>Preparar nueva versión</h2>
-              <p data-edit-context-copy>La versión publicada se conserva. Solo puedes modificar los campos autorizados.</p>
+              <h2 id="editContextTitle" data-edit-context-title>Preparar modificación</h2>
+              <p data-edit-context-copy>El aviso publicado se conserva en el historial. Solo puedes modificar los campos autorizados.</p>
             </div>
             <span class="status status-active" data-sial-chip-adapter data-edit-eligibility>Edición permitida</span>
           </div>
@@ -86,12 +86,12 @@
             <div><dt>Etapa</dt><dd data-edit-stage>Preoperativa</dd></div>
           </dl>
           <div class="cut-edit-rules">
-            <span><strong>Puedes cambiar:</strong> cliente, referencia, palés y cajas por palé.</span>
-            <span><strong>Se conservan:</strong> finca, día de corte, grupo, sector y datos logísticos.</span>
+            <span><strong>Puedes cambiar:</strong> cliente, referencia, palés y cajas por palé en esta propuesta.</span>
+            <span><strong>Se conservan:</strong> la identidad del aviso y el historial de versiones.</span>
           </div>
           <div class="field cut-change-reason">
             <label class="label" for="changeReason">Motivo del cambio <span class="required">*</span></label>
-            <textarea class="textarea" id="changeReason" rows="2" maxlength="240" data-change-reason placeholder="Explica brevemente por qué debe corregirse esta versión"></textarea>
+            <textarea class="textarea" id="changeReason" rows="2" maxlength="240" data-change-reason placeholder="Explica brevemente el motivo de la modificación"></textarea>
             <div class="field-note">El motivo quedará registrado junto con los valores anteriores y nuevos.</div>
           </div>
         </section>
@@ -100,7 +100,7 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Datos del aviso</h2>
-              <p class="card-subtitle">La versión pertenece al aviso completo y se aplica a todas las asignaciones.</p>
+              <p class="card-subtitle">La versión, cuando existe, pertenece al aviso completo y se aplica a todas las asignaciones.</p>
             </div>
             <div class="cut-header-identity">
               <span>Identificador al publicar</span>
@@ -121,12 +121,12 @@
                 <select class="select" id="noticeType" data-header-field>
                   <option value="Inicial">Inicial</option>
                   <option value="Proyectado">Proyectado</option>
-                  <option value="Corrección">Corrección</option>
+                  <option value="Modificación">Modificación</option>
                 </select>
               </div>
               <div class="field span-3" data-sial-form-control>
                 <label class="label" for="noticeVersion">Versión</label>
-                <input class="input" id="noticeVersion" value="Inicial" readonly />
+                <input class="input" id="noticeVersion" value="Sin versión" readonly />
               </div>
               <div class="field span-3" data-sial-form-control>
                 <label class="label" for="noticeCompany">Empresa</label>
@@ -159,7 +159,7 @@
               <span class="cut-source-icon">
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"></path><path d="m9 10 6 6m0-6-6 6"></path></svg>
               </span>
-              <span><strong>Importar aviso desde Excel</strong><small>Mapea el archivo actual y valida antes de agregar filas.</small></span>
+              <span><strong>Importar aviso desde CSV</strong><small>Mapea el archivo actual y valida antes de agregar filas.</small></span>
               <svg class="icon cut-source-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
             </button>
             <button class="cut-source-action" type="button" data-source="paste">
@@ -177,14 +177,14 @@
           <article class="card cut-create-sheet">
             <div class="card-header cut-matrix-header">
               <div>
-                <h2 class="card-title">Asignaciones del aviso</h2>
-                <p class="card-subtitle">Cada fila asigna una referencia a una finca y un día de corte.</p>
+                <h2 class="card-title">Plan semanal de corte</h2>
+                <p class="card-subtitle">Cada fila es una finca y referencia. Escribe los palés en los días de corte; deja vacíos los días sin programación.</p>
               </div>
               <div class="card-actions">
                 <span class="chip" data-sial-chip-adapter data-sial-chip-tone="info" data-row-count>0 filas</span>
                 <button data-sial-button-adapter class="btn btn-secondary" type="button" data-add-assignment>
                   <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-                  Agregar fila
+                  Agregar finca y referencia
                 </button>
               </div>
             </div>
@@ -192,56 +192,49 @@
             <div class="cut-validation-summary is-hidden" data-validation-summary tabindex="-1"></div>
             <div class="cut-change-summary is-hidden" data-change-summary aria-live="polite"></div>
 
-            <div class="table-wrap cut-create-scroll" data-planning-assignment-matrix tabindex="0" aria-label="Matriz de asignaciones del aviso">
-              <table class="cut-create-table">
-                <colgroup>
-                  <col class="cut-create-col-row" />
-                  <col class="cut-create-col-date" />
-                  <col class="cut-create-col-farm" />
-                  <col class="cut-create-col-group" />
-                  <col class="cut-create-col-sector" />
-                  <col class="cut-create-col-client" />
-                  <col class="cut-create-col-reference" />
-                  <col class="cut-create-col-class" />
-                  <col class="cut-create-col-number" />
-                  <col class="cut-create-col-number" />
-                  <col class="cut-create-col-number" />
-                  <col class="cut-create-col-number" />
-                  <col class="cut-create-col-direct" />
-                  <col class="cut-create-col-line" />
-                  <col class="cut-create-col-state" />
-                  <col class="cut-create-col-actions" />
-                </colgroup>
-                <thead>
-                  <tr class="cut-group-row">
-                    <th class="cut-create-sticky" rowspan="2" scope="col">Fila</th>
-                    <th colspan="4" scope="colgroup">Planeación</th>
-                    <th colspan="3" scope="colgroup">Producto y cliente</th>
-                    <th colspan="4" scope="colgroup">Cantidades</th>
-                    <th colspan="2" scope="colgroup">Logística</th>
-                    <th colspan="2" scope="colgroup">Control</th>
-                  </tr>
-                  <tr>
-                    <th scope="col">Día de corte</th>
-                    <th scope="col">Finca</th>
-                    <th scope="col">Grupo</th>
-                    <th scope="col">Sector</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">Referencia</th>
-                    <th scope="col">Clase / certificación</th>
-                    <th scope="col">Palés</th>
-                    <th scope="col">Cajas / palé</th>
-                    <th scope="col">Total cajas</th>
-                    <th scope="col">Racimos</th>
-                    <th scope="col">Directo</th>
-                    <th scope="col">Línea</th>
-                    <th scope="col">Validación</th>
-                    <th scope="col">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody data-assignment-body></tbody>
-              </table>
+            <form class="cut-week-new" data-week-new-form hidden>
+              <div><strong>Nueva fila del plan</strong><span>Selecciona finca, referencia y cliente. Después escribe los palés directamente en los días.</span></div>
+              <div class="field"><label class="label" for="cutNewFarm">Finca</label><select class="select" id="cutNewFarm" required><option value="">Seleccionar finca</option></select></div>
+              <div class="field"><label class="label" for="cutNewReference">Referencia</label><select class="select" id="cutNewReference" required><option value="">Seleccionar referencia</option></select></div>
+              <div class="field"><label class="label" for="cutNewClient">Cliente</label><select class="select" id="cutNewClient" required><option value="">Seleccionar cliente</option></select></div>
+              <div class="field"><label class="label" for="cutNewReferenceVersion">Versión ref.</label><input class="input" id="cutNewReferenceVersion" type="number" min="1" step="1" value="1" required /></div>
+              <p class="cut-week-new-error" data-week-new-error role="alert" hidden></p>
+              <div class="cut-week-new-actions"><button class="btn btn-secondary" type="button" data-week-new-cancel>Cancelar</button><button class="btn btn-primary" type="submit">Agregar al plan</button></div>
+            </form>
+
+            <div class="cut-week-tools" data-week-tools>
+              <div class="cut-week-toolbar" aria-label="Filtros de la matriz semanal">
+                <div class="field"><label class="label" for="cutWeekDatePicker">Ir a fecha</label><input class="input" type="date" id="cutWeekDatePicker" data-week-date-picker /></div>
+                <button class="btn btn-secondary cut-week-reset" type="button" data-week-reset hidden>Limpiar filtros <span data-week-filter-summary></span></button>
+              </div>
+              <div class="cut-week-columns-inline"><span>Días visibles</span><div class="cut-week-column-options" data-week-column-options></div></div>
             </div>
+            <div class="cut-week-mobile-day"><label class="label" for="cutMobileDay">Día que quieres editar</label><select class="select" id="cutMobileDay" data-week-mobile-day></select></div>
+            <p class="cut-week-help"><span class="cut-week-help-desktop">Clic derecho sobre una fila para ver más opciones.</span><span class="cut-week-help-mobile">Usa ⋯ en una fila para ver más opciones.</span></p>
+            <div class="table-wrap cut-week-scroll" tabindex="0" aria-label="Programación semanal por finca y referencia">
+              <table class="cut-week-table"><thead data-week-head></thead><tbody data-week-body></tbody></table>
+            </div>
+            <section class="cut-detail-editor" data-detail-editor aria-labelledby="cutDetailEditorTitle">
+              <div class="cut-detail-editor-heading"><div><h3 id="cutDetailEditorTitle">Datos de las asignaciones <span data-detail-count></span></h3><p>Completa cliente, cantidades y logística por día cuando sea necesario.</p></div></div>
+              <div class="table-wrap cut-create-scroll" data-planning-assignment-matrix tabindex="0" aria-label="Matriz de asignaciones del aviso">
+                <table class="cut-create-table">
+                  <colgroup>
+                    <col class="cut-create-col-row" /><col class="cut-create-col-date" /><col class="cut-create-col-farm" />
+                    <col class="cut-create-col-group" /><col class="cut-create-col-sector" /><col class="cut-create-col-client" />
+                    <col class="cut-create-col-reference" /><col class="cut-create-col-number" /><col class="cut-create-col-class" />
+                    <col class="cut-create-col-number" /><col class="cut-create-col-number" /><col class="cut-create-col-number" />
+                    <col class="cut-create-col-number" /><col class="cut-create-col-direct" /><col class="cut-create-col-line" />
+                    <col class="cut-create-col-state" /><col class="cut-create-col-actions" />
+                  </colgroup>
+                  <thead>
+                    <tr class="cut-group-row"><th class="cut-create-sticky" rowspan="2" scope="col">Fila</th><th colspan="4" scope="colgroup">Planeación</th><th colspan="4" scope="colgroup">Producto y cliente</th><th colspan="4" scope="colgroup">Cantidades</th><th colspan="2" scope="colgroup">Logística</th><th colspan="2" scope="colgroup">Control</th></tr>
+                    <tr><th scope="col">Día de corte</th><th scope="col"><button class="cut-detail-head-filter" type="button" data-column-filter="farm" aria-label="Filtrar columna finca">Finca <span>⌄</span></button></th><th scope="col">Grupo</th><th scope="col">Sector</th><th scope="col">Cliente</th><th scope="col"><button class="cut-detail-head-filter" type="button" data-column-filter="reference" aria-label="Filtrar columna referencia">Referencia <span>⌄</span></button></th><th scope="col">Versión ref.</th><th scope="col">Clase / certificación</th><th scope="col">Palés</th><th scope="col">Cajas / palé</th><th scope="col">Total cajas</th><th scope="col">Racimos</th><th scope="col">Directo</th><th scope="col">Línea</th><th scope="col">Validación</th><th scope="col">Acciones</th></tr>
+                  </thead>
+                  <tbody data-assignment-body></tbody>
+                </table>
+              </div>
+              <div class="cut-detail-filter-empty" data-detail-filter-empty hidden>No hay asignaciones para estos filtros. <button type="button" data-detail-clear-filters>Limpiar filtros</button></div>
+            </section>
 
             <div class="cut-create-statusbar">
               <span><strong data-status-farms>0</strong> fincas</span>
@@ -287,6 +280,29 @@
           </aside>
         </div>
 
+        <section class="card cut-real-card" data-real-notice aria-labelledby="cutRealTitle">
+          <div class="card-header cut-real-header">
+            <div>
+              <div class="cut-card-title-row"><h2 class="card-title" id="cutRealTitle">Aviso real · Semana 46 de 2026</h2><span class="tag tag-info">Versión 3 del archivo</span></div>
+              <p class="card-subtitle">Consulta del consolidado recibido. Sus cifras no modifican el borrador de arriba.</p>
+            </div>
+            <span class="cut-real-source">FR-PLN-001 · revisión del formato 10</span>
+          </div>
+          <div class="cut-real-summary" data-real-summary></div>
+          <div class="cut-real-tabs" role="tablist" aria-label="Perspectivas del aviso real">
+            <button type="button" role="tab" data-real-tab="pallets" aria-selected="true">Palés por finca</button>
+            <button type="button" role="tab" data-real-tab="boxes" aria-selected="false">Cajas por finca</button>
+            <button type="button" role="tab" data-real-tab="references" aria-selected="false">Por referencia</button>
+            <button type="button" role="tab" data-real-tab="versions" aria-selected="false">Cambios por versión</button>
+          </div>
+          <div class="cut-real-panel" role="tabpanel" data-real-panel tabindex="0" aria-label="Datos del aviso real">
+            <div class="cut-real-panel-heading"><div><h3 data-real-heading>Palés por finca y referencia</h3><p data-real-description></p></div><span data-real-result-count></span></div>
+            <div class="cut-real-table-wrap" tabindex="0"><table class="cut-real-table"><thead data-real-head></thead><tbody data-real-body></tbody><tfoot data-real-foot></tfoot></table></div>
+            <div class="cut-real-pagination"><span data-real-page-status></span><div><button class="btn btn-secondary" type="button" data-real-prev>Anterior</button><button class="btn btn-secondary" type="button" data-real-next>Siguiente</button></div></div>
+          </div>
+          <p class="cut-real-note" data-real-note>“Resumen Materiales” en el Excel compara palés por versión; no contiene cantidades de insumos.</p>
+        </section>
+
       </section>
     </main>
   </div>
@@ -310,8 +326,8 @@
             <svg class="icon" viewBox="0 0 24 24"><path d="M12 16V4m0 0-4 4m4-4 4 4"></path><path d="M4 15v5h16v-5"></path></svg>
           </span>
           <strong>Seleccionar Loading Plan</strong>
-          <span>Selecciona o arrastra un Excel o CSV · máximo 10 MB</span>
-          <input id="loadingPlanFile" type="file" accept=".xlsx,.xlsm,.csv,.tsv" data-loading-file />
+          <span>Selecciona o arrastra un CSV · máximo 10 MB</span>
+          <input id="loadingPlanFile" type="file" accept=".csv,.tsv" data-loading-file />
         </label>
         <div class="cut-file-summary is-hidden" data-loading-summary aria-live="polite"></div>
         <div class="cut-import-preview is-hidden" data-loading-preview></div>
@@ -323,29 +339,16 @@
             <svg class="icon" viewBox="0 0 24 24"><path d="M12 16V4m0 0-4 4m4-4 4 4"></path><path d="M4 15v5h16v-5"></path></svg>
           </span>
           <strong>Seleccionar aviso de corte</strong>
-          <span>Selecciona o arrastra un .xlsx, .xlsm, .csv o .tsv · máximo 10 MB</span>
-          <input id="cutExcelFile" type="file" accept=".xlsx,.xlsm,.csv,.tsv" data-excel-file />
+          <span>Selecciona o arrastra un .csv · máximo 10 MB</span>
+          <input id="cutExcelFile" type="file" accept=".csv" data-excel-file />
         </label>
         <div class="cut-file-summary is-hidden" data-excel-summary aria-live="polite"></div>
         <div class="cut-import-mapping is-hidden" data-excel-mapping>
-          <div class="grid">
-            <div class="field span-6" data-sial-form-control>
-              <label class="label" for="excelSheet">Hoja del ejemplo</label>
-              <select class="select" id="excelSheet" data-excel-sheet disabled>
-                <option>Resumen Pallets</option>
-                <option>Resumen Cajas</option>
-                <option>BD_Aviso</option>
-              </select>
-            </div>
-            <div class="field span-6" data-sial-form-control>
-              <label class="label" for="excelHeader">Fila de encabezados</label>
-              <input class="input" id="excelHeader" type="number" min="1" value="11" readonly />
-            </div>
-          </div>
+          <p>Se leerán las columnas del CSV y se revisarán las asignaciones antes de agregarlas.</p>
           <div class="cut-mapping-grid" data-mapping-grid></div>
           <div class="notice notice-warning" data-sial-notice-adapter>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 9v5M12 17h.01"></path></svg>
-            <span>Las filas importadas se contrastarán con fincas, clientes, referencias y certificaciones activas.</span>
+            <span>En esta propuesta, las filas se contrastan con catálogos de ejemplo antes de agregarlas.</span>
           </div>
         </div>
         <div class="cut-import-preview is-hidden" data-excel-preview></div>
@@ -418,10 +421,17 @@
     </div>
   </section>
 
+  <div class="cut-week-menu" data-week-menu role="menu" aria-label="Acciones de la combinación" hidden></div>
+  <div class="cut-week-column-menu" data-week-column-menu role="dialog" aria-label="Filtro de columna" hidden></div>
+  <div class="cut-week-toast" data-week-toast role="status" hidden></div>
+  <div class="cut-real-menu" data-real-menu role="menu" aria-label="Opciones del registro del aviso real" hidden></div>
+
   <script src="../shared/sial-core.js?v=20261104-pages-nav"></script>
   <script src="../Gestion de Empresas/company-feedback.js"></script>
   <script src="sial-aviso-corte.js?v=20261031-planea8"></script>
   <script src="sial-aviso-corte-create.js?v=20261101-import2"></script>
-  <script>SIAL.applyShell("crearAviso"); window.SIALCutNoticeCreate.init();</script>
+  <script src="sial-aviso-corte-real-46-data.js?v=20261110"></script>
+  <script src="sial-aviso-corte-real-view.js?v=20261110"></script>
+  <script>SIAL.applyShell("crearAviso"); window.SIALCutNoticeCreate.init(); window.SIALCutNoticeRealView.init();</script>
 </body>
 </html>
