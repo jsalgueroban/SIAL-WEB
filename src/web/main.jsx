@@ -1,3 +1,4 @@
+import { PublishedSchedules } from "./published-schedules.jsx";
 import {ContainerCargo} from "./container-cargo.jsx";
 import {HomeOverview} from './home-overview.jsx';
 import React from "react";
@@ -39,7 +40,7 @@ import { FarmCatalog_sectores } from "./farm-catalog-sectores.jsx";
 
 export { mountShell };
 
-const mounts = {"container-cargo": ContainerCargo, "home-overview": HomeOverview,
+const mounts = {"published-schedules": PublishedSchedules, "container-cargo": ContainerCargo, "home-overview": HomeOverview,
   "security-containers": SecurityContainers,
   "security-vehicles": SecurityVehicles,
   "security-poma": SecurityPoma,
