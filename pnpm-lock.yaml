@@ -11,6 +11,9 @@ importers:
       '@banasandev/banasan-ui':
         specifier: file:vendor\banasan-ui-case-carousel-20261103.tgz
         version: file:vendor/banasan-ui-case-carousel-20261103.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))
+      banasan-ui-pr2243:
+        specifier: file:vendor\banasandev-banasan-ui-1.5.1-dev.2.tgz
+        version: '@banasandev/banasan-ui@file:vendor/banasandev-banasan-ui-1.5.1-dev.2.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))'
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -33,6 +36,19 @@ packages:
   '@banasandev/banasan-ui@file:vendor/banasan-ui-case-carousel-20261103.tgz':
     resolution: {integrity: sha512-n4yOSDT/SNOT51DUifNnFhRUVQz+HheFIbpdiM8EtXLvlQxjnDVdj+d5CpE3psuSbHz8wzASH1PuUs77gmFIrw==, tarball: file:vendor/banasan-ui-case-carousel-20261103.tgz}
     version: 1.5.0
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
+      recharts: ^3.8.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      recharts:
+        optional: true
+
+  '@banasandev/banasan-ui@file:vendor/banasandev-banasan-ui-1.5.1-dev.2.tgz':
+    resolution: {integrity: sha512-ifw3gm/Ghk26RyZvmgGjjWmbwth9YmIJG5kGcz3KL2YRbyIViyPvuUGbtvdX5zYSwW8yrshfvHhRuEECJ+qxbg==, tarball: file:vendor/banasandev-banasan-ui-1.5.1-dev.2.tgz}
+    version: 1.5.1-dev.2
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -488,6 +504,14 @@ packages:
 snapshots:
 
   '@banasandev/banasan-ui@file:vendor/banasan-ui-case-carousel-20261103.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))':
+    dependencies:
+      iconoir-react: 7.12.1(react@19.2.3)
+      react: 19.2.3
+    optionalDependencies:
+      react-dom: 19.2.3(react@19.2.3)
+      recharts: 3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1)
+
+  '@banasandev/banasan-ui@file:vendor/banasandev-banasan-ui-1.5.1-dev.2.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))':
     dependencies:
       iconoir-react: 7.12.1(react@19.2.3)
       react: 19.2.3
