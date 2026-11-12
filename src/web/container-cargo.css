@@ -20,8 +20,7 @@
 .cargo-map button:not([aria-pressed=true]) {font-weight:500}
 .cargo-ficha-heading {display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:1rem}
 .cargo-ficha-heading h3 {margin:0}
-.cargo-ficha-heading .cargo-trace-action {margin-inline-start:auto;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;background:transparent;color:var(--color-text-2);border:1px solid var(--color-border-subtle);min-height:32px;padding:.3rem .65rem;font-size:.8125rem;font-weight:500}
-.cargo-ficha-heading .cargo-trace-action:hover {background:var(--color-soft-surface);color:var(--color-text)}
+.cargo-trace-action {display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:36px;white-space:nowrap}
 .cargo-history-controls {display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem}
 .cargo-seal {border:1px solid var(--color-border-subtle);padding:1rem;border-radius:var(--radius-surface);margin-bottom:.75rem}
 .cargo-seal header,.cargo-seal li {display:flex;justify-content:space-between;gap:.5rem;align-items:baseline;flex-wrap:wrap}
@@ -35,6 +34,8 @@
 .cargo-page .plan-documents small {display:block;color:var(--color-text-2);font-size:12px}
 .cargo-detail {scroll-margin-top:5rem}
 .cargo-header-actions {display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
-.cargo-open-row {cursor:pointer}
 .cargo-history-footer {display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
-.cargo-history-footer > :last-child {margin-inline-start:auto}
+.cargo-trace-actions {display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem;margin-inline-start:auto}
+.cargo-row-action {min-width:36px;min-height:36px;padding:.4rem}
+.cargo-no-loading {color:var(--color-text-2);font-size:.8rem;white-space:nowrap}
+@media(max-width:760px){.cargo-trace-actions{width:100%}.cargo-trace-action{flex:1 1 100%}}

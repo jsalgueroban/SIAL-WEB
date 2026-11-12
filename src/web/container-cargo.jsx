@@ -63,16 +63,12 @@ function Cargo({row,onClose}) {
   })));
   const sealGroups = Map.groupBy(seals, seal => seal.value);
   return <article className="card cargo-detail" id="container-cargo">
-    <header className="card-header"><div><h2 ref={heading} tabIndex={-1}>{loading?'Cargue':'Traza'} de {row.containerLabel}</h2><p>{row.cargo ? row.cargo.originName+' → '+row.cargo.destinationName : 'Sin cargue registrado'}</p></div>{loading && <div className="cargo-header-actions"><Chip tone="info">{loading.boxQuantity} cajas en total</Chip></div>}</header>
+    <header className="card-header"><div><h2 ref={heading} tabIndex={-1}>{loading?'Cargue':'Traza'} de {row.containerLabel}</h2><p>{row.cargo ? row.cargo.originName+' → '+row.cargo.destinationName : 'Sin cargue registrado'}</p></div><div className="cargo-header-actions">{loading && <Chip tone="info">{loading.boxQuantity} cajas en total</Chip>}<Button variant="outlined" onClick={onClose}>Cerrar cargue</Button></div></header>
     <div className={loading?'card-body cargo-workspace':'card-body'}>{loading && <section><h3>Posiciones de cargue</h3><div className="cargo-map">{loading.pallets.map(item =>
       <button key={item.position} aria-pressed={position===item.position} onClick={()=>selectPosition(item.position)}>Pos. {String(item.position).padStart(2,'0')}<small>{item.boxQuantity} cajas</small></button>)}</div></section>}
     <div className="cargo-inspector">
       {pallet && <section aria-live="polite">
-        <div className="cargo-ficha-heading"><h3>Ficha del pallet</h3><Chip tone={trace.type==='Completo'?'success':trace.type==='Incompleto'?'warning':'inactive'}>{trace.type}</Chip>
-          <a className="btn btn-secondary cargo-trace-action" href={'trazabilidad-pallets.html?sscc='+encodeURIComponent(pallet.sscc)} aria-label={'Abrir trazabilidad completa del pallet '+pallet.sscc}>
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 9v5a4 4 0 0 0 4 4h5"/></svg>
-            Abrir trazabilidad
-          </a></div>
+        <div className="cargo-ficha-heading"><h3>Ficha del pallet</h3><Chip tone={trace.type==='Completo'?'success':trace.type==='Incompleto'?'warning':'inactive'}>{trace.type}</Chip></div>
         <dl className="cargo-facts">
           <div><dt>SSCC</dt><dd>{pallet.sscc}</dd></div>
           <div><dt>Peso estimado</dt><dd>{pallet.estimatedWeightKg.toLocaleString('es-CO')} kg</dd></div>
@@ -104,7 +100,10 @@ function Cargo({row,onClose}) {
             </section>) : <p>Sin sellos registrados.</p>}</div>}
         <footer className="cargo-history-footer">
           {history==="recorrido" && movements.length>3 && <Button variant="ghost" aria-expanded={expanded} onClick={()=>{setExpanded(!expanded);selectStep(movements[0]?.id);}}>{expanded?"Ver últimos 3 movimientos":"Ver los "+movements.length+" movimientos"}</Button>}
-          <Button variant="outlined" onClick={onClose}>{loading?"Cerrar cargue":"Cerrar traza"}</Button>
+          <div className="cargo-trace-actions">
+            {pallet && <a className="btn btn-secondary cargo-trace-action" href={'trazabilidad-pallets.html?sscc='+encodeURIComponent(pallet.sscc)} aria-label={'Ver trazabilidad del pallet '+pallet.sscc}>Ver trazabilidad de pallets</a>}
+            <a className="btn btn-secondary cargo-trace-action" href={'../Trazabilidad/auditoria-operativa.html?search='+encodeURIComponent(row.operationCode)} aria-label={'Ver trazabilidad del contenedor '+row.containerLabel}>Ver trazabilidad de contenedores</a>
+          </div>
         </footer>
       </section>
     </div></div>
@@ -125,6 +124,7 @@ export function ContainerCargo() {
     trigger?.focus({preventScroll:true});
     trigger?.closest('tr')?.scrollIntoView({block:'center'});
   }
+  const hasPallets = item => Number(item.cargo?.palletQuantity) > 0;
   const columns = [
     {key:'container',header:'Contenedor',render:item=><div className="plan-documents"><strong>{item.containerLabel}</strong><small>{item.containerType || 'Tipo sin registrar'}</small></div>},
     {key:'location',header:'Ubicación',render:item=>item.locationLabel},
@@ -132,9 +132,10 @@ export function ContainerCargo() {
       const latest = item.trace.reduce((last,entry)=>!last || entry.occurredAtValue > last.occurredAtValue ? entry : last,null);
       return <div className="plan-documents">{item.status}{/programad/i.test(item.status) && <small>Radicación {item.filingNumber}</small>}<small>{latest?.occurredAt || 'Sin fecha de movimiento'}</small></div>;
     }},
-    {key:'cargo',header:'Cantidad de pallets',align:'center',render:item=><Button id={"cargo-trigger-"+item.id} variant="ghost" aria-label={`${item.id===selected?'Ocultar':'Ver'} ${item.cargo?'cargue':'traza'} de ${item.containerLabel}`} aria-expanded={item.id===selected} onClick={event=>{event.stopPropagation();if(item.id===selected) closeCargo(); else select(item.id);}}>{item.cargo?.palletQuantity ?? 'Sin dato'} {item.id===selected?'▴':'▾'}</Button>},
+    {key:'cargo',header:'Cantidad de pallets',align:'center',render:item=>item.cargo?.palletQuantity ?? 'Sin dato'},
     {key:'state',header:<TableColumnFilter label="Estado de carga" options={options} value={filter} onApply={value=>{setFilter(value);setPage(1);select(null)}}/>,render:item=><Chip preset={tones[cargoState(item)]}>{cargoState(item)}</Chip>},
-    {key:'week',header:'Semana operativa',render:item=>item.weekNumber+' · '+item.year}
+    {key:'week',header:'Semana operativa',render:item=>item.weekNumber+' · '+item.year},
+    {key:'actions',header:'Cargue',align:'center',render:item=>hasPallets(item) ? <Button id={'cargo-trigger-'+item.id} variant="ghost" className="cargo-row-action" aria-label={`${item.id===selected?'Ocultar':'Ver'} cargue de ${item.containerLabel}`} title={item.id===selected?'Ocultar cargue':'Ver cargue'} aria-expanded={item.id===selected} aria-controls="container-cargo" onClick={()=>{if(item.id===selected) closeCargo(); else select(item.id);}}><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></Button> : <span className="cargo-no-loading">Sin cargue</span>}
   ];
-  return <section className="page cargo-page"><p className="page-eyebrow">Operaciones Puerto / Trazabilidad</p><h1 className="page-title">Trazabilidad de contenedores</h1><article className="card plan-list"><header className="card-header"><h2 className="card-title">Contenedores</h2><Chip preset="info">{visible.length} {visible.length===1?"registro":"registros"}</Chip></header><div className="sial-library-table"><Table rowProps={item=>({className:'cargo-open-row',onClick:()=>{if(selected===item.id) document.getElementById('container-cargo')?.scrollIntoView({block:'start'}); else select(item.id);}})} data={shown} columns={columns} rowKey={item=>item.id} minWidth="940px" emptyState="Sin contenedores para los estados seleccionados."/><Pagination page={page} pageSize={pageSize} total={visible.length} pageSizeOptions={[10,30,50]} onPageChange={next=>{setPage(next);select(null);}} onPageSizeChange={size=>{setPageSize(size);setPage(1);select(null);}}/></div></article>{row && <Cargo key={row.id} row={row} onClose={closeCargo}/>}</section>;
+  return <section className="page cargo-page"><p className="page-eyebrow">Operaciones Puerto / Histórico</p><h1 className="page-title">Histórico de contenedores</h1><article className="card plan-list"><header className="card-header"><h2 className="card-title">Contenedores</h2><Chip preset="info">{visible.length} {visible.length===1?"registro":"registros"}</Chip></header><div className="sial-library-table"><Table data={shown} columns={columns} rowKey={item=>item.id} minWidth="940px" emptyState="Sin contenedores para los estados seleccionados."/><Pagination page={page} pageSize={pageSize} total={visible.length} pageSizeOptions={[10,30,50]} onPageChange={next=>{setPage(next);select(null);}} onPageSizeChange={size=>{setPageSize(size);setPage(1);select(null);}}/></div></article>{row && <Cargo key={row.id} row={row} onClose={closeCargo}/>}</section>;
 }
