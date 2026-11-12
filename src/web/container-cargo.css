@@ -1,0 +1,40 @@
+.cargo-page {display:grid;gap:1rem}
+.cargo-page .card {min-width:0}
+.cargo-page .card-header {display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.cargo-detail h2,.cargo-detail h3 {margin:0 0 .5rem}
+.cargo-workspace {display:grid;grid-template-columns:minmax(200px, .7fr) minmax(280px,1.3fr);gap:2rem}
+.cargo-map {display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem;padding:.8rem;border:2px solid var(--border,#a9b8be);border-radius:.75rem}
+.cargo-map button {font:inherit;font-weight:600;color:inherit;background:transparent;border:1px solid var(--border,#a9b8be);border-radius:.35rem;padding:.5rem;cursor:pointer}
+.cargo-map button[aria-pressed=true] {background:#176550;color:white;border-color:#176550}
+.cargo-map small {display:block;font-weight:400}
+.cargo-workspace table + h3,.cargo-workspace h3:not(:first-child) {margin-top:1.5rem}
+@media(max-width:760px){.cargo-workspace{grid-template-columns:minmax(0,1fr)}}
+.cargo-detail .card-header h2 {font-size:1.15rem;font-weight:650;line-height:1.4;margin:0}
+.cargo-detail .card-header p {margin:.25rem 0 0;color:var(--color-text-2)}
+.cargo-workspace h3 {font-size:1rem;font-weight:600;margin:0 0 .85rem}
+.cargo-inspector {min-width:0}
+.cargo-facts {display:flex;flex-wrap:wrap;gap:1rem 2rem;margin:0}
+.cargo-facts dt {font-size:.78rem;color:var(--color-text-2);margin-bottom:.25rem}
+.cargo-facts dd {margin:0;font-weight:500;overflow-wrap:anywhere}
+.cargo-journey {margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--color-border-subtle)}
+.cargo-map button:not([aria-pressed=true]) {font-weight:500}
+.cargo-ficha-heading {display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:1rem}
+.cargo-ficha-heading h3 {margin:0}
+.cargo-ficha-heading .cargo-trace-action {margin-inline-start:auto;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;background:transparent;color:var(--color-text-2);border:1px solid var(--color-border-subtle);min-height:32px;padding:.3rem .65rem;font-size:.8125rem;font-weight:500}
+.cargo-ficha-heading .cargo-trace-action:hover {background:var(--color-soft-surface);color:var(--color-text)}
+.cargo-history-controls {display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem}
+.cargo-seal {border:1px solid var(--color-border-subtle);padding:1rem;border-radius:var(--radius-surface);margin-bottom:.75rem}
+.cargo-seal header,.cargo-seal li {display:flex;justify-content:space-between;gap:.5rem;align-items:baseline;flex-wrap:wrap}
+.cargo-seal h4 {font-size:1rem;font-weight:600;margin:0;overflow-wrap:anywhere}
+.cargo-seal header span,.cargo-seal small {color:var(--color-text-2);font-size:.8rem}
+.cargo-seal ol {margin:.75rem 0 0;padding:0;list-style:none}
+.cargo-seal li {border-top:1px solid var(--color-border-subtle);padding:.6rem 0}
+.cargo-seal li small {display:block}
+.cargo-page .cargo-toggle {min-height:32px;padding:.25rem .65rem;white-space:nowrap}
+
+.cargo-page .plan-documents small {display:block;color:var(--color-text-2);font-size:12px}
+.cargo-detail {scroll-margin-top:5rem}
+.cargo-header-actions {display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.cargo-open-row {cursor:pointer}
+.cargo-history-footer {display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.cargo-history-footer > :last-child {margin-inline-start:auto}

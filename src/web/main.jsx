@@ -1,3 +1,4 @@
+import {ContainerCargo} from "./container-cargo.jsx";
 import {HomeOverview} from './home-overview.jsx';
 import React from "react";
 import { SecurityContainers, SecurityVehicles, SecurityPoma } from "./security-product/pages.jsx";
@@ -38,7 +39,7 @@ import { FarmCatalog_sectores } from "./farm-catalog-sectores.jsx";
 
 export { mountShell };
 
-const mounts = {"home-overview": HomeOverview,
+const mounts = {"container-cargo": ContainerCargo, "home-overview": HomeOverview,
   "security-containers": SecurityContainers,
   "security-vehicles": SecurityVehicles,
   "security-poma": SecurityPoma,
@@ -105,3 +106,5 @@ if (document.readyState === "loading") {
 }
 
 export {mountPalletDetail, unmountPalletDetail} from './pallet-trace-detail.jsx';
+
+export {cargoPalletRecord} from './container-cargo.jsx';
