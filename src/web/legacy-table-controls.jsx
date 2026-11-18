@@ -1,3 +1,5 @@
+import "../../vendor/banasan-ui-pr2243/table_context_menu.css";
+import { TableContextMenu } from "banasan-ui-pr2243";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
@@ -922,7 +924,27 @@ function mountFamilyTable(native) {
   flushSync(() => createRoot(mount).render(<LinkedFamilyTable native={native} />));
 }
 
+function NotificationFilters({ host }) {
+  const [selected, setSelected] = useState("Todas");
+  return ["Todas", "Sin leer", "Pendientes"].map(label => (
+    <Button key={label} variant={selected === label ? "filled" : "ghost"}
+      aria-pressed={selected === label} onClick={() => {
+        setSelected(label);
+        host.dispatchEvent(new CustomEvent("filterchange", { detail: label }));
+      }}>{label}</Button>
+  ));
+}
+
 export function mountLegacyTableControls() {
+  const filters = document.querySelector("#notificationStateFilter");
+  if (filters && !enhanced.has(filters)) {
+    enhanced.add(filters);
+    const menuRoot = createRoot(document.createElement("div"));
+    filters.addEventListener("notificationmenu", ({ detail }) => {
+      menuRoot.render(detail ? <TableContextMenu {...detail} open /> : null);
+    });
+    createRoot(filters).render(<NotificationFilters host={filters} />);
+  }
   if (document.querySelector("[data-sial-react-view]")) return;
   const scan = () => {
     mountPortContainerSelect();

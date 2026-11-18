@@ -2280,4 +2280,173 @@ if (document.readyState === "loading") {
 }
 /* === SIAL View Motion END (reversible hook) === */
 
-
+/* Bandeja compartida de la propuesta web. */
+(() => {
+  const root = new URL("../", document.currentScript.src);
+  const bell = document.querySelector('button[aria-label="Notificaciones"]');
+  if (!bell) return;
+  bell.classList.add("sial-alert-bell");
+  bell.setAttribute("aria-haspopup", "dialog");
+  bell.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M10.5 4a1.5 1.5 0 0 1 3 0v.55a7 7 0 0 1 5.45 6.82v2.03c0 1.32.42 2.5 1.45 3.65.7.79.16 2.05-.91 2.05H4.51c-1.07 0-1.61-1.26-.91-2.05 1.03-1.15 1.45-2.33 1.45-3.65v-2.03a7 7 0 0 1 5.45-6.82V4ZM9.55 20.2h4.9a2.5 2.5 0 0 1-4.9 0Z"/></svg>';
+  const badge = document.createElement("span");
+  badge.className = "sial-alert-count";
+  bell.append(badge);
+  const tray = document.createElement("section");
+  tray.id = "sial-alert-tray";
+  tray.className = "profile-panel profile-panel-wide";
+  tray.setAttribute("role","dialog");
+  tray.hidden = true;
+  tray.setAttribute("aria-label", "Notificaciones");
+  tray.innerHTML = '<div class="profile-summary"><div class="alert-heading"><strong class="profile-user">Notificaciones</strong><button aria-label="Cerrar notificaciones">×</button></div><div id="notificationStateFilter" role="group" aria-label="Filtrar notificaciones"></div></div><div class="alert-list profile-assignment-content"></div>';
+  const content = document.createElement("div");
+  content.className = "alert-content";
+  content.append(...Array.from(tray.childNodes));
+  tray.append(content);
+  document.body.append(tray);
+  bell.setAttribute("aria-controls", tray.id);
+  const list = tray.querySelector(".alert-list");
+  const filterControl = tray.querySelector("#notificationStateFilter");
+  let filter = "Todas";
+  let active = null;
+  const entries = [
+    ["BOR-2026-033-01","Referencia por confirmar","Media","Hoy, 08:42"],
+    ["AC-2026-032","Aviso de corte publicado","Informativa","Hoy, 10:24"],
+    ["AC-2026-031-01","Una referencia requiere modificación","Alta","Ahora"]
+  ];
+  const key = "sial-propuesta-bandeja-v2";
+  let state;
+  try { state = JSON.parse(sessionStorage.getItem(key)); } catch {}
+  if (!Array.isArray(state) || !state.length || !state.every(item => item && entries[item.source])) {
+    let previous;
+    try { previous = JSON.parse(sessionStorage.getItem("sial-propuesta-bandeja-v1")); } catch {}
+    state = entries.flatMap((_, source) => (previous?.[source]?.visible ?? (source < 2))
+      ? [{source, visible:true, read:!!previous?.[source]?.read, pending:!!previous?.[source]?.pending}] : []);
+  }
+  const save = () => { try { sessionStorage.setItem(key,JSON.stringify(state)); } catch {} };
+  const demoLimit = 5;
+  if (state.length > demoLimit) {
+    state = state.slice(-2);
+    save();
+  }
+  const opened = () => !tray.hidden;
+  function position() {
+    if (!opened()) return;
+    const box = bell.getBoundingClientRect();
+    tray.style.top = (box.bottom + 10) + "px";
+    tray.style.left = Math.max(8,Math.min(box.right - tray.offsetWidth,innerWidth-tray.offsetWidth-8)) + "px";
+    tray.style.setProperty("--alert-pointer", (box.left + box.width / 2 - parseFloat(tray.style.left) - 5) + "px");
+    content.style.maxHeight = Math.max(96,innerHeight-box.bottom-20) + "px";
+  }
+  function render() {
+    const unread = state.filter(s => s.visible && !s.read).length;
+    const priority = ["Alta","Media","Informativa"].find(p => state.some(s => entries[s.source][2] === p && !s.read));
+    badge.textContent = unread || "";
+    badge.dataset.priority = priority || "";
+    bell.setAttribute("aria-label", "Notificaciones, "+unread+" sin leer"+(priority?", prioridad "+priority:""));
+    bell.setAttribute("aria-expanded", String(opened()));
+    list.innerHTML = "";
+    for (let i=state.length-1; i>=0; i--) {
+      const s = state[i], [id,title,level,initialTime] = entries[s.source];
+      const time = s.arrived ? new Date(s.arrived).toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"}) : initialTime;
+      if (!s.visible || (filter==="Sin leer" && s.read) || (filter==="Pendientes" && !s.pending)) continue;
+      const row = document.createElement("article");
+      row.dataset.index = i;
+      row.innerHTML = '<div><small>Planeación · '+time+'</small><strong>'+title+'</strong><small>'+id+'</small><span data-priority="'+level+'">'+level+'</span> <small>'+[!s.read && "Sin leer",s.pending && "Pendiente"].filter(Boolean).join(" · ")+'</small></div><button class="alert-more" aria-haspopup="menu" aria-label="Acciones de '+id+'" aria-expanded="'+(active===i)+'">···</button>';
+      list.append(row);
+    }
+    if (!list.children.length) {
+      const empty = document.createElement("p");
+      empty.className = "alert-empty";
+      empty.textContent = {
+        "Todas": "Aún no hay notificaciones.",
+        "Sin leer": "Estás al día. No tienes notificaciones sin leer.",
+        "Pendientes": "No tienes notificaciones marcadas como pendientes."
+      }[filter];
+      list.append(empty);
+    }
+    position();
+  }
+  function close() { dismissMenu(); tray.hidden=true; active=null; render(); bell.focus(); }
+  bell.addEventListener("click", () => {
+    if (opened()) return close();
+    tray.hidden=false; render(); tray.querySelector("button").focus();
+  });
+  tray.querySelector(".alert-heading button").onclick = close;
+  filterControl.addEventListener("filterchange", event => {
+    filter = event.detail;
+    dismissMenu();
+    render();
+  });
+  function dismissMenu() {
+    if (active === null) return;
+    list.querySelector('article[data-index="'+active+'"] .alert-more')?.setAttribute("aria-expanded","false");
+    active = null;
+    filterControl.dispatchEvent(new CustomEvent("notificationmenu", {detail:null}));
+  }
+  function actions(e) {
+    const row=e.target.closest("article");
+    if (!row) return;
+    e.preventDefault();
+    const i=Number(row.dataset.index);
+    const toggle=e.type==="click" && active===i;
+    dismissMenu();
+    if (toggle) return;
+    active=i;
+    const trigger=row.querySelector(".alert-more");
+    const bounds=trigger.getBoundingClientRect();
+    const pointer=e.type==="contextmenu" && (e.clientX || e.clientY);
+    const x=pointer ? e.clientX : bounds.right;
+    const y=pointer ? e.clientY : bounds.bottom;
+    const s=state[i];
+    trigger.setAttribute("aria-expanded","true");
+    const commands = [
+      ["go", "Ir al registro"],
+      ["read", s.read ? "Marcar como no leída" : "Marcar como leída"],
+      ["pending", s.pending ? "Quitar de pendientes" : "Marcar como pendiente"]
+    ];
+    filterControl.dispatchEvent(new CustomEvent("notificationmenu", {detail:{
+      position:{x, y}, label:"Acciones de la notificación", returnFocusTo:trigger,
+      onClose:dismissMenu,
+      items:commands.map(([id,label]) => ({id,label,onSelect:()=>selectAction(i,id)}))
+    }}));
+  }
+  list.oncontextmenu=actions;
+  list.onclick=e=>{if(e.target.closest(".alert-more")) actions(e);};
+  function selectAction(i,action) {
+    const s=state[i];
+    if (action==="go") {
+      s.read=true; save();
+      location.href=new URL("Gestion de Planeacion/consultar-aviso-corte.html?aviso="+entries[s.source][0],root);
+      return;
+    }
+    if (action==="read") s.read=!s.read;
+    if (action==="pending") s.pending=!s.pending;
+    dismissMenu(); save(); render();
+    (list.querySelector('article[data-index="'+i+'"] button') || tray.querySelector(".alert-heading button")).focus();
+  };
+  function scheduleArrival() {
+    window.setTimeout(() => {
+      if (!document.hidden && localStorage.getItem("sial-notifications") !== "false" && active === null) {
+        const source = Math.floor(Math.random() * entries.length);
+        const reset = state.length >= demoLimit;
+        if (reset) state = [];
+        state.push({source, arrived:Date.now(), visible:true, read:false, pending:false});
+        const focusedRow = document.activeElement.closest(".alert-list article");
+        save();
+        render();
+        if (focusedRow && reset) filterControl.querySelector("[aria-pressed=true]")?.focus({preventScroll:true});
+        if (focusedRow && !reset) list.querySelector('article[data-index="'+focusedRow.dataset.index+'"] button')?.focus({preventScroll:true});
+        bell.classList.remove("alert-arrived");
+        void bell.offsetWidth;
+        bell.classList.add("alert-arrived");
+      }
+      scheduleArrival();
+    }, 18000 + Math.floor(Math.random() * 12001));
+  }
+  scheduleArrival();
+  document.addEventListener("pointerdown", e => { if(e.target.closest(".bui-table-context-menu")) return; if(opened() && !tray.contains(e.target) && !bell.contains(e.target)) {tray.hidden=true;active=null;render();} });
+  document.addEventListener("keydown", e => { if(opened() && e.key==="Escape" && !e.defaultPrevented){e.preventDefault();close();} });
+  window.addEventListener("resize",()=>{dismissMenu();position();});
+  window.addEventListener("scroll",position,true);
+  render();
+})();

@@ -590,7 +590,7 @@ html[data-sidebar-state="collapsed"] .nav-link:focus-visible {
   transform: none;
 }
 
-.header-right > .icon-btn:not(.theme-toggle) {
+.header-right > .icon-btn:not(.theme-toggle):not(.sial-alert-bell) {
   display: none;
 }
 html[data-sidebar-state="collapsed"] .nav-module-head {
@@ -6931,3 +6931,37 @@ html[data-theme="dark"] {
 @media (prefers-reduced-motion: reduce) {
   .brand-mark [data-sial-variant="christmas"][data-sial-motion] .bui-sial-christmas-crown { animation: none; }
 }
+
+.sial-alert-bell{position:relative;overflow:visible;border:1px solid var(--color-border-subtle);background:var(--color-surface)}
+.sial-alert-bell[aria-expanded=true]{background:var(--color-hover-surface)}
+.sial-alert-bell svg{display:block;width:24px;height:24px;color:var(--color-text)}
+.sial-alert-count:not(:empty){position:absolute;right:-3px;top:-4px;display:grid;place-items:center;min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;border:1px solid var(--color-info-main);border-radius:20px;background:var(--color-info-bg);color:var(--color-info-text);font-family:inherit;font-size:11px;font-weight:700;line-height:1}
+.sial-alert-count[data-priority=Media]{border-color:var(--color-warning-main);background:var(--color-warning-bg);color:var(--color-warning-text)}
+.sial-alert-count[data-priority=Alta]{border-color:var(--color-error-main);background:var(--color-error-bg);color:var(--color-error-text)}
+#sial-alert-tray{position:fixed;z-index:990;inset:auto;margin:0;box-sizing:border-box;color:var(--color-text);font-family:inherit;text-align:left}
+#sial-alert-tray::before{left:var(--alert-pointer);right:auto}
+#sial-alert-tray .alert-content{display:flex;flex-direction:column;overflow:hidden;border-radius:inherit}
+#sial-alert-tray .profile-summary{flex:none}
+#sial-alert-tray article small + span{margin-inline-start:6px}
+#sial-alert-tray button:not(#notificationStateFilter *){font:inherit;color:inherit;border:0;background:transparent;border-radius:6px;padding:5px 8px;cursor:pointer}
+#sial-alert-tray button:not(#notificationStateFilter *):hover{background:var(--color-hover-surface)}
+#sial-alert-tray .alert-heading,#sial-alert-tray article{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+#sial-alert-tray .alert-heading{align-items:center;font-size:18px}
+#sial-alert-tray article{border-top:1px solid var(--color-border-subtle);padding:12px 0;flex-wrap:wrap;font-size:14px}
+#sial-alert-tray article strong,#sial-alert-tray article small:first-child{display:block}
+#sial-alert-tray small{color:var(--color-text-2);font-size:12px}
+#sial-alert-tray article span{padding:2px 6px;border-radius:5px;font-size:11px;background:var(--color-info-bg);color:var(--color-info-text)}
+#sial-alert-tray [data-priority=Media]{background:var(--color-warning-bg);color:var(--color-warning-text)}
+#sial-alert-tray [data-priority=Alta]{background:var(--color-error-bg);color:var(--color-error-text)}
+#notificationStateFilter{display:flex;flex-wrap:wrap;gap:4px}
+#notificationStateFilter button{min-height:30px;padding:4px 9px;font-size:12px}
+@media(prefers-reduced-motion:no-preference){.alert-arrived svg{transform-origin:50% 10%;animation:sial-alert-ring .5s ease-out}@keyframes sial-alert-ring{20%{transform:rotate(16deg)}45%{transform:rotate(-12deg)}70%{transform:rotate(6deg)}}}
+
+#sial-alert-tray .alert-list{display:block;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--color-border) transparent;gap:0;padding-block:0}
+#sial-alert-tray .alert-empty{margin:0;padding:24px 4px;text-align:center;font-size:13px;line-height:1.5;color:var(--color-text-2)}
+#sial-alert-tray article:first-child{border-top:0}
+#sial-alert-tray article + article{border-color:var(--profile-section-border,var(--color-border-subtle))}
+
+#sial-alert-tray.profile-panel-wide{width:min(360px,calc(100vw - 24px));padding:0;overflow:visible}
+#sial-alert-tray .profile-summary{display:grid;gap:12px;padding:18px;background:var(--color-surface-raised);border-bottom:1px solid var(--color-border)}
+#sial-alert-tray .alert-list{padding-inline:18px}
