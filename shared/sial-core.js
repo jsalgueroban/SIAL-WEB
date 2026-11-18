@@ -2366,7 +2366,12 @@ if (document.readyState === "loading") {
     }
     position();
   }
-  function close() { dismissMenu(); tray.hidden=true; active=null; render(); bell.focus(); }
+  function close(restoreFocus = true) {
+    dismissMenu();
+    tray.hidden = true;
+    render();
+    if (restoreFocus) bell.focus();
+  }
   bell.addEventListener("click", () => {
     if (opened()) return close();
     tray.hidden=false; render(); tray.querySelector("button").focus();
@@ -2444,7 +2449,10 @@ if (document.readyState === "loading") {
     }, 18000 + Math.floor(Math.random() * 12001));
   }
   scheduleArrival();
-  document.addEventListener("pointerdown", e => { if(e.target.closest(".bui-table-context-menu")) return; if(opened() && !tray.contains(e.target) && !bell.contains(e.target)) {tray.hidden=true;active=null;render();} });
+  document.addEventListener("pointerdown", event => {
+    if (!opened() || event.target.closest(".bui-table-context-menu")) return;
+    if (!tray.contains(event.target) && !bell.contains(event.target)) close(false);
+  });
   document.addEventListener("keydown", e => { if(opened() && e.key==="Escape" && !e.defaultPrevented){e.preventDefault();close();} });
   window.addEventListener("resize",()=>{dismissMenu();position();});
   window.addEventListener("scroll",position,true);
