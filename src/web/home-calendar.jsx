@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from 'react';
+import approvedCalendar from '../../shared/cases/planning-weeks-2026.json';
 import {Card,Button,RibbonCode} from '@banasandev/banasan-ui';
 const tapeColors={BL:['#fff','#183149'],AZ:['#0075c9','#fff'],RO:['#dc2626','#fff'],CA:['#784b31','#fff'],NE:['#24272c','#fff'],NA:['#f07816','#132a42'],VE:['#258033','#fff'],AM:['#f3d313','#132a42']};
 const parse=value=>new Date(`${value.slice(0,10)}T12:00:00Z`);
@@ -25,7 +26,9 @@ function AnnualCalendar({weeks,today,year,highlightTodayInExport=false}){
  return <Card className={highlightTodayInExport ? "planning-year" : "planning-year clean-export"}>
    <header className="planning-year-heading">
      <img className="calendar-print-brand" src="../shared/brand/banasan-calendario.png" alt="Banasan" />
-     <Button className="planning-export" variant="outlined" onClick={()=>window.print()}>Exportar a PDF</Button>
+     {year===2026 && !highlightTodayInExport && JSON.stringify(weeks)===JSON.stringify(approvedCalendar.weeks) ? (
+       <a className="btn btn-secondary planning-export" href="../shared/cases/Calendario-bananero-2026.pdf" download="Calendario-bananero-2026.pdf">Exportar a PDF</a>
+     ) : <Button className="planning-export" variant="outlined" onClick={()=>window.print()}>Exportar a PDF</Button>}
      <h2 className="planning-calendar-title"><span className="calendar-screen-label">Calendario </span><span className="calendar-print-label">Calendario bananero</span><span className="calendar-year-value">{year}</span></h2>
      <p>{weeks.length} semanas productivas</p>
    </header>
