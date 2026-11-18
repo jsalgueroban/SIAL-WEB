@@ -40,7 +40,8 @@ import { FarmCatalog_sectores } from "./farm-catalog-sectores.jsx";
 
 export { mountShell };
 
-const mounts = {"published-schedules": PublishedSchedules, "container-cargo": ContainerCargo, "home-overview": HomeOverview,
+import { PlanningCalendar } from "./home-calendar.jsx";
+const mounts = {"planning-calendar": PlanningCalendar, "published-schedules": PublishedSchedules, "container-cargo": ContainerCargo, "home-overview": HomeOverview,
   "security-containers": SecurityContainers,
   "security-vehicles": SecurityVehicles,
   "security-poma": SecurityPoma,

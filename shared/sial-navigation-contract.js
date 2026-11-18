@@ -98,6 +98,7 @@ window.SIALNavigationContract = Object.freeze({
           views: [
             { id: "avisos", label: "Avisos de corte", href: "gestion-avisos-corte.html" },
             { id: "crearAviso", label: "Crear aviso", href: "crear-aviso-corte.html" },
+            { id: "calendario", label: "Calendario bananero", href: "calendario-bananero.html" },
             { id: "semanas", label: "Gestion de semanas", href: "gestion-semanas.html" },
             { id: "generacion", label: "Generar semanas", href: "generacion-semanas.html" },
             { id: "cintas", label: "Gestion de cintas", href: "gestion-cintas.html" }

@@ -1,0 +1,125 @@
+.calendar-print-brand, .calendar-print-signature { display: none; }
+ .planning-year .planning-year-heading {
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center; border-bottom:1px solid var(--color-border-subtle);
+}
+.planning-export { justify-self:start; }
+.planning-year-heading .planning-calendar-title { grid-column:2; text-align:center; text-transform:uppercase; color:var(--color-primary-600); }
+.planning-calendar-title span { display:block; font-size:.8em; }
+.planning-year-heading p { grid-column:3; text-align:right; margin:0; }
+@media screen {
+  .planning-year .planning-year-heading {
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"title export" "count export";
+    gap:3px 16px;
+  }
+  .planning-year-heading .planning-calendar-title {
+    grid-area:title; text-align:left; text-transform:none; color:var(--color-text);
+  }
+  .planning-calendar-title span { display:inline; font-size:inherit; }
+  .planning-calendar-title .calendar-print-label { display:none; }
+  .planning-year-heading p { grid-area:count; text-align:left; }
+  .planning-year-heading .planning-export { grid-area:export; justify-self:end; }
+}
+@media screen and (max-width:440px) {
+  .planning-year .planning-year-heading { grid-template-areas:"title" "count" "export"; grid-template-columns:1fr; }
+  .planning-year-heading .planning-export { justify-self:start; margin-top:8px; }
+}
+@media print {
+  .planning-calendar-title .calendar-screen-label { display:none; }
+  .planning-calendar-title .calendar-print-label { font-size:inherit; }
+}
+ .planning-key { display:block; }
+.planning-key h3 { margin:0 0 8px; }
+.planning-key ul { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:12px; }
+.planning-key li { display:grid; grid-template-columns:10px 1fr; gap:0 6px; align-items:center; line-height:1.35; }
+.planning-ribbon-swatch { grid-row:1 / span 2; display:block; width:10px; height:28px; }
+.planning-key li strong { color:var(--color-text); }
+.planning-key li span { color:var(--color-text-2); }
+@media screen and (max-width:1000px) { .planning-key ul { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media screen and (max-width:480px) { .planning-key ul { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@page { size: A4 landscape; margin: 8mm; }
+@media print {
+  html, body, .app-shell, .main, .main .page {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+    color: #172339 !important;
+  }
+  .app-shell > :not(.main), .page > :not([data-sial-react-view]), body > :not(.app-shell),
+  .planning-year .planning-export { display: none !important; }
+  .planning-year {
+    position: relative; border-radius:0!important; overflow:visible!important;
+    box-shadow: none !important;
+    border: 0 !important;
+    color-scheme: light;
+    --color-surface: white;
+    --color-soft-surface: #f4f7fa;
+    --color-text: #172339;
+    --color-text-2: #495669;
+    --color-border-subtle: #d6dfe7;
+    --color-primary-600: #004a87;
+    --color-primary-100: #e7f0f7;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .planning-year-heading { padding: 0 0 2mm; }
+  .planning-year-heading h2 { font-size: 15pt; }
+  .planning-year-heading p { margin: 0; }
+  .planning-key { padding: 1.5mm 2mm; }
+  .planning-month-grid { grid-template-columns: repeat(3,minmax(0,1fr)); padding: 2mm 0 0; gap: 2mm 4mm; }
+  .planning-month-grid .planning-month { grid-row:auto; max-width:none; }
+  .planning-month > header { padding: 0 0 0.5mm; }
+  .planning-month > header h2 { font-size: 9pt; }
+  .planning-month table { font-size: 8pt; }
+  .planning-month table :is(th,td), .planning-month table thead th { height: 4.6mm; line-height: 1; }
+  .planning-month td > span { height: 4.2mm; width: 5mm; }
+
+  .planning-year {
+    display:grid !important;
+    grid-template-columns:1fr auto;
+    grid-template-rows:auto 1fr auto;
+    min-height:190mm;
+    align-items:start;
+  }
+  .planning-year-heading,.planning-month-grid { grid-column:1/-1; }
+  .planning-year .planning-year-heading { grid-row:1; padding:0 0 3mm; }
+  .calendar-print-brand { display:block; grid-column:1; width:42mm; max-width:100%; height:auto; }
+  .planning-year-heading .planning-calendar-title { font-size:16pt; line-height:1.2; font-weight:700; }
+  .planning-year-heading p { font-size:8pt; }
+  .planning-year .planning-month-grid { grid-template-columns:repeat(3,minmax(0,1fr))!important; grid-row:2; align-self:stretch; align-content:space-evenly; }
+  .planning-key { grid-column:1; grid-row:3; align-self:center; }
+  .calendar-print-signature { display:flex; grid-column:2; grid-row:3; align-self:end; min-height:7mm; align-items:center; gap:2mm; padding-left:5mm; color:var(--color-primary-600); font-size:13pt; font-weight:700; }
+  .calendar-print-signature img { width:7mm; height:7mm; }
+
+  .planning-key {
+    display:block;
+    padding:2mm 2mm 1mm;
+    background:white;
+    border:0;
+    border-top:1px solid var(--color-border-subtle);
+  }
+  .planning-key h3 { margin:0 0 1.5mm; font-size:8pt; }
+  .planning-key ul { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:2mm; }
+  .planning-key li {
+    display:grid;
+    grid-template-columns:2.6mm 1fr;
+    grid-template-rows:auto auto;
+    gap:0 1.7mm;
+    align-items:center;
+    font-size:8pt;
+    line-height:1.2;
+  }
+  .planning-ribbon-swatch { width:2.6mm; height:7.3mm; }
+  .planning-year.clean-export .calendar-current-week td { background:var(--color-surface); }
+  .planning-year.clean-export [aria-current=date] { background:transparent; color:inherit!important; font-weight:inherit; box-shadow:none; }
+  .planning-year.clean-export .planning-month[data-current-month=true]>header h2 { color:var(--color-text); }
+  .planning-key li strong { grid-column:2; font-size:8.5pt; }
+}
