@@ -24,6 +24,7 @@ import { MaterialsOrderTraceAlternative } from "./materials-order-trace-alternat
 import { MaterialsOrderTrace } from "./materials-order-trace.jsx";
 import { MaterialsOrderAdjustment } from "./materials-order-adjustment.jsx";
 import { MaterialsSuggestedOrder } from "./materials-suggested-order.jsx";
+import { MaterialsScheduling } from "./materials-scheduling.jsx";
 import { MaterialsRecipes } from "./materials-recipes.jsx";
 import { MaterialsTransportOrders } from "./materials-transport-orders.jsx";
 import { MaterialsMaster } from "./materials-master.jsx";
@@ -69,6 +70,7 @@ const mounts = {"planning-calendar": PlanningCalendar, "published-schedules": Pu
   "materials-order-adjustment": MaterialsOrderAdjustment,
   "materials-suggested-order": MaterialsSuggestedOrder,
   "materials-recipes": MaterialsRecipes,
+  "materials-scheduling": MaterialsScheduling,
   "materials-transport-orders": MaterialsTransportOrders,
   "materials-master": MaterialsMaster,
   "materials-reference-config": () => <MaterialsMaster view="config" />,

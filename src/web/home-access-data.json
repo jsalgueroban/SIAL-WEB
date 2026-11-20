@@ -192,6 +192,10 @@
         "href": "Materiales y Suministros/pedidos-adicionales.html"
       },
       {
+        "label": "Programación de pedidos",
+        "href": "Materiales y Suministros/programacion-pedidos.html"
+      },
+      {
         "label": "Seguimiento de pedidos",
         "href": "Materiales y Suministros/seguimiento-pedidos-finca.html"
       },

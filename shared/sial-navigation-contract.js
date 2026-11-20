@@ -113,6 +113,7 @@ window.SIALNavigationContract = Object.freeze({
           views: [
             { id: "pedidos", label: "Gestión de pedidos", href: "gestion-pedidos-materiales.html" },
             { id: "pedidosAdicionales", label: "Pedidos adicionales", href: "pedidos-adicionales.html" },
+            { id: "programacionPedidos", label: "Programación de pedidos", href: "programacion-pedidos.html" },
             { id: "seguimientoPedidos", label: "Seguimiento de pedidos", href: "seguimiento-pedidos-finca.html" },
             { id: "aprobacionPedidos", label: "Aprobación de pedidos", href: "aprobacion-pedidos-materiales.html" },
             { id: "pedidosRecurrentes", label: "Pedidos recurrentes", href: "pedidos-recurrentes.html" },
