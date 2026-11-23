@@ -1760,3 +1760,39 @@ html[data-theme="dark"] .transport-pdf-preview > a { color:color-mix(in srgb,var
 .schedule-current-label {top:-15px;left:70px;}
 .schedule-dialog .workflow-actions {align-items:stretch;flex-direction:column;}
 }
+
+/* Nuevo pedido adicional: captura compacta, composición local aprobada. */
+.additional-materials-section .additional-section-header { padding-top: 16px; padding-bottom: 8px; }
+.additional-materials-section .additional-material-lines { padding-bottom: 8px; }
+.additional-materials-section .additional-material-line { padding: 10px 0; }
+.additional-materials-section .additional-material-line-main { grid-template-columns: minmax(240px,1.5fr) minmax(240px,1fr) minmax(170px,.7fr) 40px; gap: 6px 16px; align-items: start; }
+.additional-materials-section .additional-material-field { grid-column: 1; grid-row: 1; margin: 0; gap: 0; }
+.additional-materials-section .additional-material-field > small { margin-top: 4px; }
+.additional-materials-section .additional-material-facts { grid-column: 2; grid-row: 1; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin: 0; }
+.additional-materials-section .additional-material-facts > div { display: grid; gap: 10px; }
+.additional-materials-section .additional-material-facts dt { font-size: 13px; line-height: 20px; }
+.additional-materials-section .additional-material-facts dd { font-size: 14px; line-height: 24px; padding-top: 6px; }
+.additional-materials-section .additional-material-facts dd span { display: block; font-size: 12px; font-weight: 400; color: var(--color-text-3); }
+.additional-materials-section .additional-quantity-field { grid-column: 3; grid-row: 1; padding: 0; margin: 0; }
+.additional-materials-section .additional-material-line-main > button { grid-column: 4; grid-row: 1; margin-top: 26px; }
+.additional-materials-section .additional-compact-feedback { grid-column: 3; grid-row: 1; margin-top: 78px; }
+.additional-materials-section .additional-compact-feedback > small { margin: 0; }
+.additional-materials-section .additional-line-result { margin-top: 0; flex-wrap: wrap; }
+.additional-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 1100px) {
+ .additional-materials-section .additional-material-line-main { grid-template-columns: minmax(0,1fr) minmax(170px,.6fr) 40px; }
+ .additional-materials-section .additional-material-facts { grid-column: 1; grid-row: 2; }
+ .additional-materials-section .additional-material-facts > div { gap: 0; }
+ .additional-materials-section .additional-material-facts dd { padding-top: 0; }
+ .additional-materials-section .additional-quantity-field { grid-column: 2; grid-row: 1; }
+ .additional-materials-section .additional-compact-feedback { grid-column: 2; }
+ .additional-materials-section .additional-material-line-main > button { grid-column: 3; grid-row: 1; }
+}
+@media (max-width: 640px) {
+ .additional-materials-section .additional-section-header { gap: 12px; }
+ .additional-materials-section .additional-material-line-main { grid-template-columns: minmax(0,1fr) 40px; gap: 10px; }
+ .additional-materials-section .additional-material-line-main > button { grid-column: 2; grid-row: 1; }
+ .additional-materials-section .additional-material-facts { grid-column: 1 / -1; grid-row: 2; }
+ .additional-materials-section .additional-quantity-field { grid-column: 1 / -1; grid-row: 3; }
+ .additional-materials-section .additional-compact-feedback { grid-column: 1 / -1; grid-row: 4; margin-top: 0; }
+}
