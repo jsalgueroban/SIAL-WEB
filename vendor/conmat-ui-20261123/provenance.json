@@ -1,0 +1,9 @@
+{
+  "source": "D:/SIAL/Librerias/.worktrees/web/ribbon-purple-variant",
+  "baseCommit": "03c2e6d",
+  "version": "1.5.0",
+  "snapshot": "2026-11-23",
+  "scope": "Read-only consumed artifact for CONMAT FilterToolbar; upstream working tree is dirty and is not modified.",
+  "distSha256": "bc3877437025c5b2b6c66f93bc8c9165a5b2322f47ef505410ee04b3b0208a6f",
+  "filterCssSha256": "9cf0fc12404e10be47f52af244739b1c981c70ab764ab28f4b85487ae68751a5"
+}

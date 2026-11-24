@@ -1,0 +1,11 @@
+export declare const base_input_class = "h-[44px] px-[12px] w-full min-w-0 border border-[var(--color-border)] rounded-[var(--radius-control)] bg-[var(--color-field-bg)] text-[var(--color-text)] read-only:bg-[var(--color-field-readonly-bg)] read-only:text-[var(--color-text-2)] disabled:bg-[var(--color-field-readonly-bg)] disabled:text-[var(--color-text-2)] hover:border-[var(--color-text-3)] focus:outline-none focus:border-[var(--color-focus-ring)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--color-focus-ring)_24%,transparent)] placeholder:text-[var(--color-text-3)]";
+export declare const base_select_input_class = "h-[44px] px-[12px] w-full min-w-0 border border-[var(--color-border)] rounded-[var(--radius-control)] bg-[var(--color-field-bg)] text-[var(--color-text)] disabled:bg-[var(--color-field-readonly-bg)] disabled:text-[var(--color-text-2)] hover:border-[var(--color-text-3)] focus:outline-none focus:border-[var(--color-focus-ring)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--color-focus-ring)_24%,transparent)] placeholder:text-[var(--color-text-3)]";
+export declare const base_input_error_class = "!border-[var(--color-error-main)] !bg-[var(--color-field-error-bg)] !border-[var(--color-error-main)] ring-4 !ring-[color-mix(in_srgb,var(--color-error-main)_22%,transparent)]";
+export declare const input_ghost = "bg-transparent border-transparent";
+export declare const input_outline = "bg-transparent";
+export declare const base_label_class = "text-[13px] font-semibold text-[var(--color-text)] self-start";
+export declare const base_helper_class = "self-start m-0 text-[var(--color-text-3)] text-[12px] leading-[1.45]";
+export declare const base_text_input_error = "self-start mt-[-2px] text-[var(--color-error-main)] text-[12px] leading-[1.45]";
+export declare const base_input_icon_class = "w-[18px] aspect-square fill-none stroke-2 stroke-current";
+export declare const base_label_checkbox_class = "inline-flex items-center gap-[8px] text-[var(--color-text-2)] text-[13px]";
+export declare const base_input_checkbox_class = "w-[18px] h-[18px] accent-[var(--color-primary-500)] bg-[transparent] border border-solid border-[var(--color-text-2)] rounded-[2px]";

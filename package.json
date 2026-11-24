@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@banasandev/banasan-ui": "file:vendor\\banasan-ui-case-carousel-20261103.tgz",
+    "banasan-ui-conmat": "file:vendor\\conmat-ui-20261123",
     "banasan-ui-pr2243": "file:vendor\\banasandev-banasan-ui-1.5.1-dev.2.tgz",
+    "echarts": "6.1.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.8.1",

@@ -1,0 +1,1091 @@
+{
+  "date": "2026-11-24",
+  "sourceRevision": 16,
+  "scope": "Validación de propuesta local SIAL Web; no conformidad productiva ni porcentaje de avance funcional",
+  "criteriaCount": 102,
+  "e2e": {
+    "route": "R-001",
+    "originalOrder": "OS-04801",
+    "ordersInFinalRoute": 4,
+    "state": "Finalizada",
+    "documentState": "Aprobado",
+    "routeEvents": 11,
+    "administrativeEnabled": true,
+    "consoleErrors": []
+  },
+  "items": [
+    {
+      "id": "CA-01.1",
+      "criterio": "El sistema debe consultar las órdenes de servicio existentes en SIAL, sin requerir su creación nuevamente dentro de CONMAT.",
+      "estado_propuesta": "Contexto UI simulado; integración de producto pendiente",
+      "evidencia": [
+        "orders-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Consulta de órdenes originales representada por fixtures vinculados; no se recrean órdenes. La consulta al servicio SIAL requiere backend."
+    },
+    {
+      "id": "CA-01.2",
+      "criterio": "Debe mostrar como mínimo el consecutivo de la orden, fecha de creación, finca, material o insumo, cantidad y unidad de medida.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-01.3",
+      "criterio": "Debe permitir buscar y filtrar órdenes por consecutivo, finca, material, fecha y estado de programación.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-01.4",
+      "criterio": "Debe identificar las órdenes pendientes, preasignadas, programadas y canceladas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-01.5",
+      "criterio": "Debe impedir la programación duplicada de cantidades de una misma orden, salvo que el modelo de negocio permita distribuciones parciales controladas.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "orders-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Una orden sólo puede pertenecer a una ruta/subgrupo; cantidades son de consulta. No se inventa distribución parcial de cantidades."
+    },
+    {
+      "id": "CA-01.6",
+      "criterio": "Los cambios relevantes realizados en una orden desde su módulo de origen deberán reflejarse en CONMAT, identificando posibles afectaciones a las programaciones existentes.",
+      "estado_propuesta": "Escenario UI representado; sincronización de origen pendiente",
+      "evidencia": [
+        "orders-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Escenario ?escenario=origen comunica cambio e impacto y abre la orden. No existe sincronización automática con un módulo SIAL real."
+    },
+    {
+      "id": "CA-02.1",
+      "criterio": "El usuario interno autorizado debe poder seleccionar una o varias órdenes de servicio.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-02.2",
+      "criterio": "Debe poder asociar las órdenes seleccionadas a una empresa transportadora registrada y habilitada en SIAL.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-02.3",
+      "criterio": "Debe poder consultar y modificar la transportadora preasignada, de acuerdo con el estado de la operación y sus permisos.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-02.4",
+      "criterio": "El sistema debe registrar el usuario, fecha y hora de la preasignación.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "orders-decision.md",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-02.5",
+      "criterio": "La preasignación debe conservar la relación con cada orden original y sus materiales.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "orders-decision.md",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-02.6",
+      "criterio": "Las órdenes preasignadas deben quedar disponibles para su organización en rutas y posteriores asignaciones operativas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "orders-decision.md",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.1",
+      "criterio": "El sistema debe permitir organizar las órdenes preasignadas por empresa transportadora, ruta y subgrupos de viaje.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.2",
+      "criterio": "Cada ruta debe contar con una identificación y un nombre claramente visibles.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.3",
+      "criterio": "Cada agrupación debe mostrar de manera destacada el nombre de la empresa transportadora responsable.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.4",
+      "criterio": "Debe mostrar el conjunto de fincas pertenecientes a cada ruta y subgrupo.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.5",
+      "criterio": "Debe permitir expandir o contraer agrupaciones para consultar órdenes, fincas, materiales y cantidades asociadas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.6",
+      "criterio": "Debe permitir que una ruta contenga varios subgrupos y que cada subgrupo incluya una o varias órdenes de distintas fincas, según las reglas operativas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.7",
+      "criterio": "Debe presentar los totales de materiales agrupados por unidad de medida, evitando sumar cantidades incompatibles.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.8",
+      "criterio": "Las rutas deben diferenciarse visualmente mediante etiquetas, identificadores o elementos gráficos consistentes.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-03.9",
+      "criterio": "Esta vista no debe incluir campos para asignar placas ni conductores, ya que esta responsabilidad corresponde a la empresa transportadora.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-04.1",
+      "criterio": "El usuario interno autorizado debe poder modificar la composición de las rutas y subgrupos antes de su ejecución.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-04.2",
+      "criterio": "Debe poder agregar, retirar o mover órdenes entre rutas y subgrupos, respetando las restricciones operativas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-04.3",
+      "criterio": "Debe poder cambiar la transportadora preasignada cuando el estado del servicio lo permita.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-04.4",
+      "criterio": "Los totales de órdenes, fincas, materiales y cantidades deben actualizarse automáticamente después de cada modificación.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-04.5",
+      "criterio": "Cuando una modificación afecte una asignación previamente notificada, el sistema debe comunicar el cambio a la transportadora correspondiente.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Evento de cambio visible a la nueva empresa; aviso de retirada preservado para la anterior, sin datos vigentes ajenos. Entrega real requiere backend."
+    },
+    {
+      "id": "CA-04.6",
+      "criterio": "Debe conservar un historial de modificaciones que permita identificar los valores anteriores, los nuevos valores, el responsable y la fecha del cambio.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-04.7",
+      "criterio": "Debe impedir modificaciones incompatibles con servicios ya finalizados, excepto mediante procedimientos autorizados de corrección.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "routes-decision.md",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-05.1",
+      "criterio": "El sistema debe permitir cancelar la programación de una o varias órdenes sin cancelar necesariamente las demás órdenes pertenecientes a la misma ruta.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-05.2",
+      "criterio": "Debe permitir anular viajes completos cuando no deban ejecutarse.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-05.3",
+      "criterio": "Debe permitir reprogramar rutas, subgrupos u órdenes, según corresponda.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-05.4",
+      "criterio": "Toda cancelación, anulación o reprogramación debe solicitar un motivo.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-05.5",
+      "criterio": "Debe diferenciar claramente los estados de cancelado, anulado y reprogramado.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-05.6",
+      "criterio": "Cuando se retire una orden de una agrupación, el sistema debe recalcular automáticamente los totales y conservar la trazabilidad de la operación.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-05.7",
+      "criterio": "Las órdenes cuya programación haya sido cancelada deben poder quedar disponibles para una nueva programación, siempre que la orden original continúe vigente.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-05.8",
+      "criterio": "Cuando la operación ya tenga una placa asignada, el sistema debe informar a la transportadora sobre cualquier cambio que afecte su programación.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "Cambios generan eventos para campana local; el texto histórico de comunicación se conserva sin afirmar entrega de servidor."
+    },
+    {
+      "id": "CA-05.9",
+      "criterio": "Las operaciones de anulación y cancelación deben respetar restricciones especiales cuando el transporte se encuentre en ejecución o haya finalizado.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "programming-changes-decision.md",
+        "scripts/check-conmat-demo.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-06.1",
+      "criterio": "Las empresas transportadoras deben acceder mediante autenticación a un espacio de trabajo propio dentro de SIAL.",
+      "estado_propuesta": "Contexto UI simulado; integración de producto pendiente",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "Portal dentro de SIAL y contexto de empresa; autenticación real no construida en esta propuesta."
+    },
+    {
+      "id": "CA-06.2",
+      "criterio": "Cada empresa debe visualizar únicamente las rutas, órdenes y servicios que le hayan sido asignados.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-06.3",
+      "criterio": "El sistema debe generar una notificación cuando Banasan confirme una nueva preasignación de rutas u órdenes.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-06.4",
+      "criterio": "Debe permitir consultar las notificaciones recibidas, pendientes de lectura y relacionadas con modificaciones posteriores.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-06.5",
+      "criterio": "El portal debe mostrar las rutas pendientes de gestión, programadas, en ejecución, finalizadas y con novedades.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-06.6",
+      "criterio": "Cada ruta debe mostrar su nombre, fincas agrupadas, órdenes asociadas, materiales, cantidades y fecha programada.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-06.7",
+      "criterio": "Debe permitir consultar el detalle de cada ruta antes de realizar la asignación operativa.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "carrier-decision.md",
+        "notifications-restored.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-07.1",
+      "criterio": "La empresa transportadora debe poder asignar una placa a cada ruta o subgrupo operativo recibido.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-07.2",
+      "criterio": "Debe poder asociar un conductor al vehículo, según los datos requeridos por la operación.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-07.3",
+      "criterio": "La asignación debe realizarse exclusivamente desde las funcionalidades autorizadas para la transportadora, sin duplicar esta responsabilidad en la vista interna de agrupación de CONMAT.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-07.4",
+      "criterio": "Debe validar que el vehículo y el conductor se encuentren habilitados, cuando SIAL disponga de dicha información.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-07.5",
+      "criterio": "Debe permitir modificar o reemplazar una placa o conductor antes de la ejecución, con registro del motivo y trazabilidad.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-07.6",
+      "criterio": "Debe evitar asignaciones incompatibles de un mismo vehículo en servicios con horarios superpuestos.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-07.7",
+      "criterio": "Una vez confirmada la asignación operativa, la información debe quedar disponible para consulta y seguimiento por parte de Banasan.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-07.8",
+      "criterio": "Debe registrar quién realizó la asignación y cuándo se efectuó.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "assignment-decision.md",
+        "scripts/check-conmat-assignment.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-08.1",
+      "criterio": "El portal de la transportadora debe disponer de una vista exclusiva para consultar el estado operativo de sus rutas y vehículos asignados.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-08.2",
+      "criterio": "Debe presentar indicadores de vehículos programados, pendientes de salida, en operación, con novedades y finalizados.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Cuatro cards de avance y filtro Con novedades con conteo de vehículos distintos; adaptación visual aprobada por el usuario."
+    },
+    {
+      "id": "CA-08.3",
+      "criterio": "Debe permitir consultar el estado de cada ruta y su vehículo correspondiente.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-08.4",
+      "criterio": "Debe mostrar de forma clara la ruta, placa, conductor, fincas asociadas, fechas programadas y estado actual.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-08.5",
+      "criterio": "Debe disponer de elementos visuales que permitan identificar rápidamente los servicios atrasados, pendientes, en ejecución y completados.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-08.6",
+      "criterio": "Debe permitir filtrar la información por ruta, placa, conductor, fecha y estado.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-08.7",
+      "criterio": "Debe mostrar una secuencia de seguimiento con los principales hitos de la operación.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Recorrido de eventos registrados, inverso y seleccionable; próximos hitos se presentan como acciones, sin fabricar eventos futuros."
+    },
+    {
+      "id": "CA-08.8",
+      "criterio": "Debe permitir registrar novedades operativas con observaciones, fecha y responsable.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-08.9",
+      "criterio": "Los cambios de estado deben reflejarse en las vistas correspondientes de Banasan y de la empresa transportadora.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-08.10",
+      "criterio": "La información debe mantener una presentación práctica, clara y organizada para facilitar el control simultáneo de varios vehículos y rutas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "tracking-decision.md",
+        "scripts/check-conmat-tracking.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-09.1",
+      "criterio": "El sistema debe permitir finalizar una ruta cuando se hayan cumplido las condiciones operativas requeridas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "closure-decision.md",
+        "scripts/check-conmat-closure.mjs"
+      ],
+      "limite": "Supuesto de propuesta: asignaciones completas, retorno de todos los servicios y novedades atendidas para habilitar cierre."
+    },
+    {
+      "id": "CA-09.2",
+      "criterio": "Debe permitir consultar las órdenes, fincas y materiales relacionados con la ruta ejecutada.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "closure-decision.md",
+        "scripts/check-conmat-closure.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-09.3",
+      "criterio": "Debe registrar la fecha, hora y usuario responsable del cierre.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "closure-decision.md",
+        "scripts/check-conmat-closure.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-09.4",
+      "criterio": "Debe impedir que un servicio anulado o cancelado sea finalizado como si se hubiera ejecutado normalmente.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "closure-decision.md",
+        "scripts/check-conmat-closure.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-09.5",
+      "criterio": "Debe diferenciar el cierre operativo del proceso posterior de revisión documental y facturación.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "closure-decision.md",
+        "scripts/check-conmat-closure.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-09.6",
+      "criterio": "Los registros finalizados deben mantenerse disponibles para consultas históricas y auditoría.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "closure-decision.md",
+        "scripts/check-conmat-closure.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-10.1",
+      "criterio": "La empresa transportadora debe poder adjuntar el documento que evidencie la ejecución de la ruta o servicio.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-10.2",
+      "criterio": "La funcionalidad de carga documental debe estar vinculada a la ruta y al servicio correspondiente.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Versión vinculada a ruta y snapshot de servicios ejecutados; un soporte cubre la ruta completa como supuesto de propuesta."
+    },
+    {
+      "id": "CA-10.3",
+      "criterio": "Debe permitir consultar el nombre del archivo, fecha de carga, usuario responsable y estado de revisión.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-10.4",
+      "criterio": "Debe validar los formatos y tamaños de archivo admitidos.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Validación local de archivo no vacío, extensión y firma inicial PDF/JPG/PNG, hasta 10 MB. Formatos/límite son supuestos; validación exhaustiva de servidor pendiente."
+    },
+    {
+      "id": "CA-10.5",
+      "criterio": "Debe permitir visualizar o descargar los soportes cargados, según los permisos establecidos.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Descarga de archivo real desde IndexedDB y PDF ilustrativo para fixture inicial R-004. No servidor de archivos."
+    },
+    {
+      "id": "CA-10.6",
+      "criterio": "El sistema debe diferenciar los estados: pendiente de soporte, soporte cargado, en revisión, aprobado y rechazado.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-10.7",
+      "criterio": "Banasan debe poder revisar y aprobar o rechazar los soportes, registrando observaciones cuando corresponda.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-10.8",
+      "criterio": "Cuando un soporte sea rechazado, la transportadora debe recibir una notificación y poder cargar una nueva versión.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-10.9",
+      "criterio": "La ruta debe quedar habilitada para continuar el proceso administrativo de cobro o facturación únicamente cuando cumpla las validaciones definidas.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Habilitación local por operación finalizada y última versión aprobada; validaciones administrativas adicionales no especificadas no se inventan."
+    },
+    {
+      "id": "CA-10.10",
+      "criterio": "El sistema debe permitir consultar qué rutas están pendientes de documentación, cuáles están en revisión y cuáles se encuentran aprobadas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-10.11",
+      "criterio": "La aprobación de un soporte no debe interpretarse automáticamente como aprobación de una factura o confirmación de pago.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "documents-decision.md",
+        "document-review-decision.md",
+        "scripts/check-conmat-document-review.mjs",
+        "final-e2e.png"
+      ],
+      "limite": "Texto y estado separan aprobación documental de factura/pago; no se ejecuta ningún proceso financiero."
+    },
+    {
+      "id": "CA-11.1",
+      "criterio": "El sistema debe generar notificaciones ante nuevas preasignaciones, modificaciones de rutas, cambios de programación, cancelaciones y anulaciones.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "history-decision.md",
+        "scripts/check-conmat-history.mjs",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-11.2",
+      "criterio": "Debe notificar a Banasan cuando una transportadora registre una asignación operativa, reporte una novedad, finalice un servicio o cargue documentos.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "history-decision.md",
+        "scripts/check-conmat-history.mjs",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-11.3",
+      "criterio": "Debe permitir consultar el historial de eventos relevantes de cada ruta.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "history-decision.md",
+        "scripts/check-conmat-history.mjs",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-11.4",
+      "criterio": "Debe conservar el registro del usuario, fecha, hora, tipo de operación y cambios realizados.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "history-decision.md",
+        "scripts/check-conmat-history.mjs",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Actor ilustrativo y fechas reales de interacción local. No equivale a identidad verificada ni auditoría de servidor."
+    },
+    {
+      "id": "CA-11.5",
+      "criterio": "Las notificaciones deben vincularse al registro correspondiente para facilitar su consulta.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "history-decision.md",
+        "scripts/check-conmat-history.mjs",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-11.6",
+      "criterio": "Los usuarios deben visualizar únicamente las notificaciones e información autorizadas según su empresa y rol.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "history-decision.md",
+        "scripts/check-conmat-history.mjs",
+        "scripts/check-conmat-notifications.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-12.1",
+      "criterio": "Las vistas deben mantener coherencia visual con los componentes y patrones de interfaz establecidos en SIAL Web.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.2",
+      "criterio": "Deben utilizar los componentes reutilizables existentes para tablas, filtros, formularios, botones, indicadores, estados, paneles de detalle y ventanas de confirmación.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.3",
+      "criterio": "La navegación debe separar claramente las funciones internas de Banasan y las correspondientes a las empresas transportadoras.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Menú CONMAT filtra funciones por contexto interno/transportadora y conserva contexto en enlaces; no reemplaza permisos de backend."
+    },
+    {
+      "id": "CA-12.4",
+      "criterio": "La agrupación de rutas debe priorizar visualmente la empresa transportadora, el nombre de la ruta y las fincas que la conforman.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.5",
+      "criterio": "Los estados deben utilizar etiquetas y elementos visuales consistentes que permitan reconocer su significado sin depender únicamente del color.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.6",
+      "criterio": "Las acciones de modificación, anulación, cancelación y reprogramación deben disponer de confirmaciones y mensajes claros.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.7",
+      "criterio": "Las tablas deben permitir búsquedas, filtros y paginación cuando el volumen de información lo requiera.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.8",
+      "criterio": "El diseño debe evitar la duplicación de datos y facilitar la consulta de los detalles sin obligar al usuario a navegar innecesariamente entre pantallas.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-12.9",
+      "criterio": "Debe presentar estados de carga, ausencia de información, validación y error.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Escenarios reproducibles error/reintentar, cargando, sin-permiso y origen; vacíos y errores de validación locales recorridos."
+    },
+    {
+      "id": "CA-12.10",
+      "criterio": "La interfaz debe adaptarse a diferentes resoluciones, priorizando la experiencia de escritorio para las operaciones de programación y control.",
+      "estado_propuesta": "UI local representada y contrastada",
+      "evidencia": [
+        "final-validation.md",
+        "final-notifications.png",
+        "view-roadmap.md"
+      ],
+      "limite": "Interacción/estado contrastado con fuentes de la vista y pruebas locales; la aprobación visual final corresponde al usuario."
+    },
+    {
+      "id": "CA-13.1",
+      "criterio": "Las operaciones deben estar protegidas mediante autenticación y autorización basada en roles y permisos.",
+      "estado_propuesta": "Contexto UI simulado; integración de producto pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "Contextos de rol y escenario de acceso no disponible; autenticación/autorización reales pendientes de producto."
+    },
+    {
+      "id": "CA-13.2",
+      "criterio": "Banasan debe gestionar las preasignaciones, agrupaciones, cancelaciones y reprogramaciones mediante usuarios autorizados.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-13.3",
+      "criterio": "Las transportadoras deben gestionar únicamente sus asignaciones, vehículos, conductores, seguimiento y soportes.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-13.4",
+      "criterio": "No debe permitirse el acceso a rutas ni documentos pertenecientes a otras transportadoras.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "Filtros de empresa y guardas locales evitan exponer registros ajenos en recorridos UI. Una URL/contexto local no es una frontera de seguridad real."
+    },
+    {
+      "id": "CA-13.5",
+      "criterio": "Debe garantizarse la consistencia de las relaciones entre órdenes, rutas, subgrupos, vehículos y empresas transportadoras.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-13.6",
+      "criterio": "Debe impedirse la modificación no autorizada de registros finalizados.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "La propuesta comunica y valida el efecto local; identidad, permisos, sincronización y persistencia de servidor no están implementados."
+    },
+    {
+      "id": "CA-13.7",
+      "criterio": "Los cambios críticos deben almacenarse en un historial de auditoría y no deben eliminar la información histórica de la operación.",
+      "estado_propuesta": "UI local representada; garantía de backend pendiente",
+      "evidencia": [
+        "final-validation.md",
+        "scripts/check-conmat-demo.mjs",
+        "scripts/check-conmat-document-review.mjs"
+      ],
+      "limite": "Eventos y versiones conservados en el estado local; auditoría inmutable/servidor y políticas de retención pendientes de backend."
+    }
+  ]
+}

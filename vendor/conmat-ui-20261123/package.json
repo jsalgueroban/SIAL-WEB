@@ -1,0 +1,107 @@
+{
+  "name": "@banasandev/banasan-ui",
+  "version": "1.5.0",
+  "type": "module",
+  "main": "./dist/banasan-ui.cjs",
+  "module": "./dist/banasan-ui.js",
+  "style": "./dist/banasan-ui.css",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/banasan-ui.js",
+      "require": "./dist/banasan-ui.cjs"
+    },
+    "./charts": {
+      "types": "./dist/Charts/ECharts/index.d.ts",
+      "import": "./dist/charts.js",
+      "require": "./dist/charts.cjs"
+    },
+    "./style.css": {
+      "default": "./dist/banasan-ui.css"
+    },
+    "./banasan-ui.css": {
+      "default": "./dist/banasan-ui.css"
+    }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "test": "node --test tests/*.test.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "pack:check": "pnpm pack --dry-run",
+    "commitlint": "commitlint",
+    "release": "semantic-release",
+    "prepare": "husky",
+    "prepack": "pnpm run build"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "^3.8.0",
+    "echarts": "^6.1.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    },
+    "recharts": {
+      "optional": true
+    },
+    "echarts": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@eslint/js": "^10.0.1",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^11.0.1",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.1",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.12.4",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "echarts": "6.1.0",
+    "eslint": "^10.4.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "husky": "^9.1.7",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.15.1",
+    "recharts": "^3.8.1",
+    "semantic-release": "^25.0.8",
+    "tailwindcss": "^4.3.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.60.0",
+    "vite": "^8.0.14",
+    "vite-plugin-dts": "^5.0.1"
+  },
+  "private": false,
+  "packageManager": "pnpm@10.33.0",
+  "publishConfig": {
+    "registry": "http://172.16.61.51:4873/"
+  },
+  "dependencies": {
+    "iconoir-react": "^7.12.1"
+  }
+}

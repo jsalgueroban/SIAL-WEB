@@ -11,9 +11,15 @@ importers:
       '@banasandev/banasan-ui':
         specifier: file:vendor\banasan-ui-case-carousel-20261103.tgz
         version: file:vendor/banasan-ui-case-carousel-20261103.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))
+      banasan-ui-conmat:
+        specifier: file:vendor\conmat-ui-20261123
+        version: '@banasandev/banasan-ui@file:vendor/conmat-ui-20261123(echarts@6.1.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))'
       banasan-ui-pr2243:
         specifier: file:vendor\banasandev-banasan-ui-1.5.1-dev.2.tgz
         version: '@banasandev/banasan-ui@file:vendor/banasandev-banasan-ui-1.5.1-dev.2.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))'
+      echarts:
+        specifier: 6.1.0
+        version: 6.1.0
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -54,6 +60,21 @@ packages:
       react-dom: ^19.0.0
       recharts: ^3.8.0
     peerDependenciesMeta:
+      react-dom:
+        optional: true
+      recharts:
+        optional: true
+
+  '@banasandev/banasan-ui@file:vendor/conmat-ui-20261123':
+    resolution: {directory: vendor/conmat-ui-20261123, type: directory}
+    peerDependencies:
+      echarts: ^6.1.0
+      react: ^19.0.0
+      react-dom: ^19.0.0
+      recharts: ^3.8.0
+    peerDependenciesMeta:
+      echarts:
+        optional: true
       react-dom:
         optional: true
       recharts:
@@ -263,6 +284,9 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
+  echarts@6.1.0:
+    resolution: {integrity: sha512-q0yaFPggC9FUdsWH4blavRWFmxdrIodbkoKNAjJudAI6CA9gNPxHtV2RcZNEepZVlk4yvBYkOkbk6HIVpIyHZA==}
+
   es-toolkit@1.52.0:
     resolution: {integrity: sha512-XTNEJQh1tY1ZJVcf6ayP/2n4ZPyaHlW2FWs7xvw5ddPuhUVjLD3olQVQS7kf58JbAB48iL0uL/jerTrjtV3lDA==}
 
@@ -450,6 +474,9 @@ packages:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
+  tslib@2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+
   use-sync-external-store@1.7.0:
     resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
     peerDependencies:
@@ -501,6 +528,9 @@ packages:
       yaml:
         optional: true
 
+  zrender@6.1.0:
+    resolution: {integrity: sha512-oEGMDB6pOP2S6OwRR4PdVv610zrjnA3Bh+JnSG12fYJlBKjtNAoEb5fSUoCOOINlH96I2fU38/A2UpRKs67xYQ==}
+
 snapshots:
 
   '@banasandev/banasan-ui@file:vendor/banasan-ui-case-carousel-20261103.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))':
@@ -516,6 +546,15 @@ snapshots:
       iconoir-react: 7.12.1(react@19.2.3)
       react: 19.2.3
     optionalDependencies:
+      react-dom: 19.2.3(react@19.2.3)
+      recharts: 3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1)
+
+  '@banasandev/banasan-ui@file:vendor/conmat-ui-20261123(echarts@6.1.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(recharts@3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1))':
+    dependencies:
+      iconoir-react: 7.12.1(react@19.2.3)
+      react: 19.2.3
+    optionalDependencies:
+      echarts: 6.1.0
       react-dom: 19.2.3(react@19.2.3)
       recharts: 3.10.1(react-dom@19.2.3(react@19.2.3))(react-is@19.3.0)(react@19.2.3)(redux@5.0.1)
 
@@ -653,6 +692,11 @@ snapshots:
   decimal.js-light@2.5.1: {}
 
   detect-libc@2.1.2: {}
+
+  echarts@6.1.0:
+    dependencies:
+      tslib: 2.3.0
+      zrender: 6.1.0
 
   es-toolkit@1.52.0: {}
 
@@ -813,6 +857,8 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
 
+  tslib@2.3.0: {}
+
   use-sync-external-store@1.7.0(react@19.2.3):
     dependencies:
       react: 19.2.3
@@ -843,3 +889,7 @@ snapshots:
       tinyglobby: 0.2.17
     optionalDependencies:
       fsevents: 2.3.3
+
+  zrender@6.1.0:
+    dependencies:
+      tslib: 2.3.0

@@ -68,7 +68,7 @@ const SIALCore = (() => {
         return;
       }
       const script = document.createElement("script");
-      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261030-company-copy");
+      script.src = getSharedAssetUrl("sial-navigation-contract.js?v=20261124-validation");
       script.dataset.sialNavigationContract = "true";
       script.onload = () => {
         if (!window.SIALNavigationContract?.areas) {
@@ -2291,6 +2291,21 @@ if (document.readyState === "loading") {
   const badge = document.createElement("span");
   badge.className = "sial-alert-count";
   bell.append(badge);
+  // La página puede aportar su bandeja al mismo acceso global, sin los fixtures genéricos.
+  if (document.body.dataset.sialNotificationScope === "conmat-carrier") {
+    bell.setAttribute("aria-controls", "sial-alert-tray");
+    const sync = event => {
+      const unread = Math.max(0, Number(event.detail?.unread) || 0);
+      badge.textContent = unread || "";
+      badge.hidden = unread === 0;
+      bell.setAttribute("aria-label", `Notificaciones, ${unread} sin leer`);
+      bell.setAttribute("aria-expanded", String(Boolean(event.detail?.open)));
+    };
+    sync({detail:{unread:0,open:false}});
+    window.addEventListener("sial:notifications-state", sync);
+    bell.addEventListener("click", () => window.dispatchEvent(new Event("sial:notifications-open")));
+    return;
+  }
   const tray = document.createElement("section");
   tray.id = "sial-alert-tray";
   tray.className = "profile-panel profile-panel-wide";

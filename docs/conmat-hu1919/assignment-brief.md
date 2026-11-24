@@ -1,0 +1,11 @@
+# HU1919 CA07 · Asignación operativa · Web
+
+Modo build/local, continuidad del flujo aprobado, forma formulario dedicado con contexto y revisión. Maestra de forma: registro-vehiculo.html (secciones/campos/cierre) y bandeja de vehículos para consulta de resultados; no se copian campos documentales ajenos. La propuesta permanece dentro del shell SIAL, menú conmatAsignacion, misma pestaña; entrada desde portal por ruta y desde menú/catálogo. Campana global única reutilizada mediante el proveedor del portal; sin botón duplicado ni banner técnico.
+
+Fuente: HU1919 rev16 CA07 completa. Asignación por ruta o subgrupo, recursos habilitados de empresa propia, horarios incompatibles, reemplazo con motivo, responsable/fecha y consulta interna. Formulario de secciones abiertas en una Card: alcance → vehículo/conductor → horario; campos publicados, errores inline y revisión compacta antes de guardar. Lista de asignaciones e historial consultables sin cards anidadas. No añadir métricas, pasos decorativos o controles de Banasan para asignar.
+
+Controles: SelectInput, SearchSelectInput con descripción/habilitación, DateInput readonly para fecha de programación, TextInput para HH:mm porque no hay TimeInput público, Button/IconButton, Notice/Toast, Table, Chip, KeyValueGrid en revisión. Contenedor compacto existente feature-local. Sin modificar fuente de librería. Sin API ni identidad/permisos reales; recursos y ocupaciones ilustrativos.
+
+Supuestos explícitos: ventana en un mismo día, fin estimado posterior a salida; un alcance requiere una fecha efectiva única (si hay órdenes de fechas distintas, revisar agrupación). No mezclar asignación total de ruta con asignaciones por subgrupo; alternativa sería sobrescribirlas, descartada para evitar pérdida silenciosa. Reservas de vehículo y conductor incompatibles en servicios superpuestos. Revisión invalida si cambian órdenes/fecha del alcance. Lectura de estado y consumo compartido local; no certifica concurrencia de servidor.
+
+SELF: build-slice SIAL, contexto local y store estrechamente acoplados; exportación de contexto similar al trabajo directo. Router evaluado, sin beneficio independiente. Dona: tarea0bad5348-99cd-453e-9da6-315fcbf43998. Gates: fuentes/props leídas; contraste geométrico1440 y390, asignación total/parcial, cruce, deshabilitados, motivo, bloqueo, navegación y consulta interna.
