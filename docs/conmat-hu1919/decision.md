@@ -1,0 +1,31 @@
+# Decisión · HU1919 panel interno Web
+Fuente funcional: Azure HU1919 rev.16 leída 23 noviembre 2026. CA-03,06,08,09,10,11,12,13. PNG como sugerencia.
+Forma: dashboard con consulta de rutas. Sin maestra equivalente de CONMAT; vía explore. Identidad contrastada con DESIGN.md, PRODUCT.md, shell y paquete instalado. No es implementación productiva.
+Acceso: Gestión → Transporte → CONMAT · Panel de operación → Gestion de Transporte/conmat-panel.html. Clave transporte/conmat. Navegación futura del módulo pendiente; no se fabrican enlaces a vistas inexistentes.
+Composición: principal resumen → estados + pendientes → rutas; alternativa ?composicion=prioridades ordena primero bandeja y pendientes. retain principal como primera entrega para revisión, sin afirmar selección humana. La alternativa se conserva para contraste.
+Componentes reales: Card/stats, Card/default, Button, SelectInput, TextInput, Chip, Table, Pagination, Drawer, SialIcon/truck. API consultada en tipos del paquete instalado. Sin cambios al paquete ni al runtime compartido. Bundle aislado vite.conmat.config.mjs.
+Brecha: BarChart horizontal solapó etiquetas y mostró escala decimal con conteos pequeños; descartado en esta vista. Distribución es library-composition con Button/Chip y barras locales feature-local, no componente de gráfico publicado. Sin animación de datos.
+Datos: fixtures demostrativos 6 rutas, 11 órdenes, 9 fincas, 3 empresas, semana 48. Semana 49 vacía. No inventar integración o permiso productivo. Detalle con cantidades por material/unidad. No agrega asignación interna de placa/conductor ni GPS ni porcentajes de ejecución.
+Densidad retain en desktop; ampliar a una columna de métricas en móvil para evitar romper palabras. Tabla con scroll horizontal propio, sin overflow de página.
+Verificaciones: build Vite correcto; navegador escritorio 1440, 1280 y 390; búsqueda sin coincidencia, limpiar, pendientes por estado, paginación segunda página, cambio de semana vacía y retorno; Drawer conserva cantidades 55 bultos y 20 estibas, Escape cierra. Temas claro/oscuro inspeccionados. No certifica QA funcional ni integración de backend.
+Estados: default/empty/filtros/detail recorridos. Loading/error de backend no aplican en esta entrega sin fetching; quedan pendientes de integración. Permisos y datos restringidos no simulados como seguridad real. Foco nativo publicado conservado.
+Archivos y cambios previos preservados; shared/sial-navigation-contract.js recibe sólo una entrada adicional sin reemplazar cambios existentes.
+
+## Corrección de adopción solicitada por el usuario
+La revisión inicial omitió FilterToolbar y TableRowActions. Se adoptan FilterToolbar (limpieza publicada), Toolbar para cabeceras de sección, TableRowActions + IconButton/ViewIcon, y Notice para información demostrativa. Estados ahora usa Card/stats y Button publicados, retirando barras locales. Se probó BarChart vertical: conserva dominio truncado y ticks flotantes extensos con conteos 1–2, sin props públicas de dominio/formato; no se fuerza ese resultado ni se modifica la librería.
+Card/default no ofrece un slot público de encabezado en la versión instalada: los títulos semánticos se componen dentro de Toolbar, sin afirmar que exista CardHeader. Por atender conserva disposición local de dominio con Button; no existe un componente público equivalente a ese contenido operativo.
+Cobertura ejecutada: 8 Card/stats, Toolbar en tres cabeceras, FilterToolbar en filtros, TextInput y SelectInput publicados, Table, TableRowActions y cinco IconButton/ViewIcon visibles, Pagination, Drawer. El estado vacío pertenece a Table; TableEmpty retorna tr/td y no se anida en emptyState para evitar HTML inválido.
+Verificación del delta: build correcto, búsqueda Norte devuelve 3 rutas, limpieza restablece 6, filtro pendiente devuelve 1, detalle conserva 55 bultos y Escape cierra. Capturas renovadas claro/oscuro y ancho 390 sin overflow de página. No cambios al paquete.
+
+## Estado vigente · ECharts y contraste de HU
+Por instrucción explícita del usuario se reemplaza la distribución de tarjetas por ECharts 6.1.0 modular, SVG, con descripción accesible, eje desde cero, intervalos enteros, selección por clic y alternativa de teclado con Button/Chip publicados. Es una composición local de la propuesta; no se añadió ECharts a la librería ni se migraron otros módulos.
+Movimiento: entrada 350 ms y actualización 250 ms, sin bucles; prefers-reduced-motion desactiva la animación. Categorías estables, sin inferir evolución temporal. ResizeObserver ajusta el gráfico y MutationObserver actualiza tokens en cambio de tema. Dispose y limpieza de observers al desmontar.
+Pruebas: clic Programada devuelve 2 rutas; Enter pendiente devuelve 1. Semana vacía desmonta gráfica y muestra estado vacío, retorno recrea gráfica. SVG móvil 341px dentro de página 390px, temas y movimiento reducido recorridos. Descripción ARIA incluye 1,2,1,2. ECharts consume los mismos counts de la tabla; no usa datos nuevos.
+Fuentes técnicas: https://echarts.apache.org/handbook/en/basics/import/ y https://echarts.apache.org/handbook/en/best-practices/aria/ consultadas al construir. Importación por módulos y AriaComponent registrados.
+Contraste vigente: hu1919-coverage.md / json / csv. HU revision 16 releída; 102 puntos: 9 demostrables en propuesta, 17 parciales, 76 no representados. No es porcentaje de avance ni certificación funcional. Ningún grupo CA completo. No se auditó frontend productivo/backend.
+
+## Calibración de evaluación solicitada por el usuario
+Evaluar propuesta UI/UX, estados simulables y dependencias backend por separado. Se retira el conteo literal de 102 puntos como indicador de avance visual. La falta de backend no es defecto del prototipo; los efectos observables se representan con escenarios cuando se construye su vista. La primera entrega se evalúa como panel interno, no como implementación total de la HU. Rige hu1919-coverage.md actualizado.
+
+## Simplificación de estados por feedback
+Retirados los chips y botones inferiores que duplicaban etiquetas y conteos de ECharts, y el icono decorativo de camión. Filtrado por clic se mantiene en barras/etiquetas; las etiquetas SVG reciben semántica de botón, foco y activación Enter/Espacio para conservar teclado sin duplicación visible. Corrección local, sin cambio de alcance ni nuevas reglas de negocio.

@@ -1,0 +1,7 @@
+# Agrupación enfocada · 24 noviembre2026
+
+El usuario rechazó la composición fragmentada y autorizó proceder tras recomendar la primera opción: lista de rutas + detalle de un viaje a la vez. Se elige esta dirección; tabla jerárquica era la alternativa y queda descartada para este prototipo.
+
+Explore de composición local, manteniendo contratos CA03/04/05. Una lista plana de rutas publicada mediante TreeList/navigation sin hijos conserva nombre, empresa y fincas. En escritorio, selección izquierda y detalle derecha; móvil usa selector de ruta publicado para evitar una lista larga antes del trabajo. Viaje seleccionado mediante SelectInput, primer viaje activo por defecto. Órdenes disponibles y subgrupos del viaje mediante GroupMove. Se elimina la anidación de cards decorativas: grupos separados por líneas, no sombras/cajas. Editar subgrupo elige objeto en la ventana compacta. Mover entre viajes es un modo explícito y reversible, no el estado inicial.
+
+Metadatos de ruta en una línea, consultas de materiales/historial en cabecera y confirmación sólo para borradores. No habrá barra de consultas aislada al pie. Se preservan formas, motivos, auditoría y panel compartido. Componentes nuevos/reestructurados desde banasan-ui-conmat; sólo composición local, sin tocar librería. SELF: estado local estrechamente integrado, costo de contexto similar a implementación directa. Validar selección entre rutas/viajes, creación, edición, movimientos, filtros, consulta y mobile/desktop.

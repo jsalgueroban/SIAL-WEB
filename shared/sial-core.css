@@ -6943,8 +6943,8 @@ html[data-theme="dark"] {
 #sial-alert-tray .alert-content{display:flex;flex-direction:column;overflow:hidden;border-radius:inherit}
 #sial-alert-tray .profile-summary{flex:none}
 #sial-alert-tray article small + span{margin-inline-start:6px}
-#sial-alert-tray button:not(#notificationStateFilter *){font:inherit;color:inherit;border:0;background:transparent;border-radius:6px;padding:5px 8px;cursor:pointer}
-#sial-alert-tray button:not(#notificationStateFilter *):hover{background:var(--color-hover-surface)}
+#sial-alert-tray button:not(#notificationStateFilter *):not(#conmat-notification-filter *){font:inherit;color:inherit;border:0;background:transparent;border-radius:6px;padding:5px 8px;cursor:pointer}
+#sial-alert-tray button:not(#notificationStateFilter *):not(#conmat-notification-filter *):hover{background:var(--color-hover-surface)}
 #sial-alert-tray .alert-heading,#sial-alert-tray article{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 #sial-alert-tray .alert-heading{align-items:center;font-size:18px}
 #sial-alert-tray article{border-top:1px solid var(--color-border-subtle);padding:12px 0;flex-wrap:wrap;font-size:14px}

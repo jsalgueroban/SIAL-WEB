@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {visibleHistoryRoutes,routeHistory,historyScope,historyRecordHref} from '../src/web/conmat-history-model.js';
+const route={id:'R-001',carrierId:'caribe',phase:'Programada',trips:[{id:'V1',name:'Viaje 1',groups:[{id:'S1',name:'Subgrupo 1'}]}],events:[{operation:'Confirmar asignación operativa',at:'2026-11-24T12:00:00Z',actor:'Operador',before:'Sin vehículo',after:'WFX-123'},{operation:'Soporte rechazado',at:'2026-11-24T13:00:00Z',actor:'Revisor',before:'En revisión',after:'Rechazado',reason:'Ilegible'},{operation:'Soporte aprobado',at:'2026-11-24T13:00:00Z',actor:'Revisor',before:'En revisión',after:'Aprobado'}]};
+assert.equal(routeHistory(route)[0].operation,'Soporte aprobado');
+assert.equal(routeHistory(route,'Soporte rechazado')[0].reason,'Ilegible');
+assert.equal(routeHistory({...route,events:[]}).length,0);
+assert.equal(visibleHistoryRoutes([route],{companyId:'norte'}).length,0);
+assert.equal(visibleHistoryRoutes([{...route,phase:'En construcción'}],{companyId:'caribe'}).length,0);
+assert.equal(visibleHistoryRoutes([route],{internal:true}).length,1);
+assert.equal(historyScope(route,{targetId:'S1'}),'Subgrupo 1');
+assert.equal(historyScope(route,{orderIds:['OS1','OS2']}),'OS1 · OS2');
+assert.match(historyRecordHref(route,route.events[0],{companyId:'caribe'}),/seguimiento.*empresa=caribe/);
+assert.match(historyRecordHref(route,route.events[1],{internal:true}),/revision-documental/);
+assert.match(historyRecordHref(route,route.events[1],{companyId:'caribe'}),/soportes/);
+assert.equal(route.events.length,3);
+console.log('CONMAT CA11: historial ordenado, filtros, alcance, enlaces y registros originales preservados.');

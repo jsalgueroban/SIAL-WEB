@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+const memory=new Map();globalThis.localStorage={getItem:key=>memory.get(key)||null,setItem:(key,value)=>memory.set(key,value)};globalThis.window={addEventListener(){}};
+const model=await import('../src/web/conmat-demo-store.js'),portal=await import('../src/web/conmat-carrier-model.js');const saved=()=>JSON.parse(memory.get('sial-conmat-demo-orders-v1'));
+model.preassignOrders(['OS-04801'],'caribe');model.preassignOrders(['OS-04801'],'norte');
+let state=saved(),old=portal.carrierWorkspace(state.routes,state.orders,'caribe');
+assert.ok(old.notifications.some(item=>item.target==='OS-04801'&&item.withdrawn));assert.ok(!old.orders.some(order=>order.id==='OS-04801'));
+model.saveConmatRoute({id:'R-001',name:'Norte · Zona A',carrierId:'norte',plannedDate:'2026-11-23'});
+state=saved();old=portal.carrierWorkspace(state.routes,state.orders,'caribe');assert.ok(old.notifications.some(item=>item.target==='R-001'&&item.withdrawn));assert.ok(!old.routes.some(route=>route.id==='R-001'));
+assert.ok(portal.carrierWorkspace(state.routes,state.orders,'norte').routes.some(route=>route.id==='R-001'));
+assert.ok(!portal.carrierWorkspace(state.routes,state.orders,'desconocida').notifications.length);
+console.log('CONMAT CA04/11: aviso de retirada conservado, nueva empresa vinculada y datos ajenos excluidos.');
