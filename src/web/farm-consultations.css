@@ -1,0 +1,8 @@
+/* Composición de consulta: geometría y controles del canon de Fincas. */
+.toolbar.farm-consultation-toolbar{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));align-items:end;gap:16px}
+.toolbar.farm-consultation-toolbar>*{min-width:0}
+.farm-pickup-summary{border-top:1px solid var(--color-border-subtle)}
+.farm-pickup-summary .sial-key-value-grid{margin:0;grid-template-columns:repeat(3,minmax(0,1fr))}
+.farm-consultation-demo{font-size:12px;color:var(--color-text-3);margin-top:16px}
+@media(max-width:720px){.toolbar.farm-consultation-toolbar{grid-template-columns:1fr}.farm-pickup-summary .sial-key-value-grid{grid-template-columns:1fr}}
+
