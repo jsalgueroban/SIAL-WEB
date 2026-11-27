@@ -1,0 +1,2 @@
+import {resolve} from 'node:path';
+export default {define:{'process.env.NODE_ENV':JSON.stringify('production')},build:{outDir:'shared/vendor',emptyOutDir:false,cssCodeSplit:false,lib:{entry:resolve('src/web/quality-inspections.jsx'),name:'SIALQuality',formats:['iife'],fileName:()=> 'quality-inspections.js',cssFileName:'quality-inspections'},rollupOptions:{onwarn(warning,handler){if(warning.code!=='MODULE_LEVEL_DIRECTIVE')handler(warning);}}}};

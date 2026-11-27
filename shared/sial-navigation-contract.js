@@ -11,6 +11,15 @@ window.SIALNavigationContract = Object.freeze({
       label: "Gestion",
       modules: [
         {
+          id: "calidad",
+          label: "Calidad",
+          icon: "trazabilidad",
+          folder: "Calidad",
+          localFolder: "Calidad",
+          views: [{ id: "inspecciones", label: "Inspecciones de calidad", href: "inspecciones.html" }]
+        },
+
+        {
           id: "referencias",
           label: "Referencias",
           icon: "referencias",
