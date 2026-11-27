@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Card, CheckboxInput, Chip, DateInput, IconButton, KeyValueGrid, Notice, Pagination, SelectInput, Table, TableRowActions, ToastProvider, Toolbar, ViewIcon, useToast} from '@banasandev/banasan-ui';
-import {TextInput} from '@banasandev/banasan-ui';
+import {Card, CheckboxInput, Chip, DateInput, IconButton, KeyValueGrid, Notice, Pagination, SelectInput, Table, TableRowActions, ToastProvider, Toolbar, ViewIcon, useToast,TextInput} from 'banasan-ui-conmat';
 import {canPreassign, carrierName, carriers, materialTotals, preassignOrders, useConmatOrders} from './conmat-demo-store.js';
 import './conmat-orders.css';
 import {ConmatFloatingView} from './conmat-floating-view.jsx';
 import {Button, FilterToolbar} from 'banasan-ui-conmat';
 import '../../vendor/conmat-ui-20261123/filter-toolbar.scoped.css';
+import {RoutesWorkspace} from './conmat-routes.jsx';
+import './conmat-planning.css';
 
 const statePreset={Pendiente:'warning',Preasignada:'info',Programada:'active',Cancelada:'inactive'};
 const dateFormat=new Intl.DateTimeFormat('es-CO',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'});
@@ -20,6 +21,8 @@ const lineColumns=[{key:'material',header:'Material / insumo',render:line=>line.
 
 export function ConmatOrders(){return <ToastProvider placement="bottom-right"><OrdersView/></ToastProvider>;}
 function OrdersView(){
+ const [draggedOrders,setDraggedOrders]=useState([]);
+ const [mobilePanel,setMobilePanel]=useState('orders');
  const orders=useConmatOrders();
  const toast=useToast();
  const [previousView]=useState(readView);
@@ -39,6 +42,12 @@ function OrdersView(){
  const visible=filtered.slice((activePage-1)*size,activePage*size);
  const eligibleVisible=visible.filter(canPreassign);
  const chosen=orders.filter(order=>selected.includes(order.id)&&canPreassign(order));
+ function startOrderDrag(event,order){
+  if(order.status!=='Preasignada'||order.routeId){event.preventDefault();return;}
+  const ids=selected.includes(order.id)?chosen.map(candidate=>candidate.id):[order.id];
+  event.dataTransfer.setData('application/x-sial-orders',JSON.stringify(ids));
+  event.dataTransfer.effectAllowed='move';setDraggedOrders(ids);
+ }
  const hiddenSelection=chosen.filter(order=>!filtered.some(candidate=>candidate.id===order.id)).length;
  const allPageSelected=eligibleVisible.length>0&&eligibleVisible.every(order=>selected.includes(order.id));
  const partialPage=eligibleVisible.some(order=>selected.includes(order.id))&&!allPageSelected;
@@ -61,24 +70,24 @@ function OrdersView(){
   try{
    const count=preassignOrders(chosen.map(order=>order.id),carrier);
    setSelected([]);closeDrawer();
-   toast.success({title:`${count} ${count===1?'orden preasignada':'órdenes preasignadas'}`,description:`${carrierName(carrier)}. Cambio conservado en la demostración.`,duration:6000,action:<Button variant="ghost" onClick={()=>location.assign(`conmat-rutas.html?transportadora=${carrier}`)}>Agrupar rutas</Button>});
+   toast.success({title:`${count} ${count===1?'orden preasignada':'órdenes preasignadas'}`,description:`${carrierName(carrier)}. Ya puedes arrastrarlas a los subgrupos del panel de rutas.`,duration:6000});
   }catch(reason){setError(reason.message);setReview(false);}
  }
  const columns=[
   {key:'selection',width:'44px',header:<div ref={headerCheckbox} className="conmat-order-checkbox"><CheckboxInput id="conmat-select-page" label="Seleccionar órdenes disponibles de esta página" value={allPageSelected} disabled={!eligibleVisible.length} onChange={togglePage}/></div>,render:order=><div className="conmat-order-checkbox" title={canPreassign(order)?`Seleccionar ${order.id}`:order.routeId?'Orden agrupada. Gestiona su composición desde la ruta.':'Sólo consulta: la orden ya está programada o cancelada'}><CheckboxInput id={`select-${order.id}`} label={`Seleccionar ${order.id}`} disabled={!canPreassign(order)} value={canPreassign(order)&&selected.includes(order.id)} onChange={checked=>toggle(order.id,checked)}/></div>},
-  {key:'order',header:'Orden / creación',render:order=><div className="conmat-order-identity"><strong>{order.id}</strong><small>{displayDate(order.createdAt)}</small></div>},
+  {key:'order',header:'Orden / creación',render:order=><div className="conmat-order-identity" draggable={order.status==='Preasignada'&&!order.routeId} onDragStart={event=>startOrderDrag(event,order)} onDragEnd={()=>setDraggedOrders([])} title={order.status==='Preasignada'&&!order.routeId?'Arrastra esta orden a un subgrupo de la derecha':order.routeId?`Agrupada en ${order.routeId}`:'Preasigna una transportadora para agrupar'}><strong>{order.status==='Preasignada'&&!order.routeId&&<span aria-hidden="true">⠿ </span>}{order.id}</strong><small>{displayDate(order.createdAt)}</small>{order.routeId&&<small>{order.routeId}</small>}</div>},
   {key:'farm',header:'Finca',render:order=>order.farm},
   {key:'materials',header:'Material / insumo',render:order=><div className="conmat-order-lines">{order.items.map(line=><span key={line.name+line.unit}>{line.name}</span>)}</div>},
-  {key:'quantity',header:'Cantidad',align:'right',render:order=><div className="conmat-order-lines">{order.items.map(line=><span key={line.name+line.unit}>{amount(line.quantity)}</span>)}</div>},
-  {key:'units',header:'Unidad',render:order=><div className="conmat-order-lines">{order.items.map(line=><span key={line.name+line.unit}>{line.unit}</span>)}</div>},
-  {key:'carrier',header:'Transportadora',render:order=>carrierName(order.carrierId)},
-  {key:'state',header:'Programación',render:order=><div><Chip preset={statePreset[order.status]}>{order.status}</Chip>{order.programmingStatus&&<small className="conmat-order-change">{order.programmingStatus==='Cancelada'?'Programación cancelada':order.programmingStatus==='Anulado'?'Viaje anulado':`Reprogramada · ${order.plannedDate}`}</small>}</div>}
+  {key:'quantity',header:'Cantidad / unidad',align:'right',render:order=><div className="conmat-order-lines">{order.items.map(line=><span key={line.name+line.unit}>{amount(line.quantity)} {line.unit}</span>)}</div>},
+  {key:'state',header:'Transportadora / estado',render:order=><div className="conmat-planning-order-state"><small>{carrierName(order.carrierId)}</small><Chip preset={statePreset[order.status]}>{order.status}</Chip>{order.programmingStatus&&<small className="conmat-order-change">{order.programmingStatus==='Cancelada'?'Programación cancelada':order.programmingStatus==='Anulado'?'Viaje anulado':`Reprogramada · ${order.plannedDate}`}</small>}</div>}
  ];
  const batchColumns=[{key:'id',header:'Orden',render:order=>order.id},{key:'farm',header:'Finca',render:order=>order.farm},{key:'before',header:'Transportadora actual',render:order=>carrierName(order.carrierId)}];
- return <div className="conmat-orders">
-  <header className="conmat-orders-heading"><div><p className="page-eyebrow">Transporte / CONMAT</p><h1 className="page-title">Órdenes y preasignación</h1><p className="page-subtitle">Consulta las órdenes de servicio y preasigna la empresa que realizará el transporte.</p></div><div className="conmat-orders-nav"><Button variant="outlined" onClick={()=>location.assign('conmat-rutas.html')}>Agrupar rutas</Button><Button variant="ghost" onClick={()=>location.assign('conmat-panel.html')}>Volver al panel</Button></div></header>
+ return <div className="conmat-orders conmat-planning">
+  <header className="conmat-orders-heading"><div><p className="page-eyebrow">Transporte / CONMAT</p><h1 className="page-title">Órdenes, preasignación y rutas</h1><p className="page-subtitle">Preasigna la transportadora y arrastra las órdenes a los viajes y subgrupos de una ruta.</p></div><div className="conmat-orders-nav"><Button variant="ghost" onClick={()=>location.assign('conmat-panel.html')}>Volver al panel</Button></div></header>
   <Notice variant="info">Datos de demostración. Los cambios se conservan en este navegador para recorrer la propuesta.</Notice>
-  <Card className="conmat-orders-register">
+  <div className="conmat-planning-mobile-tabs" role="group" aria-label="Panel de planificación"><Button variant={mobilePanel==='orders'?'filled':'outlined'} aria-pressed={mobilePanel==='orders'} onClick={()=>setMobilePanel('orders')}>Órdenes</Button><Button variant={mobilePanel==='routes'?'filled':'outlined'} aria-pressed={mobilePanel==='routes'} onClick={()=>setMobilePanel('routes')}>Rutas{chosen.length?` · ${chosen.length} ${chosen.length===1?'seleccionada':'seleccionadas'}`:''}</Button></div>
+  <div className="conmat-planning-columns" data-mobile-panel={mobilePanel}>
+  <section className="conmat-planning-orders" aria-label="Órdenes y preasignación"><Card className="conmat-orders-register">
    <Toolbar className="conmat-orders-card-head"><div className="conmat-orders-title"><h2>Órdenes de servicio</h2>{chosen.length>0&&<span role="status"><Chip preset="info">{chosen.length} {chosen.length===1?'orden seleccionada':'órdenes seleccionadas'}</Chip></span>}{hiddenSelection>0&&<small>{hiddenSelection} fuera de los filtros actuales</small>}</div><Button id="conmat-batch-assignment" variant="filled" disabled={!chosen.length||loading||loadError} onClick={openAssign}>Preasignar transportadora</Button></Toolbar>
    <FilterToolbar className="conmat-orders-filters" primaryCount={3} active={activeFilters} onClear={clearFilters}>
     <TextInput id="conmat-order-search" label="Buscar orden, finca o material" placeholder="Consecutivo o nombre" value={query} onChange={changeFilter(setQuery)}/>
@@ -88,8 +97,11 @@ function OrdersView(){
     <DateInput id="conmat-order-date" label="Fecha de creación" value={date} onChange={changeFilter(setDate)}/>
    </FilterToolbar>
 
-   {loadError?<div className="conmat-orders-feedback"><Notice variant="error" heading="No se pudieron consultar las órdenes">La información no está disponible en este momento.</Notice><Button variant="outlined" onClick={()=>{setLoadError(false);setLoading(true);}}>Reintentar</Button></div>:<><Table data={visible} columns={columns} minWidth="1120px" rowKey={order=>order.id} loading={loading} emptyState={<div className="conmat-orders-empty"><strong>No hay órdenes para estos filtros</strong><p>Prueba otra búsqueda o limpia los filtros para volver a la consulta.</p></div>} actions={order=><TableRowActions label={`Acciones de ${order.id}`}><IconButton variant="ghost" aria-label={`Ver orden ${order.id}`} title="Ver orden" onClick={()=>openDetail(order)}><ViewIcon/></IconButton></TableRowActions>}/><Pagination page={activePage} pageSize={size} total={filtered.length} pageSizeOptions={[5,10,20]} onPageChange={setPage} onPageSizeChange={value=>{setSize(value);setPage(1);}}/></>}
-  </Card>
+   <p className="conmat-planning-help">Arrastra desde el identificador de una orden preasignada, o selecciónala y usa «Agregar seleccionadas» en su subgrupo de destino.</p>
+   {loadError?<div className="conmat-orders-feedback"><Notice variant="error" heading="No se pudieron consultar las órdenes">La información no está disponible en este momento.</Notice><Button variant="outlined" onClick={()=>{setLoadError(false);setLoading(true);}}>Reintentar</Button></div>:<><Table data={visible} columns={columns} minWidth="700px" rowKey={order=>order.id} loading={loading} emptyState={<div className="conmat-orders-empty"><strong>No hay órdenes para estos filtros</strong><p>Prueba otra búsqueda o limpia los filtros para volver a la consulta.</p></div>} actions={order=><TableRowActions label={`Acciones de ${order.id}`}><IconButton variant="ghost" aria-label={`Ver orden ${order.id}`} title="Ver orden" onClick={()=>openDetail(order)}><ViewIcon/></IconButton></TableRowActions>}/><Pagination page={activePage} pageSize={size} total={filtered.length} pageSizeOptions={[5,10,20]} onPageChange={setPage} onPageSizeChange={value=>{setSize(value);setPage(1);}}/></>}
+  </Card></section>
+  <section className="conmat-planning-routes" aria-label="Rutas, viajes y subgrupos"><RoutesWorkspace embedded selectedOrderIds={chosen.map(order=>order.id)} draggedOrderIds={draggedOrders} onOrdersMoved={()=>{setSelected([]);setDraggedOrders([]);}}/></section>
+  </div>
   {detail&&<ConmatFloatingView onClose={closeDrawer} title={detail.id} subtitle="Orden de servicio" data={[{label:'Fecha de creación',children:displayDate(detail.createdAt)},{label:'Finca',children:detail.farm},{label:'Programación',children:<Chip preset={statePreset[detail.status]}>{detail.status}</Chip>},{label:'Transportadora',children:carrierName(detail.carrierId)},...(detail.programmingStatus?[{label:'Último cambio de programación',children:detail.programmingStatus==='Anulado'?'Viaje anulado':detail.programmingStatus},...(detail.plannedDate?[{label:'Nueva fecha programada',children:displayDate(detail.plannedDate)}]:[])]:[])]}>
    <div className="conmat-order-detail">
     {detail.originChange&&<Notice variant="warning" heading="Orden actualizada en origen">{detail.originChange}</Notice>}

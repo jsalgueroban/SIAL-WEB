@@ -1,0 +1,68 @@
+.conmat-planning-columns{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(370px,1fr);align-items:start;gap:20px;min-width:0}
+.conmat-planning-orders,.conmat-planning-routes{min-width:0}
+.conmat-planning .page-title{white-space:normal;overflow-wrap:anywhere}
+.conmat-planning-mobile-tabs{display:none}
+.conmat-planning-order-state{display:grid;justify-items:start;gap:6px}.conmat-planning-order-state>small{font-size:12px;line-height:1.5}
+.conmat-planning-carrier{padding:4px 18px 16px}
+.conmat-planning .conmat-orders-card-head{flex-wrap:wrap;padding:20px 18px 12px}
+.conmat-planning .conmat-orders-filters{padding:8px 18px 12px}
+.conmat-planning-help{padding:0 18px 14px;margin:0;color:var(--color-text-2);font-size:12px;line-height:1.6}
+.conmat-planning .conmat-order-identity[draggable=true]{cursor:grab;user-select:none;padding-block:8px}
+.conmat-planning .conmat-order-identity[draggable=true]:active{cursor:grabbing}
+.conmat-routes-embedded .conmat-route-layout{grid-template-columns:minmax(0,1fr)}
+.conmat-routes-embedded .conmat-route-mobile-selector{display:none}
+.conmat-routes-embedded .conmat-route-workspace{padding:18px;gap:14px}
+.conmat-routes-embedded .conmat-routes-topbar{padding:20px 18px 10px}
+.conmat-routes-embedded .conmat-routes-topbar{flex-wrap:nowrap!important;align-items:center!important}.conmat-routes-embedded .conmat-routes-topbar h2{font-size:16px}
+.conmat-routes-embedded .conmat-routes-filters{padding:8px 18px 18px}
+.conmat-routes-embedded .conmat-route-context{flex-wrap:wrap}
+.conmat-routes-embedded .conmat-route-context h2{font-size:18px}
+.conmat-planning-route-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.conmat-planning-route-tabs>button{flex-shrink:0}
+.conmat-routes-embedded .conmat-route-workspace .bui-group-move-grid{grid-template-columns:minmax(0,1fr)}
+.conmat-routes-embedded .bui-group-move-group,.conmat-routes-embedded .bui-group-move-group.is-first{grid-column:1;grid-row:auto!important}
+.conmat-routes-embedded .bui-group-move-item{display:grid;grid-template-columns:18px minmax(0,1fr) 18px;align-items:start;gap:6px 10px}
+.conmat-routes-embedded .bui-group-move-copy{grid-column:2;grid-row:1;min-width:0}
+.conmat-routes-embedded .bui-group-move-detail{grid-column:2;grid-row:2;min-width:0;text-align:left}
+.conmat-routes-embedded .bui-group-move-grip{grid-column:3;grid-row:1}
+.conmat-routes-embedded .bui-group-move-select-mark{grid-column:1;grid-row:1}
+.conmat-planning-destinations{display:grid;gap:10px}
+.conmat-planning-destinations>p{font-size:12px;color:var(--color-text-2);margin:0;line-height:1.6}
+.conmat-planning-drop{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px;border:1px dashed var(--color-border-subtle);border-radius:10px;background:var(--color-surface)}
+.conmat-planning-drop>div{display:grid;gap:5px}
+.conmat-planning-drop strong{font-size:13px}
+.conmat-planning-drop small{font-size:12px;color:var(--color-text-2);line-height:1.5}
+.conmat-planning-drop.is-allowed{border-color:var(--color-primary-500,#1478ca);background:var(--color-primary-50,#f0f7ff)}
+.conmat-planning-drop.is-blocked{opacity:.65}
+@media(min-width:1500px){.conmat-planning-columns{grid-template-columns:minmax(0,1.9fr) minmax(420px,1fr)}}
+@media(min-width:1001px){.conmat-planning-orders>.conmat-orders-register,.conmat-planning-routes{max-height:calc(100dvh - 285px);min-height:420px;overflow:auto;scrollbar-gutter:stable}.conmat-planning-routes{border-radius:16px}}
+@media(max-width:1000px){.conmat-planning-columns{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.conmat-planning-mobile-tabs{display:flex;gap:8px}.conmat-planning-mobile-tabs>button{flex:1}.conmat-planning-columns[data-mobile-panel=orders]>.conmat-planning-routes,.conmat-planning-columns[data-mobile-panel=routes]>.conmat-planning-orders{display:none}}
+@media(max-width:640px){.conmat-planning-columns{gap:16px}.conmat-planning-drop>button{width:100%}.conmat-routes-embedded .conmat-route-workspace{padding:16px}}
+
+/* Compact receiving rail: the table retains the primary working area. */
+@media(min-width:1001px){.conmat-planning-columns{grid-template-columns:minmax(0,1fr) 330px}.conmat-planning-orders>.conmat-orders-register{max-height:none;overflow:hidden}.conmat-planning-routes{position:sticky;top:80px;max-height:calc(100dvh - 100px);min-height:0}}
+@media(min-width:1700px){.conmat-planning-columns{grid-template-columns:minmax(0,1fr) 370px}}
+.conmat-compact-routes{padding:16px!important;display:grid;gap:14px;min-width:0;background:var(--color-surface)}
+.conmat-compact-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.conmat-compact-heading h2{font-size:17px}
+.conmat-compact-help{font-size:12px;color:var(--color-text-2);line-height:1.6;margin:0}
+.conmat-compact-list{display:grid;gap:12px}
+.conmat-compact-card{border:1px solid var(--color-border-subtle);border-radius:12px;padding:14px;min-width:0;background:var(--color-surface)}
+.conmat-compact-identity{display:grid;justify-items:start;gap:8px}.conmat-compact-identity>strong{font-size:14px;line-height:1.5}
+.conmat-compact-company{font-size:12px;margin:10px 0 4px;color:var(--color-text-2);line-height:1.5}
+.conmat-compact-meta{font-size:12px;margin:0;color:var(--color-text-2)}
+.conmat-compact-totals{display:grid;gap:4px;font-size:12px;line-height:1.5;margin-top:10px}
+.conmat-compact-actions{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}.conmat-compact-actions>button{padding-inline:8px;font-size:12px}
+.conmat-compact-card.is-compatible{border-color:var(--color-primary-500,#1478ca)}
+.conmat-compact-card.is-expanded{border-color:var(--color-primary-500,#1478ca)}
+.conmat-compact-destinations{display:grid;gap:12px;border-top:1px solid var(--color-border-subtle);margin-top:10px;padding-top:12px}
+.conmat-compact-destinations>p{font-size:12px;line-height:1.6;margin:0;color:var(--color-text-2)}
+.conmat-compact-trip{display:grid;gap:8px}.conmat-compact-trip>h3{font-size:13px;margin:0}
+.conmat-compact-drop{padding:12px;border:1px dashed var(--color-border-subtle);border-radius:8px;display:grid;gap:10px;min-height:70px}
+.conmat-compact-drop>div{display:grid;gap:5px}.conmat-compact-drop strong{font-size:13px}.conmat-compact-drop small{font-size:11px;color:var(--color-text-2)}
+.conmat-compact-drop>button{font-size:12px}.conmat-compact-drop.is-allowed{border-color:var(--color-primary-500,#1478ca);background:var(--color-hover-surface)}
+.conmat-route-manager{position:fixed;inset:80px 30px 24px;z-index:650;overflow:auto;background:var(--color-surface);border:1px solid var(--color-border-subtle);border-radius:16px;box-shadow:var(--shadow-overlay);padding:20px}
+.conmat-route-manager-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px}.conmat-route-manager-heading h2{font-size:18px}
+.conmat-route-manager .conmat-route-workspace{padding:24px}.conmat-route-manager .conmat-route-context{flex-wrap:nowrap}
+.conmat-route-manager .conmat-route-workspace .bui-group-move-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:700px){.conmat-route-manager{inset:70px 8px 8px;padding:12px}.conmat-route-manager-heading{flex-wrap:wrap}.conmat-route-manager .conmat-route-context{flex-wrap:wrap}.conmat-route-manager .conmat-route-workspace .bui-group-move-grid{grid-template-columns:1fr}}
